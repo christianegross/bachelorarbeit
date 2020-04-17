@@ -33,7 +33,7 @@ void initialisierung(int *gitter, int laenge, int seed){
 }
 
 
-void ausgabebunt(int *gitter, int laenge){
+void ausgabe(int *gitter, int laenge){
 	//gibt ein laenge *laenge quadratisches Gitter auf die Standardkonsole aus
 	//farbige Ausgabe für +-1
 	for (int d1=0; d1<laenge; d1++){//geht in erster dimension durch
@@ -54,23 +54,6 @@ void ausgabebunt(int *gitter, int laenge){
 		printf("\n");//neue Zeile
 	}
 }
-
-void ausgabe(int *gitter, int laenge, FILE *datei){
-	//gibt ein laenge *laenge quadratisches Gitter in datei aus
-	for (int d1=0; d1<laenge; d1++){//geht in erster dimension durch
-		for (int d2=0; d2<laenge; d2++){//geht in zweiter dimension durch
-			fprintf(datei, "%d\t%d\t%d\n",d1, d2, gitter[laenge*d1+d2]);//, gitter[laenge*d1+d2]);
-		}
-	}
-}
-
-void einlesen(int *gitter, int laenge, FILE *datei){
-	//liest gitter, das in datei geschrieben wurde, wieder in gitter ein
-	for (int n=0; n<laenge*laenge; n+=1){
-		gitter[n]=//dritter gelesener Eintrag in Zeile
-	}
-}
-		
 
 double hamiltonian(int *gitter, int laenge, double j){
 	//berechnet den hamiltonian eines laenge*laenge quadratischen Gitters eines Ising Modells mit periodischen Randbedingungen
@@ -123,7 +106,7 @@ void flipspin(int *gitter, int d1, int d2, int laenge){
 	gitter[laenge*d1+d2]*=-1;
 }
 	
-double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *fp){
+double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian){
 	double H=hamiltonian;
 	double delta;
 	int changes=0;
@@ -140,12 +123,8 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	}
 	//ausgabe(gitter, laenge);
 	//printf("changes=%d of %d possibilities\n", changes, laenge*laenge);
-	fprintf(fp, "%d\n", changes);//benoetigte messungen
 	return H;
 }
-
-//funktion "thermalisieren" benötigt?
-//Für große Gitter: thermalisieren dauert lange, Ergebnis in Datei speichern, nachher einlesen
 
 int main(int argc, char **argv){
 	int laenge=200;
@@ -154,7 +133,6 @@ int main(int argc, char **argv){
 	//double gamma_T=10.0; //benutzt für SA
 	//int numberofsweeps, temperaturechanges;
 	double T=10;
-	int messungen=1000;
 	
 	int gitter [laenge*laenge];//initialisiert gitter
 	initialisierung(gitter, laenge, seed);
@@ -167,28 +145,20 @@ int main(int argc, char **argv){
 	gsl_rng_set(generator, seed);
 	double Hneu=H;
 	double Halt=H+laenge*j+1;
-	//int sumdifferences;
+	int sumdifferences;
 	//thermalisieren
-	FILE *therm=fopen("thermalisierung.txt", "w");
-	FILE *gittertherm=fopen("gitterthermalisiert.txt", "w");
+	FILE *fp=fopen("thermalisierung.txt", "w");
+	//for (int N0=0; N0<100; N0+=1){
 	int N0=0;//zählt, wie viele sweeps zum Thermalisieren benoetigt werden
 	while (Halt-Hneu>0){//Abbruchkriterium
 		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
-		Hneu=sweep(gitter, laenge, j, T, generator, Halt, therm);//neuen Zustand durch sweep vom alten Zustand
-		fprintf(therm,"%d %f\n", N0, Halt-Hneu);
+		Hneu=sweep(gitter, laenge, j, T, generator, Halt);//neuen Zustand durch sweep vom alten Zustand
+		fprintf(fp,"%d %f\n", N0, Halt-Hneu);
 		N0+=1;
+		//sumdifferences+=Halt-Hneu;
 	}
-	ausgabe(gitter, laenge, gittertherm);
 	printf("%d \n", N0);
-	fclose(gittertherm);
-	fclose(therm);
-	//messen
-	//~ FILE *messen=fopen("messen.txt", "w");//speichert messungen
-	//~ for (int messung=0; messung<messungen; messung+=1){
-		//~ fprintf(messen,"%d\t", messung);
-		//~ H=sweep(gitter, laenge, j, T, generator, H, messen);
-	//~ }	
-	//~ fclose(messen);
+	//printf("%f \n", sumdifferences/10000.0);
 //Metropolis:
 //N_0 sweeps zum thermalisieren
 //Wann thermalisiert? Schwelle für Änderung Hamiltonian?
@@ -199,6 +169,7 @@ int main(int argc, char **argv){
 //Als erstes messen: Akzeptanzrate
 	
 	gsl_rng_free(generator);
+	fclose(fp);
 
 	return 0;
 }
