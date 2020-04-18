@@ -59,15 +59,22 @@ void ausgabe(int *gitter, int laenge, FILE *datei){
 	//gibt ein laenge *laenge quadratisches Gitter in datei aus
 	for (int d1=0; d1<laenge; d1++){//geht in erster dimension durch
 		for (int d2=0; d2<laenge; d2++){//geht in zweiter dimension durch
-			fprintf(datei, "%d\t%d\t%d\n",d1, d2, gitter[laenge*d1+d2]);//, gitter[laenge*d1+d2]);
+			fprintf(datei, "%d \t %d \t %d \n",d1, d2, gitter[laenge*d1+d2]);//, gitter[laenge*d1+d2]);
+			//printf("%d \t %d \t %d \n",d1, d2, gitter[laenge*d1+d2]);//, gitter[laenge*d1+d2]);
 		}
 	}
 }
 
 void einlesen(int *gitter, int laenge, FILE *datei){
 	//liest gitter, das in datei geschrieben wurde, wieder in gitter ein
+	//int d1[]={0};
+	//int d2[]={0};
+	rewind(datei);
+	int d1, d2, error;
 	for (int n=0; n<laenge*laenge; n+=1){
-		gitter[n]=//dritter gelesener Eintrag in Zeile
+		error= fscanf(datei, "%d \t %d \t %d \n", &d1, &d2, &gitter[n]);
+		//printf("%d \t %d \t %d \n", d1, d2,gitter[n]);
+		//gitter[n]=//dritter gelesener Eintrag in Zeile
 	}
 }
 		
@@ -148,13 +155,13 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 //Für große Gitter: thermalisieren dauert lange, Ergebnis in Datei speichern, nachher einlesen
 
 int main(int argc, char **argv){
-	int laenge=200;
+	int laenge=300;
 	double j=1.0;
 	int seed=5;
 	//double gamma_T=10.0; //benutzt für SA
 	//int numberofsweeps, temperaturechanges;
 	double T=10;
-	int messungen=1000;
+	//int messungen=1000;
 	
 	int gitter [laenge*laenge];//initialisiert gitter
 	initialisierung(gitter, laenge, seed);
@@ -170,7 +177,7 @@ int main(int argc, char **argv){
 	//int sumdifferences;
 	//thermalisieren
 	FILE *therm=fopen("thermalisierung.txt", "w");
-	FILE *gittertherm=fopen("gitterthermalisiert.txt", "w");
+	FILE *gittertherm=fopen("gitterthermalisiert.txt", "w+");
 	int N0=0;//zählt, wie viele sweeps zum Thermalisieren benoetigt werden
 	while (Halt-Hneu>0){//Abbruchkriterium
 		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
@@ -179,7 +186,10 @@ int main(int argc, char **argv){
 		N0+=1;
 	}
 	ausgabe(gitter, laenge, gittertherm);
-	printf("%d \n", N0);
+	//fclose(gittertherm);
+	//gittertherm=fopen("gitterthermalisiert.txt", "r");
+	einlesen(gitter, laenge, gittertherm);
+	//printf("%d \n", N0);
 	fclose(gittertherm);
 	fclose(therm);
 	//messen
