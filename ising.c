@@ -73,6 +73,10 @@ void einlesen(int *gitter, int laenge, FILE *datei){
 	int d1, d2, error;
 	for (int n=0; n<laenge*laenge; n+=1){
 		error= fscanf(datei, "%d \t %d \t %d \n", &d1, &d2, &gitter[n]);
+		if (error<0){
+			printf("Fehler beim Einlesen!\n");
+			break;
+		}
 		//printf("%d \t %d \t %d \n", d1, d2,gitter[n]);
 		//gitter[n]=//dritter gelesener Eintrag in Zeile
 	}
@@ -130,7 +134,7 @@ void flipspin(int *gitter, int d1, int d2, int laenge){
 	gitter[laenge*d1+d2]*=-1;
 }
 	
-double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *fp){
+double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
 	double H=hamiltonian;
 	double delta;
 	int changes=0;
@@ -147,7 +151,7 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	}
 	//ausgabe(gitter, laenge);
 	//printf("changes=%d of %d possibilities\n", changes, laenge*laenge);
-	fprintf(fp, "%d\n", changes);//benoetigte messungen
+	fprintf(dateimessungen, "%d\t%f\n", changes, (double)changes/(double)laenge/(double)laenge);//benoetigte messungen
 	return H;
 }
 
@@ -160,8 +164,8 @@ int main(int argc, char **argv){
 	int seed=5;
 	//double gamma_T=10.0; //benutzt für SA
 	//int numberofsweeps, temperaturechanges;
-	double T=10;
-	//int messungen=1000;
+	double T=0.5;
+	int messungen=1000;
 	
 	int gitter [laenge*laenge];//initialisiert gitter
 	initialisierung(gitter, laenge, seed);
@@ -177,28 +181,40 @@ int main(int argc, char **argv){
 	//int sumdifferences;
 	//thermalisieren
 	FILE *therm=fopen("thermalisierung.txt", "w");
+	
+	FILE *dummyfile=fopen("dummy.txt", "w");//speichert messergebnisse waehrend des thermalisierens
 	FILE *gittertherm=fopen("gitterthermalisiert.txt", "w+");
 	int N0=0;//zählt, wie viele sweeps zum Thermalisieren benoetigt werden
 	while (Halt-Hneu>0){//Abbruchkriterium
 		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
-		Hneu=sweep(gitter, laenge, j, T, generator, Halt, therm);//neuen Zustand durch sweep vom alten Zustand
+		Hneu=sweep(gitter, laenge, j, T, generator, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
 		fprintf(therm,"%d %f\n", N0, Halt-Hneu);
 		N0+=1;
 	}
-	ausgabe(gitter, laenge, gittertherm);
-	//fclose(gittertherm);
-	//gittertherm=fopen("gitterthermalisiert.txt", "r");
-	einlesen(gitter, laenge, gittertherm);
-	//printf("%d \n", N0);
-	fclose(gittertherm);
 	fclose(therm);
+	fclose(dummyfile);
+	ausgabe(gitter, laenge, gittertherm);//ermöglicht Ändern des verwendeten Gitter
+	//einlesen(gitter, laenge, gittertherm);
+	fclose(gittertherm);
 	//messen
-	//~ FILE *messen=fopen("messen.txt", "w");//speichert messungen
-	//~ for (int messung=0; messung<messungen; messung+=1){
-		//~ fprintf(messen,"%d\t", messung);
-		//~ H=sweep(gitter, laenge, j, T, generator, H, messen);
-	//~ }	
-	//~ fclose(messen);
+	FILE *messen=fopen("messen.txt", "w+");//speichert messungen, bei Bedarf auf w+ setzen!
+	//fprintf(messen, "Messung\tVeraenderungen\tAkzeptanzrate\n");
+	for (int messung=0; messung<messungen; messung+=1){
+		fprintf(messen,"%d\t", messung);
+		H=sweep(gitter, laenge, j, T, generator, H, messen);
+	}
+	double summe=0;
+	double einwert=0;
+	int dummywert;//zum Zuweisen nicht benoetigter Messdaten
+	rewind(messen);
+	FILE *mittelwert=fopen("messenmittel.txt", "a");//speichert mittlewerte ans Ende der Datei
+	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
+		fscanf(messen, "%d \t %d \t %lf \n", &dummywert, &dummywert, &einwert);
+		summe+=einwert;
+	}
+	fprintf(mittelwert, "%f\t%f\n", T, summe/(double)messungen);	
+	fclose(mittelwert);
+	fclose(messen);
 //Metropolis:
 //N_0 sweeps zum thermalisieren
 //Wann thermalisiert? Schwelle für Änderung Hamiltonian?
@@ -207,6 +223,9 @@ int main(int argc, char **argv){
 //Fuer groessere laengen Effekt sichtbarer, Abbruchkriterium: Diff=0
 //N sweeps zum Messen: Was als Rückgabewert von sweep? sweep überhaupt als Funktion oder in main integrieren?
 //Als erstes messen: Akzeptanzrate
+//Wie Mittelwert über Messungen bilden?/Wie Messungen auswerten
+//Ziel: Aktzeptanzrate(T) darstellen
+//https://stackoverflow.com/questions/5922579/c-ignoring-a-comment-line-in-input-file
 	
 	gsl_rng_free(generator);
 
