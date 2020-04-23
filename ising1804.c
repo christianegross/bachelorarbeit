@@ -156,110 +156,62 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 //funktion "thermalisieren" benötigt?
 //Für große Gitter: thermalisieren dauert lange, Ergebnis in Datei speichern, nachher einlesen
 
-void thermalisieren(int laenge, double T, double j, int seed, FILE *ausgabedatei, gsl_rng *generator){
-	//erzeugt ein thermalisiertes Gitter mit laenge*laenge, T, j, seed in ausgabedatei
-	//generator für thermalisieren innerhalb derFunktion seeden?
-	int gitter[laenge*laenge];
-	initialisierung(gitter, laenge, seed);//Initialisiert Gitter
-	double H=hamiltonian(gitter, laenge, seed);//Anfangsenergie
-	double Hneu=H;
-	double Halt=H+laenge*j+1;
-	FILE *dummyfile=fopen("dummy.txt", "w");//speichert messergebnisse waehrend des thermalisierens->Nicht benötigt
-	int N0=0;//zählt, wie viele sweeps zum Thermalisieren benoetigt werden
-	while (Halt-Hneu>0){//Abbruchkriterium
-		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
-		Hneu=sweep(gitter, laenge, j, T, generator, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
-		N0+=1;
-	}
-	fclose(dummyfile);
-	ausgabe(gitter, laenge, ausgabedatei);//ermöglicht Ändern des verwendeten Gitter
-}
-
-void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, gsl_rng *generator){
-	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
-	//generator für messen innerhalb derFunktion seeden?
-	int gitter[laenge*laenge];
-	einlesen(gitter, laenge, gitterdatei);
-	double H=hamiltonian(gitter, laenge, j);
-	for (int messung=0; messung<messungen; messung+=1){
-		fprintf(messdatei,"%d\t", messung);//Schreibt in Datei, um die wievielte Messung es sich handelt
-		H=sweep(gitter, laenge, j, T, generator, H, messdatei);//Schreibt Messwerte in Datei
-	}
-}
-
-double mittelwertberechnung(FILE *messdatei, int messungen){
-	double summe=0;//Speichert Summe über Messungen
-	double einwert=0;//Speichert einen ausgelesenen Wert
-	int dummywert;//zum Zuweisen nicht benoetigter Messdaten
-	rewind(messdatei);
-	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
-		fscanf(messdatei, "%d \t %d \t %lf \n", &dummywert, &dummywert, &einwert);
-		summe+=einwert;
-	}
-	return summe/(double)messungen;
-}
-
-double varianzberechnung(FILE *messdatei, int messungen, double mittelwert){
-	double summe=0;//Speichert Summe über Messungen
-	double einwert=0;//Speichert einen ausgelesenen Wert
-	int dummywert;//zum Zuweisen nicht benoetigter Messdaten
-	rewind(messdatei);
-	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
-		fscanf(messdatei, "%d \t %d \t %lf \n", &dummywert, &dummywert, &einwert);
-		summe+=(einwert-mittelwert)*(einwert-mittelwert);
-	}
-	return sqrt(summe/((double)messungen-1));
-}
-
 int main(int argc, char **argv){
 	int laenge=300;
 	double j=1.0;
 	int seed=5;
-	//double T=0.5;
+	//double gamma_T=10.0; //benutzt für SA
+	//int numberofsweeps, temperaturechanges;
+	double T=0.5;
 	int messungen=1000;
-	FILE *gitterthermdatei, *messdatei, *mittelwertdatei;
-	const int temperaturzahl=15;
-	double temperaturarray[15]={0.25, 0.5, 0.75, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10};
 	
-	char dateinametherm[20], dateinamemessen[20];
-	double mittelwert, varianz;
+	int gitter [laenge*laenge];//initialisiert gitter
+	initialisierung(gitter, laenge, seed);
+	//ausgabe(gitter, laenge);
+	double H=hamiltonian(gitter, laenge, j); //Anfangsenergie
+	printf("H=%f\n", H);
+	
 	
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
-	mittelwertdatei=fopen("messenmittel.txt", "w");//speichert mittlewerte ans Ende der Datei
-	for (int n=0; n<temperaturzahl; n+=1){    //counting through given temperaturs
-	 
-		sprintf(dateinametherm,"thermalisierung-%.2d.txt",n);//.2, damit alle dateinamengleich lang sind
-		sprintf(dateinamemessen,"messung-%.2d.txt",n);//.2, damit alle dateinamengleich lang sind
-		gitterthermdatei = fopen(dateinametherm, "r");
-		messdatei = fopen(dateinamemessen, "r");
-		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
-		//thermalisieren(laenge, temperaturarray[n], j, seed, gitterthermdatei, generator);
-		//messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
-		mittelwert=mittelwertberechnung(messdatei, messungen);
-		varianz=varianzberechnung(messdatei, messungen, mittelwert);
-		fprintf(mittelwertdatei, "%f\t%f\t%f\n", temperaturarray[n], mittelwert, varianz);
-		printf("%f\t%f\t%f\n", temperaturarray[n], mittelwert, varianz);
-		
+	gsl_rng_set(generator, seed);//initialisieren
+	double Hneu=H;
+	double Halt=H+laenge*j+1;
+	//int sumdifferences;
+	//thermalisieren
+	FILE *therm=fopen("thermalisierung.txt", "w");
+	FILE *dummyfile=fopen("dummy.txt", "w");//speichert messergebnisse waehrend des thermalisierens->Nicht benötigt
+	FILE *gittertherm=fopen("gitterthermalisiert.txt", "w+");//speichert thermalisiertes Gitter, auch Auslesen möglich
+	int N0=0;//zählt, wie viele sweeps zum Thermalisieren benoetigt werden
+	while (Halt-Hneu>0){//Abbruchkriterium
+		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
+		Hneu=sweep(gitter, laenge, j, T, generator, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
+		fprintf(therm,"%d %f\n", N0, Halt-Hneu);
+		N0+=1;
 	}
-
-	//~ gittertherm=fopen("gitterthermalisiert.txt", "w+");//speichert thermalisiertes Gitter, auch Auslesen möglich
-	//~ thermalisieren(laenge, T, j, seed, gittertherm, generator);
-	
-	//~ //messen
-	//~ messdatei=fopen("messdatei.txt", "w+");//speichert messungen, bei Bedarf auf w+ setzen!
-	//~ messen(laenge, T, j, messungen, gittertherm, messdatei, generator);
-	
-	//~ mittelwertdatei=fopen("messenmittel.txt", "a");//speichert mittlewerte ans Ende der Datei
-	//~ printf("%f\t%f\n", T, mittelwert(messdatei, messungen));	
-	fclose(mittelwertdatei);
-	fclose(messdatei);
-	fclose(gitterthermdatei);
-	
-	gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen
-
-	return 0;
-}
-
+	fclose(therm);
+	fclose(dummyfile);
+	ausgabe(gitter, laenge, gittertherm);//ermöglicht Ändern des verwendeten Gitter
+	//einlesen(gitter, laenge, gittertherm);
+	fclose(gittertherm);
+	//messen
+	FILE *messen=fopen("messen.txt", "w+");//speichert messungen, bei Bedarf auf w+ setzen!
+	//fprintf(messen, "Messung\tVeraenderungen\tAkzeptanzrate\n");
+	for (int messung=0; messung<messungen; messung+=1){
+		fprintf(messen,"%d\t", messung);//Schreibt in Datei, um die wievielte Messung es sich handelt
+		H=sweep(gitter, laenge, j, T, generator, H, messen);//Schreibt Messwerte in Datei
+	}
+	double summe=0;//Speichert Summe über Messungen
+	double einwert=0;//Speichert einen ausgelesenen Wert
+	int dummywert;//zum Zuweisen nicht benoetigter Messdaten
+	rewind(messen);
+	FILE *mittelwert=fopen("messenmittel.txt", "a");//speichert mittlewerte ans Ende der Datei
+	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
+		fscanf(messen, "%d \t %d \t %lf \n", &dummywert, &dummywert, &einwert);
+		summe+=einwert;
+	}
+	fprintf(mittelwert, "%f\t%f\n", T, summe/(double)messungen);	
+	fclose(mittelwert);
+	fclose(messen);
 //Metropolis:
 //N_0 sweeps zum thermalisieren
 //Wann thermalisiert? Schwelle für Änderung Hamiltonian?
@@ -271,6 +223,13 @@ int main(int argc, char **argv){
 //Wie Mittelwert über Messungen bilden?/Wie Messungen auswerten
 //Ziel: Aktzeptanzrate(T) darstellen
 //https://stackoverflow.com/questions/5922579/c-ignoring-a-comment-line-in-input-file
+	
+	gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen
+
+	return 0;
+}
+
+
 //https://cboard.cprogramming.com/c-programming/132421-need-help-opening-multiple-files-c-programming.html
 //Ideen für Ausgabe über Gnuplot: 
 //Heatmap machen, brauche x, y Koordinate, Wert
@@ -292,43 +251,3 @@ int main(int argc, char **argv){
 //christiane@christiane-VirtualBox2:/media/christiane/BC20-2E26/Bachelorarbeit$ gcc -std=c99 -Wall -pedantic -I /usr/include/ ising.c -c
 //christiane@christiane-VirtualBox2:/media/christiane/BC20-2E26/Bachelorarbeit$ gcc -std=c99 -Wall -pedantic -o ising.exe ising.o -lgsl -lgslcblas -lm
 //christiane@christiane-VirtualBox2:/media/christiane/BC20-2E26/Bachelorarbeit$ ./ising.exe
-
-	//double gamma_T=10.0; //benutzt für SA
-	//int numberofsweeps, temperaturechanges;
-//~ int gitter [laenge*laenge];//initialisiert gitter
-	//~ initialisierung(gitter, laenge, seed);
-	//~ //ausgabe(gitter, laenge);
-	//~ double H=hamiltonian(gitter, laenge, j); //Anfangsenergie
-	//~ printf("H=%f\n", H);
-	
-	//~ double Hneu=H;
-	//~ double Halt=H+laenge*j+1;
-	//~ //int sumdifferences;
-	//~ //thermalisieren
-	//~ FILE *therm=fopen("thermalisierung.txt", "w");
-	//~ FILE *dummyfile=fopen("dummy.txt", "w");//speichert messergebnisse waehrend des thermalisierens->Nicht benötigt
-	//~ FILE *gittertherm=fopen("gitterthermalisiert.txt", "w+");//speichert thermalisiertes Gitter, auch Auslesen möglich
-	//~ int N0=0;//zählt, wie viele sweeps zum Thermalisieren benoetigt werden
-	//~ while (Halt-Hneu>0){//Abbruchkriterium
-		//~ Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
-		//~ Hneu=sweep(gitter, laenge, j, T, generator, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
-		//~ fprintf(therm,"%d %f\n", N0, Halt-Hneu);
-		//~ N0+=1;
-	//~ }
-	//~ fclose(therm);
-	//~ fclose(dummyfile);
-	//~ ausgabe(gitter, laenge, gittertherm);//ermöglicht Ändern des verwendeten Gitter
-//einlesen(gitter, laenge, gittertherm);
-//fprintf(messen, "Messung\tVeraenderungen\tAkzeptanzrate\n");
-	//~ for (int messung=0; messung<messungen; messung+=1){
-		//~ fprintf(messdatei,"%d\t", messung);//Schreibt in Datei, um die wievielte Messung es sich handelt
-		//~ H=sweep(gitter, laenge, j, T, generator, H, messdatei);//Schreibt Messwerte in Datei
-	//~ }
-	//~ double summe=0;//Speichert Summe über Messungen
-	//~ double einwert=0;//Speichert einen ausgelesenen Wert
-	//~ int dummywert;//zum Zuweisen nicht benoetigter Messdaten
-	//~ rewind(messdatei);
-	//~ for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
-		//~ fscanf(messdatei, "%d \t %d \t %lf \n", &dummywert, &dummywert, &einwert);
-		//~ summe+=einwert;
-	//~ }
