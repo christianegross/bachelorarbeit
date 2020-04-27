@@ -53,7 +53,17 @@ void einlesen(int *gitter, int laenge, FILE *datei){
 		}
 	}
 }
-		
+
+int gittersumme (int *gitter, int laenge){
+	//berechnet Summe aller Elemente eines Gitter mit laenge*laenge
+	int summe=0;
+	for (int d1=0; d1<laenge; d1+=1){//geht in erster dimension durch (Zeile
+		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+			summe+=gitter[laenge*d1+d2];
+		}
+	}
+	return abs(summe);
+}		
 
 double hamiltonian(int *gitter, int laenge, double j){
 	//berechnet den hamiltonian eines laenge*laenge quadratischen Gitters eines Ising Modells mit periodischen Randbedingungen
@@ -191,12 +201,18 @@ double varianzberechnung(FILE *messdatei, int messungen, double mittelwert, cons
 }
 
 int main(int argc, char **argv){
-	int laenge=300;
+	int laenge=102;
 	double j=1.0;
 	int seed=5;
 	int messungen=1000;
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei;
-	double temperaturarray[13]={0.2, 0.25,0.33, 0.5, 0.8, 1, 1.5, 2, 2.5, 5, 10, 50, 100};//ab 22.04 17:40, damit beta gleichmäßig verteilt ist
+	int temperaturzahl=500;
+	//double temperaturarray[13]={0.2, 0.25,0.33, 0.5, 0.8, 1, 1.5, 2, 2.5, 5, 10, 50, 100};//ab 22.04 17:40, damit beta gleichmäßig verteilt ist
+	//neues Array, um Magnetisierung zu untersuchen
+	double temperaturarray[500];//={0.1,0.2,0.3,0.4,0.5, 0.6,0.7,0.8,0.9,1.0, 1.1,1.2,1.3,1.4,1.5, 1.6,1.7,1.8,1.9,2.0, 2.1,2.2,2.3,2.4,2.5};
+	for (int i=0; i<temperaturzahl;i++){
+		temperaturarray[i]=0.01*i+0.01;
+	}
 	char dateinametherm[60], dateinamemessen[60], dateinamemittel[60];
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
 	
@@ -205,13 +221,13 @@ int main(int argc, char **argv){
 	mittelwertdatei=fopen(dateinamemittel, "w");
 	for (int n=0; n<temperaturzahl; n+=1){    //counting through given temperaturs
 	 
-		sprintf(dateinametherm,"thermalisierung-%.2d.txt",n);//.2, damit alle dateinamengleich lang sind
-		sprintf(dateinamemessen,"messung-%.2d.txt",n);//.2, damit alle dateinamengleich lang sind
-		gitterthermdatei = fopen(dateinametherm, "r");
-		messdatei = fopen(dateinamemessen, "r");
+		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-l%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
+		sprintf(dateinamemessen,"Messungen/Messwerte/messung-l%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
+		gitterthermdatei = fopen(dateinametherm, "w+");
+		messdatei = fopen(dateinamemessen, "w+");
 		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
-		//thermalisieren(laenge, temperaturarray[n], j, seed, gitterthermdatei, generator);
-		//messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
+		thermalisieren(laenge, temperaturarray[n], j, seed, gitterthermdatei, generator);
+		messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
 		mittelwertakz=mittelwertberechnung(messdatei, messungen, 1);
 		varianzakz=varianzberechnung(messdatei, messungen, mittelwertakz, 1);
 		mittelwertmag=mittelwertberechnung(messdatei, messungen, 2);
