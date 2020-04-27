@@ -1,5 +1,18 @@
+#Variablen
+LIBS:= -lgsl -lgslcblas -lm
+
+#erstellt programm ising
 ising: ising.o
-	gcc -std=c99 -Wall -pedantic -o ising ising.o -lgsl -lgslcblas -lm
+	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+
+#erstellt aus allen .c dateien eine .o datei	
+%.o: %.c
+	gcc -std=c99 -Wall -pedantic -I /usr/include/ $^ -c
 	
-ising.o: ising.c
-	gcc -std=c99 -Wall -pedantic -I /usr/include/ ising.c -c
+#.PHONY: clean
+
+#clean:
+
+#$^: fügt alle abhängigkeiten ein
+#%: sucht alle Dateien mit gegebener Endung(wildcard)
+#$@: Fügt target ein
