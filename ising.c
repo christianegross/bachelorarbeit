@@ -201,7 +201,7 @@ double varianzberechnung(FILE *messdatei, int messungen, double mittelwert, cons
 }
 
 int main(int argc, char **argv){
-	int laenge=102;
+	int laenge=100;
 	double j=1.0;
 	int seed=5;
 	int messungen=1000;
@@ -209,9 +209,12 @@ int main(int argc, char **argv){
 	int temperaturzahl=500;
 	//double temperaturarray[13]={0.2, 0.25,0.33, 0.5, 0.8, 1, 1.5, 2, 2.5, 5, 10, 50, 100};//ab 22.04 17:40, damit beta gleichmäßig verteilt ist
 	//neues Array, um Magnetisierung zu untersuchen
-	double temperaturarray[500];//={0.1,0.2,0.3,0.4,0.5, 0.6,0.7,0.8,0.9,1.0, 1.1,1.2,1.3,1.4,1.5, 1.6,1.7,1.8,1.9,2.0, 2.1,2.2,2.3,2.4,2.5};
-	for (int i=0; i<temperaturzahl;i++){
-		temperaturarray[i]=0.01*i+0.01;
+	double temperaturarray[1000];//={0.1,0.2,0.3,0.4,0.5, 0.6,0.7,0.8,0.9,1.0, 1.1,1.2,1.3,1.4,1.5, 1.6,1.7,1.8,1.9,2.0, 2.1,2.2,2.3,2.4,2.5};
+	for (int i=0; i<temperaturzahl;i++){//Temepraturarray intalisieren
+		temperaturarray[i]=0.005*i+0.005;
+	}
+	for (int i=350; i<temperaturzahl;i++){//groesserer Abstand, damit auch höhere Temperaturen berücksichtigt werden
+		temperaturarray[i]=(0.005*i+0.005)+((i-350)*0.02);
 	}
 	char dateinametherm[60], dateinamemessen[60], dateinamemittel[60];
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
@@ -220,7 +223,7 @@ int main(int argc, char **argv){
 	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d.txt",laenge);//.2, damit alle dateinamengleich lang sind
 	mittelwertdatei=fopen(dateinamemittel, "w");
 	for (int n=0; n<temperaturzahl; n+=1){    //counting through given temperaturs
-	 
+		printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-l%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-l%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		gitterthermdatei = fopen(dateinametherm, "w+");
