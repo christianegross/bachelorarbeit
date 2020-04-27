@@ -117,14 +117,13 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 			if (tryflip(gitter, d1, d2, laenge, j, T, generator, delta)==1){//Wenn Spin geflippt wurde
 				flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 				H+=delta;//H aktualisieren
-				//printf("H=%f\n", H);
 				changes+=1;
 			}
 		}
 	}
-	//ausgabe(gitter, laenge);
-	//printf("changes=%d of %d possibilities\n", changes, laenge*laenge);
-	fprintf(dateimessungen, "%d\t%f\n", changes, (double)changes/(double)laenge/(double)laenge);//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten
+	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
+	double magnetisierung=(double)gittersumme(gitter, laenge)/(double)laenge/(double)laenge;
+	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -157,7 +156,7 @@ void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FI
 	einlesen(gitter, laenge, gitterdatei);
 	double H=hamiltonian(gitter, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
-		fprintf(messdatei,"%d\t", messung);//Schreibt in Datei, um die wievielte Messung es sich handelt
+		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		H=sweep(gitter, laenge, j, T, generator, H, messdatei);//Schreibt Messwerte in Datei
 	}
 }
