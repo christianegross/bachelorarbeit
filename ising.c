@@ -196,14 +196,13 @@ int main(int argc, char **argv){
 	//double T=0.5;
 	int messungen=1000;
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei;
-	const int temperaturzahl=15;
-	double temperaturarray[15]={0.25, 0.5, 0.75, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10};
-	
-	char dateinametherm[20], dateinamemessen[20];
-	double mittelwert, varianz;
+	double temperaturarray[13]={0.2, 0.25,0.33, 0.5, 0.8, 1, 1.5, 2, 2.5, 5, 10, 50, 100};//ab 22.04 17:40, damit beta gleichmäßig verteilt ist
+	char dateinametherm[60], dateinamemessen[60], dateinamemittel[60];
+	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
 	
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
-	mittelwertdatei=fopen("messenmittel.txt", "w");//speichert mittlewerte ans Ende der Datei
+	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d.txt",laenge);//.2, damit alle dateinamengleich lang sind
+	mittelwertdatei=fopen(dateinamemittel, "w");
 	for (int n=0; n<temperaturzahl; n+=1){    //counting through given temperaturs
 	 
 		sprintf(dateinametherm,"thermalisierung-%.2d.txt",n);//.2, damit alle dateinamengleich lang sind
@@ -213,11 +212,13 @@ int main(int argc, char **argv){
 		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
 		//thermalisieren(laenge, temperaturarray[n], j, seed, gitterthermdatei, generator);
 		//messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
-		mittelwert=mittelwertberechnung(messdatei, messungen);
-		varianz=varianzberechnung(messdatei, messungen, mittelwert);
-		fprintf(mittelwertdatei, "%f\t%f\t%f\n", temperaturarray[n], mittelwert, varianz);
-		printf("%f\t%f\t%f\n", temperaturarray[n], mittelwert, varianz);
-		
+		mittelwertakz=mittelwertberechnung(messdatei, messungen, 1);
+		varianzakz=varianzberechnung(messdatei, messungen, mittelwertakz, 1);
+		mittelwertmag=mittelwertberechnung(messdatei, messungen, 2);
+		varianzmag=varianzberechnung(messdatei, messungen, mittelwertmag, 2);
+		fprintf(mittelwertdatei, "%d\t%f\t%f\t%f\t%f\t%f\t%f\n", laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag);
+		//printf("set title \"T=%.2f, Laenge=%.4d\" font \"arial,40\"\nsplot \"Messungen/ThermalisierteGitter/thermalisierung-l%.4d-t%.2d.txt\" using 1:2:3 w image title \"\"\n\n", temperaturarray[n],laenge,laenge, n); //erzeugen von gnuplotcommands zum plotten
+	
 	}
 
 	//~ gittertherm=fopen("gitterthermalisiert.txt", "w+");//speichert thermalisiertes Gitter, auch Auslesen möglich
