@@ -145,6 +145,7 @@ void thermalisieren(int laenge, double T, double j, int seed, FILE *ausgabedatei
 		Hneu=sweep(gitter, laenge, j, T, generator, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
 		N0+=1;
 	}
+	//printf("%f\t%d\n", T, N0);zum darstellen Schritte gegen Temperatur
 	fclose(dummyfile);
 	ausgabe(gitter, laenge, ausgabedatei);//ermöglicht Ändern des verwendeten Gitter
 }
@@ -161,28 +162,31 @@ void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FI
 	}
 }
 
-double mittelwertberechnung(FILE *messdatei, int messungen){
+void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, gsl_rng *generator){
+	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
+	//generator für messen innerhalb der Funktion seeden?
+	int gitter[laenge*laenge];
+	einlesen(gitter, laenge, gitterdatei);
+	double H=hamiltonian(gitter, laenge, j);
+	for (int messung=0; messung<messungen; messung+=1){
+		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
+		H=sweep(gitter, laenge, j, T, generator, H, messdatei);//Schreibt Messwerte in Datei
+	}
+	//printf("%d\n", gittersumme(gitter, laenge));
+}
+
+double mittelwertberechnung(FILE *messdatei, int messungen, const int spalte){
+	//berechnet den Mittelwert aus spalte aus den messungen in messdatei
 	double summe=0;//Speichert Summe über Messungen
 	double einwert=0;//Speichert einen ausgelesenen Wert
-	int dummywert;//zum Zuweisen nicht benoetigter Messdaten
-	rewind(messdatei);
+	double ergebnisarray[3];//speichert alle messungen
+	rewind(messdatei);//sichergehen, dass alle Messdaten verwendet werden
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
-		fscanf(messdatei, "%d \t %d \t %lf \n", &dummywert, &dummywert, &einwert);
+		fscanf(messdatei, "%lf \t %lf \t %lf \n", &ergebnisarray[0], &ergebnisarray[1], &ergebnisarray[2]);
+		einwert=ergebnisarray[spalte];//wählt korrekte messung aus
 		summe+=einwert;
 	}
 	return summe/(double)messungen;
-}
-
-double varianzberechnung(FILE *messdatei, int messungen, double mittelwert){
-	double summe=0;//Speichert Summe über Messungen
-	double einwert=0;//Speichert einen ausgelesenen Wert
-	int dummywert;//zum Zuweisen nicht benoetigter Messdaten
-	rewind(messdatei);
-	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
-		fscanf(messdatei, "%d \t %d \t %lf \n", &dummywert, &dummywert, &einwert);
-		summe+=(einwert-mittelwert)*(einwert-mittelwert);
-	}
-	return sqrt(summe/((double)messungen-1));
 }
 
 int main(int argc, char **argv){
