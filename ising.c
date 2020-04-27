@@ -7,9 +7,6 @@
 #include <gsl/gsl_rng.h>
 #include "math.h"
 
-#define ANSI_COLOR_RED     "\x1b[31m" //methode gefunden auf https://stackoverflow.com/questions/3219393/stdlib-and-colored-output-in-c
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
 
 void initialisierung(int *gitter, int laenge, int seed){
 	//initialisiert ein laenge*laenge quadratisches Gitter mit Zufallszahlen -1 und 1
@@ -32,28 +29,6 @@ void initialisierung(int *gitter, int laenge, int seed){
 	gsl_rng_free(generator);
 }
 
-
-void ausgabebunt(int *gitter, int laenge){
-	//gibt ein laenge *laenge quadratisches Gitter auf die Standardkonsole aus
-	//farbige Ausgabe für +-1
-	for (int d1=0; d1<laenge; d1++){//geht in erster dimension durch
-		printf(" ");
-		for (int d2=0; d2<laenge; d2++){//geht in zweiter dimension durch
-			switch(gitter[laenge*d1+d2]){
-				case 1:
-					printf( ANSI_COLOR_RED "+ " ANSI_COLOR_RESET);
-					break;
-				case -1:
-					printf( ANSI_COLOR_GREEN "- " ANSI_COLOR_RESET);
-					break;
-				default:
-					printf("%d ", gitter[laenge*d1+d2]);//, gitter[laenge*d1+d2]);
-					break;
-			}
-		}
-		printf("\n");//neue Zeile
-	}
-}
 
 void ausgabe(int *gitter, int laenge, FILE *datei){
 	//gibt ein laenge *laenge quadratisches Gitter in datei aus
