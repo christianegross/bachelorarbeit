@@ -1,0 +1,59 @@
+% !TeX spellcheck = de_DE
+% Die erste (unkommentierte) Zeile im Dokument legt immer die
+% Dokumentklasse fest
+\documentclass{scrreprt} 
+
+% Präambel:
+% Einbinen von zusätzlichen Paketen. Falls für eine Datei keine Endung
+% explizit angegeben wird, benutzt LaTeX '.tex'. Im Folgenden wird
+% also die Datei 'edv_pakete.tex' eingebunden.
+\input{edv_pakete}
+
+% Verzeichnisse mit Abbildungen; kann gestrichen werden,
+% falls Sie dies schon in edv_pakete.tex definiert haben:
+\graphicspath{{Bilder}}
+\addbibresource{refs.bib}
+
+\usepackage{textcomp}
+\usepackage{eurosym}
+
+%\addbibresource{refs.bib} %Hinzufügen einer Literaturdatenbank aus dem angegebenen Verzeichnis
+
+% Titel, Autor und Datum
+\title{Monte-Carlo Simulation eines statistischen Modells auf einem Parallelrechner}
+\date{Juli 2020}
+\author{Christiane Groß}
+
+% Jetzt startet das eigentliche Dokument
+\begin{document}
+	\maketitle
+	
+	% Römische Zahlen für die Seitennummern des Inhaltsverzeichnisses
+	\pagenumbering{roman}
+	
+	% Inhaltsverzeichnis kommt hier
+	\tableofcontents
+	
+	\clearpage
+	
+	% Normale Zahlen für die Seitennummern des Fliesstextes
+	\pagenumbering{arabic}
+	%Inhalt
+	\chapter{theoretischer Hintergrund}
+	\section{Monte-Carlo Simulationen}
+	\section{Das Ising-Modell}
+	\chapter{Umsetzung}
+	\section{Initialisierung und Thermalisierung}
+	Gitter, Hamiltonian, Thermalisierungsschwelle
+	\section{Messungen}
+	\subsection{Akzeptanzrate}
+	\subsection{Magnetisierung}
+	\chapter{Ergebnisse}
+	%Anhang
+	\listoffigures
+	\listoftables
+	
+	
+	
+	\printbibliography[heading=bibintoc]
+\end{document}
