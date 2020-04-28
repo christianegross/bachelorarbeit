@@ -39,15 +39,44 @@
 	% Normale Zahlen für die Seitennummern des Fliesstextes
 	\pagenumbering{arabic}
 	%Inhalt
-	\chapter{theoretischer Hintergrund}
+	\chapter{Theoretischer Hintergrund}
 	\section{Monte-Carlo Simulationen}
 	\section{Das Ising-Modell}
 	\chapter{Umsetzung}
 	\section{Initialisierung und Thermalisierung}
 	Gitter, Hamiltonian, Thermalisierungsschwelle
+	
+	Gitter mit zwei for-schleifen füllen, Mersenne-Twister, der auf +-1 zugeordnet wird.
+	Hamiltonian durch Gitterdurchgang mit zwei Schleifen nach Formel $H=-J\sum_{<i,j>}S_iS_j$
+	
+	Sweep: geht gesamtes Gitter durch, dreht Spin um mit Wahrscheinlichkeit $min\left(1, exp(-\Delta H/T)\right) $
+	
+	Thermalisierung: 
+	Vergleichen von hamiltonian vor und nach sweep, solange sweeps, bis Energie sich nicht mehr verringert. Bilder?
+	
+	Ausgabe mit x, y Position, Spin in txt datei, mit gnuplot als Heatmap plotten
 	\section{Messungen}
 	\subsection{Akzeptanzrate}
+	Beim Sweep wird jede Veränderung gezählt, am Ende wird Veränderungen/laenge/laenge in datei geschrieben. Bild, erst gering, dann steil steigend, flacht ab, bildet Plateau
+	Bei welchen Temperaturen?
 	\subsection{Magnetisierung}
+	Magnetisierung= Abs(Summe über alle Spins im Gitter)
+	
+	Bilder
+	
+	-Bei kleinen Temperaturen, unterhalb von T ungefähr 0,7, ist die
+	 Magnetisierung konstant 1, mit sehr geringen Abweichungen.
+	 
+	 -Zwischen ca. 0,7 und ca. 2,5 nimmt die Magnetisierung ab, springt jedoch
+	 immer wieder zwischen stärkeren und schwächeren Magnetisierungen hin und
+	 her. Dies wird erst ab einer gewissen Gitterlänge sichtbar, bei kleineren
+	 Gitterlängen (ausprobiert habe ich es mit 10), ist die Abnahme viel weniger
+	 sprunghaft. In diesem Bereich ist die Standardabweichung der Messungen recht
+	 groß.
+	 
+	 -Bei größeren Temperaturen, oberhalb von ca. 2,5, ist die Magnetisierung
+	 annähernd konstant und fast null. Der relative Fehler ist in diesem Bereich
+	 recht groß, jedoch ist der absolute Fehler, genau wie der Messwert, klein.
 	\chapter{Ergebnisse}
 	%Anhang
 	\listoffigures
