@@ -201,21 +201,21 @@ double varianzberechnung(FILE *messdatei, int messungen, double mittelwert, cons
 }
 
 int main(int argc, char **argv){
-	int laenge=100;
+	int laenge=51;
 	double j=1.0;
 	int seed=5;
 	int messungen=1000;
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei;
-	int temperaturzahl=500;
+	int temperaturzahl=1000;
 	//double temperaturarray[13]={0.2, 0.25,0.33, 0.5, 0.8, 1, 1.5, 2, 2.5, 5, 10, 50, 100};//ab 22.04 17:40, damit beta gleichmäßig verteilt ist
 	//neues Array, um Magnetisierung zu untersuchen
-	double temperaturarray[1000];//={0.1,0.2,0.3,0.4,0.5, 0.6,0.7,0.8,0.9,1.0, 1.1,1.2,1.3,1.4,1.5, 1.6,1.7,1.8,1.9,2.0, 2.1,2.2,2.3,2.4,2.5};
+	double temperaturarray[1000];
 	for (int i=0; i<temperaturzahl;i++){//Temepraturarray intalisieren
-		temperaturarray[i]=0.005*i+0.005;
+		temperaturarray[i]=0.0025*i+0.5;
 	}
-	for (int i=350; i<temperaturzahl;i++){//groesserer Abstand, damit auch höhere Temperaturen berücksichtigt werden
-		temperaturarray[i]=(0.005*i+0.005)+((i-350)*0.02);
-	}
+	//~ for (int i=500; i<temperaturzahl;i++){//groesserer Abstand, damit auch höhere Temperaturen berücksichtigt werden
+		//~ temperaturarray[i]=(0.005*i+0.005)+((i-500)*0.005);
+	//~ }
 	char dateinametherm[60], dateinamemessen[60], dateinamemittel[60];
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
 	
@@ -237,11 +237,11 @@ int main(int argc, char **argv){
 		varianzmag=varianzberechnung(messdatei, messungen, mittelwertmag, 2);
 		fprintf(mittelwertdatei, "%d\t%f\t%f\t%f\t%f\t%f\t%f\n", laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag);
 		//printf("set title \"T=%.2f, Laenge=%.4d\" font \"arial,40\"\nsplot \"Messungen/ThermalisierteGitter/thermalisierung-l%.4d-t%.2d.txt\" using 1:2:3 w image title \"\"\n\n", temperaturarray[n],laenge,laenge, n); //erzeugen von gnuplotcommands zum plotten
-	
+		fclose(messdatei);
+		fclose(gitterthermdatei);
 	}	
 	fclose(mittelwertdatei);
-	fclose(messdatei);
-	fclose(gitterthermdatei);
+
 	
 	gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen
 
