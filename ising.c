@@ -8,11 +8,11 @@
 #include "math.h"
 
 
-void initialisierung(int *gitter, int laenge, int seed, gsl_rng *generator){
+void initialisierung(int *gitter, int laenge, int seed){
 	//initialisiert ein laenge*laenge quadratisches Gitter mit Zufallszahlen -1 und 1
 	//initialisiere generator mit seed
-	//gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
-	//gsl_rng_set(generator, seed);
+	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
+	gsl_rng_set(generator, seed);
 	unsigned long int zufallsspeicher;
 	int zufallsauswertung;
 	for (int d1=0; d1<laenge; d1+=1){//geht in erster dimension durch (Zeile
@@ -26,7 +26,7 @@ void initialisierung(int *gitter, int laenge, int seed, gsl_rng *generator){
 			gitter[laenge*d1+d2]=zufallsauswertung;//zufallszahl -1 oder 1
 			}
 	}
-	//gsl_rng_free(generator);
+	gsl_rng_free(generator);
 }
 
 
@@ -142,7 +142,7 @@ void thermalisieren(int laenge, double T, double j, int seed, FILE *ausgabedatei
 	//erzeugt ein thermalisiertes Gitter mit laenge*laenge, T, j, seed in ausgabedatei
 	//generator für thermalisieren innerhalb derFunktion seeden?
 	int gitter[laenge*laenge];
-	initialisierung(gitter, laenge, seed, generator);//Initialisiert Gitter
+	initialisierung(gitter, laenge, seed);//Initialisiert Gitter
 	double H=hamiltonian(gitter, laenge, seed);//Anfangsenergie
 	double Hneu=H;
 	double Halt=H+laenge*j+1;
@@ -201,7 +201,7 @@ double varianzberechnung(FILE *messdatei, int messungen, double mittelwert, cons
 }
 
 int main(int argc, char **argv){
-	int laenge=100;
+	int laenge=101;
 	double j=1.0;
 	int seed=5;
 	int messungen=1000;
@@ -220,16 +220,15 @@ int main(int argc, char **argv){
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
 	
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
-	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6de.txt",laenge, messungen);//.2, damit alle dateinamengleich lang sind
+	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d.txt",laenge, messungen);//.2, damit alle dateinamengleich lang sind
 	mittelwertdatei=fopen(dateinamemittel, "w");
-	gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
 	for (int n=0; n<temperaturzahl; n+=1){    //counting through given temperaturs
 		printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-l%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-l%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		gitterthermdatei = fopen(dateinametherm, "w+");
 		messdatei = fopen(dateinamemessen, "w+");
-		//gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
+		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
 		thermalisieren(laenge, temperaturarray[n], j, seed, gitterthermdatei, generator);
 		messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
 		mittelwertakz=mittelwertberechnung(messdatei, messungen, 1);
