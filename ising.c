@@ -138,24 +138,22 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	return H;
 }
 
-void thermalisieren(int laenge, double T, double j, int seed, FILE *ausgabedatei, gsl_rng *generator){
+void thermalisieren(int laenge, double T, double j, int seed,int N0, int *gitter, FILE *ausgabedatei, gsl_rng *generator){
 	//erzeugt ein thermalisiertes Gitter mit laenge*laenge, T, j, seed in ausgabedatei
 	//generator für thermalisieren innerhalb derFunktion seeden?
-	int gitter[laenge*laenge];
-	initialisierung(gitter, laenge, seed);//Initialisiert Gitter
+	//int gitter[laenge*laenge];
+	//initialisierung(gitter, laenge, seed);//Initialisiert Gitter
 	double H=hamiltonian(gitter, laenge, seed);//Anfangsenergie
 	double Hneu=H;
 	double Halt=H+laenge*j+1;
 	FILE *dummyfile=fopen("dummy.txt", "w");//speichert messergebnisse waehrend des thermalisierens->Nicht benötigt
-	int N0=0;//zählt, wie viele sweeps zum Thermalisieren benoetigt werden
-	while (N0<5000){//Halt-Hneu>0){//Abbruchkriterium//Versuch, neues thermalisierungskriterium, da immer noch Schwankungen nach thermalisierung bestehen
+	for (int anzahl=0; anzahl<N0; anzahl+=1){//Thermalisierungskriterium: feste anzhl an sweeps, durch Parameter übergeben
 		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
 		Hneu=sweep(gitter, laenge, j, T, generator, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
-		N0+=1;
 	}
 	//printf("%f\t%d\n", T, N0);zum darstellen Schritte gegen Temperatur
 	fclose(dummyfile);
-	ausgabe(gitter, laenge, ausgabedatei);//ermöglicht Ändern des verwendeten Gitter
+	ausgabe(gitter, laenge, ausgabedatei);//Gitter muss nicht immer neu thermalisiert werden, sondern kann auch eingelesen werden
 }
 
 void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, gsl_rng *generator){
@@ -201,27 +199,32 @@ double varianzberechnung(FILE *messdatei, int messungen, double mittelwert, cons
 }
 
 int main(int argc, char **argv){
-	int laenge=50;
+	//benoetigte Variablen initialisieren
+	int laenge=10;//laenge der verwendeten Gitter
 	double j=1.0;
-	int seed=5;
-	int messungen=5000;
-	FILE *gitterthermdatei, *messdatei, *mittelwertdatei;
+	int seed=5;//fuer den zufallsgenerator
+	int messungen=4096;//pro temperatur, zweierpotenz um blocken einfacher zu machen
+	int l=2;//Laenge der einzelnen Bloecke
+	int r=4*messungen/l;//Anzahl an samples für den Bootstrap
+	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei;
 	int temperaturzahl=300;
-	//double temperaturarray[13]={0.2, 0.25,0.33, 0.5, 0.8, 1, 1.5, 2, 2.5, 5, 10, 50, 100};//ab 22.04 17:40, damit beta gleichmäßig verteilt ist
-	//neues Array, um Magnetisierung zu untersuchen
+	int N0=5000;//benoetigte sweeps zum Thermalisieren
+	char dateinametherm[60], dateinamemessen[60], dateinamemittel[70];
+	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
 	double temperaturarray[300];
 	for (int i=0; i<temperaturzahl;i++){//Temepraturarray intalisieren
 		temperaturarray[i]=0.015*i+0.015;
 	}
-	for (int i=250; i<temperaturzahl;i++){//groesserer Abstand, damit auch höhere Temperaturen berücksichtigt werden
-		temperaturarray[i]=(0.015*i+0.015)+((i-250)*0.025);
-	}
-	char dateinametherm[60], dateinamemessen[60], dateinamemittel[70];
-	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
 	
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d.txt",laenge, messungen);//.2, damit alle dateinamengleich lang sind
 	mittelwertdatei=fopen(dateinamemittel, "w");
+	//Thermalisierung des ersten Gitters, nicht ueber letztes verwendetes Gitter moeglich
+	int gitter[laenge*laenge];
+	initialisierung(gitter, laenge, seed);
+	dummydatei=fopen("dummytherm.txt", "w");
+	thermalisieren(laenge, temperaturarray[0], j, seed, 100000, gitter, dummydatei, generator);
+	fclose(dummydatei);
 	for (int n=0; n<temperaturzahl; n+=1){    //counting through given temperaturs
 		printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-l%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
@@ -229,7 +232,7 @@ int main(int argc, char **argv){
 		gitterthermdatei = fopen(dateinametherm, "w+");
 		messdatei = fopen(dateinamemessen, "w+");
 		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
-		thermalisieren(laenge, temperaturarray[n], j, seed, gitterthermdatei, generator);
+		thermalisieren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generator);
 		messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
 		mittelwertakz=mittelwertberechnung(messdatei, messungen, 1);
 		varianzakz=varianzberechnung(messdatei, messungen, mittelwertakz, 1);
@@ -237,6 +240,7 @@ int main(int argc, char **argv){
 		varianzmag=varianzberechnung(messdatei, messungen, mittelwertmag, 2);
 		fprintf(mittelwertdatei, "%d\t%f\t%f\t%f\t%f\t%f\t%f\n", laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag);
 		//printf("set title \"T=%.2f, Laenge=%.4d\" font \"arial,40\"\nsplot \"Messungen/ThermalisierteGitter/thermalisierung-l%.4d-t%.2d.txt\" using 1:2:3 w image title \"\"\n\n", temperaturarray[n],laenge,laenge, n); //erzeugen von gnuplotcommands zum plotten
+		//einlesen(gitter, laenge, gitterthermdatei);//fuer naechste Temperatur
 		fclose(messdatei);
 		fclose(gitterthermdatei);
 	}	
