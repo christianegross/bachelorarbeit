@@ -148,7 +148,7 @@ void thermalisieren(int laenge, double T, double j, int seed, FILE *ausgabedatei
 	double Halt=H+laenge*j+1;
 	FILE *dummyfile=fopen("dummy.txt", "w");//speichert messergebnisse waehrend des thermalisierens->Nicht benötigt
 	int N0=0;//zählt, wie viele sweeps zum Thermalisieren benoetigt werden
-	while (Halt-Hneu>0){//Abbruchkriterium
+	while (N0<5000){//Halt-Hneu>0){//Abbruchkriterium//Versuch, neues thermalisierungskriterium, da immer noch Schwankungen nach thermalisierung bestehen
 		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
 		Hneu=sweep(gitter, laenge, j, T, generator, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
 		N0+=1;
@@ -201,21 +201,21 @@ double varianzberechnung(FILE *messdatei, int messungen, double mittelwert, cons
 }
 
 int main(int argc, char **argv){
-	int laenge=101;
+	int laenge=50;
 	double j=1.0;
 	int seed=5;
-	int messungen=1000;
+	int messungen=5000;
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei;
-	int temperaturzahl=100;
+	int temperaturzahl=300;
 	//double temperaturarray[13]={0.2, 0.25,0.33, 0.5, 0.8, 1, 1.5, 2, 2.5, 5, 10, 50, 100};//ab 22.04 17:40, damit beta gleichmäßig verteilt ist
 	//neues Array, um Magnetisierung zu untersuchen
-	double temperaturarray[100];
+	double temperaturarray[300];
 	for (int i=0; i<temperaturzahl;i++){//Temepraturarray intalisieren
-		temperaturarray[i]=0.02*i+0.5;
+		temperaturarray[i]=0.015*i+0.015;
 	}
-	//~ for (int i=500; i<temperaturzahl;i++){//groesserer Abstand, damit auch höhere Temperaturen berücksichtigt werden
-		//~ temperaturarray[i]=(0.005*i+0.005)+((i-500)*0.005);
-	//~ }
+	for (int i=250; i<temperaturzahl;i++){//groesserer Abstand, damit auch höhere Temperaturen berücksichtigt werden
+		temperaturarray[i]=(0.015*i+0.015)+((i-250)*0.025);
+	}
 	char dateinametherm[60], dateinamemessen[60], dateinamemittel[70];
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
 	
