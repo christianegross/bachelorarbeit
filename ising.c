@@ -198,20 +198,40 @@ double varianzberechnung(FILE *messdatei, int messungen, double mittelwert, cons
 	return sqrt(summe/((double)messungen-1));
 }
 
+void blocks_generieren(int l, int messungen, const int spalte, double *blockarray,  FILE *messdatei){
+	double zwischensumme, einwert;//speichern der Summe über die Messwerte und der einzelnen Werte
+	double ergebnisarray[3];//speichern der ganzen Zeile aus der Messdatei
+	rewind(messdatei);
+	for (int block=0; block<messungen/l; block+=1){//jedes einzelne Element in Blockarray durchgehen
+		zwischensumme=0;
+		for (int wert=0; wert<l; wert+=1){//genereiert einzelnes Element des blocks
+			fscanf(messdatei, "%lf \t %lf \t %lf \n", &ergebnisarray[0], &ergebnisarray[1], &ergebnisarray[2]);
+			einwert=ergebnisarray[spalte];//wählt korrekte messung aus
+			zwischensumme+=einwert;
+		}
+		blockarray[block]=zwischensumme/(double)l;
+	}
+	//ausgabe zur Probe
+	//~ for (int block=0; block<messungen/l; block+=1){
+		//~ printf("%f\t", blockarray[block]);
+	//~ }
+}
+
 int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
-	int laenge=10;//laenge der verwendeten Gitter
+	int laenge=50;//laenge der verwendeten Gitter
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=4096;//pro temperatur, zweierpotenz um blocken einfacher zu machen
-	int l=2;//Laenge der einzelnen Bloecke
-	int r=4*messungen/l;//Anzahl an samples für den Bootstrap
+	//int l=2;//Laenge der einzelnen Bloecke
+	int r;//Anzahl an samples für den Bootstrap
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei;
 	int temperaturzahl=300;
 	int N0=5000;//benoetigte sweeps zum Thermalisieren
 	char dateinametherm[60], dateinamemessen[60], dateinamemittel[70];
+	double *blockarray;
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
-	double temperaturarray[300];
+	double *temperaturarray=(double*)malloc(sizeof(double)*temperaturzahl);
 	for (int i=0; i<temperaturzahl;i++){//Temepraturarray intalisieren
 		temperaturarray[i]=0.015*i+0.015;
 	}
@@ -222,31 +242,36 @@ int main(int argc, char **argv){
 	//Thermalisierung des ersten Gitters, nicht ueber letztes verwendetes Gitter moeglich
 	int gitter[laenge*laenge];
 	initialisierung(gitter, laenge, seed);
-	dummydatei=fopen("dummytherm.txt", "w");
-	thermalisieren(laenge, temperaturarray[0], j, seed, 100000, gitter, dummydatei, generator);
-	fclose(dummydatei);
-	for (int n=0; n<temperaturzahl; n+=1){    //counting through given temperaturs
+	//dummydatei=fopen("dummytherm.txt", "w");
+	//thermalisieren(laenge, temperaturarray[0], j, seed, 100000, gitter, dummydatei, generator);
+	//fclose(dummydatei);
+	for (int n=150; n<151; n+=1){    //counting through given temperaturs
 		printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-l%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-l%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
-		gitterthermdatei = fopen(dateinametherm, "w+");
-		messdatei = fopen(dateinamemessen, "w+");
+		gitterthermdatei = fopen(dateinametherm, "r+");
+		messdatei = fopen(dateinamemessen, "r+");
 		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
-		thermalisieren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generator);
-		messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
+		//thermalisieren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generator);
+		//messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
 		mittelwertakz=mittelwertberechnung(messdatei, messungen, 1);
 		varianzakz=varianzberechnung(messdatei, messungen, mittelwertakz, 1);
 		mittelwertmag=mittelwertberechnung(messdatei, messungen, 2);
 		varianzmag=varianzberechnung(messdatei, messungen, mittelwertmag, 2);
 		fprintf(mittelwertdatei, "%d\t%f\t%f\t%f\t%f\t%f\t%f\n", laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag);
-		//printf("set title \"T=%.2f, Laenge=%.4d\" font \"arial,40\"\nsplot \"Messungen/ThermalisierteGitter/thermalisierung-l%.4d-t%.2d.txt\" using 1:2:3 w image title \"\"\n\n", temperaturarray[n],laenge,laenge, n); //erzeugen von gnuplotcommands zum plotten
-		//einlesen(gitter, laenge, gitterthermdatei);//fuer naechste Temperatur
+		for(int l=2;l<=messungen;l*=2){
+			blockarray=(double*)malloc(sizeof(double)*messungen/l);
+			r=4*messungen/l;
+			blocks_generieren(l, messungen, 2, blockarray, messdatei);
+			//printf("\n\n");
+			free(blockarray);
+		}
 		fclose(messdatei);
 		fclose(gitterthermdatei);
-	}	
+	}
+		
 	fclose(mittelwertdatei);
-
-	
+	free(temperaturarray);
 	gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen
 
 	return 0;

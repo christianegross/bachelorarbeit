@@ -53,14 +53,16 @@ set out "Messungen/akzeptanzrate.pdf"
 set xlabel "Temperatur"
 set ylabel "Akzeptanzrate"
 set yrange [-0.05:1.05]
+set key top left
 
-plot "Messungen/Mittelwerte/messenmittel-l0050-m-005000.txt" u 2:4:5 w yerrorbars ps 0.3  lt 7 title "l=50, 5000 Messungen"
-#plot "Messungen/Mittelwerte/messenmittel-l0100.txt" u 2:4:5 w yerrorbars ps 0.4 lt 7 title "Messungen Akzeptanzrate, l=100"
-#plot "Messungen/Mittelwerte/messenmittel-l0100.txt" u 2:4:5 w yerrorbars ps 0.4 lt 7 title "Messungen Akzeptanzrate, l=10"
-#plot "Messungen/Mittelwerte/messenmittel-l0101.txt" u 2:4:5 w yerrorbars ps 0.4 lt 7 title "Messungen Akzeptanzrate, l=101"
-#plot "Messungen/Mittelwerte/messenmittel-l0102.txt" u 2:4:5 w yerrorbars ps 0.4 lt 7 title "Messungen Akzeptanzrate, l=102"
-#plot "Messungen/Mittelwerte/messenmittel-l0200.txt" u 2:4:5 w yerrorbars ps 0.4 lt 7 title "Messungen Akzeptanzrate, l=200"
-#plot "Messungen/Mittelwerte/messenmittel-l0300.txt" u 2:4:5 w yerrorbars ps 0.4 lt 7 title "Messungen Akzeptanzrate, l=300"
+plot "Messungen/Mittelwerte/messenmittel-l0050-m-005000.txt" u 2:4:5 w lines  lt 7 title "l=50, 5000 Messungen, neue Thermalisierung"
+plot "Messungen/Mittelwerte/messenmittel-l0050-m-005000.txt" u 2:4:5 w yerrorbars ps 0.3  lt 7 title "l=50, 5000 Messungen, neue Thermalisierung"
+plot "Messungen/Mittelwerte/messenmittel-l0080-m-005000.txt" u 2:4:5 w yerrorbars ps 0.3  lt 7 title "l=80, 5000 Messungen, neue Thermalisierung"
+plot "Messungen/Mittelwerte/messenmittel-l0080-m-005000.txt" u 2:4:5 w lines  lt 7 title "l=80, 5000 Messungen, neue Thermalisierung"
+
+plot "Messungen/Mittelwerte/messenmittel-l0010-m-005000.txt" u 2:4:5 w yerrorbars ps 0.3  lt 7 title "l=10, 5000 Messungen, neue Thermalisierung"
+plot "Messungen/Mittelwerte/messenmittel-l0010-m-005000.txt" u 2:4:5 w lines  lt 7 title "l=10, 5000 Messungen, neue Thermalisierung"
+
 
 
 set xlabel "{/Symbol b} J"
