@@ -11,8 +11,8 @@ set yrange [-0.05:1.05]
 #plot "Messungen/Mittelwerte/messenmittel-l0050-m-001000.txt" u 2:6:7 w lines  lt 7 title "l=50, 1000 Messungen, neue Thermalisierung"
 
 
-plot "Messungen/Mittelwerte/messenmittel-l0050-m-005000.txt" u 2:6:7 w lines  lt 7 title "l=50, 5000 Messungen, neue Thermalisierung"
-plot "Messungen/Mittelwerte/messenmittel-l0050-m-005000.txt" u 2:6:7 w yerrorbars ps 0.3  lt 7 title "l=50, 5000 Messungen, neue Thermalisierung"
+plot "Messungen/Mittelwerte/messenmittel-l0050-m-004096.txt" u 2:6:7 w lines  lt 7 title "l=50, 5000 Messungen, neue Thermalisierung"
+plot "Messungen/Mittelwerte/messenmittel-l0050-m-004096.txt" u 2:6:7 w yerrorbars ps 0.3  lt 7 title "l=50, 5000 Messungen, neue Thermalisierung"
 plot "Messungen/Mittelwerte/messenmittel-l0080-m-005000.txt" u 2:6:7 w yerrorbars ps 0.3  lt 7 title "l=80, 5000 Messungen, neue Thermalisierung"
 plot "Messungen/Mittelwerte/messenmittel-l0080-m-005000.txt" u 2:6:7 w lines  lt 7 title "l=80, 5000 Messungen, neue Thermalisierung"
 
@@ -55,8 +55,8 @@ set ylabel "Akzeptanzrate"
 set yrange [-0.05:1.05]
 set key top left
 
-plot "Messungen/Mittelwerte/messenmittel-l0050-m-005000.txt" u 2:4:5 w lines  lt 7 title "l=50, 5000 Messungen, neue Thermalisierung"
-plot "Messungen/Mittelwerte/messenmittel-l0050-m-005000.txt" u 2:4:5 w yerrorbars ps 0.3  lt 7 title "l=50, 5000 Messungen, neue Thermalisierung"
+plot "Messungen/Mittelwerte/messenmittel-l0050-m-004096.txt" u 2:4:5 w lines  lt 7 title "l=50, 5000 Messungen, neue Thermalisierung"
+plot "Messungen/Mittelwerte/messenmittel-l0050-m-004096.txt" u 2:4:5 w yerrorbars ps 0.3  lt 7 title "l=50, 5000 Messungen, neue Thermalisierung"
 plot "Messungen/Mittelwerte/messenmittel-l0080-m-005000.txt" u 2:4:5 w yerrorbars ps 0.3  lt 7 title "l=80, 5000 Messungen, neue Thermalisierung"
 plot "Messungen/Mittelwerte/messenmittel-l0080-m-005000.txt" u 2:4:5 w lines  lt 7 title "l=80, 5000 Messungen, neue Thermalisierung"
 
