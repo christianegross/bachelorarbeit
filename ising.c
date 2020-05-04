@@ -229,7 +229,7 @@ double bootstrap_replication(int l, int messungen, double *blockarray, gsl_rng *
 	return summe;
 }
 
-void bootstrap(int l, int r, int messungen, double *blockarray, gsl_rng *generator, FILE *ausgabedatei){
+void bootstrap(int l, int r, int messungen, double temperatur, double *blockarray, gsl_rng *generator, FILE *ausgabedatei){
 //berechnet Mittelwert und Varianz aus r gebootstrappten replikas, schreibt es in ausgabedatei
 	double mittelwert=0;//speichern zwischenwerte
 	double replica;
@@ -245,7 +245,7 @@ void bootstrap(int l, int r, int messungen, double *blockarray, gsl_rng *generat
 		varianz+=(bootstraparray[durchgang]-mittelwert)*(bootstraparray[durchgang]-mittelwert);
 	}
 	varianz=sqrt(varianz/((double)r-1));//Standardschaetzer
-	fprintf(ausgabedatei, "%d\t%d\t%f\t%f\n", l,r, mittelwert, varianz);//Ausgabe
+	fprintf(ausgabedatei, "%d\t%d\t%f\t%e\t%f\n", l,r, mittelwert, varianz, temperatur);//Ausgabe
 	free(bootstraparray);
 }
 
@@ -256,10 +256,10 @@ int main(int argc, char **argv){
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=4096*4;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
-	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapdatei, *blockdatei;//benoetigte Dateien zur Ausgabe
+	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapdatei, *blockdatei, *bootstrapalledatei;//benoetigte Dateien zur Ausgabe
 	int temperaturzahl=300;//Temperaturen, beid enen gemessen wird
 	int N0=5000;//benoetigte sweeps zum Thermalisieren
-	char dateinametherm[100], dateinamemessen[100], dateinamemittel[100], dateinamebootstrap[100], blockdateiname[100];//Um Dateien mit Variablen benennen zu koennen
+	char dateinametherm[100], dateinamemessen[100], dateinamemittel[100], dateinamebootstrap[100], blockdateiname[100], dateinamebootstrapalle[100];//Um Dateien mit Variablen benennen zu koennen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
 	double *temperaturarray=(double*)malloc(sizeof(double)*temperaturzahl);
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
@@ -267,10 +267,12 @@ int main(int argc, char **argv){
 	}
 	int l;//Laenge der Blocks
 	double *blockarray;//Zum Speichern der geblockten Messwerte
-	double blocklenarray[14]={2,4,8,16,32, 64,128, 256, 384, 512, 640, 758, 876, 1024};//Blocklaengen, bei denen gemessen wird
+	double blocklenarray[12]={32, 64,128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d.txt",laenge, messungen);//.2, damit alle dateinamengleich lang sind
+	sprintf(dateinamebootstrapalle,"Messungen/bootstrapalle-l%.4d-m-%.6d.txt",laenge, messungen);//.2, damit alle dateinamengleich lang sind
 	mittelwertdatei=fopen(dateinamemittel, "w");
+	bootstrapalledatei=fopen(dateinamebootstrapalle, "w");
 	//Thermalisierung des ersten Gitters, nicht ueber letztes verwendetes Gitter moeglich
 	int gitter[laenge*laenge];
 	initialisierung(gitter, laenge, seed);
@@ -278,7 +280,7 @@ int main(int argc, char **argv){
 	thermalisieren(laenge, temperaturarray[0], j, seed, 10000, gitter, dummydatei, generator);
 	fclose(dummydatei);
 	for (int n=0; n<temperaturzahl; n+=10){    //ueber alle gegebenen Temperaturen messen
-		//printf("%d\n", n);
+		printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamebootstrap,"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
@@ -295,8 +297,8 @@ int main(int argc, char **argv){
 		varianzmag=varianzberechnung(messdatei, messungen, mittelwertmag, 2);
 		fprintf(mittelwertdatei, "%d\t%f\t%f\t%f\t%f\t%f\t%f\n", laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag);
 		//fprintf(mittelwertdatei, "%d\t%f\t%f\n",n, mittelwertmag, varianzmag);
-		fprintf(bootstrapdatei, "l\tr\tmittelwert\tvarianz\n");
-		for(int len=0;len<14;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
+		//fprintf(bootstrapdatei, "l\tr\tmittelwert\tvarianz\n");
+		for(int len=0;len<12;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
 			l=blocklenarray[len];
 			//printf("%d\t%d\n", n, l);
 			sprintf(blockdateiname,"Bootstraptest/Blocks/blocks-laenge%.4d-t%.3d-l%.6d.txt",laenge,n, l);//.2, damit alle dateinamengleich lang sind
@@ -304,7 +306,7 @@ int main(int argc, char **argv){
 			blockarray=(double*)malloc(sizeof(double)*messungen/l);//zum Speichern der Blocks
 			r=4*messungen;//Anzahl an Replikas, die beim Bootstrappen erzeugt werden
 			blocks_generieren(l, messungen, 2, blockarray, messdatei, blockdatei);//blocking
-			//bootstrap(l, r, messungen, blockarray, generator,bootstrapdatei);//bootstrapping
+			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
 			free(blockarray);
 			fclose(blockdatei);
 		}
@@ -317,6 +319,7 @@ int main(int argc, char **argv){
 	}
 		
 	fclose(mittelwertdatei);
+	fclose(bootstrapalledatei);
 	free(temperaturarray);
 	gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen
 

@@ -53,6 +53,7 @@
 	
 	Thermalisierung: 
 	Vergleichen von hamiltonian vor und nach sweep, solange sweeps, bis Energie sich nicht mehr verringert. Bilder?
+	Geändert, da Probleme mit Springen bei der Magnetisierung auftauchen: Anfangs Thermalisierung mit vielen sweeps (10000), danach Thermalisierung auf Basis des gitters der vorherigen Temperatur mit (5000) Sweeps
 	
 	Ausgabe mit x, y Position, Spin in txt datei, mit gnuplot als Heatmap plotten
 	\section{Messungen}
@@ -77,6 +78,15 @@
 	 -Bei größeren Temperaturen, oberhalb von ca. 2,5, ist die Magnetisierung
 	 annähernd konstant und fast null. Der relative Fehler ist in diesem Bereich
 	 recht groß, jedoch ist der absolute Fehler, genau wie der Messwert, klein.
+	 
+	 Behoben durch bessere Thermalisierung: bei geringeren Temperaturen konstant 1 mit geringen Fehlern, 
+	 um T=2 herum Abfall, steiler, je länger das Gitter ist, mit recht großen Fehlern, bei hohen Temperaturen konstant niedrige Magnetisierung mit größerem Fehler als bei niedriger Temperatur. (Bild)
+	 
+	 Temperatur durch Autokorrelation, durch bootstrapping mit blocking ausgleichen. 
+	 Zuerst Fehler, da Replika falsch verstanden, danach klare Änderung vom Fehler mit l (Bild).
+	 
+	 Magnetisirung mit Bootstrap: Bild, kleinerer Fehler, Fehler bei Phasenübergang größer als barunter/darüber.
+	 
 	\chapter{Ergebnisse}
 	%Anhang
 	\listoffigures
