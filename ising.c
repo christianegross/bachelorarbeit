@@ -117,7 +117,7 @@ void flipspin(int *gitter, int d1, int d2, int laenge){
 	gitter[laenge*d1+d2]*=-1;
 }
 	
-double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
+double sweepaltohnepar(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
 	//geht das ganze Gitter durch und versucht, jeden Spin umzudrehen. Zählt die Veränderungen, misst Akzeptanzrate und Magneitiserung und gibt aktuellen Hamiltonian zurück
 	double H=hamiltonian;
 	double delta;
@@ -138,6 +138,75 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	return H;
 }
 
+double sweepalt(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
+	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
+	double H=hamiltonian;
+	double delta;
+	int changes =0;
+	//falls parallel: delta private, changes shared
+	//schwarz: d1+d2 gerade
+	for (int d1=0; d1<laenge;d1+=1){
+		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+			delta=deltah(gitter, d1, d2, laenge, j);
+			if (((d1+d2)%2==0)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, delta)==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				flipspin(gitter, d1, d2, laenge);//in Gitter speichern
+				H+=delta;//H aktualisieren
+				changes+=1;
+			}
+		}
+	}
+	//weiss: d1+d2 ungerade
+	for (int d1=0; d1<laenge;d1+=1){
+		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+			delta=deltah(gitter, d1, d2, laenge, j);
+			if (((d1+d2)%2==1)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, delta)==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				flipspin(gitter, d1, d2, laenge);//in Gitter speichern
+				H+=delta;//H aktualisieren
+				changes+=1;
+			}
+		}
+	}
+	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
+	double magnetisierung=(double)gittersumme(gitter, laenge)/(double)laenge/(double)laenge;
+	fprintf(dateimessungen, "%f\t%f\t",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	return H;
+}
+
+double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
+	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
+	double H=hamiltonian;
+	double delta;
+	int changes =0;
+	//falls parallel: delta private, changes shared
+	//schwarz: d1+d2 gerade
+	for (int d1=0; d1<laenge;d1+=1){
+		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+			delta=deltah(gitter, d1, d2, laenge, j);
+			if (((d1+d2)%2==0)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, delta)==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				flipspin(gitter, d1, d2, laenge);//in Gitter speichern
+				H+=delta;//H aktualisieren
+				changes+=1;
+			}
+		}
+	}
+	//weiss: d1+d2 ungerade
+	for (int d1=0; d1<laenge;d1+=1){
+		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+			delta=deltah(gitter, d1, d2, laenge, j);
+			if (((d1+d2)%2==1)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, delta)==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				flipspin(gitter, d1, d2, laenge);//in Gitter speichern
+				H+=delta;//H aktualisieren
+				changes+=1;
+			}
+		}
+	}
+	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
+	double magnetisierung=(double)gittersumme(gitter, laenge)/(double)laenge/(double)laenge;
+	fprintf(dateimessungen, "%f\t%f\t",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	return H;
+}
+		
+
 void thermalisieren(int laenge, double T, double j, int seed,int N0, int *gitter, FILE *ausgabedatei, gsl_rng *generator){
 	//erzeugt ein thermalisiertes Gitter mit laenge*laenge, T, j, seed in ausgabedatei
 	//generator für thermalisieren innerhalb derFunktion seeden?
@@ -156,15 +225,22 @@ void thermalisieren(int laenge, double T, double j, int seed,int N0, int *gitter
 	ausgabe(gitter, laenge, ausgabedatei);//Gitter muss nicht immer neu thermalisiert werden, sondern kann auch eingelesen werden
 }
 
-void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, gsl_rng *generator){
+void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, FILE *vergleichsdatei, gsl_rng *generator){
 	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
 	//generator für messen innerhalb der Funktion seeden?
-	int gitter[laenge*laenge];
-	einlesen(gitter, laenge, gitterdatei);
-	double H=hamiltonian(gitter, laenge, j);
+	int gitter1[laenge*laenge];
+	int gitter2[laenge*laenge];
+	einlesen(gitter1, laenge, gitterdatei);
+	einlesen(gitter2, laenge, gitterdatei);
+	double H1=hamiltonian(gitter1, laenge, j);
+	double H2=hamiltonian(gitter2, laenge, j);
+	double differenz;
 	for (int messung=0; messung<messungen; messung+=1){
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
-		H=sweep(gitter, laenge, j, T, generator, H, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
+		H1=sweepalt(gitter1, laenge, j, T, generator, H1, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
+		H2=sweepaltohnepar(gitter2, laenge, j, T, generator, H2, messdatei);//Geht Gitter durch und schreibt Messwerte in Date
+		differenz=H1-H2;
+		fprintf(vergleichsdatei, "%d\t%f\t%f\t%f\n", messung, differenz, H1, H2);
 	}
 }
 
@@ -254,12 +330,12 @@ int main(int argc, char **argv){
 	int laenge=50;//laenge der verwendeten Gitter
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
-	int messungen=4096*4;//pro temperatur, zweierpotenz um blocken einfacher zu machen
+	int messungen=4096*16;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
-	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapdatei, *blockdatei, *bootstrapalledatei;//benoetigte Dateien zur Ausgabe
+	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapdatei, *blockdatei, *bootstrapalledatei, *vergleichsdatei;//benoetigte Dateien zur Ausgabe
 	int temperaturzahl=300;//Temperaturen, beid enen gemessen wird
-	int N0=5000;//benoetigte sweeps zum Thermalisieren
-	char dateinametherm[100], dateinamemessen[100], dateinamemittel[100], dateinamebootstrap[100], blockdateiname[100], dateinamebootstrapalle[100];//Um Dateien mit Variablen benennen zu koennen
+	int N0=0;//benoetigte sweeps zum Thermalisieren
+	char dateinametherm[100], dateinamemessen[100], dateinamemittel[100], dateinamebootstrap[100], blockdateiname[100], dateinamebootstrapalle[100], dateinamevergleich[100];//Um Dateien mit Variablen benennen zu koennen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
 	double *temperaturarray=(double*)malloc(sizeof(double)*temperaturzahl);
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
@@ -277,45 +353,49 @@ int main(int argc, char **argv){
 	int gitter[laenge*laenge];
 	initialisierung(gitter, laenge, seed);
 	dummydatei=fopen("dummytherm.txt", "w");
-	thermalisieren(laenge, temperaturarray[0], j, seed, 10000, gitter, dummydatei, generator);
+	thermalisieren(laenge, temperaturarray[250], j, seed, 1, gitter, dummydatei, generator);
 	fclose(dummydatei);
-	for (int n=0; n<temperaturzahl; n+=10){    //ueber alle gegebenen Temperaturen messen
+	for (int n=150; n<151; n+=10){    //ueber alle gegebenen Temperaturen messen
 		printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamebootstrap,"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
+		sprintf(dateinamevergleich,"Messungen/Vergleichwerte/vergleich-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		
-		gitterthermdatei = fopen(dateinametherm, "r+");//Zum speichern der thermalisierten Gitter
-		messdatei = fopen(dateinamemessen, "r+");//Zum Speichern der Messdaten
+		gitterthermdatei = fopen(dateinametherm, "w+");//Zum speichern der thermalisierten Gitter
+		messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
 		bootstrapdatei=fopen(dateinamebootstrap, "r+");//Zum Speichern der Werte, die beim Bootstrapping berechnet werden
+		vergleichsdatei=fopen(dateinamevergleich, "w+");
 		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
-		//thermalisieren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generator);
-		//messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
-		mittelwertakz=mittelwertberechnung(messdatei, messungen, 1);
-		varianzakz=varianzberechnung(messdatei, messungen, mittelwertakz, 1);
-		mittelwertmag=mittelwertberechnung(messdatei, messungen, 2);
-		varianzmag=varianzberechnung(messdatei, messungen, mittelwertmag, 2);
-		fprintf(mittelwertdatei, "%d\t%f\t%f\t%f\t%f\t%f\t%f\n", laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag);
-		//fprintf(mittelwertdatei, "%d\t%f\t%f\n",n, mittelwertmag, varianzmag);
-		//fprintf(bootstrapdatei, "l\tr\tmittelwert\tvarianz\n");
-		for(int len=0;len<12;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
-			l=blocklenarray[len];
-			//printf("%d\t%d\n", n, l);
-			sprintf(blockdateiname,"Bootstraptest/Blocks/blocks-laenge%.4d-t%.3d-l%.6d.txt",laenge,n, l);//.2, damit alle dateinamengleich lang sind
-			blockdatei=fopen(blockdateiname, "w+");
-			blockarray=(double*)malloc(sizeof(double)*messungen/l);//zum Speichern der Blocks
-			r=4*messungen;//Anzahl an Replikas, die beim Bootstrappen erzeugt werden
-			blocks_generieren(l, messungen, 2, blockarray, messdatei, blockdatei);//blocking
-			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
-			free(blockarray);
-			fclose(blockdatei);
-		}
-		//printf("set title \"T=%f\"\n\nset ylabel \"Mittelwert\"\nf(x)=%f\n", temperaturarray[n], mittelwertmag);
+		thermalisieren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generator);
+		messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, vergleichsdatei,  generator);
+		printf("plot \"Messungen/Vergleichwerte/vergleich-laenge%.4d-t%.3d.txt\" u 1:2 lt 7 ps 0.3 title \"Unterschied bei verschiedenen sweep-arten\"\n", laenge, n);
+		//~ mittelwertakz=mittelwertberechnung(messdatei, messungen, 1);
+		//~ varianzakz=varianzberechnung(messdatei, messungen, mittelwertakz, 1);
+		//~ mittelwertmag=mittelwertberechnung(messdatei, messungen, 2);
+		//~ varianzmag=varianzberechnung(messdatei, messungen, mittelwertmag, 2);
+		//~ fprintf(mittelwertdatei, "%d\t%f\t%f\t%f\t%f\t%f\t%f\n", laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag);
+		//~ //fprintf(mittelwertdatei, "%d\t%f\t%f\n",n, mittelwertmag, varianzmag);
+		//~ //fprintf(bootstrapdatei, "l\tr\tmittelwert\tvarianz\n");
+		//~ for(int len=0;len<12;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
+			//~ l=blocklenarray[len];
+			//~ //printf("%d\t%d\n", n, l);
+			//~ sprintf(blockdateiname,"Bootstraptest/Blocks/blocks-laenge%.4d-t%.3d-l%.6d.txt",laenge,n, l);//.2, damit alle dateinamengleich lang sind
+			//~ blockdatei=fopen(blockdateiname, "w+");
+			//~ blockarray=(double*)malloc(sizeof(double)*messungen/l);//zum Speichern der Blocks
+			//~ r=4*messungen;//Anzahl an Replikas, die beim Bootstrappen erzeugt werden
+			//~ blocks_generieren(l, messungen, 2, blockarray, messdatei, blockdatei);//blocking
+			//~ bootstrap(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
+			//~ free(blockarray);
+			//~ fclose(blockdatei);
+		//~ }
+		//~ //printf("set title \"T=%f\"\n\nset ylabel \"Mittelwert\"\nf(x)=%f\n", temperaturarray[n], mittelwertmag);
 		//printf("plot \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:3:4 w yerrorbars lt 7 ps 0.3 title \"Bootstrap-Mittelwerte\", f(x) lt 6 title \"naiver Mittelwert\"\n\n", laenge, n);
 		//printf("set ylabel \"Varianz\"\nplot \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:4 lt 7 ps 0.4 title \"Bootstrap-Varianz\", \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:4 w lines lt 7 title \"Bootstrap-Varianz\"\n\n", laenge, n, laenge, n);
 		fclose(messdatei);
 		fclose(gitterthermdatei);
 		fclose(bootstrapdatei);
+		fclose(vergleichsdatei);
 	}
 		
 	fclose(mittelwertdatei);
