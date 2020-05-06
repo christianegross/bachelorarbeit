@@ -1,26 +1,38 @@
-set ter pdfcairo size 4in,5.5in
+set ter pdfcairo size 8in,5.5in
 
 
 #Magnetisierung
 set out "Messungen/Vergleich.pdf"
 
-#plot "Messungen/Vergleichwerte/vergleich-laenge0050-t250.txt" u 1:2 lt 7 ps 0.3 title "Unterschied bei verschiedenen sweep-arten"
+set style line 1 lt 7 lc 1
+set style line 2 lt 7 lc 2
+set style line 3 lt 7 lc 3
+set style line 4 lt 7 lc 4
+set style line 5 lt 7 lc 5
+set style line 6 lt 7 lc 6
+set style line 7 lt 7 lc 7
+set style line 8 lt 7 lc 8
 
-set title "T 250, Hamiltonian"
-plot "Messungen/Vergleichwerte/vergleich-laenge0050-t250.txt" u 1:2 ps 0.1 lt 7 title "Unterschied bei verschiedenen sweep-arten", "Messungen/Vergleichwerte/vergleich-laenge0050-t250.txt" u 1:3 ps 0.1 lt 1 title "H", "Messungen/Vergleichwerte/vergleich-laenge0050-t250.txt" u 1:4 ps 0.1 lt 6 title "Halt"
 
-set title "T 250, Akzeptanzrate"
-plot "Messungen/Messwerte/messung-laenge0050-t250.txt" u 1:2 ps 0.1 lt 1 title "neu", "Messungen/Messwerte/messung-laenge0050-t250.txt" u 1:4 ps 0.1 lt 6 title "alt","Messungen/Messwerte/messung-laenge0050-t250.txt" u 1:($2-$4) ps 0.1 lt 7 title "differenz"
+title5="alt-ohnepar"
+title6="alt-mitpar"
+title7="ohnepar-mitpar"
+title2="alt"
+title3="ohnepar"
+title4="mitpar"
 
-set title "T 150, Hamiltonian"
-plot "Messungen/Vergleichwerte/vergleich-laenge0050-t150.txt" u 1:2 ps 0.1 lt 7 title "Unterschied bei verschiedenen sweep-arten", "Messungen/Vergleichwerte/vergleich-laenge0050-t150.txt" u 1:3 ps 0.1 lt 1 title "H", "Messungen/Vergleichwerte/vergleich-laenge0050-t150.txt" u 1:4 ps 0.1 lt 6 title "Halt"
+do for [t=0:299:30]{
+datei1=sprintf("Messungen/Vergleichwerte/vergleich-laenge0050-t%.3d.txt", t)
+datei2=sprintf("Messungen/Messwerte/messung-laenge0050-t%.3d.txt", t)
 
-set title "T 150, Akzeptanzrate"
-plot "Messungen/Messwerte/messung-laenge0050-t150.txt" u 1:2 ps 0.1 lt 1 title "neu", "Messungen/Messwerte/messung-laenge0050-t150.txt" u 1:4 ps 0.1 lt 6 title "alt","Messungen/Messwerte/messung-laenge0050-t150.txt" u 1:($2-$4) ps 0.1 lt 7 title "differenz"
+set title sprintf("T=%f, Hamiltonian", t*0.015+0.015)
+plot datei1 u 1:3 ls 3 ps 0.2 title title3,\
+	datei1 u 1:4 ls 4 ps 0.2 title title4,\
+	datei1 u 1:7 ls 7 ps 0.2 title title7
 
-set title "T 50, Hamiltonian"
-plot "Messungen/Vergleichwerte/vergleich-laenge0050-t050.txt" u 1:2 ps 0.1 lt 7 title "Unterschied bei verschiedenen sweep-arten", "Messungen/Vergleichwerte/vergleich-laenge0050-t050.txt" u 1:3 ps 0.1 lt 1 title "H", "Messungen/Vergleichwerte/vergleich-laenge0050-t050.txt" u 1:4 ps 0.1 lt 6 title "Halt"
+set title sprintf("T=%f, Magnetisierung", t*0.015+0.015)
+#plot datei2 u 1:5 ls 3 ps 0.2 title title3,\
+#	datei2 u 1:7 ls 4 ps 0.2 title title4,\
+#	datei2 u 1:($5-$7) ls 7 ps 0.2 title title7,\
 
-set title "T 50, Akzeptanzrate"
-#set yrange[-0.01:0.01]
-plot "Messungen/Messwerte/messung-laenge0050-t050.txt" u 1:2 ps 0.1 lt 1 title "neu", "Messungen/Messwerte/messung-laenge0050-t050.txt" u 1:4 ps 0.1 lt 6 title "alt","Messungen/Messwerte/messung-laenge0050-t050.txt" u 1:($2-$4) ps 0.1 lt 7 title "differenz"
+}
