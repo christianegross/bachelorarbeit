@@ -280,8 +280,8 @@ double mittelwertberechnungnaiv(FILE *messdatei, int messungen, const int spalte
 	rewind(messdatei);//sichergehen, dass alle Messdaten verwendet werden
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
 		for (int i=0; i<spalten; i+=1){
-			fscanf(messdatei, "%lf", &ergebnisarray[i]);
-			if (i==spalten-1){fscanf(messdatei, "\n");}
+			fscanf(messdatei, "%lf", &ergebnisarray[i]);//scannt einzelne doubles
+			if (i==spalten-1){fscanf(messdatei, "\n");}//sorgt fuer Zeilenumbruch
 		}
 		einwert=ergebnisarray[spalte];//wählt korrekte messung aus
 		summe+=einwert;
@@ -307,20 +307,22 @@ double varianzberechnungnaiv(FILE *messdatei, int messungen, double mittelwert, 
 }
 
 
-void blocks_generieren(int l, int messungen, const int spalte, double *blockarray,  FILE *messdatei, FILE *ausgabedatei){
-	//Blockt die Daten aus spalte in Messdatei in Blöcke der Laenge l, Ergebnis in blockarray und ausgabedatei
+void blocks_generieren(int l, int messungen, const int spalte, const int spalten, double *blockarray,  FILE *messdatei){
+	//Blockt die Daten aus spalte in Messdatei in Blöcke der Laenge l, Ergebnis in blockarray und ausgabedatei, messdatei muss spalten mit nur doubles enthalten
 	double zwischensumme, einwert;//speichern der Summe über die Messwerte und der einzelnen Werte
-	double ergebnisarray[3];//speichern der ganzen Zeile aus der Messdatei
+	double ergebnisarray[spalten];//speichern der ganzen Zeile aus der Messdatei
 	rewind(messdatei);
 	for (int block=0; block<messungen/l; block+=1){//jedes einzelne Element in Blockarray durchgehen
 		zwischensumme=0;
 		for (int wert=0; wert<l; wert+=1){//generiert einzelnes Element des blocks
-			fscanf(messdatei, "%lf \t %lf \t %lf \n", &ergebnisarray[0], &ergebnisarray[1], &ergebnisarray[2]);
+			for (int i=0; i<spalten; i+=1){
+			fscanf(messdatei, "%lf", &ergebnisarray[i]);
+			if (i==spalten-1){fscanf(messdatei, "\n");}
+			}
 			einwert=ergebnisarray[spalte];//wählt korrekte messung aus
 			zwischensumme+=einwert;
 		}
 		blockarray[block]=zwischensumme/(double)l;
-		fprintf(ausgabedatei, "%f\n", blockarray[block]);
 	}
 
 }
@@ -364,19 +366,19 @@ int main(int argc, char **argv){
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=10000;//pro temperatur, zweierpotenz um blocken einfacher zu machen
-	//int r;//Anzahl an samples für den Bootstrap
-	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapdatei, *blockdatei, *bootstrapalledatei, *vergleichsdatei, *vergleichsdateimittel;//benoetigte Dateien zur Ausgabe
+	int r;//Anzahl an samples für den Bootstrap
+	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapdatei, *bootstrapalledatei, *vergleichsdatei, *vergleichsdateimittel;//benoetigte Dateien zur Ausgabe
 	int temperaturzahl=300;//Temperaturen, beid enen gemessen wird
 	int N0=5000;//benoetigte sweeps zum Thermalisieren
-	char dateinametherm[100], dateinamemessen[100], dateinamemittel[100], dateinamebootstrap[100], blockdateiname[100], dateinamebootstrapalle[100], dateinamevergleich[100], dateinamevergleichmittel[100];//Um Dateien mit Variablen benennen zu koennen
-	//double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
+	char dateinametherm[100], dateinamemessen[100], dateinamemittel[100], dateinamebootstrap[100], dateinamebootstrapalle[100], dateinamevergleich[100], dateinamevergleichmittel[100];//Um Dateien mit Variablen benennen zu koennen
+	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;
 	double *temperaturarray=(double*)malloc(sizeof(double)*temperaturzahl);
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
 		temperaturarray[i]=0.015*i+0.015;
 	}
-	//int l;//Laenge der Blocks
-	//double *blockarray;//Zum Speichern der geblockten Messwerte
-	//double blocklenarray[12]={32, 64,128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
+	int l;//Laenge der Blocks
+	double *blockarray;//Zum Speichern der geblockten Messwerte
+	double blocklenarray[12]={32, 64,128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d.txt",laenge, messungen);//.2, damit alle dateinamengleich lang sind
 	sprintf(dateinamevergleichmittel,"Messungen/Mittelwerte/vergleichmittel-l%.4d-m-%.6d.txt",laenge, messungen);//.2, damit alle dateinamengleich lang sind
@@ -425,29 +427,26 @@ int main(int argc, char **argv){
 		
 		fprintf(vergleichsdateimittel, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", temperaturarray[n], ham1, varham1, ham2, varham2, ham3, varham3, akz1, varakz1, akz2, varakz2, akz3, varakz3);
 		
-		//printf("plot \"Messungen/Vergleichwerte/vergleich-laenge%.4d-t%.3d.txt\" u 1:2 lt 7 ps 0.3 title \"Unterschied bei verschiedenen sweep-arten\"\n", laenge, n);
-		//~ mittelwertakz=mittelwertberechnungnaiv(messdatei, messungen, 1, 3);
-		//~ varianzakz=varianzberechnungnaiv(messdatei, messungen, mittelwertakz, 1, 3);
-		//~ mittelwertmag=mittelwertberechnungnaiv(messdatei, messungen, 2, 3);
-		//~ varianzmag=varianzberechnungnaiv(messdatei, messungen, mittelwertmag, 2, 3);
-		//~ fprintf(mittelwertdatei, "%d\t%f\t%f\t%f\t%f\t%f\t%f\n", laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag);
-		//~ //fprintf(mittelwertdatei, "%d\t%f\t%f\n",n, mittelwertmag, varianzmag);
-		//~ //fprintf(bootstrapdatei, "l\tr\tmittelwert\tvarianz\n");
-		//~ for(int len=0;len<12;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
-			//~ l=blocklenarray[len];
-			//~ //printf("%d\t%d\n", n, l);
-			//~ sprintf(blockdateiname,"Bootstraptest/Blocks/blocks-laenge%.4d-t%.3d-l%.6d.txt",laenge,n, l);//.2, damit alle dateinamengleich lang sind
-			//~ blockdatei=fopen(blockdateiname, "w+");
-			//~ blockarray=(double*)malloc(sizeof(double)*messungen/l);//zum Speichern der Blocks
-			//~ r=4*messungen;//Anzahl an Replikas, die beim Bootstrappen erzeugt werden
-			//~ blocks_generieren(l, messungen, 2, blockarray, messdatei, blockdatei);//blocking
-			//~ bootstrap(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
-			//~ free(blockarray);
-			//~ fclose(blockdatei);
-		//~ }
-		//~ //printf("set title \"T=%f\"\n\nset ylabel \"Mittelwert\"\nf(x)=%f\n", temperaturarray[n], mittelwertmag);
-		//printf("plot \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:3:4 w yerrorbars lt 7 ps 0.3 title \"Bootstrap-Mittelwerte\", f(x) lt 6 title \"naiver Mittelwert\"\n\n", laenge, n);
-		//printf("set ylabel \"Varianz\"\nplot \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:4 lt 7 ps 0.4 title \"Bootstrap-Varianz\", \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:4 w lines lt 7 title \"Bootstrap-Varianz\"\n\n", laenge, n, laenge, n);
+		//~ //printf("plot \"Messungen/Vergleichwerte/vergleich-laenge%.4d-t%.3d.txt\" u 1:2 lt 7 ps 0.3 title \"Unterschied bei verschiedenen sweep-arten\"\n", laenge, n);
+		mittelwertakz=mittelwertberechnungnaiv(messdatei, messungen, 1, 3);
+		varianzakz=varianzberechnungnaiv(messdatei, messungen, mittelwertakz, 1, 3);
+		mittelwertmag=mittelwertberechnungnaiv(messdatei, messungen, 2, 3);
+		varianzmag=varianzberechnungnaiv(messdatei, messungen, mittelwertmag, 2, 3);
+		fprintf(mittelwertdatei, "%d\t%f\t%f\t%f\t%f\t%f\t%f\n", laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag);
+		//fprintf(mittelwertdatei, "%d\t%f\t%f\n",n, mittelwertmag, varianzmag);
+		//fprintf(bootstrapdatei, "l\tr\tmittelwert\tvarianz\n");
+		for(int len=0;len<12;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
+			l=blocklenarray[len];
+			//printf("%d\t%d\n", n, l);
+			blockarray=(double*)malloc(sizeof(double)*messungen/l);//zum Speichern der Blocks
+			r=4*messungen;//Anzahl an Replikas, die beim Bootstrappen erzeugt werden
+			blocks_generieren(l, messungen, 2, 3, blockarray, messdatei);//blocking
+			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
+			free(blockarray);
+		}
+		//printf("set title \"T=%f\"\n\nset ylabel \"Mittelwert\"\nf(x)=%f\n", temperaturarray[n], mittelwertmag);
+		//~ //printf("plot \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:3:4 w yerrorbars lt 7 ps 0.3 title \"Bootstrap-Mittelwerte\", f(x) lt 6 title \"naiver Mittelwert\"\n\n", laenge, n);
+		//~ //printf("set ylabel \"Varianz\"\nplot \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:4 lt 7 ps 0.4 title \"Bootstrap-Varianz\", \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:4 w lines lt 7 title \"Bootstrap-Varianz\"\n\n", laenge, n, laenge, n);
 		fclose(messdatei);
 		fclose(gitterthermdatei);
 		fclose(bootstrapdatei);
