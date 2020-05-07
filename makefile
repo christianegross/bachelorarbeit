@@ -1,5 +1,5 @@
 #Variablen
-LIBS:= -lgsl -lgslcblas -lm
+LIBS:= -lgsl -lgslcblas -lm -fopenmp
 
 #erstellt programm ising
 ising: ising.o
@@ -7,7 +7,7 @@ ising: ising.o
 
 #erstellt aus allen .c dateien eine .o datei	
 %.o: %.c
-	gcc -std=c99 -Wall -pedantic -I /usr/include/ $^ -c
+	gcc -std=c99 -Wall -pedantic -fopenmp -I /usr/include/ $^ -c
 	
 #.PHONY: clean
 
