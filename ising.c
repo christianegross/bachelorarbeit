@@ -4,10 +4,10 @@
 
 
 #include <stdio.h>
-#include <gsl/gsl_rng.h>
-#include "math.h"
-#include <omp.h>
-
+#include <gsl/gsl_rng.h>//Zufallszahlen
+#include "math.h"//exp-Funktion
+#include <omp.h>//Parallelisierung
+#include <sys/time.h>//Zur Messung der Wallclocktime beim messen ->Vergleich der Sweep-Funktionen
 
 void initialisierung(int *gitter, int laenge, int seed){
 	//initialisiert ein laenge*laenge quadratisches Gitter mit Zufallszahlen -1 und 1
@@ -369,16 +369,20 @@ int main(int argc, char **argv){
 	double blocklenarray[12]={32, 64,128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d.txt",laenge, messungen);//.2, damit alle dateinamengleich lang sind
-	sprintf(dateinamebootstrapalle,"Messungen/bootstrapalle-l%.4d-m-%.6d.txt",laenge, messungen);//.2, damit alle dateinamengleich lang sind
+	sprintf(dateinamebootstrapalle,"Messungen/Bootstrapges/bootstrapalle-l%.4d-m-%.6d.txt",laenge, messungen);//.2, damit alle dateinamengleich lang sind
 	mittelwertdatei=fopen(dateinamemittel, "w");
-	bootstrapalledatei=fopen(dateinamebootstrapalle, "w");
+	bootstrapalledatei=fopen(dateinamebootstrapalle, "r+");
 	//Thermalisierung des ersten Gitters, nicht ueber letztes verwendetes Gitter moeglich
 	int gitter[laenge*laenge];
 	initialisierung(gitter, laenge, seed);
 	dummydatei=fopen("dummytherm.txt", "w");
 	thermalisieren(laenge, temperaturarray[0], j, seed, 0, gitter, dummydatei, generator);
 	fclose(dummydatei);
-	for (int n=0; n<temperaturzahl; n+=10){    //ueber alle gegebenen Temperaturen messen
+	//Messen der zeit, die während des Programms vergeht, aus C-Kurs kopiert:
+	struct timeval anfang, ende;
+	double sec, usec, zeitges, summezeitges;
+	summezeitges=0;//Zeit fuer alle Temperaturen insgesamt
+	for (int n=0; n<temperaturzahl; n+=30){    //ueber alle gegebenen Temperaturen messen
 		//printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
@@ -388,7 +392,14 @@ int main(int argc, char **argv){
 		bootstrapdatei=fopen(dateinamebootstrap, "r+");//Zum Speichern der Werte, die beim Bootstrapping berechnet werden
 		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
 		thermalisieren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generator);
+		gettimeofday(&anfang, NULL);
 		messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
+		gettimeofday(&ende, NULL);
+		sec= (double)(ende.tv_sec-anfang.tv_sec);
+		usec= (double)(ende.tv_usec-anfang.tv_usec);
+		zeitges=sec+1e-06*usec;
+		summezeitges+=zeitges;
+		printf("bei T=%f haben %d Messungen %f Sekunden gebraucht\n", temperaturarray[n], messungen, zeitges);
 		mittelwertakz=mittelwertberechnungnaiv(messdatei, messungen, 1, 3);
 		varianzakz=varianzberechnungnaiv(messdatei, messungen, mittelwertakz, 1, 3);
 		mittelwertmag=mittelwertberechnungnaiv(messdatei, messungen, 2, 3);
@@ -399,8 +410,8 @@ int main(int argc, char **argv){
 			//printf("%d\t%d\n", n, l);
 			blockarray=(double*)malloc(sizeof(double)*messungen/l);//zum Speichern der Blocks
 			r=4*messungen;//Anzahl an Replikas, die beim Bootstrappen erzeugt werden
-			blocks_generieren(l, messungen, 2, 3, blockarray, messdatei);//blocking
-			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
+			//blocks_generieren(l, messungen, 2, 3, blockarray, messdatei);//blocking
+			//bootstrap(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
 			free(blockarray);
 		}
 		//printf("set title \"T=%f\"\n\nset ylabel \"Mittelwert\"\nf(x)=%f\n", temperaturarray[n], mittelwertmag);
@@ -410,6 +421,7 @@ int main(int argc, char **argv){
 		fclose(gitterthermdatei);
 		fclose(bootstrapdatei);
 	}
+	printf("Insgesamt haben die Messungen %f Sekunden gebraucht\n", summezeitges);
 	fclose(mittelwertdatei);
 	fclose(bootstrapalledatei);
 	free(temperaturarray);
