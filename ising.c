@@ -35,7 +35,7 @@ void ausgabe(int *gitter, int laenge, FILE *datei){
 	//gibt ein laenge *laenge quadratisches Gitter in datei aus
 	for (int d1=0; d1<laenge; d1++){//geht in erster dimension durch
 		for (int d2=0; d2<laenge; d2++){//geht in zweiter dimension durch
-			fprintf(datei, "%d \t %d \t %d \n",d1, d2, gitter[laenge*d1+d2]);//Gibt Zeile, Spalte und Wert an
+			fprintf(datei, "%3d \t %3d \t %d \n",d1, d2, gitter[laenge*d1+d2]);//Gibt Zeile, Spalte und Wert an
 		}
 	}
 }
@@ -55,13 +55,31 @@ void einlesen(int *gitter, int laenge, FILE *datei){
 	}
 }
 
-int gittersumme (int *gitter, int laenge){
+int gittersummeohnepar (int *gitter, int laenge){
 	//berechnet Summe aller Elemente eines Gitter mit laenge*laenge
 	int summe=0;
 	for (int d1=0; d1<laenge; d1+=1){//geht in erster dimension durch (Zeile
 		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 			summe+=gitter[laenge*d1+d2];
 		}
+	}
+	return abs(summe);
+}	
+	
+int gittersumme (int *gitter, int laenge){
+	//berechnet Summe aller Elemente eines Gitter mit laenge*laenge
+	int summe=0;
+	int zwischensumme =0;
+	#pragma omp parallel firstprivate (zwischensumme) shared (summe)
+	{
+		#pragma omp for
+		for (int d1=0; d1<laenge; d1+=1){//geht in erster dimension durch (Zeile
+			for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+				zwischensumme+=gitter[laenge*d1+d2];
+			}
+		}
+		#pragma omp critical
+		{summe+=zwischensumme;}
 	}
 	return abs(summe);
 }		
@@ -224,6 +242,10 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersumme(gitter, laenge)/(double)laenge/(double)laenge;
+	int gittersummeneu=gittersumme(gitter, laenge);
+	int gittersummealt=gittersummeohnepar(gitter, laenge);
+	//if (gittersummeneu!=gittersummealt){printf("Ein Fehler bei T=%f!\n", T);}
+	printf("%d\t%d\n", gittersummeneu, gittersummealt);
 	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
@@ -350,7 +372,7 @@ void bootstrap(int l, int r, int messungen, double temperatur, double *blockarra
 
 int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
-	int laenge=50;//laenge der verwendeten Gitter
+	int laenge=100;//laenge der verwendeten Gitter
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=10000;//pro temperatur, zweierpotenz um blocken einfacher zu machen
@@ -376,20 +398,21 @@ int main(int argc, char **argv){
 	int gitter[laenge*laenge];
 	initialisierung(gitter, laenge, seed);
 	dummydatei=fopen("dummytherm.txt", "w");
-	thermalisieren(laenge, temperaturarray[0], j, seed, 0, gitter, dummydatei, generator);
+	gsl_rng_set(generator, seed);
+	thermalisieren(laenge, temperaturarray[0], j, seed, 10000, gitter, dummydatei, generator);
 	fclose(dummydatei);
 	//Messen der zeit, die während des Programms vergeht, aus C-Kurs kopiert:
 	struct timeval anfang, ende;
 	double sec, usec, zeitges, summezeitges;
 	summezeitges=0;//Zeit fuer alle Temperaturen insgesamt
-	for (int n=0; n<temperaturzahl; n+=30){    //ueber alle gegebenen Temperaturen messen
+	for (int n=0; n<temperaturzahl; n+=10){    //ueber alle gegebenen Temperaturen messen
 		//printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
-		sprintf(dateinamebootstrap,"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
+		//sprintf(dateinamebootstrap,"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		gitterthermdatei = fopen(dateinametherm, "w+");//Zum speichern der thermalisierten Gitter
 		messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
-		bootstrapdatei=fopen(dateinamebootstrap, "r+");//Zum Speichern der Werte, die beim Bootstrapping berechnet werden
+		//bootstrapdatei=fopen(dateinamebootstrap, "r+");//Zum Speichern der Werte, die beim Bootstrapping berechnet werden
 		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
 		thermalisieren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generator);
 		gettimeofday(&anfang, NULL);
@@ -419,7 +442,7 @@ int main(int argc, char **argv){
 		//~ //printf("set ylabel \"Varianz\"\nplot \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:4 lt 7 ps 0.4 title \"Bootstrap-Varianz\", \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:4 w lines lt 7 title \"Bootstrap-Varianz\"\n\n", laenge, n, laenge, n);
 		fclose(messdatei);
 		fclose(gitterthermdatei);
-		fclose(bootstrapdatei);
+		//fclose(bootstrapdatei);
 	}
 	printf("Insgesamt haben die Messungen %f Sekunden gebraucht\n", summezeitges);
 	fclose(mittelwertdatei);
