@@ -12,7 +12,7 @@ set cbrange[-1:1]
 set out "Messungen/plotgitterl0050.pdf"
 set xrange [-0.5:49.5]
 set yrange [-0.5:49.5]
-do for [t=0:290:10]{
+do for [t=0:295:5]{
 datei=sprintf("Messungen/ThermalisierteGitter/thermalisierung-laenge0050-t%.3d.txt", t)
 titleplot=sprintf("T=%f", 0.015+t*0.015)
 set title titleplot
