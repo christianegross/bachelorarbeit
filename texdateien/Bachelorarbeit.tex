@@ -65,118 +65,171 @@
 	Akzeptanzrate: Wie viele Spins wurden bei einer Messung umgedreht? Wird bei jedem Punkt gezählt und in eine Variable geschrieben.
 	
 	Magnetisierung: Betrag der Summe über alle Spins im Gitter, je mehr Spins gleich ausgerichtet sind, desto stärker der nach außen sichtbare Effekt als Magnet.
+	setze $k_B=1$
 	
 	
 	\section{Parallelrechner}
+	Parallelrechner: Durch Benutzung mehrerer Prozessorkerne oder mehrerer Computer benötigte Rechenzeit aufteilrn und schneller Ergebnisse haben. Zwei Konzepte:
 	\subsection{Shared Memory mit OpenMP}
+	Open Multi-Processing
+	Mehrere Prozessoren greifen auf einen gemeinsamen Speicher zu, alle Prozesse können freigegebene Variablen verändern, Verhindern von Speicherproblemen durch critical oder barrier-Bereiche. Auch möglich, Variablen privat zu setzen, dann kann nur ein thread gleichzeitig darauf zugreifen. Anwendung über Compiler-Pragmas
 	\subsection{MPI}
-	
+	Message Passing Interface
+	Mehrere Rechner mit seperatem Speicher arbeiten an einem Problem, Rechner kommunizieren untereinander.
 	
 	\chapter{Umsetzung}
-	\section{Initialisierung und Thermalisierung}
-	Gitter, Hamiltonian, Thermalisierungsschwelle
+%	\section{Initialisierung und Thermalisierung}
+%	Gitter, Hamiltonian, Thermalisierungsschwelle
+%	
+%	Gitter mit zwei for-schleifen füllen, Mersenne-Twister, der auf +-1 zugeordnet wird.
+%	Hamiltonian durch Gitterdurchgang mit zwei Schleifen nach Formel \ref{eq:hamiltonianising}
+%	
+%	Sweep: geht gesamtes Gitter durch, führt Metropolis Update durch.
+%	
+%	Parallelisiert: Durchgehen in "Schachbrettmuster", erst alle schwarzen und dann alle weißen Punkte, da zum Aktualisieren der schwarzen Punkte nur alle weißen benötigt werden, somit alle Schwarzen gleichzeitig aktualisiert werden können und umgekehrt.
+%	
+%	Durchgang mit Schachbrettmuster dauert ca. 25 \% länger, aber beim parallelisieren geht es schon mit zwei Kernen 20 \% schneller. 
+%	
+%	Vergleich der Daten zeigt: Im Mittel kommt bei allen methoden dasselbe Ergebnis heraus. \ref{fig:vergleichhamiltoniansweep}
+%	
+%	\begin{figure}[htbp]
+%	\input{Bilder/Vergleichham}
+%	\label{fig:vergleichhamiltoniansweep}
+%		\caption{Vergleich der Mittelwerte über 10000 Messungen des Hamiltonians bei verschiedenen Methoden, das Gitter durchzugehen. Laenge=50}
+%	\end{figure}
+%	
+%	Thermalisierung:
+%	 
+%	Vergleichen von hamiltonian vor und nach sweep, solange sweeps, bis Energie sich nicht mehr verringert. Bilder?
+%	Geändert, da Probleme mit Springen bei der Magnetisierung auftauchen: Anfangs Thermalisierung mit vielen sweeps (10000), danach Thermalisierung auf Basis des gitters der vorherigen Temperatur mit (5000) Sweeps
+%	
+%	Ausgabe mit x, y Position, Spin in txt datei, mit gnuplot als Heatmap plotten.
+%	Verhalten: Bei niedrigen Temperaturen nur ein großer, einfarbiger Bezirk, dann bei höheren Temperaturen einige Punkte mit anderer Farbe, bei hohen Temperaturen nur Rauschen.
+%	
+%	\begin{figure}
+%	\begin{minipage}{0.48\textwidth}
+%		\input{Bilder/Gitter/gitter-laenge0050-t000.tex}
+%	\end{minipage}
+%	\begin{minipage}{0.48\textwidth}
+%		\input{Bilder/Gitter/gitter-laenge0050-t100.tex}
+%	\end{minipage}
+%	\begin{minipage}{0.48\textwidth}
+%		\input{Bilder/Gitter/gitter-laenge0050-t250.tex}
+%	\end{minipage}
+%	\caption{Gitter bei verschiedenen Temperaturen}
+%	\label{fig:gitter}
+%	\end{figure}
+%	
+%	\section{Messungen}
+%	\subsection{Akzeptanzrate}
+%	Beim Sweep wird jede Veränderung gezählt, am Ende wird Veränderungen/laenge/laenge in datei geschrieben. Prozentuale Veränderung.
+%	Parallelisieren: Zwischenvariable für jeden Thread. Bild, erst gering, dann steil steigend, flacht ab, bildet Plateau.
+%	\begin{figure}
+%		\input{Bilder/akzeptanzratenaiv.tex}
+%		\label{fig:akzeptanznaiv}
+%		\caption{Die Akzeptanzrate bei 10000 Messungen je Temperatur mit Laenge 50}
+%	\end{figure}
+%	Bei welchen Temperaturen?
+%	\subsection{Magnetisierung}
+%	Magnetisierung= Abs(Summe über alle Spins im Gitter)
+%	
+%	Bilder
+%	
+%	-Bei kleinen Temperaturen, unterhalb von T ungefähr 0,7, ist die
+%	 Magnetisierung konstant 1, mit sehr geringen Abweichungen.
+%	 
+%	 -Zwischen ca. 0,7 und ca. 2,5 nimmt die Magnetisierung ab, springt jedoch
+%	 immer wieder zwischen stärkeren und schwächeren Magnetisierungen hin und
+%	 her. Dies wird erst ab einer gewissen Gitterlänge sichtbar, bei kleineren
+%	 Gitterlängen (ausprobiert habe ich es mit 10), ist die Abnahme viel weniger
+%	 sprunghaft. In diesem Bereich ist die Standardabweichung der Messungen recht
+%	 groß.
+%	 
+%	 -Bei größeren Temperaturen, oberhalb von ca. 2,5, ist die Magnetisierung
+%	 annähernd konstant und fast null. Der relative Fehler ist in diesem Bereich
+%	 recht groß, jedoch ist der absolute Fehler, genau wie der Messwert, klein.
+%	 
+%	 Behoben durch bessere Thermalisierung: bei geringeren Temperaturen konstant 1 mit geringen Fehlern, 
+%	 um T=2 herum Abfall, steiler, je länger das Gitter ist, mit recht großen Fehlern, bei hohen Temperaturen konstant niedrige Magnetisierung mit größerem Fehler als bei niedriger Temperatur. (Bild)
+%	 
+%	 theoretischer Kritischer Punkt für $J=1:\quad T=2,269$
+%	 Bestimmung: Unstetigkeit in magnetisierung bei kritischem Punkt erwartet, d.h. Pol in der Ableitung. 
+%	 Mit 2-Punkt-Formel Ableitung bestimmen, Extremum: kritischer Punkt muss zwischen den beiden Nachbarn liegen. Ergebnis für l=128: Kritischer Punkt bei $T=2,303\pm0,015$.
+%	 	\begin{figure}
+%	 		\input{Bilder/ableitung.tex}
+%	 		\label{fig:ableitung}
+%	 		\caption{Ableitung der Daten aus l=128 mit 2-Punkt-Formel}
+%	 	\end{figure}
+%	 	
+%	 
+%	 Temperatur durch Autokorrelation, durch bootstrapping mit blocking ausgleichen. 
+%	 Zuerst Fehler, da Replika falsch verstanden, danach klare Änderung vom Fehler mit l (Bild).
+%	 
+%	 Magnetisierung mit Bootstrap: Bild, kleinerer Fehler, Fehler bei Phasenübergang größer als darunter/darüber.
+%	\begin{figure}
+%		\input{Bilder/magnetisierungbootstrap-l-128.tex}
+%		\label{fig:magnetisierungbootstrap-l-128}
+%		\caption{Die Magnetisierung bei 10000 Messungen je Temperatur mit Laenge 50, Bootstrapping von Daten mit Blocklänge 128}
+%	\end{figure}
+%		
+%	Parallelisieren, indem Replica parallel gezogen werden, jedes Replica in array geschrieben, danach nur Mittelwert und Varianz über Array berechnen.
+%	Vergleich: Mittelwerte gleich.
+%	\begin{figure}
+%		\input{Bilder/vergleichbootstrap-l-128.tex}
+%		\label{fig:bootstrapparallel-l-128}
+%		\caption{Die Magnetisierung bei 10000 Messungen je Temperatur mit Laenge 50, Bootstrapping von Daten mit Blocklänge 128, Vergleich von parallel und nicht paralleler Funktion}
+%	\end{figure}	
 	
-	Gitter mit zwei for-schleifen füllen, Mersenne-Twister, der auf +-1 zugeordnet wird.
-	Hamiltonian durch Gitterdurchgang mit zwei Schleifen nach Formel \ref{eq:hamiltonianising}
+		
+	\chapter{Implementierung}
+	Initialisierung des Gitters: Als 1D array abspeichern, mit Mersenne Twister $\pm1$ auf das Gitter verteilen.
+	Hamiltonian: berechnen über zeilenweise array durchgehen, von jedem Punkt rechten und unteren Nachbarn, periodische Randbedingungen durch modulo.
+	Metropolis-Update: Nur vier nachbarn zum Berechnen nötig, Hamiltonian wird als Parameter übergeben, daraus Änderung bei Flip, Akzeptanz wird durch 0/1 zurückgegeben
+	sweep funktion: geht das ganze Gitter durch und führt bei jedem Punkt ein Metropolis-Update durch. Zählt wie viele Spins geflippt werden, schreibt am Ende Prozentuale Veränderungen (Akzeptanzrate) und Summe über alle Spins(Magnetisierung) in Ausgabedatei.
 	
-	Sweep: geht gesamtes Gitter durch, führt Metropolis Update durch.
+	Am Anfang Einbrennen nötig: Gitter der vorherigen Temperatur wird übergeben, N0 (=10.000) Messungen werden durchgeführt, deren Ergebnisse nicht verwendet werden, da sie zu stark variieren, Gitter nach Einbrennen wird in .txt Datei gespeichert.
 	
-	Parallelisiert: Durchgehen in "Schachbrettmuster", erst alle schwarzen und dann alle weißen Punkte, da zum Aktualisieren der schwarzen Punkte nur alle weißen benötigt werden, somit alle Schwarzen gleichzeitig aktualisiert werden können und umgekehrt.
+	Danach messen: Ergebnisse werden in Ausgabedatei geschrieben.
+	Aus Datei durch einlesen mt standardschätzern naiven Mittelwert $\mu=\frac{1}{N}\sum_{i} x_i$ bilden und damit Standardabweichung $\sigma=\frac{1}{N-1}\sum_{i}(x_i-\mu)^2$ berechnen. Temperatur, Mittelwert und Varianz der Akzeptanzrate und Magnetisierung werden in Datei geschrieben.
 	
-	Durchgang mit Schachbrettmuster dauert ca. 25 \% länger, aber beim parallelisieren geht es schon mit zwei Kernen 20 \% schneller. 
+	Fehler kommen durch Autokorrelation der Daten, sind also Temperaturabhängig: Beseitigung der autokorrelation durch Blocking der Daten, also Einteilen in verschiedene Blöcke der Länge $l$, danach Bootstrapping, um fehlerqualität zu verbessern.
+	Bootstrapping: zur Erzeugung eines Replikas aus Messwerten so viele Werte mit Zurücklegen ziehen, we es Messungen gibt und daraus den arithmetischen Mittelwert bilden. Aus $r$ so gebildeten Replikas den Standardschätzer für Mittelwert und Varianz ziehen. Temperatur, l, Mittelwert und Varianz in Datei schreiben.
 	
-	Vergleich der Daten zeigt: Im Mittel kommt bei allen methoden dasselbe Ergebnis heraus. \ref{fig:vergleichhamiltoniansweep}
+	So errechneter Fehler steigt mit l an, ab einer gewissen Länge bildet sich ein Plateau. Quelle: Skript.
 	
-	\begin{figure}[htbp]
-	\input{Bilder/Vergleichham}
-	\label{fig:vergleichhamiltoniansweep}
-		\caption{Vergleich der Mittelwerte über 10000 Messungen des Hamiltonians bei verschiedenen Methoden, das Gitter durchzugehen. Laenge=50}
-	\end{figure}
+	Bild Fehler in Abhängigkeit von l?
 	
-	Thermalisierung:
-	 
-	Vergleichen von hamiltonian vor und nach sweep, solange sweeps, bis Energie sich nicht mehr verringert. Bilder?
-	Geändert, da Probleme mit Springen bei der Magnetisierung auftauchen: Anfangs Thermalisierung mit vielen sweeps (10000), danach Thermalisierung auf Basis des gitters der vorherigen Temperatur mit (5000) Sweeps
+	Einzelne Messung dauert recht lange: Beschleunigen durch parallelisieren. 
+	Strategie: Vor allem Rechenintensive Bereiche parallelisieren, z.B. sweep-funktion für Messvorgang und Replikas ziehen.
+	Parallelisiert: for-Schleifen, deren Ausführungen unabhängig vom vorherigen Schleifendurchgang sind.
 	
-	Ausgabe mit x, y Position, Spin in txt datei, mit gnuplot als Heatmap plotten.
-	Verhalten: Bei niedrigen Temperaturen nur ein großer, einfarbiger Bezirk, dann bei höheren Temperaturen einige Punkte mit anderer Farbe, bei hohen Temperaturen nur Rauschen.
+	sweep: bei zeilenweise durchgehen des Gitters von vorheriger Änderung abhängig.
+	Unabhängig: Gitter wie Schachbrett sehen, Update der Schwarzen Felder hängt nur von weißen ab und umgekehrt. Aufspalten in zwei separate for-Schleifen, eine Farbe pos1+pos2 gerade, andere ungerade. Einzelne Schleifen parallelisieren, Updates von Hamiltonian/Anzahl der geänderten Variablen in eigene Zwischenvariablen, Updaten in einer critical region(nur ein Thread kann region zu einer Zeit ausführen) am Ende der Schleife.
 	
-	\begin{figure}
-	\begin{minipage}{0.48\textwidth}
-		\input{Bilder/Gitter/gitter-laenge0050-t000.tex}
-	\end{minipage}
-	\begin{minipage}{0.48\textwidth}
-		\input{Bilder/Gitter/gitter-laenge0050-t100.tex}
-	\end{minipage}
-	\begin{minipage}{0.48\textwidth}
-		\input{Bilder/Gitter/gitter-laenge0050-t250.tex}
-	\end{minipage}
-	\caption{Gitter bei verschiedenen Temperaturen}
-	\label{fig:gitter}
-	\end{figure}
+	Replikas ziehen: Gezogene Replikas werden in array geschrieben: Vollkommen unabhängig, parallelisieren der for-Schleife.
 	
-	\section{Messungen}
-	\subsection{Akzeptanzrate}
-	Beim Sweep wird jede Veränderung gezählt, am Ende wird Veränderungen/laenge/laenge in datei geschrieben. Prozentuale Veränderung.
-	Parallelisieren: Zwischenvariable für jeden Thread. Bild, erst gering, dann steil steigend, flacht ab, bildet Plateau.
-	\begin{figure}
-		\input{Bilder/akzeptanzratenaiv.tex}
-		\label{fig:akzeptanznaiv}
-		\caption{Die Akzeptanzrate bei 10000 Messungen je Temperatur mit Laenge 50}
-	\end{figure}
-	Bei welchen Temperaturen?
-	\subsection{Magnetisierung}
-	Magnetisierung= Abs(Summe über alle Spins im Gitter)
+	Zeitersparnis Tabelle/Grafik Nummer an Kernen/Gebracuhte Zeit. Auch für einzelen funktionen?
+	Funktion parallelisiert, die Summe über das Gitter berechnet: Zeitersarnis nur 0,5\%, daher Hamiltonian, einmaliges Verteilen der Zufallszahlen auf Gitter, Mittelwertberechnungen nicht parallelisiert.
 	
-	Bilder
+	Kritischer Punkt: Unstetigkeit in Magnetisierung/Pol in Ableitung erwarte, bestimmen über größte Änderung/Extremum der Ableitung der Magnetisierung: Mit 2-Punkt-Formel berechnete Ableitung, Fehler der Ableitung mit Gaußscher Fehlerfortpflanzung ermittelt.
 	
-	-Bei kleinen Temperaturen, unterhalb von T ungefähr 0,7, ist die
-	 Magnetisierung konstant 1, mit sehr geringen Abweichungen.
-	 
-	 -Zwischen ca. 0,7 und ca. 2,5 nimmt die Magnetisierung ab, springt jedoch
-	 immer wieder zwischen stärkeren und schwächeren Magnetisierungen hin und
-	 her. Dies wird erst ab einer gewissen Gitterlänge sichtbar, bei kleineren
-	 Gitterlängen (ausprobiert habe ich es mit 10), ist die Abnahme viel weniger
-	 sprunghaft. In diesem Bereich ist die Standardabweichung der Messungen recht
-	 groß.
-	 
-	 -Bei größeren Temperaturen, oberhalb von ca. 2,5, ist die Magnetisierung
-	 annähernd konstant und fast null. Der relative Fehler ist in diesem Bereich
-	 recht groß, jedoch ist der absolute Fehler, genau wie der Messwert, klein.
-	 
-	 Behoben durch bessere Thermalisierung: bei geringeren Temperaturen konstant 1 mit geringen Fehlern, 
-	 um T=2 herum Abfall, steiler, je länger das Gitter ist, mit recht großen Fehlern, bei hohen Temperaturen konstant niedrige Magnetisierung mit größerem Fehler als bei niedriger Temperatur. (Bild)
-	 
-	 theoretischer Kritischer Punkt für $J=1:\quad T=2,269$
-	 Bestimmung: Unstetigkeit in magnetisierung bei kritischem Punkt erwartet, d.h. Pol in der Ableitung. 
-	 Mit 2-Punkt-Formel Ableitung bestimmen, Extremum: kritischer Punkt muss zwischen den beiden Nachbarn liegen. Ergebnis für l=128: Kritischer Punkt bei $T=2,295\pm0,015$.
-	 	\begin{figure}
-	 		\input{Bilder/ableitung.tex}
-	 		\label{fig:ableitung}
-	 		\caption{Ableitung der Daten aus l=128 mit 2-Punkt-Formel}
-	 	\end{figure}
+	
+	Main-funktion: Variablen wie T, J, N0 initialisieren, Array mit verwendeten Temperaturen und l fürs Bootstrapping erzeugen, Dateien für Mittelwerte öffnen
+	Messungen für verschiedene Temperaturen: Durch for-Schleife, vorher Initialisierung eines Array, in das die Temperaturen gleichmäßig verteilt hineingeschrieben werden.
+	initialisierung mit (100.000) Messungen am ersten Gitter, danach thermalisierung mit Gitter der vorherigen Temperatur.
+	for-Schleife über alle temperaturen im array: Datei für gitter, Messergebnisse öffnen, thermalisieren, messen, naive Schätzer und Bootstrapschätzer für verschiedene l bestimmen, Am ende Ableitung in separate Datei schreiben.
+	
+	
 	 	
-	 
-	 Temperatur durch Autokorrelation, durch bootstrapping mit blocking ausgleichen. 
-	 Zuerst Fehler, da Replika falsch verstanden, danach klare Änderung vom Fehler mit l (Bild).
-	 
-	 Magnetisierung mit Bootstrap: Bild, kleinerer Fehler, Fehler bei Phasenübergang größer als darunter/darüber.
-	\begin{figure}
-		\input{Bilder/magnetisierungbootstrap-l-128.tex}
-		\label{fig:magnetisierungbootstrap-l-128}
-		\caption{Die Magnetisierung bei 10000 Messungen je Temperatur mit Laenge 50, Bootstrapping von Daten mit Blocklänge 128}
-	\end{figure}
-		
-	Parallelisieren, indem Replica parallel gezogen werden, jedes Replica in array geschrieben, danach nur Mittelwert und Varianz über Array berechnen.
-	Vergleich: Mittelwerte gleich.
-	\begin{figure}
-		\input{Bilder/vergleichbootstrap-l-128.tex}
-		\label{fig:bootstrapparallel-l-128}
-		\caption{Die Magnetisierung bei 10000 Messungen je Temperatur mit Laenge 50, Bootstrapping von Daten mit Blocklänge 128, Vergleich von parallel und nicht paralleler Funktion}
-	\end{figure}	
-	
-		
 	\chapter{Ergebnisse}
+	Parallelisierung funktioniert: Hamiltonian mit und ohne Parallelisierung gleich (Bild).
+	Akzeptanzrate: für geringe Temperaturen fast null, steigt für höhere Temperaturen, bildet Plateau?
+	
+	Magnetisierung: Für kleine Temperaturen 1 mit geringem Fehler, wird zwischen T=1,5 und T=3 kleiner, dabei größere Fehler, bei hohen Temperaturen Magnetisierung fast null mit kleinem Fehler.
+	Kritischer Punkt für $J=1:\quad T=2,269$ nach \cite{OnsagerCrystal1}, durch Ableitung (Bild) bestimmt zu $T=2,303\pm0,015$. Fehler, da kritischer Punkt in Region zwischen Wert und den nächsten Stützstellen liegen muss.
+	Passt gut zu Ergebnis, Verhalten wie erwartet.
+	
+	Parallelisierung: Tabelle oder Bild mit Cores/Zeit.
 	%Anhang
 	\listoffigures
 	\listoftables
