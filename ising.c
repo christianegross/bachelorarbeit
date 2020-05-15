@@ -385,8 +385,42 @@ void bootstrap(int l, int r, int messungen, double temperatur, double *blockarra
 		varianz+=(bootstraparray[durchgang]-mittelwert)*(bootstraparray[durchgang]-mittelwert);
 	}
 	varianz=sqrt(varianz/((double)r-1));//Standardschaetzer
-	fprintf(ausgabedatei, "1\t%d\t%d\t%f\t%e\t%f\n", l,r, mittelwert, varianz, temperatur);//Ausgabe, 1, um zu zeigen, dass parallel gerechnet wurde
+	fprintf(ausgabedatei, "1.0\t%f\t%f\t%f\t%e\t%f\n", (double)l,(double)r, mittelwert, varianz, temperatur);//Ausgabe, 1, um zu zeigen, dass parallel gerechnet wurde
 	free(bootstraparray);
+}
+
+void ableitung(int l, int temperaturen, const int spalten, const int spaltemessung, const int spaltefehler, const int spaltetemperatur, const int spaltel, FILE *messdatei, FILE *ausgabedatei){
+	//Bildet die ableitung nach Zei-Punkt-Formel
+	//Fehler nach Gaussscher Fehlerfortpflanzung
+	double x1, x2, y1, y2, dy1, dy2;//Zur Berechnung benoetigte Groessen
+	double mitteltemperatur, ableitung, fehlerableitung;//Groessen die berechnet werden sollen
+	double ergebnisarray[spalten];//Speichert eingelesene Dateien
+	rewind(messdatei);
+	for (int i=0; i<spalten; i+=1){//erste Zeile scannen: Noch keine Ableitung moeglich
+		fscanf(messdatei, "%lf", &ergebnisarray[i]);
+		if (i==spalten-1){fscanf(messdatei, "\n");}
+	}
+	x1=ergebnisarray[spaltetemperatur];//Werte fuer erste Ableitung zuweisen
+	y1=ergebnisarray[spaltemessung];	
+	dy1=ergebnisarray[spaltefehler];
+	for (int messung=1; messung<temperaturen; messung+=1){//Alle Zeilen durchgehen
+		for (int i=0; i<spalten; i+=1){
+			fscanf(messdatei, "%lf", &ergebnisarray[i]);
+			if (i==spalten-1){fscanf(messdatei, "\n");}
+		}
+		if (ergebnisarray[spaltel]==l){//nur Ableitung berechnen, wenn l richtig ist
+			x2=ergebnisarray[spaltetemperatur];//Wertezuweisen
+			y2=ergebnisarray[spaltemessung];	
+			dy2=ergebnisarray[spaltefehler];
+			mitteltemperatur=(x1+x2)/2;//Berechnung der Temperatur, bei der die Ableitung berechnet wird
+			ableitung=(y2-y1)/(x2-x1);//Zwei-Punkt-Formel mit variablem Abstand möglich
+			fehlerableitung=(sqrt(dy1*dy1+dy2*dy2))/(x2-x1);//Gausssche Fehlerfortpflanzung
+			fprintf(ausgabedatei, "%f\t%f\t%f\n", mitteltemperatur, ableitung, fehlerableitung);
+			x1=x2;//Zuweisung fuer naechste Zeile
+			y1=y2;
+			dy1=dy2;
+		}
+	}	
 }
 
 int main(int argc, char **argv){
@@ -396,10 +430,10 @@ int main(int argc, char **argv){
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=10000;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
-	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledatei;//benoetigte Dateien zur Ausgabe
+	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledatei, *ableitungdatei;//benoetigte Dateien zur Ausgabe
 	int temperaturzahl=300;//Temperaturen, beid enen gemessen wird
-	int N0=5000;//benoetigte sweeps zum Thermalisieren
-	char dateinametherm[100], dateinamemessen[100], dateinamemittel[100], dateinamebootstrapalle[100];//Um Dateien mit Variablen benennen zu koennen
+	int N0=10000;//benoetigte sweeps zum Thermalisieren
+	char dateinametherm[100], dateinamemessen[100], dateinamemittel[100], dateinamebootstrapalle[100], dateinameableitung[100];//Um Dateien mit Variablen benennen zu koennen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler
 	double *temperaturarray=(double*)malloc(sizeof(double)*temperaturzahl);//speichert verwendete Temperaturen
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
@@ -411,26 +445,29 @@ int main(int argc, char **argv){
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d.txt",laenge, messungen);//speichert naive Mittelwerte
 	sprintf(dateinamebootstrapalle,"Messungen/Bootstrapges/bootstrapalle-l%.4d-m-%.6d.txt",laenge, messungen);//speichert Mitteelwerte aus Bootstrap
-	mittelwertdatei=fopen(dateinamemittel, "w");
-	bootstrapalledatei=fopen(dateinamebootstrapalle, "w");
+	sprintf(dateinameableitung,"Messungen/ableitung-laenge-%.4d-m-%.6d.txt",laenge, messungen);//speichert Ableitung
+	mittelwertdatei=fopen(dateinamemittel, "w+");
+	bootstrapalledatei=fopen(dateinamebootstrapalle, "w+");
+	ableitungdatei=fopen(dateinameableitung, "w");
 	//Thermalisierung des ersten Gitters, nicht ueber letztes verwendetes Gitter moeglich
 	int gitter[laenge*laenge];
 	initialisierung(gitter, laenge, seed);
 	dummydatei=fopen("dummytherm.txt", "w");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird
 	gsl_rng_set(generator, seed);
-	thermalisieren(laenge, temperaturarray[0], j, seed, 10000, gitter, dummydatei, generator);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
+	thermalisieren(laenge, temperaturarray[0], j, seed, 100000, gitter, dummydatei, generator);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	fclose(dummydatei);
 	//Messen der zeit, die während des Programms vergeht, aus C-Kurs kopiert:
 	struct timeval anfang, ende;
 	double sec, usec, zeitges, summezeitges;
 	summezeitges=0;//Zeit fuer alle Temperaturen insgesamt
-	for (int n=0; n<temperaturzahl; n+=5){    //ueber alle gegebenen Temperaturen messen
+	for (int n=0; n<temperaturzahl; n+=1){    //ueber alle gegebenen Temperaturen messen
 		//printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-t%.3d.txt",laenge,n);//.2, damit alle dateinamengleich lang sind
 		gitterthermdatei = fopen(dateinametherm, "w+");//Zum speichern der thermalisierten Gitter
 		messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
 		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
+		gettimeofday(&anfang, NULL);
 		thermalisieren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generator);
 		//~ gettimeofday(&anfang, NULL);
 		messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
@@ -444,8 +481,8 @@ int main(int argc, char **argv){
 		varianzakz=varianzberechnungnaiv(messdatei, messungen, mittelwertakz, 1, 3);
 		mittelwertmag=mittelwertberechnungnaiv(messdatei, messungen, 2, 3);
 		varianzmag=varianzberechnungnaiv(messdatei, messungen, mittelwertmag, 2, 3);
-		fprintf(mittelwertdatei, "%d\t%f\t%f\t%f\t%f\t%f\t%f\n", laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag);
-		gettimeofday(&anfang, NULL);
+		fprintf(mittelwertdatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\n", (double)laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag);
+		//gettimeofday(&anfang, NULL);
 		for(int len=0;len<12;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
 			l=blocklenarray[len];
 			//printf("%d\t%d\n", n, l);
@@ -462,7 +499,7 @@ int main(int argc, char **argv){
 		usec= (double)(ende.tv_usec-anfang.tv_usec);
 		zeitges=sec+1e-06*usec;
 		summezeitges+=zeitges;
-		printf("bei T=%f hat das Bootstrapping %f Sekunden gebraucht\n", temperaturarray[n], zeitges);
+		printf("bei T=%f haben die Messungen %f Sekunden gebraucht\n", temperaturarray[n], zeitges);
 		//printf("set title \"T=%f\"\n\nset ylabel \"Mittelwert\"\nf(x)=%f\n", temperaturarray[n], mittelwertmag);
 		//~ //printf("plot \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:3:4 w yerrorbars lt 7 ps 0.3 title \"Bootstrap-Mittelwerte\", f(x) lt 6 title \"naiver Mittelwert\"\n\n", laenge, n);
 		//~ //printf("set ylabel \"Varianz\"\nplot \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:4 lt 7 ps 0.4 title \"Bootstrap-Varianz\", \"Messungen/Bootstrapwerte/bootstrap-laenge%.4d-t%.3d.txt\" u 1:4 w lines lt 7 title \"Bootstrap-Varianz\"\n\n", laenge, n, laenge, n);
@@ -471,6 +508,7 @@ int main(int argc, char **argv){
 		//fclose(bootstrapdatei);
 	}
 	printf("Insgesamt haben die Messungen %f Sekunden gebraucht\n", summezeitges);
+	ableitung(128, 300*12, 6, 3,4,5,1, bootstrapalledatei, ableitungdatei);
 	fclose(mittelwertdatei);
 	fclose(bootstrapalledatei);
 	free(temperaturarray);

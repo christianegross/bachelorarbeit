@@ -44,22 +44,25 @@
 	Suche Observablen von komplexen Systemen. Problem: Zustandssumme nicht/nur schwer analytisch bestimmebar. \[Z=\int_{Alle Konfigurationen}\exp(-H/T)\], Observable \[<A>=1/Z\int_{alle Konfigurationen} A\exp(-H/T)\]. Generell: Integral bestimmen, nicht analytisch lösbar.
 	Idee: Diskretisiere Itegral, verteile Summe nicht gleichmäßig, sondern summiere bevorzugt über Zustände, die ein höheres Gewicht haben. 
 	wie Zustände generieren? Aus Zufallszahlen, nicht deterministisch, Zufallszahlen so verteilt, dass gewichtigere zustände öfter vorkommen. Gehe von jeweils aktuellen zustand aus, schlage eine Veränderung vor, nehme an, wenn Energie kleiner wird, sonst mit Wahrscheinlichkeit $\exp(-\Delta H/T)$. Metropolis-Update, da Zustand aus vorherigem generiert wird, Markovkette.
-	Am Anfang "Thermalisieren" oder Einbrennen nötig, da erst eine Region gefunden werden muss, in der die Zustände gut verteilt sind. Die Daten währen des einbrennens werden nicht benötigt.
+	Am Anfang \enquote{Thermalisieren} oder Einbrennen nötig, da erst eine Region gefunden werden muss, in der die Zustände gut verteilt sind. Die Daten währen des einbrennens werden nicht benötigt.
 	 Quelle: Skript
 	
 	\section{Das Ising-Modell}
-	Simulation eines Ferromagneten: 2D-Gitterförmige Anordnung von Spins, sie Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang.
+	Simulation eines Ferromagneten: 2D-Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang.
 	\begin{equation}
 	H=-J\sum_{<i,j>}s_is_j
 	\label{eq:hamiltonianising}
 	\end{equation}
 	Mit $<i,j>$ alle benachbarten Paare, $J$ in beide Richtungen gleich und konstant.
+	
+	Das Kontinuumslimes von unendlich vielen Gitterpunkten wird durch Periodische Randbedingungen modelliert.
+	
 	Kritischer Punkt bei \[\sinh^2\left(\frac{2J}{k_BT}\right) =1\]
 	\cite{OnsagerCrystal1}
 	
 	Eine Messung: Bei jedem Spin wird ein Metropolis-Update durchgeführt.
 	
-	Akzeptanzrate: Wie viele Spins wurden bei einer Messung umgedreht? Wird bei jeder Messung gezählt und in eine Variable geschrieben.
+	Akzeptanzrate: Wie viele Spins wurden bei einer Messung umgedreht? Wird bei jedem Punkt gezählt und in eine Variable geschrieben.
 	
 	Magnetisierung: Betrag der Summe über alle Spins im Gitter, je mehr Spins gleich ausgerichtet sind, desto stärker der nach außen sichtbare Effekt als Magnet.
 	
@@ -145,7 +148,15 @@
 	 um T=2 herum Abfall, steiler, je länger das Gitter ist, mit recht großen Fehlern, bei hohen Temperaturen konstant niedrige Magnetisierung mit größerem Fehler als bei niedriger Temperatur. (Bild)
 	 
 	 theoretischer Kritischer Punkt für $J=1:\quad T=2,269$
-	 Graphisches ablesen: kritischer Punkt bei $T=2,3$
+	 Bestimmung: Unstetigkeit in magnetisierung bei kritischem Punkt erwartet, d.h. Pol in der Ableitung. 
+	 Mit 2-Punkt-Formel Ableitung bestimmen, Extremum: kritischer Punkt muss zwischen den beiden Nachbarn liegen. Ergebnis für l=128: Kritischer Punkt bei $T=2,295\pm0,015$.
+	 	\begin{figure}
+	 		\input{Bilder/ableitung.tex}
+	 		\label{fig:ableitung}
+	 		\caption{Ableitung der Daten aus l=128 mit 2-Punkt-Formel}
+	 	\end{figure}
+	 	
+	 
 	 Temperatur durch Autokorrelation, durch bootstrapping mit blocking ausgleichen. 
 	 Zuerst Fehler, da Replika falsch verstanden, danach klare Änderung vom Fehler mit l (Bild).
 	 
