@@ -47,11 +47,13 @@ unset title
 set out 'magnetisierungbootstrap.tex'
 
 set ylabel 'Magnetisierung'
+tkrit=2/log(1+sqrt(2))
+litresult(x)=(1-(1/(sinh(2/x)*sinh(2/x)))**2)**(1.0/8)*(x<tkrit)+0*(x>tkrit)
 do for [n in '32 64 128 256 384 512 640 758 876 1024 1280 1536']{
 ausgabe=sprintf('magnetisierungbootstrap-l-%.4s.tex', n)
 set out ausgabe
 titel ='l='.n
-plot 'bootstrapalle-l0050-m-010000.txt' using ((($2==n)&&($1==1))?$6:1/0):4:5 w yerrorbars lt 7 title titel
+plot 'bootstrapalle-l0050-m-010000.txt' using ((($2==n)&&($1==1))?$6:1/0):4:5 w yerrorbars lt 7 title titel, litresult(x) lt 6 title "erwartetes Ergebnis"
 }
 
 

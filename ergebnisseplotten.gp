@@ -5,11 +5,11 @@ set ter pdfcairo size 4in,5.5in
 set xlabel "Temperatur"
 set ylabel "Magnetisierung"
 set yrange [-0.05:1.05]
-
+litresult(x)=(1-(1/(sinh(2/x)*sinh(2/x)))**2)**(1.0/8)
 
 set out "Messungen/magnetisierungnaiv.pdf"
 set title "l=50"
-plot "Messungen/Mittelwerte/messenmittel-l0050-m-010000.txt" u 2:6 w l lt 7 title ""
+plot "Messungen/Mittelwerte/messenmittel-l0050-m-010000.txt" u 2:6 w l lt 7 title "", litresult(x) title "litresult"
 x0=NaN
 y0=NaN
 unset yrange
@@ -19,10 +19,10 @@ set yrange [-0.05:1.05]
 unset xrange
 
 set title "l=100"
-plot "Messungen/Mittelwerte/messenmittel-l0100-m-010000.txt" u 2:6:7 w yerrorbars ps 0.3  lt 7 title ""
+plot "Messungen/Mittelwerte/messenmittel-l0100-m-010000.txt" u 2:6:7 w yerrorbars ps 0.3  lt 7 title "", litresult(x) title "litresult"
 
 set title "l=200"
-plot "Messungen/Mittelwerte/messenmittel-l0200-m-010000.txt" u 2:6:7 w yerrorbars ps 0.3  lt 7 title ""
+plot "Messungen/Mittelwerte/messenmittel-l0200-m-010000.txt" u 2:6:7 w yerrorbars ps 0.3  lt 7 title "", litresult(x) title "litresult"
 x0=NaN
 y0=NaN
 unset yrange
