@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --job-name=grosstest1
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=s6chgros@uni-bonn.de
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=100mb
+#SBATCH --time=00:05:00
+#SBATCH --output=test1-%j.out
+#SBATCH --error=errortest1-%j.out
+
+gcc -std=c99 -Wall -pedantic -fopenmp ising.c -c
+gcc -std=c99 -Wall -pedantic -o ising_grosstest1 ising.o -lgsl -lgslcblas -lm -fopenmp
+./ising_grosstest1
