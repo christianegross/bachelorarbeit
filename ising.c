@@ -425,7 +425,7 @@ void ableitung(int l, int temperaturen, const int spalten, const int spaltemessu
 
 int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
-	int anzahlcores=1;
+	int anzahlcores=2;
 	omp_set_num_threads(anzahlcores);//Setzt die nummer an Kernen, die in den parallelen Regionen verwendet werden.
 	int laenge=50;//laenge der verwendeten Gitter
 	double j=1.0;
@@ -519,6 +519,9 @@ int main(int argc, char **argv){
 	printf("Insgesamt hat das Messen %f Sekunden gebraucht\n", summezeitgesmessen);
 	printf("Insgesamt hat das Botstrapping %f Sekunden gebraucht\n", summezeitgesbootstrap);
 	printf("Insgesamt hat das Programm %f Sekunden gebraucht\n", zeitgesprogramm);
+	fprintf(zeitdatei, "2.0\t-1.0\t%f\t%f\n",(double)messungen, summezeitgesbootstrap); 
+	fprintf(zeitdatei, "3.0\t-1.0\t%f\t%f\n",(double)messungen, summezeitgesmessen); 
+	fprintf(zeitdatei, "4.0\t-1.0\t%f\t%f\n",(double)messungen, zeitgesprogramm); 
 	fclose(mittelwertdatei);
 	fclose(bootstrapalledatei);
 	fclose(ableitungdatei);
