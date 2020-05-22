@@ -7,7 +7,7 @@ ising: ising.o
 
 #erstellt aus allen .c dateien eine .o datei	
 %.o: %.c
-	gcc -std=c99 -Wall -pedantic -fopenmp $^ -c
+	gcc -std=c99 -Wall -pedantic -fopenmp -I /usr/include/ $^ -c
 	
 #.PHONY: clean
 
