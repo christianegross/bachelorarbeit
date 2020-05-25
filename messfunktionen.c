@@ -258,7 +258,7 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	double H=hamiltonian;//misst Gesamtveraenderung
 	double veraenderungH=0;//misst Veraenderung in einem parallen Thread
 	double delta=0;
-	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j*T), exp(-8*j*T)};
+	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
 	int changes =0;//misst Gesamtzahl der spinflips
 	int changesklein=0;//misst Spinflips in parallelen Thread
 	//schwarz: d1+d2 gerade
@@ -269,7 +269,7 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 			for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				delta=deltah(gitter, d1, d2, laenge);
 				if (deltahalt(gitter, d1, d2, laenge, j)!=j*(double)delta){
-					printf("Fehler bei delta: %f\n", deltahalt(gitter, d1, d2, laenge, j)-(j*(double)delta));
+					printf("Fehler bei delta: diff %f\t%f\t%f\n", deltahalt(gitter, d1, d2, laenge, j)-(j*(double)delta),deltahalt(gitter, d1, d2, laenge, j),(j*(double)delta) );
 				}
 				if (((d1+d2)%2==0)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, delta, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
 					flipspin(gitter, d1, d2, laenge);//in Gitter speichern

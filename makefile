@@ -5,9 +5,12 @@ LIBS:= -lgsl -lgslcblas -lm -fopenmp
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
 
-#erstellt programm ising
-ising: ising.o messfunktionen.o auswertungsfunktionen.o
+skalierung: skalierung.o messfunktionen.o auswertungsfunktionen.o
 	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+
+#erstellt programm ising
+#ising: ising.o messfunktionen.o auswertungsfunktionen.o
+#	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 	
 #erstellt aus allen .c dateien eine .o datei	
 %.o: %.c
