@@ -114,6 +114,9 @@ int main(int argc, char **argv){
 	printf("Insgesamt hat das Messen %f Sekunden gebraucht\n", summezeitgesmessen);
 	printf("Insgesamt hat das Botstrapping %f Sekunden gebraucht\n", summezeitgesbootstrap);
 	printf("Insgesamt hat das Programm %f Sekunden gebraucht\n", zeitgesprogramm);
+	fprintf(zeitdatei, "2.0\t-1.0\t%f\t%f\n",(double)messungen, summezeitgesbootstrap); 
+	fprintf(zeitdatei, "3.0\t-1.0\t%f\t%f\n",(double)messungen, summezeitgesmessen); 
+	fprintf(zeitdatei, "4.0\t-1.0\t%f\t%f\n",(double)messungen, zeitgesprogramm); 
 	fclose(mittelwertdatei);
 	fclose(bootstrapalledatei);
 	fclose(ableitungdatei);
