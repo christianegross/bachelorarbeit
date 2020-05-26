@@ -6,9 +6,9 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=100mb
-#SBATCH --time=00:45:00
-#SBATCH --output=skalierung-%j.out
-#SBATCH --error=errorskalierung-%j.out
+#SBATCH --time=00:25:00
+#SBATCH --output=outanderror/skalierung-%j.out
+#SBATCH --error=outanderror/errorskalierung-%j.out
 #SBATCH --nodelist=lcpunode01
 
 export OMP_NUM_THREAD=${SLURM_CPUS_PER_TASK}
