@@ -1,0 +1,197 @@
+Mon May 25 19:12:06 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon May 25 19:12:36 CEST 2020 Waiting done, starting task!
+Mon May 25 19:12:36 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon May 25 19:13:06 CEST 2020 Waiting done, starting task!
+bei 1 cores haben 100000 Messungen 39.123553 Sekunden gebraucht
+bei 2 cores haben 100000 Messungen 29.390132 Sekunden gebraucht
+bei 3 cores haben 100000 Messungen 23.661957 Sekunden gebraucht
+bei 4 cores haben 100000 Messungen 20.977245 Sekunden gebraucht
+bei 5 cores haben 100000 Messungen 22.259529 Sekunden gebraucht
+bei 6 cores haben 100000 Messungen 22.517688 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+bei 7 cores haben 100000 Messungen 23.067954 Sekunden gebraucht
+bei 8 cores haben 100000 Messungen 24.395658 Sekunden gebraucht
+bei 9 cores haben 100000 Messungen 24.479752 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+bei 10 cores haben 100000 Messungen 24.833015 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	-4.000000	-8.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-8.000000	-4.000000
+Fehler bei delta: diff 4.000000	-4.000000	-8.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+bei 11 cores haben 100000 Messungen 24.953616 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	-4.000000	-8.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+bei 12 cores haben 100000 Messungen 25.736538 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff -4.000000	-8.000000	-4.000000
+Fehler bei delta: diff -4.000000	-8.000000	-4.000000
+bei 13 cores haben 100000 Messungen 25.550959 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+bei 14 cores haben 100000 Messungen 27.286112 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	-4.000000	-8.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	-4.000000	-8.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff -4.000000	-8.000000	-4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff -4.000000	-8.000000	-4.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	-4.000000	-8.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+bei 15 cores haben 100000 Messungen 27.241220 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff -4.000000	-8.000000	-4.000000
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+Fehler bei delta: diff 4.000000	-4.000000	-8.000000
+bei 16 cores haben 100000 Messungen 28.048734 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit

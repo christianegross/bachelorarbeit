@@ -15,10 +15,10 @@ int main(int argc, char **argv){
 	int anzahlcores=1;
 	int maxcores=omp_get_max_threads();
 	omp_set_num_threads(anzahlcores);//Setzt die nummer an Kernen, die in den parallelen Regionen verwendet werden.
-	int laenge=50;//laenge der verwendeten Gitter
+	int laenge=100;//laenge der verwendeten Gitter
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
-	int messungen=100000;//pro temperatur, zweierpotenz um blocken einfacher zu machen
+	int messungen=10000;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	double temperatur=3.5;
 	FILE *messdatei, *dummydatei, *zeitdatei;
 	char dateinamemessen[150], dateinamezeit[150];
@@ -27,15 +27,16 @@ int main(int argc, char **argv){
 	int gitter[laenge*laenge];
 	initialisierung(gitter, laenge, seed);
 	dummydatei=fopen("dummytherm.txt", "w+");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird	
-	sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-laenge%.4d-m%.6d.txt",laenge,messungen);
+	sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-laenge%.4d-m%.6d-mehrere.txt",laenge,messungen);
 	zeitdatei=fopen(dateinamezeit, "w+");
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	gsl_rng_set(generator, seed);
 	thermalisieren(laenge, temperatur, j, seed, 1, gitter, dummydatei, generator);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	//ergleichsmassstab: Messungen bei einem core
+	for (int durchlauf=1; durchlauf<10;durchlauf+=1){
 	double speedup=1;
 	omp_set_num_threads(1);
-	sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-cores%.2d.txt",laenge,messungen,1);
+	sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-cores%.2d-%.2d.txt",laenge,messungen,1, durchlauf);
 	messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
 	gettimeofday(&anfangmessen, NULL);
 	messen(laenge, temperatur, j, messungen, dummydatei, messdatei, generator);
@@ -49,7 +50,7 @@ int main(int argc, char **argv){
 	//Messungen bei mehreren cores
 	for (int cores=2;cores<=maxcores;cores+=1){
 		omp_set_num_threads(cores);
-		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-cores%.2d.txt",laenge,messungen,cores);
+		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-cores%.2d-%.2d.txt",laenge,messungen,cores,durchlauf);
 		messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
 		gettimeofday(&anfangmessen, NULL);
 		messen(laenge, temperatur, j, messungen, dummydatei, messdatei, generator);
@@ -61,6 +62,7 @@ int main(int argc, char **argv){
 		printf("bei %d cores haben %d Messungen %f Sekunden gebraucht\n", cores, messungen, zeitgesmessen);
 		fprintf(zeitdatei, "%f\t%f\t%f\t%f\n", (double)cores, (double)messungen, zeitgesmessen, speedup);
 		fclose(messdatei);
+	}
 	}
 	fclose(dummydatei);
 	

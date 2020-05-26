@@ -1,0 +1,7 @@
+Mon May 25 19:04:06 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon May 25 19:04:36 CEST 2020 Waiting done, starting task!
+Mon May 25 19:04:36 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon May 25 19:05:06 CEST 2020 Waiting done, starting task!
+bei 1 cores haben 100000 Messungen 39.039816 Sekunden gebraucht
+bei 2 cores haben 100000 Messungen 21.505917 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit

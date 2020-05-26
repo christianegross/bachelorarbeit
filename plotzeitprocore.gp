@@ -1,13 +1,23 @@
 set ter pdfcairo size 5 in, 3.5 in
 
-set xlabel "Anzahl cores"
-set ylabel "Benötigte Zeit"
+set out "Messungen/speedup.pdf"
+set title "Laenge=50"
+set xlabel "Anzahl Prozessoren"
+set ylabel "Zeit(n Cores)/Zeit(1 Core)"
+
+plot "Messungen/Zeiten/zeitenmessen-laenge0050-m100000.txt" u 1:4 lt 7 title "" 
+set title "Laenge=200"
+#plot "Messungen/Zeiten/zeitenmessen-laenge0200-m100000.txt" u 1:4 lt 7 title "" 
 
 set out "Messungen/Zeitprocore.pdf"
 
 set style line 1 lc 7 lt 7 
 set style line 2 lc 1 lt 7
 set style line 3 lc 5 lt 7
+
+
+set xlabel "Anzahl cores"
+set ylabel "Benötigte Zeit"
 
 plot "Messungen/zeiten-laenge-0050-m-010000-cores-01.txt" u (($1==4)?1:1/0):4 ls 1 title "Gesamtzeit",\
 	 "Messungen/zeiten-laenge-0050-m-010000-cores-02.txt" u (($1==4)?2:1/0):4 ls 1 title "",\
