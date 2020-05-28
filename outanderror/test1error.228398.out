@@ -1,0 +1,7 @@
++ export OMP_NUM_THREADS=8
++ OMP_NUM_THREADS=8
++ export KMP_AFFINITY=balnce,granularity=fine,verbose
++ KMP_AFFINITY=balnce,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ srun /hiskp4/gross/bachelorarbeit/ising01
++ cd -

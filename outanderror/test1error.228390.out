@@ -1,0 +1,8 @@
++ export OMP_NUM_THREADS=8
++ OMP_NUM_THREADS=8
++ export KMP_AFFINITY=balnce,granularity=fine,verbose
++ KMP_AFFINITY=balnce,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ srun /hiskp4/gross/bachelorarbeit/ising
++ cd -
+slurmstepd: error: *** JOB 228390 ON lcpunode01 CANCELLED AT 2020-05-22T12:24:45 DUE TO TIME LIMIT ***
