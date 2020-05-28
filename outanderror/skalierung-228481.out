@@ -1,0 +1,163 @@
+Mon May 25 22:28:10 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon May 25 22:28:40 CEST 2020 Waiting done, starting task!
+Mon May 25 22:28:41 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon May 25 22:29:11 CEST 2020 Waiting done, starting task!
+bei 1 cores haben 10000 Messungen 15.746649 Sekunden gebraucht
+bei 2 cores haben 10000 Messungen 11.645666 Sekunden gebraucht
+bei 3 cores haben 10000 Messungen 8.940887 Sekunden gebraucht
+bei 4 cores haben 10000 Messungen 7.964975 Sekunden gebraucht
+bei 5 cores haben 10000 Messungen 8.190174 Sekunden gebraucht
+bei 6 cores haben 10000 Messungen 8.024960 Sekunden gebraucht
+bei 7 cores haben 10000 Messungen 8.362219 Sekunden gebraucht
+bei 8 cores haben 10000 Messungen 8.627330 Sekunden gebraucht
+bei 9 cores haben 10000 Messungen 8.468069 Sekunden gebraucht
+bei 10 cores haben 10000 Messungen 8.672411 Sekunden gebraucht
+bei 11 cores haben 10000 Messungen 8.576788 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+bei 12 cores haben 10000 Messungen 8.805212 Sekunden gebraucht
+bei 13 cores haben 10000 Messungen 8.716670 Sekunden gebraucht
+bei 14 cores haben 10000 Messungen 9.012455 Sekunden gebraucht
+bei 15 cores haben 10000 Messungen 8.874875 Sekunden gebraucht
+bei 16 cores haben 10000 Messungen 9.157026 Sekunden gebraucht
+bei 1 cores haben 10000 Messungen 15.894818 Sekunden gebraucht
+bei 2 cores haben 10000 Messungen 11.819442 Sekunden gebraucht
+bei 3 cores haben 10000 Messungen 9.052610 Sekunden gebraucht
+bei 4 cores haben 10000 Messungen 7.756356 Sekunden gebraucht
+bei 5 cores haben 10000 Messungen 8.143753 Sekunden gebraucht
+bei 6 cores haben 10000 Messungen 7.796042 Sekunden gebraucht
+bei 7 cores haben 10000 Messungen 8.352595 Sekunden gebraucht
+bei 8 cores haben 10000 Messungen 8.180664 Sekunden gebraucht
+bei 9 cores haben 10000 Messungen 8.713612 Sekunden gebraucht
+bei 10 cores haben 10000 Messungen 8.579339 Sekunden gebraucht
+bei 11 cores haben 10000 Messungen 8.544740 Sekunden gebraucht
+bei 12 cores haben 10000 Messungen 9.074464 Sekunden gebraucht
+bei 13 cores haben 10000 Messungen 8.850686 Sekunden gebraucht
+bei 14 cores haben 10000 Messungen 9.012057 Sekunden gebraucht
+bei 15 cores haben 10000 Messungen 9.121874 Sekunden gebraucht
+bei 16 cores haben 10000 Messungen 9.053803 Sekunden gebraucht
+bei 1 cores haben 10000 Messungen 15.857344 Sekunden gebraucht
+bei 2 cores haben 10000 Messungen 11.779509 Sekunden gebraucht
+bei 3 cores haben 10000 Messungen 9.022515 Sekunden gebraucht
+bei 4 cores haben 10000 Messungen 7.882738 Sekunden gebraucht
+bei 5 cores haben 10000 Messungen 8.194123 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+bei 6 cores haben 10000 Messungen 7.984791 Sekunden gebraucht
+bei 7 cores haben 10000 Messungen 8.313069 Sekunden gebraucht
+bei 8 cores haben 10000 Messungen 8.263015 Sekunden gebraucht
+bei 9 cores haben 10000 Messungen 9.086540 Sekunden gebraucht
+bei 10 cores haben 10000 Messungen 8.657428 Sekunden gebraucht
+bei 11 cores haben 10000 Messungen 8.530059 Sekunden gebraucht
+bei 12 cores haben 10000 Messungen 8.821533 Sekunden gebraucht
+bei 13 cores haben 10000 Messungen 8.700859 Sekunden gebraucht
+bei 14 cores haben 10000 Messungen 8.881218 Sekunden gebraucht
+bei 15 cores haben 10000 Messungen 9.223724 Sekunden gebraucht
+bei 16 cores haben 10000 Messungen 9.176597 Sekunden gebraucht
+bei 1 cores haben 10000 Messungen 15.479466 Sekunden gebraucht
+bei 2 cores haben 10000 Messungen 11.644330 Sekunden gebraucht
+bei 3 cores haben 10000 Messungen 9.049899 Sekunden gebraucht
+bei 4 cores haben 10000 Messungen 7.789009 Sekunden gebraucht
+bei 5 cores haben 10000 Messungen 8.185705 Sekunden gebraucht
+bei 6 cores haben 10000 Messungen 7.816864 Sekunden gebraucht
+bei 7 cores haben 10000 Messungen 8.303566 Sekunden gebraucht
+bei 8 cores haben 10000 Messungen 8.538280 Sekunden gebraucht
+bei 9 cores haben 10000 Messungen 8.380992 Sekunden gebraucht
+bei 10 cores haben 10000 Messungen 8.648487 Sekunden gebraucht
+bei 11 cores haben 10000 Messungen 8.484251 Sekunden gebraucht
+bei 12 cores haben 10000 Messungen 8.686347 Sekunden gebraucht
+bei 13 cores haben 10000 Messungen 8.682359 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+bei 14 cores haben 10000 Messungen 8.921497 Sekunden gebraucht
+bei 15 cores haben 10000 Messungen 9.019544 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+bei 16 cores haben 10000 Messungen 9.151902 Sekunden gebraucht
+bei 1 cores haben 10000 Messungen 15.707736 Sekunden gebraucht
+bei 2 cores haben 10000 Messungen 11.730902 Sekunden gebraucht
+bei 3 cores haben 10000 Messungen 9.212735 Sekunden gebraucht
+bei 4 cores haben 10000 Messungen 7.865350 Sekunden gebraucht
+bei 5 cores haben 10000 Messungen 8.206875 Sekunden gebraucht
+bei 6 cores haben 10000 Messungen 7.983320 Sekunden gebraucht
+bei 7 cores haben 10000 Messungen 8.339628 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+bei 8 cores haben 10000 Messungen 8.802113 Sekunden gebraucht
+bei 9 cores haben 10000 Messungen 9.013319 Sekunden gebraucht
+bei 10 cores haben 10000 Messungen 8.657700 Sekunden gebraucht
+bei 11 cores haben 10000 Messungen 8.568096 Sekunden gebraucht
+bei 12 cores haben 10000 Messungen 8.673416 Sekunden gebraucht
+bei 13 cores haben 10000 Messungen 8.668244 Sekunden gebraucht
+bei 14 cores haben 10000 Messungen 8.982433 Sekunden gebraucht
+bei 15 cores haben 10000 Messungen 8.942977 Sekunden gebraucht
+bei 16 cores haben 10000 Messungen 9.102103 Sekunden gebraucht
+bei 1 cores haben 10000 Messungen 15.451485 Sekunden gebraucht
+bei 2 cores haben 10000 Messungen 11.886047 Sekunden gebraucht
+bei 3 cores haben 10000 Messungen 9.158251 Sekunden gebraucht
+bei 4 cores haben 10000 Messungen 7.870316 Sekunden gebraucht
+bei 5 cores haben 10000 Messungen 8.255779 Sekunden gebraucht
+bei 6 cores haben 10000 Messungen 7.954244 Sekunden gebraucht
+bei 7 cores haben 10000 Messungen 8.304190 Sekunden gebraucht
+bei 8 cores haben 10000 Messungen 8.424340 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	8.000000	4.000000
+bei 9 cores haben 10000 Messungen 8.478767 Sekunden gebraucht
+bei 10 cores haben 10000 Messungen 8.647767 Sekunden gebraucht
+bei 11 cores haben 10000 Messungen 8.479585 Sekunden gebraucht
+bei 12 cores haben 10000 Messungen 8.660769 Sekunden gebraucht
+bei 13 cores haben 10000 Messungen 8.635742 Sekunden gebraucht
+bei 14 cores haben 10000 Messungen 8.901980 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+bei 15 cores haben 10000 Messungen 8.874505 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+bei 16 cores haben 10000 Messungen 8.893626 Sekunden gebraucht
+bei 1 cores haben 10000 Messungen 15.549204 Sekunden gebraucht
+bei 2 cores haben 10000 Messungen 11.473401 Sekunden gebraucht
+bei 3 cores haben 10000 Messungen 9.014959 Sekunden gebraucht
+bei 4 cores haben 10000 Messungen 7.800954 Sekunden gebraucht
+bei 5 cores haben 10000 Messungen 8.194305 Sekunden gebraucht
+bei 6 cores haben 10000 Messungen 8.108484 Sekunden gebraucht
+bei 7 cores haben 10000 Messungen 8.211481 Sekunden gebraucht
+bei 8 cores haben 10000 Messungen 8.641661 Sekunden gebraucht
+bei 9 cores haben 10000 Messungen 8.422432 Sekunden gebraucht
+bei 10 cores haben 10000 Messungen 8.628891 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+bei 11 cores haben 10000 Messungen 8.533318 Sekunden gebraucht
+bei 12 cores haben 10000 Messungen 8.810216 Sekunden gebraucht
+bei 13 cores haben 10000 Messungen 8.584673 Sekunden gebraucht
+bei 14 cores haben 10000 Messungen 9.939714 Sekunden gebraucht
+bei 15 cores haben 10000 Messungen 8.942458 Sekunden gebraucht
+bei 16 cores haben 10000 Messungen 8.981452 Sekunden gebraucht
+bei 1 cores haben 10000 Messungen 15.434165 Sekunden gebraucht
+bei 2 cores haben 10000 Messungen 11.654652 Sekunden gebraucht
+bei 3 cores haben 10000 Messungen 9.092971 Sekunden gebraucht
+bei 4 cores haben 10000 Messungen 7.688990 Sekunden gebraucht
+bei 5 cores haben 10000 Messungen 8.247300 Sekunden gebraucht
+bei 6 cores haben 10000 Messungen 7.995099 Sekunden gebraucht
+bei 7 cores haben 10000 Messungen 8.262452 Sekunden gebraucht
+bei 8 cores haben 10000 Messungen 8.272840 Sekunden gebraucht
+bei 9 cores haben 10000 Messungen 8.457170 Sekunden gebraucht
+bei 10 cores haben 10000 Messungen 8.554142 Sekunden gebraucht
+bei 11 cores haben 10000 Messungen 8.787087 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+bei 12 cores haben 10000 Messungen 9.184470 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	-0.000000	4.000000
+bei 13 cores haben 10000 Messungen 8.726388 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+bei 14 cores haben 10000 Messungen 9.062159 Sekunden gebraucht
+bei 15 cores haben 10000 Messungen 8.986971 Sekunden gebraucht
+bei 16 cores haben 10000 Messungen 9.078350 Sekunden gebraucht
+bei 1 cores haben 10000 Messungen 15.470628 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+bei 2 cores haben 10000 Messungen 11.838235 Sekunden gebraucht
+bei 3 cores haben 10000 Messungen 8.814257 Sekunden gebraucht
+bei 4 cores haben 10000 Messungen 7.809366 Sekunden gebraucht
+bei 5 cores haben 10000 Messungen 8.227283 Sekunden gebraucht
+bei 6 cores haben 10000 Messungen 8.114806 Sekunden gebraucht
+bei 7 cores haben 10000 Messungen 8.327151 Sekunden gebraucht
+bei 8 cores haben 10000 Messungen 8.174242 Sekunden gebraucht
+bei 9 cores haben 10000 Messungen 8.457036 Sekunden gebraucht
+bei 10 cores haben 10000 Messungen 8.568447 Sekunden gebraucht
+bei 11 cores haben 10000 Messungen 8.513134 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	-0.000000	-4.000000
+bei 12 cores haben 10000 Messungen 8.773225 Sekunden gebraucht
+bei 13 cores haben 10000 Messungen 8.677284 Sekunden gebraucht
+bei 14 cores haben 10000 Messungen 8.917295 Sekunden gebraucht
+bei 15 cores haben 10000 Messungen 8.914803 Sekunden gebraucht
+bei 16 cores haben 10000 Messungen 9.104343 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit

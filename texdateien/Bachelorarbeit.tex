@@ -42,7 +42,7 @@
 	\chapter{Theoretischer Hintergrund}
 	
 	\section{Das Ising-Modell}
-	Beim Ising-Modell handelt es sich um ein Modell für einen Ferromagneten mit starker uniaxialer Anisotropie\cite{binderheerman}. Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang. Hier: zweidimensionales Gitter.
+	Beim Ising-Modell handelt es sich um ein Modell für einen Ferromagneten mit starker uniaxialer Anisotropie\cite{binderheermann}. Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang. Hier: zweidimensionales Gitter.
 	
 	Hamiltonian des Systems(Zitat?):
 	\begin{equation}
@@ -66,7 +66,9 @@
 	M^2=\lim\limits_{m\to\infty}\left\langle s_i s_{i+m}\right\rangle \]
 	
 	Erwartete Magnetisierung unterhalb des kritischen Punkt nach \cite{YangMagnetization}, \cite{MontrollMagnetization}:
-	\[ M=\left[1-\left(\sinh\left(\frac{2J}{k_BT}\right)\right)^{-2}\right]^{\frac{1}{8}}\]
+	\begin{equation} M=\left[1-\left(\sinh\left(\frac{2J}{k_BT}\right)\right)^{-2}\right]^{\frac{1}{8}}
+	\label{eq:magnetisierungsgleichungliteratur}
+	\end{equation}
 	
 	Oberhalb der kritischen Temperatur ist die Magnetisierung null \cite{MontrollMagnetization}.
 	
@@ -184,8 +186,8 @@
 	\end{figure}
 	
 	Magnetisierung: Für kleine Temperaturen 1 mit geringem Fehler, wird zwischen T=1,5 und T=3 kleiner, dabei größere Fehler, bei hohen Temperaturen Magnetisierung fast null mit kleinem Fehler. Vergleich mit erwartetem Wert in Bild \ref{fig:magnetisierungbootstrap-l-128}.
-	Kritischer Punkt für $J=1:\quad T=2,269$ nach Gl. \ref{eq:kritischetemperatur}, durch Ableitung (Bild) bestimmt zu $T=2,303\pm0,015$. Fehler, da kritischer Punkt in Region zwischen Wert und den nächsten Stützstellen liegen muss.
-	Unterhalb kritischer Punkt: Passt gut zu Ergebnis, Verhalten wie erwartet.
+	Kritischer Punkt für ${J=1:}\quad {T=2,269}$ nach Gl. \ref{eq:kritischetemperatur}, durch Ableitung (Bild) bestimmt zu $T=2,303\pm0,015$. Fehler, da kritischer Punkt in Region zwischen Wert und den nächsten Stützstellen liegen muss.
+	Unterhalb kritischer Punkt: Keinen Unterschied zu Gleichung \ref{eq:magnetisierungsgleichungliteratur}. Passt gut zu Ergebnis, Verhalten wie erwartet.
 	Oberhalb kritischer Punkt: weicht von Ergebnis aus Literatur ab, da Gitter endlich ist. Abweichung wird mit größerer Gitterlänge kleiner.
 	
 	

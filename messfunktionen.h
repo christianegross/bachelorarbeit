@@ -1,3 +1,5 @@
+//Christiane, 25.05.20
+//Header-Datei mit den Funktionen, die zum Messen in der Bachelorarbeit benoetigt werden
 #pragma once
 void initialisierung(int *gitter, int laenge, int seed);
 void ausgabe(int *gitter, int laenge, FILE *datei);
@@ -8,7 +10,7 @@ double hamiltonian(int *gitter, int laenge, double j);
 double deltahalt(int *gitter, int d1, int d2, int laenge, double j);
 int tryflipalt(int *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double delta);
 int deltah(int *gitter, int d1, int d2, int laenge);
-int tryflip(int *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double delta, double wahrscheinlichkeit);
+int tryflip(int *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double wahrscheinlichkeit);
 void flipspin(int *gitter, int d1, int d2, int laenge);
 double wahrscheinlichkeit(int delta, double *wahrscheinlichkeiten);
 double sweepaltohnepar(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen);

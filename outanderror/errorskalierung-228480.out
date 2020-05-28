@@ -1,0 +1,9 @@
++ export OMP_NUM_THREAD=16
++ OMP_NUM_THREAD=16
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ srun /hiskp4/gross/bachelorarbeit/skalierung
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** JOB 228480 ON lcpunode01 CANCELLED AT 2020-05-25T22:26:44 ***
+slurmstepd: error: *** STEP 228480.0 ON lcpunode01 CANCELLED AT 2020-05-25T22:26:44 ***

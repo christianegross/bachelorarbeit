@@ -76,6 +76,7 @@ int main(int argc, char **argv){
 		summezeitgesmessen+=zeitgesmessen;
 		//printf("bei T=%f haben %d Messungen %f Sekunden gebraucht\n", temperaturarray[n], messungen, zeitgesmessen);
 		fprintf(zeitdatei, "0.0\t%f\t%f\t%f\n", temperaturarray[n], (double)messungen, zeitgesmessen);
+		//Berechnung der naiven Standardfehler
 		mittelwertakz=mittelwertberechnungnaiv(messdatei, messungen, 1, 3);
 		varianzakz=varianzberechnungnaiv(messdatei, messungen, mittelwertakz, 1, 3);
 		mittelwertmag=mittelwertberechnungnaiv(messdatei, messungen, 2, 3);
@@ -117,12 +118,13 @@ int main(int argc, char **argv){
 	fprintf(zeitdatei, "2.0\t-1.0\t%f\t%f\n",(double)messungen, summezeitgesbootstrap); 
 	fprintf(zeitdatei, "3.0\t-1.0\t%f\t%f\n",(double)messungen, summezeitgesmessen); 
 	fprintf(zeitdatei, "4.0\t-1.0\t%f\t%f\n",(double)messungen, zeitgesprogramm); 
+	
+	
 	fclose(mittelwertdatei);
 	fclose(bootstrapalledatei);
 	fclose(ableitungdatei);
 	fclose(zeitdatei);
 	free(temperaturarray);
 	gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen
-	printf("\a");
 	return 0;
 }
