@@ -6,7 +6,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=100mb
-#SBATCH --time=00:25:00
+#SBATCH --time=00:27:00
 #SBATCH --output=outanderror/skalierung-%j.out
 #SBATCH --error=outanderror/errorskalierung-%j.out
 #SBATCH --nodelist=lcpunode01
