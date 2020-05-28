@@ -1,3 +1,5 @@
+//Christiane, 25.05.20
+//Header-Datei mit den Funktionen, die zum Auswerten in der Bachelorarbeit benoetigt werden
 #pragma once
 
 

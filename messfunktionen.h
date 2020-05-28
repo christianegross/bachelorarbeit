@@ -1,3 +1,5 @@
+//Christiane, 25.05.20
+//Header-Datei mit den Funktionen, die zum Messen in der Bachelorarbeit benoetigt werden
 #pragma once
 void initialisierung(int *gitter, int laenge, int seed);
 void ausgabe(int *gitter, int laenge, FILE *datei);

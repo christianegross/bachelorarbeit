@@ -258,27 +258,21 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	double H=hamiltonian;//misst Gesamtveraenderung
 	double veraenderungH=0;//misst Veraenderung in einem parallen Thread
 	int delta=0;
-	int d1=0, d2=0, pos1, pos2, gitterwert;
+	int d1=0, d2=0;
 	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
 	int changes =0;//misst Gesamtzahl der spinflips
 	int changesklein=0;//misst Spinflips in parallelen Thread
 	//schwarz: d1+d2 gerade
-	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2, pos1, pos2, gitterwert) shared (H, changes)
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
 	{
 		#pragma omp for
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==0){
 				delta=deltah(gitter, d1, d2, laenge);
-				gitterwert=gitter[laenge*d1+d2];
-				pos1=d1;
-				pos2=d2;
 				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
 					printf("schwarz Fehler bei delta\n");
 				}
-				if (pos1!=d1){printf("Fehler bei pos1\n");}
-				if (pos2!=d2){printf("Fehler bei pos2\n");}
-				if(gitterwert!=gitter[laenge*d1+d2]){printf("Fehler bei gitter\n");}
 				if (((d1+d2)%2==0)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
 					//flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 					gitter[laenge*d1+d2]*=-1;
@@ -288,7 +282,7 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 			}
 			}
 		}
-		#pragma omp critical//damit das updaten keine konflikte verursacht
+		#pragma omp critical schwarzepunkte//damit das updaten keine konflikte verursacht, Name, damit die critical regionen unabhängig voneinander sind 
 		{H+=veraenderungH;
 			changes+=changesklein;}
 		#pragma omp barrier
@@ -296,21 +290,16 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	veraenderungH=0;//Zuruecksetzen, damit in naechster paralleler Region nur deren Veraenderungen gezaehlt werden
 	changesklein=0;
 	//weiss: d1+d2 ungerade, sonst analog zu schwarz
-	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2, pos1, pos2) shared (H, changes)
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
 	{
 		#pragma omp for
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==0){
 				delta=deltah(gitter, d1, d2, laenge);
-				pos1=d1;
-				pos2=d2;
 				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
 					printf("weiß    Fehler bei delta\n");
 				}
-				
-				if (pos1!=d1){printf("weiß   Fehler bei pos1\n");}
-				if (pos2!=d2){printf("weiß   Fehler bei pos2\n");}
 				if (((d1+d2)%2==1)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
 					flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 					veraenderungH+=j*delta;
@@ -319,13 +308,13 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 			}
 			}
 		}
-		#pragma omp critical
+		#pragma omp critical weissepunkte
 		{H+=veraenderungH;
 		changes+=changesklein;}
 		#pragma omp barrier
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
-	double magnetisierung=(double)gittersumme(gitter, laenge)/(double)laenge/(double)laenge;
+	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
 	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
