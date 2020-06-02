@@ -16,6 +16,15 @@ plot "Messungen/Zeiten/zeitenmessen-laenge0050-m100000.txt" u 1:(1/$4) lt 7 titl
 set title "Laenge=100"
 plot "Messungen/Zeiten/zeitenmessen-laenge0100-m010000-mehrere.txt" u 1:(1/$4) lt 7 title "" 
 
+set out "Messungen/speedup1000.pdf"
+set title "Laenge=1000"
+plot "Messungen/Zeiten/zeitenmessen-laenge1000-m001000-mehrere.txt" u 1:(1/$4) lt 7 title "" 
+
+set ylabel "Zeit(n Cores)/Zeit(1 Core)"
+
+set title "Laenge=1000"
+plot "Messungen/Zeiten/zeitenmessen-laenge1000-m001000-mehrere.txt" u 1:4 lt 7 title "" 
+
 
 set out "Messungen/Zeiten/zeitprocore.pdf"
 
