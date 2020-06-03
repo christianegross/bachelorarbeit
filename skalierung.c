@@ -14,7 +14,7 @@ int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
 	int maxcores=omp_get_max_threads();//aus Computerarchitektut/batchskript
 	int laenge=10;//laenge der verwendeten Gitter
-	int lenarray[6]={6, 10,20, 36, 50, 100};//, 200, 350, 500};
+	int lenarray[9]={6, 10,20, 36, 50, 100, 200, 350, 500};
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=1000;//pro temperatur
@@ -30,7 +30,7 @@ int main(int argc, char **argv){
 	zeitdatei=fopen(dateinamezeit, "w+");
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	gsl_rng_set(generator, seed);
-	for (int laengen=0; laengen<6; laengen+=1){
+	for (int laengen=0; laengen<9; laengen+=1){
 		laenge=lenarray[laengen];
 		printf("Laenge=%d\n", laenge);
 		int gitter[laenge*laenge];//Gitter erstellen und von thermalisieren ausgeben lassen

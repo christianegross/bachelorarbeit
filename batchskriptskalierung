@@ -9,7 +9,7 @@
 #SBATCH --time=00:45:00
 #SBATCH --output=outanderror/skalierung-%j.out
 #SBATCH --error=outanderror/errorskalierung-%j.out
-#SBATCH --nodelist=lcpunode01
+#SBATCH --nodelist=lcpunode02
 
 export OMP_NUM_THREAD=${SLURM_CPUS_PER_TASK}
 export KMP_AFFINITY=balanced,granularity=fine,verbose
