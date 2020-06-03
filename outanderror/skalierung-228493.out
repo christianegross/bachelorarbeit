@@ -1,0 +1,21 @@
+Wed May 27 05:41:40 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed May 27 05:42:10 CEST 2020 Waiting done, starting task!
+Wed May 27 05:42:10 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed May 27 05:42:40 CEST 2020 Waiting done, starting task!
+bei 1 cores haben 1000 Messungen 152.335586 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 108.931005 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 86.557624 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 77.885091 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 80.068851 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 77.795928 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 80.621083 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 78.912277 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 82.155857 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 78.805570 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 81.541224 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 80.116433 Sekunden gebraucht
+bei 13 cores haben 1000 Messungen 81.652093 Sekunden gebraucht
+bei 14 cores haben 1000 Messungen 81.100307 Sekunden gebraucht
+bei 15 cores haben 1000 Messungen 82.246671 Sekunden gebraucht
+bei 16 cores haben 1000 Messungen 82.027181 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit

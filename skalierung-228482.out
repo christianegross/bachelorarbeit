@@ -1,0 +1,41 @@
+Tue May 26 08:12:21 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue May 26 08:12:51 CEST 2020 Waiting done, starting task!
+Tue May 26 08:12:51 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue May 26 08:13:21 CEST 2020 Waiting done, starting task!
+bei 1 cores haben 10000 Messungen 61.280889 Sekunden gebraucht
+bei 2 cores haben 10000 Messungen 45.995170 Sekunden gebraucht
+bei 3 cores haben 10000 Messungen 35.350669 Sekunden gebraucht
+bei 4 cores haben 10000 Messungen 31.129030 Sekunden gebraucht
+bei 5 cores haben 10000 Messungen 32.439092 Sekunden gebraucht
+bei 6 cores haben 10000 Messungen 31.655433 Sekunden gebraucht
+bei 7 cores haben 10000 Messungen 32.707526 Sekunden gebraucht
+bei 8 cores haben 10000 Messungen 32.902571 Sekunden gebraucht
+Fehler bei delta: diff 4.000000	4.000000	0.000000
+bei 9 cores haben 10000 Messungen 33.392881 Sekunden gebraucht
+bei 10 cores haben 10000 Messungen 33.238163 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	4.000000	8.000000
+bei 11 cores haben 10000 Messungen 32.922398 Sekunden gebraucht
+bei 12 cores haben 10000 Messungen 32.760155 Sekunden gebraucht
+bei 13 cores haben 10000 Messungen 32.958419 Sekunden gebraucht
+bei 14 cores haben 10000 Messungen 33.502213 Sekunden gebraucht
+bei 15 cores haben 10000 Messungen 33.187269 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+bei 16 cores haben 10000 Messungen 33.702698 Sekunden gebraucht
+bei 1 cores haben 10000 Messungen 61.144696 Sekunden gebraucht
+bei 2 cores haben 10000 Messungen 45.707192 Sekunden gebraucht
+bei 3 cores haben 10000 Messungen 35.389036 Sekunden gebraucht
+bei 4 cores haben 10000 Messungen 31.458784 Sekunden gebraucht
+bei 5 cores haben 10000 Messungen 32.385268 Sekunden gebraucht
+bei 6 cores haben 10000 Messungen 32.273695 Sekunden gebraucht
+Fehler bei delta: diff -4.000000	-4.000000	0.000000
+bei 7 cores haben 10000 Messungen 32.706824 Sekunden gebraucht
+bei 8 cores haben 10000 Messungen 32.880117 Sekunden gebraucht
+bei 9 cores haben 10000 Messungen 33.345312 Sekunden gebraucht
+bei 10 cores haben 10000 Messungen 33.326383 Sekunden gebraucht
+bei 11 cores haben 10000 Messungen 33.726535 Sekunden gebraucht
+bei 12 cores haben 10000 Messungen 33.377972 Sekunden gebraucht
+bei 13 cores haben 10000 Messungen 33.186930 Sekunden gebraucht
+bei 14 cores haben 10000 Messungen 34.006765 Sekunden gebraucht
+bei 15 cores haben 10000 Messungen 33.197624 Sekunden gebraucht
+bei 16 cores haben 10000 Messungen 33.533275 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit
