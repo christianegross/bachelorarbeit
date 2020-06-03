@@ -4,7 +4,7 @@
 #SBATCH --mail-user=s6chgros@uni-bonn.de
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=5
+#SBATCH --cpus-per-task=9
 #SBATCH --mem=100mb
 #SBATCH --time=00:45:00
 #SBATCH --output=outanderror/skalierung-%j.out

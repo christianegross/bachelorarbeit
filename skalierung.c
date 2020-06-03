@@ -29,7 +29,7 @@ int main(int argc, char **argv){
 	zeitdatei=fopen(dateinamezeit, "w+");
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	gsl_rng_set(generator, seed);
-	for (int laengen=0; laengen<6; laengen+=1){
+	for (int laengen=0; laengen<9; laengen+=1){
 		laenge=lenarray[laengen];
 		printf("Laenge=%d\n", laenge);
 		int gitter[laenge*laenge];//Gitter erstellen und von thermalisieren ausgeben lassen
