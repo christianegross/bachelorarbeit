@@ -4,6 +4,18 @@ set out "Messungen/speedup.pdf"
 set xlabel "Anzahl Prozessoren"
 set ylabel "Zeit(n Cores)/Zeit(1 Core)"
 
+set title "Vergleich mehrere Längen"
+
+set xrange[0.5:9.5]
+plot "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==10)?$1:1/0):4 lt 1 title "laenge=10",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==50)?$1:1/0):4 lt 2 title "laenge=50",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==100)?$1:1/0):4 lt 3 title "laenge=100",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==200)?$1:1/0):4 lt 4 title "laenge=200",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==350)?$1:1/0):4 lt 5 title "laenge=350",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==500)?$1:1/0):4 lt 6 title "laenge=500"
+unset xrange
+
+
 set title "Laenge=50"
 plot "Messungen/Zeiten/zeitenmessen-laenge0050-m100000.txt" u 1:4 lt 7 title "" 
 set title "Laenge=100"
