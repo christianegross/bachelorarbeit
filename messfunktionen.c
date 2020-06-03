@@ -282,7 +282,7 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 			}
 			}
 		}
-		#pragma omp critical schwarzepunkte//damit das updaten keine konflikte verursacht, Name, damit die critical regionen unabhängig voneinander sind 
+		#pragma omp critical (schwarzepunkte)//damit das updaten keine konflikte verursacht, Name, damit die critical regionen unabhängig voneinander sind 
 		{H+=veraenderungH;
 			changes+=changesklein;}
 		#pragma omp barrier
@@ -308,7 +308,7 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 			}
 			}
 		}
-		#pragma omp critical weissepunkte
+		#pragma omp critical (weissepunkte)
 		{H+=veraenderungH;
 		changes+=changesklein;}
 		#pragma omp barrier
@@ -349,3 +349,4 @@ void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FI
 		H=sweep(gitter, laenge, j, T, generator, H, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
 	}
 }
+//Ein Kommentar
