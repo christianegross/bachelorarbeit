@@ -4,18 +4,18 @@
 #SBATCH --mail-user=s6chgros@uni-bonn.de
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=12
+#SBATCH --cpus-per-task=16
 #SBATCH --mem=200mb
-#SBATCH --time=01:00:00
+#SBATCH --time=01:15:00
 #SBATCH --output=outanderror/skalierung-%j.out
 #SBATCH --error=outanderror/errorskalierung-%j.out
-#SBATCH --nodelist=lcpunode02
+#SBATCH --nodelist=lcpunode01
 
 export OMP_NUM_THREAD=${SLURM_CPUS_PER_TASK}
 export KMP_AFFINITY=balanced,granularity=fine,verbose
 
 cd /hiskp4/gross/bachelorarbeit
 
-srun /hiskp4/gross/bachelorarbeit/skalierungnode02
+srun /hiskp4/gross/bachelorarbeit/skalierungnode01
 
 cd -
