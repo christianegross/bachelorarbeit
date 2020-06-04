@@ -14,7 +14,7 @@ int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
 	int maxcores=omp_get_max_threads();//aus Computerarchitektut/batchskript
 	int laenge=10;//laenge der verwendeten Gitter
-	int lenarray[8]={6, 10,20, 36, 50, 100, 200, 500};
+	int lenarray[8]={6, 10,20, 36, 50, 100, 200, 350};
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=1000;//pro temperatur
