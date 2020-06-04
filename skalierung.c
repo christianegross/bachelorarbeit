@@ -33,8 +33,8 @@ int main(int argc, char **argv){
 	double sec, usec, zeitgesmessen, zeiteincore, varianzeincore;
 	dummydatei=fopen("dummytherm.txt", "w+");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird	
 	//sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-laenge%.4d-m%.6d-mehrere.txt",laenge,messungen);
-	sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-m%.6d-mehrerelaengenunddurchlaeufenode01.txt",messungen);
-	sprintf(dateinamemittel,"Messungen/Zeiten/zeitenmittel-m%.6d-mehrerelaengenunddurchlaeufenode01.txt",messungen);
+	sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-m%.6d-mehrerelaengenunddurchlaeufenode01dynamic.txt",messungen);
+	sprintf(dateinamemittel,"Messungen/Zeiten/zeitenmittel-m%.6d-mehrerelaengenunddurchlaeufenode01dynamic.txt",messungen);
 	zeitdatei=fopen(dateinamezeit, "w+");
 	mitteldatei=fopen(dateinamemittel, "w+");
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
