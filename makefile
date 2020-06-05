@@ -5,7 +5,7 @@ LIBS:= -lgsl -lgslcblas -lm -fopenmp
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
 
-skalierungnode01: skalierung.o messfunktionen.o auswertungsfunktionen.o
+skalierungnode02: skalierung.o messfunktionen.o auswertungsfunktionen.o
 	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
 #erstellt programm ising
