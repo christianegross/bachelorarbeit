@@ -31,11 +31,25 @@ void initialisierung(char *gitter, int laenge, int seed){
 }
 
 
+void ausgabemitplot(char *gitter, int laenge, FILE *datei, FILE *plotdatei){
+	//gibt ein laenge *laenge quadratisches Gitter in datei aus
+	//Genau wie ausgabe, nur mit Ausgabe zusaetzlich in ints, damit gnuplot plotten kann
+	for (int d1=0; d1<laenge; d1++){//geht in erster dimension durch
+		for (int d2=0; d2<laenge; d2++){//geht in zweiter dimension durch
+			fprintf(datei, "%3d\t%3d\t%c\n",d1, d2, gitter[laenge*d1+d2]);//Gibt Zeile, Spalte und Wert an
+			fprintf(plotdatei, "%3d\t%3d\t%d\n",d1, d2, (int)gitter[laenge*d1+d2]);//Gibt Zeile, Spalte und Wert an
+			//printf("%3d\t%3d\t%c\n",d1, d2, gitter[laenge*d1+d2]);//Gibt Zeile, Spalte und Wert an
+			//printf("%c\t%c\t%c\n", 1, -1, 100);
+			//if ((d1+d2)%2==0){printf("0\n");}
+		}
+	}
+}
+
 void ausgabe(char *gitter, int laenge, FILE *datei){
 	//gibt ein laenge *laenge quadratisches Gitter in datei aus
 	for (int d1=0; d1<laenge; d1++){//geht in erster dimension durch
 		for (int d2=0; d2<laenge; d2++){//geht in zweiter dimension durch
-			fprintf(datei, "%3d \t %3d \t %c \n",d1, d2, gitter[laenge*d1+d2]);//Gibt Zeile, Spalte und Wert an
+			fprintf(datei, "%3d\t%3d\t%c\n",d1, d2, gitter[laenge*d1+d2]);//Gibt Zeile, Spalte und Wert an
 		}
 	}
 }
@@ -133,7 +147,7 @@ int tryflipalt(char *gitter,  int d1, int d2, int laenge, double j, double T, gs
 
 int deltah(char *gitter, int d1, int d2, int laenge){
 	//berechnet Energieänderung bei Flip des Spins an position d1, d2
-	double delta=0;
+	int delta=0;
 	//-2*aktueller Zustand: 1-(2*1)=-1, (-1)-(-1*2)=1
 	delta+=2*gitter[laenge*d1+d2]*gitter[laenge*((d1-1+laenge)%(laenge))+d2];//oben
 	delta+=2*gitter[laenge*d1+d2]*gitter[laenge*((d1+1)%(laenge))+d2];//unten
@@ -389,6 +403,26 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 	return H;
 }
 		
+
+void thermalisierenmitplot(int laenge, double T, double j, int seed,int N0, char *gitter, FILE *ausgabedatei, FILE *plotdatei, gsl_rng *generator){
+	//erzeugt ein thermalisiertes Gitter mit laenge*laenge, T, j, seed in ausgabedatei
+	//seed im Moment nicht benoetigt, da Gitter von vorheriger Temperatur benutzt wird
+	//Genau wie thermalisieren, nur mit Ausgabe zusaetzlich in ints, damit gnuplot plotten kann
+	//generator für thermalisieren innerhalb derFunktion seeden?
+	//int gitter[laenge*laenge];
+	//initialisierung(gitter, laenge, seed);//Initialisiert Gitter
+	double H=hamiltonian(gitter, laenge, seed);//Anfangsenergie
+	double Hneu=H;
+	double Halt=H+laenge*j+1;
+	FILE *dummyfile=fopen("dummy.txt", "w");//speichert messergebnisse waehrend des thermalisierens->Nicht benötigt
+	for (int anzahl=0; anzahl<N0; anzahl+=1){//Thermalisierungskriterium: feste anzhl an sweeps, durch Parameter übergeben
+		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
+		Hneu=sweep(gitter, laenge, j, T, generator, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
+	}
+	//printf("%f\t%d\n", T, N0);zum darstellen Schritte gegen Temperatur
+	fclose(dummyfile);
+	ausgabemitplot(gitter, laenge, ausgabedatei, plotdatei);//Gitter muss nicht immer neu thermalisiert werden, sondern kann auch eingelesen werden
+}
 
 void thermalisieren(int laenge, double T, double j, int seed,int N0, char *gitter, FILE *ausgabedatei, gsl_rng *generator){
 	//erzeugt ein thermalisiertes Gitter mit laenge*laenge, T, j, seed in ausgabedatei
