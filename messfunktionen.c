@@ -339,10 +339,10 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==0){
 				delta=deltah(gitter, d1, d2, laenge);
-				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
-					printf("schwarz Fehler bei delta\n");
-				}
-				if (((d1+d2)%2==0)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
+					//~ printf("schwarz Fehler bei delta\n");
+				//~ }
+				if (/*((d1+d2)%2==0)&&*/(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
 					//flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 					gitter[laenge*d1+d2]*=-1;
 					veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
@@ -367,10 +367,10 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==1){
 				delta=deltah(gitter, d1, d2, laenge);
-				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
-					printf("weiß    Fehler bei delta %d %d\n", d1, d2);
-				}
-				if (((d1+d2)%2==1)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
+				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
+					//~ printf("weiß    Fehler bei delta %d %d\n", d1, d2);
+				//~ }
+				if (/*((d1+d2)%2==1)&&*/(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
 					flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 					veraenderungH+=j*delta;
 					changesklein+=1;

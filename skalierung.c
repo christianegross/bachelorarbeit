@@ -17,7 +17,7 @@ int main(int argc, char **argv){
 	int lenarray[4]={6, 10, 50, 500};
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
-	int messungen=1000;//pro temperatur
+	int messungen=900;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
 	int node=2;//1,2 qbig, 0 vm
 	int durchlaeufe=10;
