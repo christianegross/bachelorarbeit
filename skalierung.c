@@ -14,12 +14,12 @@ int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
 	int maxcores=omp_get_max_threads();//aus Computerarchitektut/batchskript
 	int laenge=10;//laenge der verwendeten Gitter
-	int lenarray[4]={6, 10, 50, 500};
+	int lenarray[5]={6, 10, 50,200, 300};
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=900;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
-	int node=2;//1,2 qbig, 0 vm
+	int node=1;//1,2 qbig, 0 vm
 	int durchlaeufe=10;
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
@@ -43,12 +43,12 @@ int main(int argc, char **argv){
 	mitteldatei=fopen(dateinamemittel, "w+");
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	gsl_rng_set(generator, seed);
-	for (int laengen=0; laengen<4; laengen+=1){
+	for (int laengen=0; laengen<5; laengen+=1){
 		laenge=lenarray[laengen];
 		printf("Laenge=%d\n", laenge);
 		char gitter[laenge*laenge];//Gitter erstellen und von thermalisieren ausgeben lassen
 		initialisierung(gitter, laenge, seed);
-		thermalisieren(laenge, temperatur, j, seed, 1, gitter, dummydatei, generator);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
+		thermalisieren(laenge, temperatur, j, seed, 500, gitter, dummydatei, generator);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
 		for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
 		//Vergleichsmassstab: Messungen bei einem core	
 			gsl_rng_set(generator, seed);
