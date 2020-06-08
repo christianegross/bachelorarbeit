@@ -46,7 +46,7 @@ int main(int argc, char **argv){
 	for (int laengen=0; laengen<4; laengen+=1){
 		laenge=lenarray[laengen];
 		printf("Laenge=%d\n", laenge);
-		int gitter[laenge*laenge];//Gitter erstellen und von thermalisieren ausgeben lassen
+		char gitter[laenge*laenge];//Gitter erstellen und von thermalisieren ausgeben lassen
 		initialisierung(gitter, laenge, seed);
 		thermalisieren(laenge, temperatur, j, seed, 1, gitter, dummydatei, generator);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
 		for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
