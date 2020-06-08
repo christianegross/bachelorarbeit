@@ -332,9 +332,9 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	int chunk=2;
 	//schwarz: d1+d2 gerade
 	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
-	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)
 	{
-		#pragma omp for nowait schedule (guided, chunk) //Versuche overhead zu reduzieren
+		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==0){
@@ -362,7 +362,7 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	//~ #pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
 	//~ {
 		#pragma omp barrier//damit mit nowait overhead reduziert werden kann
-		#pragma omp for nowait schedule (guided, chunk)
+		#pragma omp for nowait schedule (static)
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==1){

@@ -19,7 +19,7 @@ int main(int argc, char **argv){
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
-	int node=2;//1,2 qbig, 0 vm"
+	int node=2;//1,2 qbig, 0 vm
 	int durchlaeufe=10;
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
@@ -37,8 +37,8 @@ int main(int argc, char **argv){
 
 	dummydatei=fopen(dateinamedummytherm, "w+");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird	
 	//sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-laenge%.4d-m%.6d-mehrere.txt",laenge,messungen);
-	sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-m%.6d-mehrerelaengenunddurchlaeufenode%.2ddynamicchunk2.txt",messungen, node);
-	sprintf(dateinamemittel,"Messungen/Zeiten/zeitenmittel-m%.6d-mehrerelaengenunddurchlaeufenode%.2ddynamicchunk2.txt",messungen, node);
+	sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-m%.6d-mehrerelaengenunddurchlaeufenode%.2dstaticohneshared.txt",messungen, node);
+	sprintf(dateinamemittel,"Messungen/Zeiten/zeitenmittel-m%.6d-mehrerelaengenunddurchlaeufenode%.2dstaticohneshared.txt",messungen, node);
 	zeitdatei=fopen(dateinamezeit, "w+");
 	mitteldatei=fopen(dateinamemittel, "w+");
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
