@@ -309,7 +309,7 @@ double sweepzweipar(char *gitter, int laenge, double j, double T, gsl_rng *gener
 		#pragma omp for
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
-				if((d1+d2)%2==0){
+				if((d1+d2)%2==1){
 				delta=deltah(gitter, d1, d2, laenge);
 				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
 					printf("weiß    Fehler bei delta\n");
@@ -346,7 +346,7 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 	int chunk=2;
 	//schwarz: d1+d2 gerade
 	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
-	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)// shared(H, changes)
 	{
 		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
 		for (d1=0; d1<laenge;d1+=1){
@@ -464,7 +464,7 @@ void messenvergleichen(int laenge, double T, double j, int messungen, FILE *gitt
 	double H2=hamiltonian(gitter2, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
-		H1=sweep(gitter1, laenge, j, T, generator, H1, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
+		H1=sweepzweipar(gitter1, laenge, j, T, generator, H1, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
 		H2=sweep(gitter2, laenge, j, T, generator, H2, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
 		fprintf(vergleichsdatei, "%f\t%f\t%f\t%f\n", (double)messung, H1, H2, H1-H2);
 	}
