@@ -77,7 +77,7 @@ plot 'ableitung-laenge-0050-m-010000.txt' u 1:2:3 w yerrorbars lt 6 title "2-Pun
 set view map
 unset xlabel
 unset ylabel
-set ter epslatex size 4in, 4in color colortext
+set ter epslatex size 3.5in, 3.5in color colortext
 
 set palette defined (0 'white' , 50 'gray', 100 'black')
 set title 'Thermalisiert' font 'arial,40'
@@ -94,3 +94,19 @@ titleplot=sprintf('T=%f', 0.015+t*0.015)
 set title titleplot
 splot datei u 1:2:3 w image title '' 
 }
+
+#Schachbrettmuster
+set out 'schachbrett.tex'
+set view map
+unset colorbox
+set rmargin 0
+set lmargin 0
+set bmargin 0
+set tmargin 0
+#unset tics
+set palette defined (0 'black' , 50 'gray', 100 'white')
+set cbrange [0:1]
+set xrange [-0.5:9.5] 
+set yrange [9.5:-0.5] 
+set title ''
+splot 'schachbrett.txt' u 1:2:3 w image title ''

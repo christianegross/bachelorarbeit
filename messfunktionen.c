@@ -156,6 +156,30 @@ int deltah(char *gitter, int d1, int d2, int laenge){
 	return delta;
 }
 
+int deltahneu(char *gitter, int d1, int d2, int laenge){
+	//berechnet Energieänderung bei Flip des Spins an position d1, d2
+	int delta=0;
+	//-2*aktueller Zustand: 1-(2*1)=-1, (-1)-(-1*2)=1
+	char aktuellerwert=gitter[laenge*d1+d2];
+	delta+=2*aktuellerwert*gitter[laenge*((d1-1+laenge)%(laenge))+d2];//oben
+	delta+=2*aktuellerwert*gitter[laenge*((d1+1)%(laenge))+d2];//unten
+	delta+=2*aktuellerwert*gitter[laenge*d1+((d2-1+laenge)%(laenge))];//links
+	delta+=2*aktuellerwert*gitter[laenge*d1+((d2+1)%(laenge))];//rechts
+	return delta;
+}
+
+int deltahneu2(char *gitter, int d1, int d2, int laenge){
+	//berechnet Energieänderung bei Flip des Spins an position d1, d2
+	int delta=0;
+	//-2*aktueller Zustand: 1-(2*1)=-1, (-1)-(-1*2)=1
+	//char aktuellerwert=gitter[laenge*d1+d2];
+	delta+=2*gitter[laenge*d1+d2]*(gitter[laenge*((d1-1+laenge)%(laenge))+d2]//oben
+								  +gitter[laenge*((d1+1)%(laenge))+d2]//unten
+								  +gitter[laenge*d1+((d2-1+laenge)%(laenge))]//links
+								  +gitter[laenge*d1+((d2+1)%(laenge))]);//rechts
+	return delta;
+}
+
 int tryflip(char *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double wahrscheinlichkeit){
 	//versucht, den spin an position d1, d2 umzukehren nach Metropolis-Algorithmus
 	//if deltah<0: accept, return 1
@@ -352,7 +376,7 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==0){
-				delta=deltah(gitter, d1, d2, laenge);
+				delta=deltahneu2(gitter, d1, d2, laenge);
 				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
 					//~ printf("schwarz Fehler bei delta\n");
 				//~ }
@@ -380,7 +404,7 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==1){
-				delta=deltah(gitter, d1, d2, laenge);
+				delta=deltahneu2(gitter, d1, d2, laenge);
 				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
 					//~ printf("weiß    Fehler bei delta %d %d\n", d1, d2);
 				//~ }
@@ -454,19 +478,19 @@ void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FI
 	}
 }
 
-void messenvergleichen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, FILE *vergleichsdatei, gsl_rng *generator){
-	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
-	char gitter1[laenge*laenge];
-	einlesen(gitter1, laenge, gitterdatei);
-	double H1=hamiltonian(gitter1, laenge, j);
-	char gitter2[laenge*laenge];
-	einlesen(gitter2, laenge, gitterdatei);
-	double H2=hamiltonian(gitter2, laenge, j);
-	for (int messung=0; messung<messungen; messung+=1){
-		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
-		H1=sweepzweipar(gitter1, laenge, j, T, generator, H1, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
-		H2=sweep(gitter2, laenge, j, T, generator, H2, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
-		fprintf(vergleichsdatei, "%f\t%f\t%f\t%f\n", (double)messung, H1, H2, H1-H2);
-	}
+//~ void messenvergleichen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, FILE *vergleichsdatei, gsl_rng *generator){
+	//~ //Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
+	//~ char gitter1[laenge*laenge];
+	//~ einlesen(gitter1, laenge, gitterdatei);
+	//~ double H1=hamiltonian(gitter1, laenge, j);
+	//~ char gitter2[laenge*laenge];
+	//~ einlesen(gitter2, laenge, gitterdatei);
+	//~ double H2=hamiltonian(gitter2, laenge, j);
+	//~ for (int messung=0; messung<messungen; messung+=1){
+		//~ fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
+		//~ H1=sweepzweipar(gitter1, laenge, j, T, generator, H1, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
+		//~ H2=sweep(gitter2, laenge, j, T, generator, H2, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
+		//~ fprintf(vergleichsdatei, "%f\t%f\t%f\t%f\n", (double)messung, H1, H2, H1-H2);
+	//~ }
 	
-}
+//~ }
