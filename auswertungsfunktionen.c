@@ -161,7 +161,7 @@ void ableitung(int l, int temperaturen, const int spalten, const int spaltemessu
 }
 
 double mittelwertarray(double *array, int messungen){
-	//berechnet den Mittelwert aus spalte aus den messungen in messdatei, messdatei muss nur aus doubles in spalten bestehen
+	//Bestimmt Mittelwert eines arrays, das mit doubles gefüllt ist
 	double summe=0;//Speichert Summe über 
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
 		summe+=array[messung];
@@ -170,11 +170,11 @@ double mittelwertarray(double *array, int messungen){
 }
 
 double varianzarray(double *array, int messungen, double mittelwert){
-	//berechnet die varianz über die gegebenen Messungen in messdatei mit mittelwert mittels Standardschaetzer, messdatei muss nur aus doubles in spalten bestehen
+	//Bestimmt die Varianz über alle Elemente in einem array, das mit doubles gefuellt ist, um den Mittelwert
 	double summe=0;//Speichert Summe über Messungen
 	double einwert=0;//Speichert einen ausgelesenen Wert
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
-		einwert=array[messung];//wählt korrekte messung aus
+		einwert=array[messung];
 		summe+=(einwert-mittelwert)*(einwert-mittelwert);
 	}
 	return sqrt(summe/((double)messungen-1));
