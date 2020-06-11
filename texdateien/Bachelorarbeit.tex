@@ -21,8 +21,9 @@
 
 % Titel, Autor und Datum
 \title{Monte-Carlo Simulation eines statistischen Modells auf einem Parallelrechner}
-\date{Juli 2020}
-\author{Christiane Groß}
+\subtitle{Bachelorarbeit in Physik}
+\date{vorgelegt der Mathematisch-Naturwissenschaftlichen Fakultät der Universität Bonn \\ Juli 2020}
+\author{Christiane Franziska Groß\\ angefertigt im Helmholtz-Institut für Strahlen- und Kernphysik}
 
 % Jetzt startet das eigentliche Dokument
 \begin{document}
@@ -30,6 +31,20 @@
 	
 	% Römische Zahlen für die Seitennummern des Inhaltsverzeichnisses
 	\pagenumbering{roman}
+	
+	Ich versichere, dass ich diese Arbeit selbstständig verfasst habe und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt sowie die Zitate kenntlich gemacht habe.
+
+	\vspace{2cm}
+	
+	....................................................................................
+	
+	\vspace{5cm}	
+	
+	1. Gutachter: Prof. Carsten Urbach
+	
+	2. Gutachter: 
+	
+	\newpage
 	
 	% Inhaltsverzeichnis kommt hier
 	\tableofcontents
@@ -39,63 +54,90 @@
 	% Normale Zahlen für die Seitennummern des Fliesstextes
 	\pagenumbering{arabic}
 	%Inhalt
+	
+	\section*{Einleitung}
+	
+	
+	Die vorliegende Arbeit befasst sich mit der Magnetisierung eines Magneten, der mit dem Ising-Modell in zwei Dimensionen simuliert wird. 
+	
+	Dazu wird erst eine kleine Einführung in die Terminologie des Ising-Modells, von Monte-Carlo-Simulationen und möglichem Aufbau von Parallelrechnern gegeben.
+	
+	Danach wird erläutert, wie das Modell implementiert wurde, und wie die Fehler auf die berechneten Werte bestimmt wurden.
+	
+	Die so erhaltenen Werte für die Magnetisierung und den kritischen Punkt werden mit den Werten, die aus der Literatur erwartet werden, verglichen. Dies wird zeigen, dass die Monte-Carlo-Simulation gut für die Simulation geeignet ist.
+	
+	Schlussendlich wird untersucht, welche Laufzeitverbesserungen durch das Rechnen mit parallelen Strukturen erzielt werden können. 
+	%Ziel der Arbeit, Fragestellung: Ist MC-Simulation dafür geeignet, mittels Ising-Modell einen Magneten zu simulieren?
+	
+	%Wie lässt sich die benötigte Laufzeit des Programms mit Parallelisierung optimieren?/Welche Laufzeitverbesserungen sind durch Parallelisierung nöglich?
+	
+	%Eher Zusammenfassung/abstract oder Einleitung ohne Beantwortung der Fragen?
+	
 	\chapter{Theoretischer Hintergrund}
 	
 	\section{Das Ising-Modell}
-	Beim Ising-Modell handelt es sich um ein Modell für einen Ferromagneten mit starker uniaxialer Anisotropie\cite{binderheermann}. Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang. Hier: zweidimensionales Gitter.
+	Beim Ising-Modell handelt es sich um ein Modell für einen Ferromagneten mit starker uniaxialer Anisotropie \cite[S. 7]{binderheermann}. %Hierbei werden Teilchen, die Spin $\pm 1$ haben können, auf ein quadratisches Gitter mit konstantem Abstand zwischen den Teilchen verteilt. % Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang. Hier: zweidimensionales Gitter.
 	
-	Hamiltonian des Systems(Zitat?):
+	Der Hamiltonian des Systems ist dann nach \cite[S. 7]{binderheermann}:
 	\begin{equation}
-	H=-J\sum_{<i,j>}s_is_j
+	H=-J\sum_{\langle i,j\rangle }s_is_j
 	\label{eq:hamiltonianising}
 	\end{equation}
-	Mit $\langle i,j\rangle$ alle benachbarten Paare, $J$ in beide Richtungen gleich und konstant. J bestimmt, ob Magnet ferro- oder antiferromagnetisch ist. Äußeres Magnetfeld möglich, aber hier vernachlässigt.
+	Wobei $\langle i,j\rangle$ alle benachbarten Paare sind, die Austauschenergie $J$ in beide Richtungen gleich und konstant ist und die Spins $S_i$ die  Werte $\pm 1$ annehmen können. Das Vorzeichen von $J$ bestimmt, ob der Magnet ferro- oder antiferromagnetisch ist. Es ist möglich, durch einen zusätzlichen Term ein äußeres Magnetefld zu simulieren, dies wurde in dieser Arbeit jedoch nicht getan.%Äußeres Magnetfeld möglich, aber hier vernachlässigt.
 
 	
-	Erwarte einen kritischen Punkt mit Phasenübergang zweiter Ordnung. \cite{OnsagerCrystal1}
+	%Erwarte einen kritischen Punkt mit Phasenübergang zweiter Ordnung. \cite{OnsagerCrystal1}
+	Beim Ising-Modell in zwei Dimensionen wird ein Phasenübergng bei einer kritischen Temperatur erwartet, unterhalb derer sich der Magnet ferromagnetisch verhält\cite[vgl. ][]{peierls_1936}.
 	
-	Kritischer Punkt nach \cite{OnsagerCrystal1} bei \[\sinh^2\left(\frac{2J}{k_BT_c}\right) =1\]
+	Dieser befindet sich nach \cite{OnsagerCrystal1} bei \[\sinh^2\left(\frac{2J}{k_BT_c}\right) =1\]
 	
 	\begin{equation}
 	\Leftrightarrow k_BT_c=\frac{2J}{\ln(1+\sqrt{2})}
 	\label{eq:kritischetemperatur}
 	\end{equation}
-	mit $T_c$ kritische Temperatur.
+	wobei $T_c$ die kritische Temperatur und $k_B$ die Boltzmann-Konstante ist.
 	
-	Magnetisierung: Erwartungswert der Spins, \[
-	M^2=\lim\limits_{m\to\infty}\left\langle s_i s_{i+m}\right\rangle \]
+	%Magnetisierung: Erwartungswert der Spins, \[
+	%M^2=\lim\limits_{m\to\infty}\left\langle s_i s_{i+m}\right\rangle \]
 	
-	Erwartete Magnetisierung unterhalb des kritischen Punkt nach \cite{YangMagnetization}, \cite{MontrollMagnetization}:
-	\begin{equation} M=\left[1-\left(\sinh\left(\frac{2J}{k_BT}\right)\right)^{-2}\right]^{\frac{1}{8}}
+	Bei der Magnetisierung handelt es sich um den Erwartungswert der Spins\cite[vgl. ][S. 8]{binderheermann}:\[
+	M=\frac{1}{N}\left\langle  \sum_{i=1}^{N} s_i \right\rangle 
+	\]
+	
+	Die erwartete Magnetisierung unterhalb des kritischen Punkt ist nach \cite{YangMagnetization}, \cite{MontrollMagnetization}:
+	\begin{equation} M=\left[1-\left(\sinh\left(\frac{2J}{k_BT}\right)\right)^{-4}\right]^{\frac{1}{8}}
 	\label{eq:magnetisierungsgleichungliteratur}
 	\end{equation}
 	
-	Oberhalb der kritischen Temperatur ist die Magnetisierung null \cite{MontrollMagnetization}.
+	Oberhalb der kritischen Temperatur ist die Magnetisierung null \cite[Gl. 81]{MontrollMagnetization}.
 	
 	Es kommt hier also zu einer Unstetigkeit in der Magnetisierung.
 	
 	\section{Monte-Carlo Simulationen}
-	Die Messwerte, an denen Interesse besteht, sind Observablen des Systems, lassen sich also mit \[
-	\langle A \rangle=\frac{1}{Z}\int_{\text{Alle Zustände}}A \exp(-H_i/k_BT)\dif x_i\]
+	Die Messwerte, an denen Interesse besteht, lassen sich nach \cite[S. 8]{binderheermann}  mit \[
+	\langle A(\mathbf{x}) \rangle=\frac{1}{Z}\int A(\mathbf{x}) \exp(-H(\mathbf{x})/k_BT)\dif \mathbf{x}\]
 	
 	\[
-	Z=\int_{\text{Alle Zustände}} \exp(-H_i/k_BT) \dif x_i
+	Z=\int \exp(-H(\mathbf{x})/k_BT) \dif \mathbf{x}
 	\]
-	berechnen.
+	berechnen, wobei $\mathbf{x}$ eine mögliche Konfiguration des Systems ist.
 	
-	Dies ist analytisch nur sehr schwer machbar, da dieses Integral sehr hochdimensional ist und gleichzeitig viele Zustände nur einen sehr kleinen Beitrag zum Gesamtintegral leisten.
+	
+	Hierbei kann der Boltzmann-Faktor $p(\mathbf{x})=Z^{-1} \exp(-H(\mathbf{x})/k_BT)$ als die Wahrscheinlichkeit angesehen werden, mit der ein bestimmter Zustand auftritt\cite[vgl. ][S. 8 f.]{binderheermann}.
+	
+	Dies ist analytisch nicht machbar, da dieses Integral sehr hochdimensional ist und gleichzeitig viele Zustände nur einen sehr kleinen Beitrag zum Gesamtintegral leisten\cite[vgl. ][S. 9]{binderheermann}.
 	
 	Die Idee der Monte-Carlo-Simulationen ist es, solche Integrale zu Diskretisieren
-	und über alle berechneten Zustände einen Mittelwert mit Gewichtung der einzelnen Zustände $Z^{-1} \exp(-H_i/k_BT)$ zu berechnen. Alternativ können die Zustände auch so gezogen werden, dass sie von anfang an nach $Z^{-1} \exp(-H_i/k_BT)$ verteilt sind, dann ist bei der Bildung des Mittelwerts keine Gewichtung mehr notwendig. %und die Zustände mit mehr Gewicht öfter zu berechnen, damit sie bei der Summierung entsprechend mehr ins Gewicht fallen. Dafür werden die zu berechnenden Zustände $A$ so gezogen, dass sie nach $Z^{-1} \exp(-H_i/k_BT)$ verteilt sind.
+	und über alle berechneten Zustände einen Mittelwert mit Gewichtung der einzelnen Zustände mit $p(\mathbf{x})$ zu berechnen. Alternativ können die Zustände auch so gezogen werden, dass sie von Anfang an nach $p(\mathbf{x})$ verteilt sind, dann ist bei der Bildung des Mittelwerts keine Gewichtung mehr notwendig. %und die Zustände mit mehr Gewicht öfter zu berechnen, damit sie bei der Summierung entsprechend mehr ins Gewicht fallen. Dafür werden die zu berechnenden Zustände $A$ so gezogen, dass sie nach $Z^{-1} \exp(-H_i/k_BT)$ verteilt sind.
 	
-	Dies wird durch den Metropolis-Algorithmus ermöglicht,entwickelt in \cite{metropolisupdate}:
+	Dies wird durch den Metropolis-Algorithmus ermöglicht, entwickelt in \cite{metropolisupdate}:
 	Es wird eine Veränderung des Systems mit Energieänderung $\Delta H$ vorgeschlagen, in diesem Fall die Umdrehung eines einzelnen Spins. Diese Änderung wird auf jeden Fall angenommen, wenn sie die Energie des Systems verringert, und wenn sie die Energie erhöht, wird die Änderung mit Wahrscheinlichkeit $\exp(-\Delta H/k_BT)$ angenommen.
 	
 	Insgesamt ist die Wahrscheinlichkeit zur Umdrehung eines Spins also $P=\min \left[1, \exp(-\Delta H/k_BT)\right]$
 	
 	Dies führt dazu, dass alle zu berechnenden Zustände aus den vorher berechneten generiert werden. Die Zustände bilden also eine Markovkette, es handelt sich um Markov Chain Monte Carlo (deutsche Bezeichnung?)
 	
-	Der erste Zustand wird zufällig generiert, befindet sich also nicht im Gleichgewicht und hat vermutlich ein sehr geringes Gewicht. Um in eine Region mit lokalen energieminima/Hohen Gewichten zu kommen, ist erst eine Thermalisierung notwendig, das heißt, einige Updates, deren Ergebnisse nicht verwendet werden können, um einen Mittelwert zu bilden. (Zitate?)
+	Der erste Zustand wird zufällig generiert, befindet sich also nicht im Gleichgewicht und hat vermutlich ein sehr geringes Gewicht. Um in eine Region mit lokalen Energieminima/Hohen Gewichten zu kommen, ist erst eine Thermalisierung notwendig, das heißt, einige Updates, deren Ergebnisse nicht verwendet werden können, um einen Mittelwert zu bilden. (Zitate?)
 	
 %	Suche Observablen von komplexen Systemen. Problem: Zustandssumme, Observable $<A>$ nicht/nur schwer analytisch bestimmbar. \[Z=\int_{Alle Konfigurationen}\exp(-H/T)\] \[<A>=1/Z\int_{alle Konfigurationen} A\exp(-H/T)\] Generell: Integral bestimmen, nicht analytisch lösbar.
 %	Idee: Diskretisiere Integral, verteile Summe nicht gleichmäßig, sondern summiere bevorzugt über Zustände, die ein höheres Gewicht haben. Zwei Funktionen Multiplizieren, Zahlen aus einer ziehen.

@@ -252,6 +252,73 @@ double sweepalt(int *gitter, int laenge, double j, double T, gsl_rng *generator,
 	return H;
 }
 
+double sweepzweipar(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
+	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
+	//arbeitet parallel in schleifen ueber die einzelnen Farben
+	double H=hamiltonian;//misst Gesamtveraenderung
+	double veraenderungH=0;//misst Veraenderung in einem parallen Thread
+	int delta=0;
+	int d1=0, d2=0;
+	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
+	int changes =0;//misst Gesamtzahl der spinflips
+	int changesklein=0;//misst Spinflips in parallelen Thread
+	//schwarz: d1+d2 gerade
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
+	{
+		#pragma omp for
+		for (d1=0; d1<laenge;d1+=1){
+			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+				if((d1+d2)%2==0){
+				delta=deltah(gitter, d1, d2, laenge);
+				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
+					printf("schwarz Fehler bei delta\n");
+				}
+				if (((d1+d2)%2==0)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+					//flipspin(gitter, d1, d2, laenge);//in Gitter speichern
+					gitter[laenge*d1+d2]*=-1;
+					veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
+					changesklein+=1;
+				}
+			}
+			}
+		}
+		#pragma omp critical (schwarzepunkte)//damit das updaten keine konflikte verursacht, Name, damit die critical regionen unabhängig voneinander sind 
+		{H+=veraenderungH;
+			changes+=changesklein;}
+		#pragma omp barrier
+	}
+	veraenderungH=0;//Zuruecksetzen, damit in naechster paralleler Region nur deren Veraenderungen gezaehlt werden
+	changesklein=0;
+	//weiss: d1+d2 ungerade, sonst analog zu schwarz
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
+	{
+		#pragma omp for
+		for (d1=0; d1<laenge;d1+=1){
+			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+				if((d1+d2)%2==0){
+				delta=deltah(gitter, d1, d2, laenge);
+				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
+					printf("weiß    Fehler bei delta\n");
+				}
+				if (((d1+d2)%2==1)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
+					flipspin(gitter, d1, d2, laenge);//in Gitter speichern
+					veraenderungH+=j*delta;
+					changesklein+=1;
+				}
+			}
+			}
+		}
+		#pragma omp critical (weissepunkte)
+		{H+=veraenderungH;
+		changes+=changesklein;}
+		#pragma omp barrier
+	}
+	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
+	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
+	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	return H;
+}
+
 double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
 	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
 	//arbeitet parallel in schleifen ueber die einzelnen Farben
@@ -282,16 +349,16 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 			}
 			}
 		}
-		#pragma omp critical schwarzepunkte//damit das updaten keine konflikte verursacht, Name, damit die critical regionen unabhängig voneinander sind 
-		{H+=veraenderungH;
-			changes+=changesklein;}
-		#pragma omp barrier
-	}
-	veraenderungH=0;//Zuruecksetzen, damit in naechster paralleler Region nur deren Veraenderungen gezaehlt werden
-	changesklein=0;
-	//weiss: d1+d2 ungerade, sonst analog zu schwarz
-	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
-	{
+		//~ #pragma omp critical (schwarzepunkte)//damit das updaten keine konflikte verursacht, Name, damit die critical regionen unabhängig voneinander sind 
+		//~ {H+=veraenderungH;
+			//~ changes+=changesklein;}
+		//~ #pragma omp barrier
+	//~ }
+	//~ veraenderungH=0;//Zuruecksetzen, damit in naechster paralleler Region nur deren Veraenderungen gezaehlt werden
+	//~ changesklein=0;
+	//~ //weiss: d1+d2 ungerade, sonst analog zu schwarz
+	//~ #pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
+	//~ {
 		#pragma omp for
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
@@ -308,7 +375,7 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 			}
 			}
 		}
-		#pragma omp critical weissepunkte
+		#pragma omp critical (weissepunkte)
 		{H+=veraenderungH;
 		changes+=changesklein;}
 		#pragma omp barrier
@@ -348,4 +415,21 @@ void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FI
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		H=sweep(gitter, laenge, j, T, generator, H, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
 	}
+}
+
+void messenvergleichen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, FILE *vergleichsdatei, gsl_rng *generator){
+	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
+	int gitter1[laenge*laenge];
+	einlesen(gitter1, laenge, gitterdatei);
+	double H1=hamiltonian(gitter1, laenge, j);
+	int gitter2[laenge*laenge];
+	einlesen(gitter2, laenge, gitterdatei);
+	double H2=hamiltonian(gitter2, laenge, j);
+	for (int messung=0; messung<messungen; messung+=1){
+		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
+		H1=sweep(gitter1, laenge, j, T, generator, H1, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
+		H2=sweep(gitter2, laenge, j, T, generator, H2, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
+		fprintf(vergleichsdatei, "%f\t%f\t%f\t%f\n", (double)messung, H1, H2, H1-H2);
+	}
+	
 }
