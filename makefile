@@ -1,5 +1,5 @@
 #Variablen
-LIBS:= -lgsl -lgslcblas -lm -fopenmp
+LIBS:= -lgsl -lgslcblas -lm -fopenmp -lrt
 
 #auswertung: auswertungzeit.o
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
@@ -14,7 +14,7 @@ skalierungnode01: skalierung.o messfunktionen.o auswertungsfunktionen.o
 	
 #erstellt aus allen .c dateien eine .o datei	
 %.o: %.c
-	gcc -std=c99 -Wall -pedantic -fopenmp -I /usr/include/ $^ -c
+	gcc -std=c99 -Wall -pedantic -fopenmp -I /usr/include/ $^ -c 
 	
 #.PHONY: clean
 
