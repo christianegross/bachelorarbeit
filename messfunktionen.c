@@ -9,13 +9,13 @@
 #include "messfunktionen.h"
 
 
-void initialisierung(int *gitter, int laenge, int seed){
+void initialisierung(char *gitter, int laenge, int seed){
 	//initialisiert ein laenge*laenge quadratisches Gitter mit Zufallszahlen -1 und 1
 	//initialisiere generator mit seed
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	gsl_rng_set(generator, seed);
 	unsigned long int zufallsspeicher;
-	int zufallsauswertung;
+	char zufallsauswertung;
 	for (int d1=0; d1<laenge; d1+=1){//geht in erster dimension durch (Zeile
 		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 			zufallsspeicher = gsl_rng_uniform_int(generator, 200);//generiert Zufallszahl zwischen 0 und 200-1
@@ -31,21 +31,21 @@ void initialisierung(int *gitter, int laenge, int seed){
 }
 
 
-void ausgabe(int *gitter, int laenge, FILE *datei){
+void ausgabe(char *gitter, int laenge, FILE *datei){
 	//gibt ein laenge *laenge quadratisches Gitter in datei aus
 	for (int d1=0; d1<laenge; d1++){//geht in erster dimension durch
 		for (int d2=0; d2<laenge; d2++){//geht in zweiter dimension durch
-			fprintf(datei, "%3d \t %3d \t %d \n",d1, d2, gitter[laenge*d1+d2]);//Gibt Zeile, Spalte und Wert an
+			fprintf(datei, "%3d \t %3d \t %c \n",d1, d2, gitter[laenge*d1+d2]);//Gibt Zeile, Spalte und Wert an
 		}
 	}
 }
 
-void einlesen(int *gitter, int laenge, FILE *datei){
+void einlesen(char *gitter, int laenge, FILE *datei){
 	//liest gitter, das in datei geschrieben wurde, wieder in gitter ein
 	rewind(datei);
 	int d1, d2, error;
 	for (int n=0; n<laenge*laenge; n+=1){
-		error= fscanf(datei, "%d \t %d \t %d \n", &d1, &d2, &gitter[n]);//Einlesen von Zeile, Spalte und Wert
+		error= fscanf(datei, "%d \t %d \t %c \n", &d1, &d2, &gitter[n]);//Einlesen von Zeile, Spalte und Wert
 		//Zeile und Spalte nicht benötigt, da Zuordnung desselbe wie beim Einlesen
 		//Fehleranfällig? Doch über d1, d2 zuordnen?
 		if (error<0){
@@ -55,18 +55,18 @@ void einlesen(int *gitter, int laenge, FILE *datei){
 	}
 }
 
-int gittersummeohnepar (int *gitter, int laenge){
+int gittersummeohnepar (char *gitter, int laenge){
 	//berechnet Summe aller Elemente eines Gitter mit laenge*laenge
 	int summe=0;
 	for (int d1=0; d1<laenge; d1+=1){//geht in erster dimension durch (Zeile
 		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
-			summe+=gitter[laenge*d1+d2];
+			summe+=(int)gitter[laenge*d1+d2];
 		}
 	}
 	return abs(summe);
 }	
 	
-int gittersumme (int *gitter, int laenge){
+int gittersumme (char *gitter, int laenge){
 	//berechnet Summe aller Elemente eines Gitter mit laenge*laenge, parallelisiert dabei nach Moeglichkeit
 	int summe=0;
 	int zwischensumme =0;
@@ -75,7 +75,7 @@ int gittersumme (int *gitter, int laenge){
 		#pragma omp for
 		for (int d1=0; d1<laenge; d1+=1){//geht in erster dimension durch (Zeile
 			for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
-				zwischensumme+=gitter[laenge*d1+d2];
+				zwischensumme+=(int)gitter[laenge*d1+d2];
 			}
 		}
 		#pragma omp critical
@@ -84,20 +84,20 @@ int gittersumme (int *gitter, int laenge){
 	return abs(summe);
 }		
 
-double hamiltonian(int *gitter, int laenge, double j){
+double hamiltonian(char *gitter, int laenge, double j){
 	//berechnet den hamiltonian eines laenge*laenge quadratischen Gitters eines Ising Modells mit periodischen Randbedingungen
 	double H=0;
 	for (int d1=0; d1<laenge; d1+=1){//geht in erster dimension durch (Zeile
 		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
-			H+=gitter[laenge*d1+d2]*gitter[laenge*d1+((d2+1)%(laenge))];//Bond mit rechtem Nachbar
-			H+=gitter[laenge*d1+d2]*gitter[laenge*((d1+1)%(laenge))+d2];//Bond mit unterem Nachbar
+			H+=(double)gitter[laenge*d1+d2]*gitter[laenge*d1+((d2+1)%(laenge))];//Bond mit rechtem Nachbar
+			H+=(double)gitter[laenge*d1+d2]*gitter[laenge*((d1+1)%(laenge))+d2];//Bond mit unterem Nachbar
 			//Von allen Feldern rechts und unten berücksichtig, periodische Randbedingungen->alles berücksichtigt
 		}
 	}
 	return -j*H;	
 }
 
-double deltahalt(int *gitter, int d1, int d2, int laenge, double j){
+double deltahalt(char *gitter, int d1, int d2, int laenge, double j){
 	//berechnet Energieänderung bei Flip des Spins an position d1, d2
 	double delta=0;
 	//-2*aktueller Zustand: 1-(2*1)=-1, (-1)-(-1*2)=1
@@ -108,7 +108,7 @@ double deltahalt(int *gitter, int d1, int d2, int laenge, double j){
 	return -j*delta;
 }
 
-int tryflipalt(int *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double delta){
+int tryflipalt(char *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double delta){
 	//versucht, den spin an position d1, d2 umzukehren nach Metropolis-Algorithmus
 	//if deltah<0: accept, return 1
 	if (delta<=0){
@@ -131,7 +131,7 @@ int tryflipalt(int *gitter,  int d1, int d2, int laenge, double j, double T, gsl
 }
 
 
-int deltah(int *gitter, int d1, int d2, int laenge){
+int deltah(char *gitter, int d1, int d2, int laenge){
 	//berechnet Energieänderung bei Flip des Spins an position d1, d2
 	double delta=0;
 	//-2*aktueller Zustand: 1-(2*1)=-1, (-1)-(-1*2)=1
@@ -142,7 +142,7 @@ int deltah(int *gitter, int d1, int d2, int laenge){
 	return delta;
 }
 
-int tryflip(int *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double wahrscheinlichkeit){
+int tryflip(char *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double wahrscheinlichkeit){
 	//versucht, den spin an position d1, d2 umzukehren nach Metropolis-Algorithmus
 	//if deltah<0: accept, return 1
 	if (wahrscheinlichkeit==1){
@@ -164,7 +164,7 @@ int tryflip(int *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rn
 	return -1;
 }
 
-void flipspin(int *gitter, int d1, int d2, int laenge){
+void flipspin(char *gitter, int d1, int d2, int laenge){
 	gitter[laenge*d1+d2]*=-1;
 }
 
@@ -194,7 +194,7 @@ double wahrscheinlichkeit(int delta, double *wahrscheinlichkeiten){
 	return wahrscheinlichkeitwert;
 }
 	
-double sweepaltohnepar(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
+double sweepaltohnepar(char *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
 	//geht das ganze Gitter durch und versucht, jeden Spin umzudrehen. Zählt die Veränderungen, misst Akzeptanzrate und Magneitiserung und gibt aktuellen Hamiltonian zurück
 	double H=hamiltonian;
 	double delta;
@@ -215,7 +215,7 @@ double sweepaltohnepar(int *gitter, int laenge, double j, double T, gsl_rng *gen
 	return H;
 }
 
-double sweepalt(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
+double sweepalt(char *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
 	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
 	double H=hamiltonian;
 	double veraenderungH=0;
@@ -252,7 +252,7 @@ double sweepalt(int *gitter, int laenge, double j, double T, gsl_rng *generator,
 	return H;
 }
 
-double sweepzweipar(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
+double sweepzweipar(char *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
 	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
 	//arbeitet parallel in schleifen ueber die einzelnen Farben
 	double H=hamiltonian;//misst Gesamtveraenderung
@@ -319,7 +319,7 @@ double sweepzweipar(int *gitter, int laenge, double j, double T, gsl_rng *genera
 	return H;
 }
 
-double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
+double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
 	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
 	//arbeitet parallel in schleifen ueber die einzelnen Farben
 	double H=hamiltonian;//misst Gesamtveraenderung
@@ -332,17 +332,17 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	int chunk=2;
 	//schwarz: d1+d2 gerade
 	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
-	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)
 	{
-		#pragma omp for nowait schedule (guided, chunk) //Versuche overhead zu reduzieren
+		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==0){
 				delta=deltah(gitter, d1, d2, laenge);
-				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
-					printf("schwarz Fehler bei delta\n");
-				}
-				if (((d1+d2)%2==0)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
+					//~ printf("schwarz Fehler bei delta\n");
+				//~ }
+				if (/*((d1+d2)%2==0)&&*/(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
 					//flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 					gitter[laenge*d1+d2]*=-1;
 					veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
@@ -362,15 +362,15 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	//~ #pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
 	//~ {
 		#pragma omp barrier//damit mit nowait overhead reduziert werden kann
-		#pragma omp for nowait schedule (guided, chunk)
+		#pragma omp for nowait schedule (static)
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==1){
 				delta=deltah(gitter, d1, d2, laenge);
-				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
-					printf("weiß    Fehler bei delta %d %d\n", d1, d2);
-				}
-				if (((d1+d2)%2==1)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
+				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
+					//~ printf("weiß    Fehler bei delta %d %d\n", d1, d2);
+				//~ }
+				if (/*((d1+d2)%2==1)&&*/(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
 					flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 					veraenderungH+=j*delta;
 					changesklein+=1;
@@ -390,7 +390,7 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 }
 		
 
-void thermalisieren(int laenge, double T, double j, int seed,int N0, int *gitter, FILE *ausgabedatei, gsl_rng *generator){
+void thermalisieren(int laenge, double T, double j, int seed,int N0, char *gitter, FILE *ausgabedatei, gsl_rng *generator){
 	//erzeugt ein thermalisiertes Gitter mit laenge*laenge, T, j, seed in ausgabedatei
 	//seed im Moment nicht benoetigt, da Gitter von vorheriger Temperatur benutzt wird
 	//generator für thermalisieren innerhalb derFunktion seeden?
@@ -411,7 +411,7 @@ void thermalisieren(int laenge, double T, double j, int seed,int N0, int *gitter
 
 void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, gsl_rng *generator){
 	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
-	int gitter[laenge*laenge];
+	char gitter[laenge*laenge];
 	einlesen(gitter, laenge, gitterdatei);
 	double H=hamiltonian(gitter, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
@@ -422,10 +422,10 @@ void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FI
 
 void messenvergleichen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, FILE *vergleichsdatei, gsl_rng *generator){
 	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
-	int gitter1[laenge*laenge];
+	char gitter1[laenge*laenge];
 	einlesen(gitter1, laenge, gitterdatei);
 	double H1=hamiltonian(gitter1, laenge, j);
-	int gitter2[laenge*laenge];
+	char gitter2[laenge*laenge];
 	einlesen(gitter2, laenge, gitterdatei);
 	double H2=hamiltonian(gitter2, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){

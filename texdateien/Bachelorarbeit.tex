@@ -83,7 +83,7 @@
 	H=-J\sum_{\langle i,j\rangle }s_is_j
 	\label{eq:hamiltonianising}
 	\end{equation}
-	Wobei $\langle i,j\rangle$ alle benachbarten Paare sind, die Austauschenergie $J$ in beide Richtungen gleich und konstant ist und die Spins $S_i$ die  Werte $\pm 1$ annehmen können. Das Vorzeichen von $J$ bestimmt, ob der Magnet ferro- oder antiferromagnetisch ist. Es ist möglich, durch einen zusätzlichen Term ein äußeres Magnetefld zu simulieren, dies wurde in dieser Arbeit jedoch nicht getan.%Äußeres Magnetfeld möglich, aber hier vernachlässigt.
+	Wobei $\langle i,j\rangle$ alle benachbarten Paare sind, die Austauschenergie $J$ in beide Richtungen gleich und konstant ist und die Spins $s_i$ die  Werte $\pm 1$ annehmen können. Das Vorzeichen von $J$ bestimmt, ob der Magnet ferro- oder antiferromagnetisch ist. Es ist möglich, durch einen zusätzlichen Term ein äußeres Magnetefld zu simulieren, dies wurde in dieser Arbeit jedoch nicht getan.%Äußeres Magnetfeld möglich, aber hier vernachlässigt.
 
 	
 	%Erwarte einen kritischen Punkt mit Phasenübergang zweiter Ordnung. \cite{OnsagerCrystal1}
@@ -100,11 +100,16 @@
 	%Magnetisierung: Erwartungswert der Spins, \[
 	%M^2=\lim\limits_{m\to\infty}\left\langle s_i s_{i+m}\right\rangle \]
 	
-	Bei der Magnetisierung handelt es sich um den Erwartungswert der Spins\cite[vgl. ][S. 8]{binderheermann}:\[
-	M=\frac{1}{N}\left\langle  \sum_{i=1}^{N} s_i \right\rangle 
-	\]
+	Bei der Magnetisierung handelt es sich um den Erwartungswert der Spins, bei einem endlichen Gitter mit $N$ Punkten also\cite[vgl. ][S. 8]{binderheermann}:
+	\begin{equation}
+	M=\langle s \rangle=\frac{1}{N}\left\langle  \sum_{i=1}^{N} s_i \right\rangle
+	\label{eq:magnetisierung}
+	\end{equation}
+	%\[
+	%M=\frac{1}{N}\left\langle  \sum_{i=1}^{N} s_i \right\rangle 
+	%\]
 	
-	Die erwartete Magnetisierung unterhalb des kritischen Punkt ist nach \cite{YangMagnetization}, \cite{MontrollMagnetization}:
+	Sie ist ein Maß dafür, wie stark das Gitter nach außen als Magnet wirkt. Die erwartete Magnetisierung unterhalb des kritischen Punkt ist nach \cite{YangMagnetization}, \cite{MontrollMagnetization}:
 	\begin{equation} M=\left[1-\left(\sinh\left(\frac{2J}{k_BT}\right)\right)^{-4}\right]^{\frac{1}{8}}
 	\label{eq:magnetisierungsgleichungliteratur}
 	\end{equation}
@@ -128,16 +133,18 @@
 	Dies ist analytisch nicht machbar, da dieses Integral sehr hochdimensional ist und gleichzeitig viele Zustände nur einen sehr kleinen Beitrag zum Gesamtintegral leisten\cite[vgl. ][S. 9]{binderheermann}.
 	
 	Die Idee der Monte-Carlo-Simulationen ist es, solche Integrale zu Diskretisieren
-	und über alle berechneten Zustände einen Mittelwert mit Gewichtung der einzelnen Zustände mit $p(\mathbf{x})$ zu berechnen. Alternativ können die Zustände auch so gezogen werden, dass sie von Anfang an nach $p(\mathbf{x})$ verteilt sind, dann ist bei der Bildung des Mittelwerts keine Gewichtung mehr notwendig. %und die Zustände mit mehr Gewicht öfter zu berechnen, damit sie bei der Summierung entsprechend mehr ins Gewicht fallen. Dafür werden die zu berechnenden Zustände $A$ so gezogen, dass sie nach $Z^{-1} \exp(-H_i/k_BT)$ verteilt sind.
+	und über alle berechneten Zustände einen Mittelwert mit Gewichtung der einzelnen Zustände mit $p(\mathbf{x})$ zu berechnen. Alternativ können die Zustände auch so gezogen werden, dass sie von Anfang an nach $p(\mathbf{x})$ verteilt sind, dann ist bei der Bildung des Mittelwerts keine Gewichtung mehr notwendig.(Zitate) %und die Zustände mit mehr Gewicht öfter zu berechnen, damit sie bei der Summierung entsprechend mehr ins Gewicht fallen. Dafür werden die zu berechnenden Zustände $A$ so gezogen, dass sie nach $Z^{-1} \exp(-H_i/k_BT)$ verteilt sind.
 	
 	Dies wird durch den Metropolis-Algorithmus ermöglicht, entwickelt in \cite{metropolisupdate}:
 	Es wird eine Veränderung des Systems mit Energieänderung $\Delta H$ vorgeschlagen, in diesem Fall die Umdrehung eines einzelnen Spins. Diese Änderung wird auf jeden Fall angenommen, wenn sie die Energie des Systems verringert, und wenn sie die Energie erhöht, wird die Änderung mit Wahrscheinlichkeit $\exp(-\Delta H/k_BT)$ angenommen.
 	
 	Insgesamt ist die Wahrscheinlichkeit zur Umdrehung eines Spins also $P=\min \left[1, \exp(-\Delta H/k_BT)\right]$
 	
-	Dies führt dazu, dass alle zu berechnenden Zustände aus den vorher berechneten generiert werden. Die Zustände bilden also eine Markovkette, es handelt sich um Markov Chain Monte Carlo (deutsche Bezeichnung?)
+	Dies führt dazu, dass alle zu berechnenden Zustände aus den vorher berechneten generiert werden. Die Zustände bilden also eine Markovkette, es handelt sich um Markov Chain Monte Carlo (deutsche Bezeichnung?, Zitat)
 	
-	Der erste Zustand wird zufällig generiert, befindet sich also nicht im Gleichgewicht und hat vermutlich ein sehr geringes Gewicht. Um in eine Region mit lokalen Energieminima/Hohen Gewichten zu kommen, ist erst eine Thermalisierung notwendig, das heißt, einige Updates, deren Ergebnisse nicht verwendet werden können, um einen Mittelwert zu bilden. (Zitate?)
+	Der erste Zustand wird zufällig generiert, befindet sich also nicht im Gleichgewicht und hat vermutlich ein sehr geringes Gewicht. Um in eine Region mit lokalen Energieminima/Hohen Gewichten zu kommen, ist erst eine Thermalisierung notwendig, das heißt, einige Updates, deren Ergebnisse nicht verwendet werden können, um einen Mittelwert zu bilden\cite[vgl. ][Abschnitt 3.4]{binderheermann}. %(Zitate?)
+	
+	Thermodynamisches Mittel=Mittel über Messungen?(Zitat)
 	
 %	Suche Observablen von komplexen Systemen. Problem: Zustandssumme, Observable $<A>$ nicht/nur schwer analytisch bestimmbar. \[Z=\int_{Alle Konfigurationen}\exp(-H/T)\] \[<A>=1/Z\int_{alle Konfigurationen} A\exp(-H/T)\] Generell: Integral bestimmen, nicht analytisch lösbar.
 %	Idee: Diskretisiere Integral, verteile Summe nicht gleichmäßig, sondern summiere bevorzugt über Zustände, die ein höheres Gewicht haben. Zwei Funktionen Multiplizieren, Zahlen aus einer ziehen.
@@ -149,10 +156,14 @@
 %	\cite{binderheermann}
 		
 	\section{Parallelrechner}
-	Parallelrechner: Durch Benutzung mehrerer Prozessorkerne oder mehrerer Computer benötigte Rechenzeit aufteilen und schneller Ergebnisse haben. Zwei Konzepte:
-	\subsection{Shared Memory mit OpenMP}
-	Open Multi-Processing\cite{specificationsopenmp}
-	Mehrere Prozessoren greifen auf einen gemeinsamen Speicher zu, alle Prozesse können freigegebene Variablen verändern, Verhindern von Speicherproblemen durch critical-Bereiche, die nur ein Thread zu einer Zeit ausführen kann. Auch möglich, Variablen privat zu setzen, dann hat jeder Thread eine eigene Kopie der variable. Anwendung über Compiler-Pragmas\cite{tutorialopenmp}
+	Um die Berechnungen eines Standardrechner, der seriell arbeitet, zu beschleunigen, können mehrere Prozessoren oder mehrere Computer gleichzeitig an einem Programm arbeiten. Dazu gibt es zwei weit verbreitete Konzepte:
+	%Parallelrechner: Durch Benutzung mehrerer Prozessorkerne oder mehrerer Computer benötigte Rechenzeit aufteilen und schneller Ergebnisse haben. Zwei Konzepte:
+	\subsection{Shared Memory, hier mit OpenMP}
+	Eine Möglichkeit ist, dass mehrere Prozessoren auf einen gemeinsamen Speicher zugreifen. Dies wurde in dieser Arbeit mit OpenMP umgesetzt, ein von einer nonprofit Organisation entwickelter Satz an Compilerdirektiven\cite{specificationsopenmp}.	
+	
+	In einer parallelen Region arbeiten mehrere Threads gleichzeitig an einem Teil des Programms, oder teilen sich Schleifendurchläufe auf. Hierbei kann entweder jeder Thread auf die gleichen Variablen zugreifen (shared) oder eine eigene Version der Variable zur Verfügung haben, die von anderen Threads nicht verändert werden kann(private)\cite{tutorialopenmp}. 
+	%Open Multi-Processing\cite{specificationsopenmp}
+	%Mehrere Prozessoren greifen auf einen gemeinsamen Speicher zu, alle Prozesse können freigegebene Variablen verändern, Verhindern von Speicherproblemen durch critical-Bereiche, die nur ein Thread zu einer Zeit ausführen kann. Auch möglich, Variablen privat zu setzen, dann hat jeder Thread eine eigene Kopie der variable. Anwendung über Compiler-Pragmas\cite{tutorialopenmp}
 	\subsection{MPI}
 	Message Passing Interface
 	Mehrere Rechner mit separatem Speicher arbeiten an einem Problem, Rechner kommunizieren untereinander.
@@ -160,34 +171,82 @@
 	
 		
 	\chapter{Implementierung}
-	Bei der Umsetzung ist nur ein endliches Gitter vorhanden.
-	Randbedingungen: Auch für die Spins am Rande des Gitters muss es Nachbarn geben. Hier wurden periodische Randbedingungen gewählt, d.h. der Nachbar von einem Punkt am Ende einer Zeile ist der Punkt am Anfang der Zeile.
 	
-	Eine Messung: Bei jedem Spin wird ein Metropolis-Update durchgeführt.
+	\section{serielle Ausführung}
+	Bei der Implementierung des Ising-Modells auf einem Rechner müssen noch weitere Annahmen gemacht werden:
 	
-	Akzeptanzrate: Wie viele Spins wurden bei einer Messung umgedreht? Wird bei jedem Punkt gezählt und in eine Variable geschrieben.
+	Das Gitter ist nicht unendlich lang, sondern begrenzt. Je größer das Gitter ist, desto näher ist das Ergebnis am thermodynamischen Limes. 
 	
-	Magnetisierung: Betrag der Summe über alle Spins im Gitter, je mehr Spins gleich ausgerichtet sind, desto stärker der nach außen sichtbare Effekt als Magnet. Nach jeder Messung bestimmt.
+	Aufgrund der Begrenzung des Gitters ist die Frage, was die Nachbarn der Teilchen am Rand des Gitters sind. Hier wurden periodische Randbedingungen gewählt, der Nachbar eines letzten Teilchen einer Zeile ist also das erste Teilchen der Spalte.
 	
-	Um Messungen zu vereinfachen: setze $k_B=1$, betrachte nur $T$.
-		
-	Initialisierung des Gitters: Als 1D array abspeichern, mit Mersenne Twister $\pm1$ auf das Gitter verteilen.
-	Hamiltonian: berechnen über zeilenweise array durchgehen, von jedem Punkt rechten und unteren Nachbarn, periodische Randbedingungen durch modulo.
-	Metropolis-Update: Nur vier Nachbarn zum Berechnen nötig, Hamiltonian wird als Parameter übergeben, daraus Änderung bei Flip, Akzeptanz wird durch 0/1 zurückgegeben. Wahrscheinlichkeit für Flip: Vergleich mit Zufallszahl zwischen null und eins.
-	sweep Funktion: geht das ganze Gitter durch und führt bei jedem Punkt ein Metropolis-Update durch. Zählt wie viele Spins geflippt werden, schreibt am Ende Prozentuale Veränderungen (Akzeptanzrate) und Summe über alle Spins(Magnetisierung) in Ausgabedatei.
+	Um die Auswertung der Messungen zu vereinfachen, wurde in dieser Arbeit mit $k_B=1$ gerechnet, also $T$ dimensionslos gewählt.
 	
-	Am Anfang Einbrennen nötig: Gitter der vorherigen Temperatur wird übergeben, N0 (=10.000) Messungen werden durchgeführt, deren Ergebnisse nicht verwendet werden, da sie zu stark variieren, Gitter nach Einbrennen wird in .txt Datei gespeichert.
+	%Bei der Umsetzung ist nur ein endliches Gitter vorhanden.
+	%Randbedingungen: Auch für die Spins am Rande des Gitters muss es Nachbarn geben. Hier wurden periodische Randbedingungen gewählt, d.h. der Nachbar von einem Punkt am Ende einer Zeile ist der Punkt am Anfang der Zeile.
+	%Um Messungen zu vereinfachen: setze $k_B=1$, betrachte nur $T$.
+	Bei einer Messung wird bei jedem Spin im Gitter ein Metropolis-Update durchgeführt.%Eine Messung: Bei jedem Spin wird ein Metropolis-Update durchgeführt.
 	
-	Danach messen: Ergebnisse werden in Ausgabedatei geschrieben.
-	Aus Datei durch einlesen mit Standardschätzern naiven Mittelwert $\mu=\frac{1}{N}\sum_{i} x_i$ bilden und damit Standardabweichung $\sigma=\frac{1}{N-1}\sum_{i}(x_i-\mu)^2$ berechnen. Temperatur, Mittelwert und Varianz der Akzeptanzrate und Magnetisierung werden in Datei geschrieben.
+	Dabei werden verschiedene Dinge gemessen: \begin{itemize}
+		\item Der Hamiltonian des Systems, dies nach Gl.\ref{eq:hamiltonianising}
+		\item Die Akzeptanzrate des Systems, also bei welchem Anteil der Spins das Metropolis-Update zur Umdrehung geführt hat. Dies wird für jedes einzelne Metropolis-Update gezählt und am Ende gemittelt.
+		\item Die Magnetisierung des Systems nach Gl. \ref{eq:magnetisierung}
+	\end{itemize}
+	%Akzeptanzrate: Wie viele Spins wurden bei einer Messung umgedreht? Wird bei jedem Punkt gezählt und in eine Variable geschrieben.
 	
-	Fehler kommen durch Autokorrelation der Daten, sind also Temperaturabhängig: Beseitigung der Autokorrelation durch Blocking der Daten, also Einteilen in verschiedene Blöcke der Länge $l$, danach Bootstrapping, um Fehlerqualität zu verbessern. (Zitat?)
+	%Magnetisierung: Betrag der Summe über alle Spins im Gitter, je mehr Spins gleich ausgerichtet sind, desto stärker der nach außen sichtbare Effekt als Magnet. Nach jeder Messung bestimmt.
+	
+	Das Gitter wird als eindimensionales Array abgespeichert. Das Element an Position (x,y) ist dann der laenge$\cdot$x+y-te Eintrag des Arrays (alles in C-Zählweise, also bei 0 angefangen).
+
+	Der Hamiltonian des Gitters wird berechnet, indem das Gitter zeilenweise durchgegangen wird und von jedem Teilchen die Interaktionsenergie mit dem rechten und dem unteren Nachbarn zum bisherigen Hamiltonian addiert wird.
+	
+	Die zur Durchführung des Metropolis-Update benötigte Energiedifferenz bei Umdrehung eines Spin wird berechnet, indem die Energiedifferenz zu den nächsten vier Nachbarn berechnet wird. 
+	nach \cite[S. 103]{binderheermann} kann diese Energiedifferenz nur einer von fünf Werten sein. Daher wird die Wahrscheinlichkeit für die Spindrehung nicht jedesmal neu berechnet, sondern in einem Array nachgeschaut.
+	
+	Um zu erreichen, dass der Spinflip mit der entsprechenden Wahrscheinlichkeit angenommen wird, wird die Wahrscheinlichkeit mit einer Zufallszahl zwischen null und eins verglichen\cite[nach][]{metropolisupdate}. Wenn die Wahrscheinlichkeit größer als die Zufallszahl ist, wird der Spinflip ausgeführt, und die Energiedifferent zum Hamiltonian dazuaddiert.
+	
+	Die Messung wird in der sweep-Funktion durchgeführt, in der in for-Schleifen das ganze Gitter durchgegangen wird. Für jeden Punkt wird die Energiedifferenz bei Umdrehung ermittelt und damit ein Metropolis-Update durchgeführt. Nachdem bei jedem Punkt ein Update durchgeführt worden ist, wird die Akzeptanzrate sowie die Magnetisierung in eine .txt-Datei ausgegeben, in der die Ergebnisse aller Messungen gespeichert werden.
+	%Hamiltonian: berechnen über zeilenweise array durchgehen, von jedem Punkt rechten und unteren Nachbarn, periodische Randbedingungen durch modulo.
+	%Metropolis-Update: Nur vier Nachbarn zum Berechnen nötig, Hamiltonian wird als Parameter übergeben, daraus Änderung bei Flip, Akzeptanz wird durch 0/1 zurückgegeben. Wahrscheinlichkeit für Flip: Vergleich mit Zufallszahl zwischen null und eins.
+	%sweep Funktion: geht das ganze Gitter durch und führt bei jedem Punkt ein Metropolis-Update durch. Zählt wie viele Spins geflippt werden, schreibt am Ende Prozentuale Veränderungen (Akzeptanzrate) und Summe über alle Spins(Magnetisierung) in Ausgabedatei.
+	
+	Um eine zufällige Anfangskonfiguration zu erzeugen, wird ein eindimensionales Array mit laenge*laenge Einträgen erstellt. Mithilfe von Zufallszahlen aus der Gnu Scientific Library \cite{gsldoc} wird jedem Element des arrays zufällig $1$ oder $-1$ zugeteilt.	
+	%Initialisierung des Gitters: Als 1D array abspeichern, mit Mersenne Twister $\pm1$ auf das Gitter verteilen.
+	
+	Diese zufällige Konfiguration ist weit vom interessanten Gleichgewicht entfernt, sodass die ersten Messungen nicht verwendet werden können. Daher ist am Anfang eine Thermalisierung nötig, nach der sich das System im Gleichgewicht befindet. Für die erste Temperatur werden (10.000) Mesusngen durchgeführt und verworfen, für alle Temperaturen danach wird das Gitter der vorherigen Temperatur übergeben und mit (5.000) Messungen thermalisiert. Das thermalisierte Gitter wird ausgegeben und kann somit auch für spätere Messungen wieder verwendet werden. Die Datei mit den Messergebnissen der Thermalisierung ist nicht relevant.
+	
+	Beim Messen wird die gewünschte Anzahl an Messungen als Parameter übergeben, die Messungen werden in eine Datei geschrieben.
+	
+	%Am Anfang Einbrennen nötig: Gitter der vorherigen Temperatur wird übergeben, N0 (=10.000) Messungen werden durchgeführt, deren Ergebnisse nicht verwendet werden, da sie zu stark variieren, Gitter nach Einbrennen wird in .txt Datei gespeichert.
+	
+	%Danach messen: Ergebnisse werden in Ausgabedatei geschrieben.
+	
+	Die Daten der Messdatei werden wieder eingelesen, um daraus den naiven Mittelwert $\mu=\frac{1}{N}\sum_{i} x_i$ und die naive Standardabweichung $\sigma=\frac{1}{N-1}\sum_{i}(x_i-\mu)^2$ zu bilden. Diese werden zusammen mit Temperatur und Gitterlänge in eine Datei geschrieben.
+	%Aus Datei durch einlesen mit Standardschätzern naiven Mittelwert $\mu=\frac{1}{N}\sum_{i} x_i$ bilden und damit Standardabweichung $\sigma=\frac{1}{N-1}\sum_{i}(x_i-\mu)^2$ berechnen. Temperatur, Mittelwert und Varianz der Akzeptanzrate und Magnetisierung werden in Datei geschrieben.
+	
+	Da es sich um Markov-Chain-Monte-Carlo handelt, sind die Konfigurationen nicht voneinander unabhängig, also autokorreliert. Insbesondere ist diese Autokorrelation temperaturabhängig(warum? Zitat).
+	
+	Um die Autokorrelation zu verringern, werden die Mittelwerte und Fehler der Messdaten zusätzlich noch durch Bootstrapping mit vorherigem Blocking bestimmt. Das Blocking sorgt dafür, dass die Autokorrelation kleiner wird, dass Bootstrapping dafür, dass die ermittelten Werte eher der zugrundeliegenden Wahrscheinlichkeitsverteilung entsprechen.
+	
+%	Fehler kommen durch Autokorrelation der Daten, sind also Temperaturabhängig: Beseitigung der Autokorrelation durch Blocking der Daten, also Einteilen in verschiedene Blöcke der Länge $l$, danach Bootstrapping, um Fehlerqualität zu verbessern. (Zitat?)
 	Bootstrapping: zur Erzeugung eines Replikas aus Messwerten so viele Werte mit Zurücklegen ziehen, wie es Messungen gibt und daraus den arithmetischen Mittelwert bilden. Aus $r$ so gebildeten Replikas den Standardschätzer für Mittelwert und Varianz ziehen. Temperatur, $l$, Mittelwert und Varianz in Datei schreiben.
 	
-	So errechneter Fehler steigt mit l an, ab einer gewissen Länge bildet sich ein Plateau. Quelle: Skript.
+	Der so berechnete Fehler hängt von der Länge l der Blöcke ab, er steigt mit der Länge. Ab einer gewissen Länge bleiben die Fehler konstant, diese Region eignet sich gut, um temperaturunabhängige Fehler zu bestimmen.
+	%So errechneter Fehler steigt mit l an, ab einer gewissen Länge bildet sich ein Plateau. Quelle: Skript.
 	
 	Bild Fehler in Abhängigkeit von l?
 	
+	Zur Bestimmung des kritischen Punktes wird ausgenutzt, dass an diesem eine Unstetigkeit in der Ableitung bestehen sollte. Aufgrund der endlichen Länge des Gitters, gibt es keine Unstetigkeit, sondern nur ein Extremum. Dieses wird bestimmt, indem das Maximum der mit der 2-Punkt-Formel gebildeten Ableitung bestimmt wird. Der Fehler der Ableitung wird mittels Gaußscher Fehlerfortpflanzung bestimmt.
+	%Kritischer Punkt: Unstetigkeit in Magnetisierung/Pol in Ableitung erwartet, bestimmen über größte Änderung/Extremum der Ableitung der Magnetisierung: Mit 2-Punkt-Formel berechnete Ableitung, Fehler der Ableitung mit Gaußscher Fehlerfortpflanzung ermittelt.
+		
+		
+	Main-funktion: Variablen wie T, J, N0 initialisieren, Array mit verwendeten Temperaturen und l fürs Bootstrapping erzeugen, Dateien für Mittelwerte öffnen
+	Messungen für verschiedene Temperaturen: Durch for-Schleife, vorher Initialisierung eines Array, in das die Temperaturen gleichmäßig verteilt hineingeschrieben werden.
+	Initialisierung mit (100.000) Messungen am ersten Gitter, danach Thermalisierung mit Gitter der vorherigen Temperatur.
+	for-Schleife über alle Temperaturen im array: Datei für Gitter, Messergebnisse öffnen, thermalisieren, messen, naive Schätzer und Bootstrapschätzer für verschiedene l bestimmen.
+	Am Ende Ableitung in separate Datei schreiben.
+		
+	
+	\section{parallele Ausführung}
 	Einzelne Messung dauert recht lange: Beschleunigen durch parallelisieren. 
 	Strategie: Vor allem Rechenintensive Bereiche parallelisieren, z.B. sweep-funktion für Messvorgang und Replikas ziehen.
 	Parallelisiert: for-Schleifen, deren Ausführungen unabhängig vom vorherigen Schleifendurchgang sind.
@@ -200,15 +259,7 @@
 	Zeitersparnis Tabelle/Grafik Nummer an Kernen/Gebrauchte Zeit. Auch für einzelne Funktionen?
 	Funktion parallelisiert, die Summe über das Gitter berechnet: Zeitersparnis nur 0,5\%, daher Hamiltonian, einmaliges Verteilen der Zufallszahlen auf Gitter nicht parallelisiert.
 	
-	Kritischer Punkt: Unstetigkeit in Magnetisierung/Pol in Ableitung erwartet, bestimmen über größte Änderung/Extremum der Ableitung der Magnetisierung: Mit 2-Punkt-Formel berechnete Ableitung, Fehler der Ableitung mit Gaußscher Fehlerfortpflanzung ermittelt.
-	
-	
-	Main-funktion: Variablen wie T, J, N0 initialisieren, Array mit verwendeten Temperaturen und l fürs Bootstrapping erzeugen, Dateien für Mittelwerte öffnen
-	Messungen für verschiedene Temperaturen: Durch for-Schleife, vorher Initialisierung eines Array, in das die Temperaturen gleichmäßig verteilt hineingeschrieben werden.
-	Initialisierung mit (100.000) Messungen am ersten Gitter, danach Thermalisierung mit Gitter der vorherigen Temperatur.
-	for-Schleife über alle Temperaturen im array: Datei für Gitter, Messergebnisse öffnen, thermalisieren, messen, naive Schätzer und Bootstrapschätzer für verschiedene l bestimmen.
-	Am Ende Ableitung in separate Datei schreiben.
-	
+
 	
 	 	
 	\chapter{Ergebnisse}
