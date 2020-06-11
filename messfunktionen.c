@@ -330,9 +330,10 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	int changes =0;//misst Gesamtzahl der spinflips
 	int changesklein=0;//misst Spinflips in parallelen Thread
 	//schwarz: d1+d2 gerade
+	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
 	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
 	{
-		#pragma omp for
+		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==0){
@@ -359,13 +360,14 @@ double sweep(int *gitter, int laenge, double j, double T, gsl_rng *generator, do
 	//~ //weiss: d1+d2 ungerade, sonst analog zu schwarz
 	//~ #pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
 	//~ {
-		#pragma omp for
+		#pragma omp barrier//damit mit nowait overhead reduziert werden kann
+		#pragma omp for nowait schedule (static)
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
-				if((d1+d2)%2==0){
+				if((d1+d2)%2==1){
 				delta=deltah(gitter, d1, d2, laenge);
 				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
-					printf("weiß    Fehler bei delta\n");
+					printf("weiß    Fehler bei delta %d %d\n", d1, d2);
 				}
 				if (((d1+d2)%2==1)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
 					flipspin(gitter, d1, d2, laenge);//in Gitter speichern
