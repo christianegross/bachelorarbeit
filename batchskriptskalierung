@@ -1,12 +1,12 @@
 #!/bin/bash -x
-#SBATCH --job-name=skalierungising
+#SBATCH --job-name=skalierungisingnode02
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=s6chgros@uni-bonn.de
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12
 #SBATCH --mem=200mb
-#SBATCH --time=00:50:00
+#SBATCH --time=01:10:00
 #SBATCH --output=outanderror/skalierung-%j.out
 #SBATCH --error=outanderror/errorskalierung-%j.out
 #SBATCH --nodelist=lcpunode02
