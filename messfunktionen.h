@@ -11,6 +11,8 @@ double hamiltonian(char *gitter, int laenge, double j);
 double deltahalt(char *gitter, int d1, int d2, int laenge, double j);
 int tryflipalt(char *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double delta);
 int deltah(char *gitter, int d1, int d2, int laenge);
+int deltahneu(char *gitter, int d1, int d2, int laenge);
+int deltahneu2(char *gitter, int d1, int d2, int laenge);
 int tryflip(char *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double wahrscheinlichkeit);
 void flipspin(char *gitter, int d1, int d2, int laenge);
 double wahrscheinlichkeit(int delta, double *wahrscheinlichkeiten);

@@ -29,19 +29,19 @@ int main(int argc, char **argv){
 	}
 	//~ double mittelham, varianzham;
 	double temperatur=0.5;//Skalierung bei nur einer TEmperatur messen
-	FILE *messdatei, *dummydatei, *dummydateiplot, *zeitdatei, *mitteldatei/*, *vergleichsdatei*/;//speichern der Messergenbnisse der einzelnen Messungen, der Zeiten und ein nicht benoetigtes nicht thermalisiertes Gitter
-	char dateinamezeit[200], dateinamemittel[200], dateinamedummytherm[50], dateinamedummythermplot[50], dateinamedummymessen[50];//dateinamemessen[150],
+	FILE *messdatei, *dummydatei/*, *dummydateiplot*/, *zeitdatei, *mitteldatei/*, *vergleichsdatei*/;//speichern der Messergenbnisse der einzelnen Messungen, der Zeiten und ein nicht benoetigtes nicht thermalisiertes Gitter
+	char dateinamezeit[200], dateinamemittel[200], dateinamedummytherm[50]/*, dateinamedummythermplot[50]*/, dateinamedummymessen[50];//dateinamemessen[150],
 	struct timeval anfangmessen, endemessen;//Zeitmessung mit gettimeofday
 	double sec, usec, zeitgesmessen, zeiteincore, varianzeincore;
 	sprintf(dateinamedummytherm, "dummytherm%.2d.txt", node);
-	sprintf(dateinamedummythermplot, "dummythermplot%.2d.txt", node);
+	//sprintf(dateinamedummythermplot, "dummythermplot%.2d.txt", node);
 	sprintf(dateinamedummymessen, "dummymessen%.2d.txt", node);
 
 	dummydatei=fopen(dateinamedummytherm, "w+");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird	
-	dummydateiplot=fopen(dateinamedummythermplot, "w+");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird	
+	//dummydateiplot=fopen(dateinamedummythermplot, "w+");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird	
 	//sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-laenge%.4d-m%.6d-mehrere.txt",laenge,messungen);
-	sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-m%.6d-mehrerelaengenunddurchlaeufenode%.2ddeltahneu2.txt",messungen, node);
-	sprintf(dateinamemittel,"Messungen/Zeiten/zeitenmittel-m%.6d-mehrerelaengenunddurchlaeufenode%.2ddeltahneu2.txt",messungen, node);
+	sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-m%.6d-mehrerelaengenunddurchlaeufenode%.2ddeltah.txt",messungen, node);
+	sprintf(dateinamemittel,"Messungen/Zeiten/zeitenmittel-m%.6d-mehrerelaengenunddurchlaeufenode%.2ddeltah.txt",messungen, node);
 	zeitdatei=fopen(dateinamezeit, "w+");
 	mitteldatei=fopen(dateinamemittel, "w+");
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
