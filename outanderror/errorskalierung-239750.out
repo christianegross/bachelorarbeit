@@ -1,0 +1,10 @@
++ export OMP_NUM_THREAD=16
++ OMP_NUM_THREAD=16
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ srun /hiskp4/gross/bachelorarbeit/skalierungnode01
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** JOB 239750 ON lcpunode01 CANCELLED AT 2020-06-03T20:13:55 DUE TO TIME LIMIT ***
+slurmstepd: error: Exceeded job memory limit at some point.
+srun: error: lcpunode01: task 0: Out Of Memory
