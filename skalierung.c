@@ -21,7 +21,7 @@ int main(int argc, char **argv){
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
 	int node=2;//1,2 qbig, 0 vm
-	char merkmal[50]="messungoverheadunddeltahneu2";
+	char merkmal[50]="deltahlookup";
 	int durchlaeufe=5;
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
