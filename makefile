@@ -4,6 +4,8 @@ LIBS:= -lgsl -lgslcblas -lm -fopenmp -lrt
 #auswertung: auswertungzeit.o
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
+#skalfak00: skalierungfak.o
+#	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
 skalierungnode01: skalierung.o messfunktionen.o auswertungsfunktionen.o
 	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
