@@ -18,8 +18,8 @@ int main(int argc, char **argv){
 	int laenge=50;//laenge der verwendeten Gitter
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
-	int N01=10;//sweeps beim ersten Thermalisieren
-	int N0=10;//benoetigte sweeps zum Thermalisieren
+	int N01=10000;//sweeps beim ersten Thermalisieren
+	int N0=5000;//benoetigte sweeps zum Thermalisieren
 	int messungen=10000;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledatei, *ableitungdatei, *zeitdatei;//benoetigte Dateien zur Ausgabe
@@ -38,10 +38,10 @@ int main(int argc, char **argv){
 	double *blockarray;//Zum Speichern der geblockten Messwerte
 	double blocklenarray[12]={32, 64,128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
-	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d.txt",laenge, messungen);//speichert naive Mittelwerte
-	sprintf(dateinamebootstrapalle,"Messungen/Bootstrapges/bootstrapalle-l%.4d-m-%.6d.txt",laenge, messungen);//speichert Mitteelwerte aus Bootstrap
-	sprintf(dateinameableitung,"Messungen/ableitung-laenge-%.4d-m-%.6d.txt",laenge, messungen);//speichert Ableitung
-	sprintf(dateinamezeit,"Messungen/Zeiten/zeiten-laenge-%.4d-m-%.6d-cores-%.2d.txt",laenge, messungen, anzahlcores);//speichert Ableitung
+	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6dthermpruefen.txt",laenge, messungen);//speichert naive Mittelwerte
+	sprintf(dateinamebootstrapalle,"Messungen/Bootstrapges/bootstrapalle-l%.4d-m-%.6dthermpruefen.txt",laenge, messungen);//speichert Mitteelwerte aus Bootstrap
+	sprintf(dateinameableitung,"Messungen/ableitung-laenge-%.4d-m-%.6dthermpruefen.txt",laenge, messungen);//speichert Ableitung
+	sprintf(dateinamezeit,"Messungen/Zeiten/zeiten-laenge-%.4d-m-%.6d-cores-%.2dthermpruefen.txt",laenge, messungen, anzahlcores);//speichert Ableitung
 	mittelwertdatei=fopen(dateinamemittel, "w+");
 	bootstrapalledatei=fopen(dateinamebootstrapalle, "w+");
 	ableitungdatei=fopen(dateinameableitung, "w");
@@ -53,28 +53,28 @@ int main(int argc, char **argv){
 	summezeitgesbootstrap=0;//Zeit fuer alle Temperaturen insgesamt
 	gettimeofday(&anfangprogramm, NULL);
 	//Thermalisierung des ersten Gitters, nicht ueber letztes verwendetes Gitter moeglich
-	int gitter[laenge*laenge];
+	char gitter[laenge*laenge];
 	initialisierung(gitter, laenge, seed);
 	dummydatei=fopen("dummytherm.txt", "w");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird
 	gsl_rng_set(generator, seed);
-	thermalisieren(laenge, temperaturarray[0], j, seed, N01, gitter, dummydatei, generator);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
+	thermalisieren(laenge, temperaturarray[100], j, seed, N01, gitter, dummydatei, generator);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	fclose(dummydatei);
-	for (int n=0; n<temperaturzahl; n+=5){    //ueber alle gegebenen Temperaturen messen
+	for (int n=100; n<200; n+=20){    //ueber alle gegebenen Temperaturen messen
 		printf("%d\n", n);
-		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-m%.6d-t%.3d.txt",laenge,messungen,n);//.2, damit alle dateinamengleich lang sind
-		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-t%.3d.txt",laenge,messungen,n);//.2, damit alle dateinamengleich lang sind
+		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-m%.6d-t%.3dthermpruefen.txt",laenge,messungen,n);//.2, damit alle dateinamengleich lang sind
+		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-t%.3dthermpruefen.txt",laenge,messungen,n);//.2, damit alle dateinamengleich lang sind
 		gitterthermdatei = fopen(dateinametherm, "w+");//Zum speichern der thermalisierten Gitter
 		messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
 		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
 		thermalisieren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generator);
 		gettimeofday(&anfangmessen, NULL);
-		messen(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generator);
+		messen(laenge, temperaturarray[n], j, messungen, gitter/*thermdatei*/, messdatei, generator);
 		gettimeofday(&endemessen, NULL);
 		sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
 		usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
 		zeitgesmessen=sec+1e-06*usec;
 		summezeitgesmessen+=zeitgesmessen;
-		//printf("bei T=%f haben %d Messungen %f Sekunden gebraucht\n", temperaturarray[n], messungen, zeitgesmessen);
+		printf("bei T=%f haben %d Messungen %f Sekunden gebraucht\n", temperaturarray[n], messungen, zeitgesmessen);
 		fprintf(zeitdatei, "0.0\t%f\t%f\t%f\n", temperaturarray[n], (double)messungen, zeitgesmessen);
 		//Berechnung der naiven Standardfehler
 		mittelwertakz=mittelwertberechnungnaiv(messdatei, messungen, 1, 3);

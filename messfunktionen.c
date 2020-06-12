@@ -467,10 +467,10 @@ void thermalisieren(int laenge, double T, double j, int seed,int N0, char *gitte
 	ausgabe(gitter, laenge, ausgabedatei);//Gitter muss nicht immer neu thermalisiert werden, sondern kann auch eingelesen werden
 }
 
-void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, gsl_rng *generator){
+void messen(int laenge, double T, double j, int messungen, char* gitter/*, FILE *gitterdatei*/, FILE *messdatei, gsl_rng *generator){
 	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
-	char gitter[laenge*laenge];
-	einlesen(gitter, laenge, gitterdatei);
+	//char gitter[laenge*laenge];
+	//einlesen(gitter, laenge, gitterdatei);
 	double H=hamiltonian(gitter, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
