@@ -21,7 +21,7 @@ int main(int argc, char **argv){
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
 	int node=2;//1,2 qbig, 0 vm
-	char merkmal[50]="wenigerargumentethochgitter";
+	char merkmal[50]="messungoverheadunddeltahneu2";
 	int durchlaeufe=5;
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
@@ -118,9 +118,28 @@ int main(int argc, char **argv){
 			speedupfehler=sqrt(((varianzzeit/zeiteincore)*(varianzzeit/zeiteincore))+(mittelzeit*varianzeincore/zeiteincore/zeiteincore)*(mittelzeit*varianzeincore/zeiteincore/zeiteincore));
 			fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\t%f\n", (double)cores, (double)laenge, mittelzeit, varianzzeit, speedupmittel, speedupfehler);
 		}
+			//Messungen overhead
+		einlesen(gitter, laenge, dummydatei);
+		messdatei=fopen(dateinamedummymessen,  "w+");
+		gettimeofday(&anfangmessen, NULL);
+		//einlesen(gitter, laenge, dummydatei);
+		double H=hamiltonian(gitter, laenge, j);
+		for (int i=0;i<messungen;i+=1){
+		fprintf(messdatei, "%f\t", (double)i);
+		fprintf(messdatei, "%f\n", H);
+		H=gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;}
+		gettimeofday(&endemessen, NULL);
+		sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
+		usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
+		zeiteincore=sec+1e-06*usec;
+		fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\t%f\n", 0.0, (double)laenge, zeiteincore, 0.0,0.0,0.0);
+		fclose(messdatei);
 	}
+
+	
 	fclose(dummydatei);
 	fclose(zeitdatei);
+	fclose(mitteldatei);
 	
 	gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen
 	

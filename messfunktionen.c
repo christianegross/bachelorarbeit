@@ -376,7 +376,7 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==0){
-				delta=deltah(gitter, d1, d2, laenge);
+				delta=deltahneu2(gitter, d1, d2, laenge);
 				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
 					//~ printf("schwarz Fehler bei delta\n");
 				//~ }
@@ -404,7 +404,7 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				if((d1+d2)%2==1){
-				delta=deltah(gitter, d1, d2, laenge);
+				delta=deltahneu2(gitter, d1, d2, laenge);
 				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
 					//~ printf("weiß    Fehler bei delta %d %d\n", d1, d2);
 				//~ }
