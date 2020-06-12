@@ -122,7 +122,7 @@ double deltahalt(char *gitter, int d1, int d2, int laenge, double j){
 	return -j*delta;
 }
 
-int tryflipalt(char *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double delta){
+int tryflipalt(double T, gsl_rng *generator, double delta){
 	//versucht, den spin an position d1, d2 umzukehren nach Metropolis-Algorithmus
 	//if deltah<0: accept, return 1
 	if (delta<=0){
@@ -180,7 +180,7 @@ int deltahneu2(char *gitter, int d1, int d2, int laenge){
 	return delta;
 }
 
-int tryflip(char *gitter,  int d1, int d2, int laenge, double j, double T, gsl_rng *generator, double wahrscheinlichkeit){
+int tryflip(gsl_rng *generator, double wahrscheinlichkeit){
 	//versucht, den spin an position d1, d2 umzukehren nach Metropolis-Algorithmus
 	//if deltah<0: accept, return 1
 	if (wahrscheinlichkeit==1){
@@ -240,7 +240,7 @@ double sweepaltohnepar(char *gitter, int laenge, double j, double T, gsl_rng *ge
 	for (int d1=0; d1<laenge; d1+=1){//geht in erster dimension durch (Zeile
 		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 			delta=deltahalt(gitter, d1, d2, laenge, j);
-			if (tryflipalt(gitter, d1, d2, laenge, j, T, generator, delta)==1){//Wenn Spin geflippt wurde
+			if (tryflipalt(T, generator, delta)==1){//Wenn Spin geflippt wurde
 				flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 				H+=delta;//H aktualisieren
 				changes+=1;
@@ -264,7 +264,7 @@ double sweepalt(char *gitter, int laenge, double j, double T, gsl_rng *generator
 	for (int d1=0; d1<laenge;d1+=1){
 		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 			delta=deltahalt(gitter, d1, d2, laenge, j);
-			if (((d1+d2)%2==0)&&(tryflipalt(gitter, d1, d2, laenge, j, T, generator, delta)==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+			if (((d1+d2)%2==0)&&(tryflipalt(T, generator, delta)==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
 				flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 				veraenderungH+=delta;//H aktualisieren
 				changes+=1;
@@ -277,7 +277,7 @@ double sweepalt(char *gitter, int laenge, double j, double T, gsl_rng *generator
 	for (int d1=0; d1<laenge;d1+=1){
 		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 			delta=deltahalt(gitter, d1, d2, laenge, j);
-			if (((d1+d2)%2==1)&&(tryflipalt(gitter, d1, d2, laenge, j, T, generator, delta)==1)){//Wenn weisser Punkt und Spin geflippt wurde
+			if (((d1+d2)%2==1)&&(tryflipalt(T, generator, delta)==1)){//Wenn weisser Punkt und Spin geflippt wurde
 				flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 				H+=delta;//H aktualisieren
 				changes+=1;
@@ -311,7 +311,7 @@ double sweepzweipar(char *gitter, int laenge, double j, double T, gsl_rng *gener
 				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
 					printf("schwarz Fehler bei delta\n");
 				}
-				if (((d1+d2)%2==0)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				if (((d1+d2)%2==0)&&(tryflip(generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
 					//flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 					gitter[laenge*d1+d2]*=-1;
 					veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
@@ -338,7 +338,7 @@ double sweepzweipar(char *gitter, int laenge, double j, double T, gsl_rng *gener
 				if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
 					printf("weiß    Fehler bei delta\n");
 				}
-				if (((d1+d2)%2==1)&&(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
+				if (((d1+d2)%2==1)&&(tryflip(generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
 					flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 					veraenderungH+=j*delta;
 					changesklein+=1;
@@ -380,7 +380,7 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
 					//~ printf("schwarz Fehler bei delta\n");
 				//~ }
-				if (/*((d1+d2)%2==0)&&*/(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				if (/*((d1+d2)%2==0)&&*/(tryflip(generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
 					//flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 					gitter[laenge*d1+d2]*=-1;
 					veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
@@ -408,7 +408,7 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
 					//~ printf("weiß    Fehler bei delta %d %d\n", d1, d2);
 				//~ }
-				if (/*((d1+d2)%2==1)&&*/(tryflip(gitter, d1, d2, laenge, j, T, generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
+				if (/*((d1+d2)%2==1)&&*/(tryflip(generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
 					flipspin(gitter, d1, d2, laenge);//in Gitter speichern
 					veraenderungH+=j*delta;
 					changesklein+=1;
