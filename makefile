@@ -4,11 +4,11 @@ LIBS:= -lgsl -lgslcblas -lm -fopenmp -lrt
 #auswertung: auswertungzeit.o
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
-skalfak01: skalierungfak.o
-	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
-
-#skalierungnode02: skalierung.o messfunktionen.o auswertungsfunktionen.o
+#skalfak00: skalierungfak.o
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+
+skalierungnode01: skalierung.o messfunktionen.o auswertungsfunktionen.o
+	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
 #erstellt programm ising
 #ising: ising.o messfunktionen.o auswertungsfunktionen.o

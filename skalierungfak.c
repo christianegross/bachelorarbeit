@@ -41,14 +41,14 @@ double varianzarray(double *array, int messungen, double mittelwert){
 	return sqrt(summe/((double)messungen-1));
 }
 
-
+//
 int main(int argc, char **argv){
 	int maxcores=omp_get_max_threads();//aus Computerarchitektut/batchskript
 	int messungen=100000;
 	int argument=20000;
-	int node=1;//1,2 qbig, 0 vm
+	int node=0;//1,2 qbig, 0 vm
 	int durchlaeufe=10;
-	double mittelzeit, varianzzeit;
+	double mittelzeit, varianzzeit, speedup, varianzspeedup, zeiteincore, varianzeincore;
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
 		printf("Fehler beim Allokieren der Temperaturen!\n");
@@ -58,12 +58,35 @@ int main(int argc, char **argv){
 	char dateinamezeit[200];
 	struct timeval anfangmessen, endemessen;//Zeitmessung mit gettimeofday
 	double sec, usec, zeitgesmessen;
-	sprintf(dateinamezeit,"Messungen/Zeiten/skalierungfak-m-%.8d-node%.2d",messungen, node);
+	sprintf(dateinamezeit,"Messungen/Zeiten/skalierungfak-m-%.8d-node%.2d.txt",messungen, node);
 	zeitdatei=fopen(dateinamezeit, "w+");
 	int ergebnis=fak(argument);
-	for (int cores=1;cores<=maxcores;cores+=1){
+	//Ein core
+	for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
+		omp_set_num_threads(1);
+		gettimeofday(&anfangmessen, NULL);
+		#pragma omp parallel for
+		for (int i=0; i<messungen;i+=1){
+			if(ergebnis!=fak(argument)){
+				printf("Fehler!\n");
+			}
+		}
+		gettimeofday(&endemessen, NULL);
+		sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
+		usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
+		zeitgesmessen=sec+1e-06*usec;
+		ergebnisse[durchlauf]=zeitgesmessen;
+	}
+	mittelzeit=mittelwertarray(ergebnisse, durchlaeufe);
+	varianzzeit=varianzarray(ergebnisse, durchlaeufe, mittelzeit);
+	zeiteincore=mittelzeit;
+	varianzeincore=varianzzeit;
+	speedup=1.0;
+	varianzspeedup=varianzzeit/mittelzeit;
+	fprintf(zeitdatei, "%f\t%f\t%f\t%f\t%f\t%f\n", 1.0, (double)argument, mittelzeit, varianzzeit, speedup, varianzspeedup);
+	//mehrere cores
+	for (int cores=2;cores<=maxcores;cores+=1){
 			for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
-				printf("%d\n", durchlauf);
 				omp_set_num_threads(cores);
 				gettimeofday(&anfangmessen, NULL);
 				#pragma omp parallel for
@@ -80,7 +103,9 @@ int main(int argc, char **argv){
 			}
 			mittelzeit=mittelwertarray(ergebnisse, durchlaeufe);
 			varianzzeit=varianzarray(ergebnisse, durchlaeufe, mittelzeit);
-			fprintf(zeitdatei, "%f\t%f\t%f\t%f\n", (double)argument, (double)cores, mittelzeit, varianzzeit);
+			speedup=mittelzeit/zeiteincore;
+			varianzspeedup=sqrt(((varianzzeit/zeiteincore)*(varianzzeit/zeiteincore))+(mittelzeit*varianzeincore/zeiteincore/zeiteincore)*(mittelzeit*varianzeincore/zeiteincore/zeiteincore));
+			fprintf(zeitdatei, "%f\t%f\t%f\t%f\t%f\t%f\n", (double)cores, (double)argument, mittelzeit, varianzzeit, speedup, varianzspeedup);
 		}
 	fclose(zeitdatei);
 	free(ergebnisse);
