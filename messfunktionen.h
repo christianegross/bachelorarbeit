@@ -21,6 +21,6 @@ double sweepalt(char *gitter, int laenge, double j, double T, gsl_rng *generator
 double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen);
 void thermalisierenmitplot(int laenge, double T, double j, int seed,int N0, char *gitter, FILE *ausgabedatei, FILE *plotdatei, gsl_rng *generator);
 void thermalisieren(int laenge, double T, double j, int seed,int N0, char *gitter, FILE *ausgabedatei, gsl_rng *generator);
-void messen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, gsl_rng *generator);
+void messen(int laenge, double T, double j, int messungen, char* gitter/*, FILE *gitterdatei*/, FILE *messdatei, gsl_rng *generator);
 //~ void messenvergleichen(int laenge, double T, double j, int messungen, FILE *gitterdatei, FILE *messdatei, FILE *vergleichsdatei, gsl_rng *generator);
 

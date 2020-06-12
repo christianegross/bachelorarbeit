@@ -20,8 +20,8 @@ int main(int argc, char **argv){
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
-	int node=1;//1,2 qbig, 0 vm
-	char merkmal[20]="wenigerargumente";
+	int node=2;//1,2 qbig, 0 vm
+	char merkmal[50]="wenigerargumentethochgitter";
 	int durchlaeufe=5;
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
@@ -29,7 +29,7 @@ int main(int argc, char **argv){
 		return (-1);
 	}
 	//~ double mittelham, varianzham;
-	double temperatur=0.5;//Skalierung bei nur einer TEmperatur messen
+	double temperatur=3.5;//Skalierung bei nur einer TEmperatur messen
 	FILE *messdatei, *dummydatei/*, *dummydateiplot*/, *zeitdatei, *mitteldatei/*, *vergleichsdatei*/;//speichern der Messergenbnisse der einzelnen Messungen, der Zeiten und ein nicht benoetigtes nicht thermalisiertes Gitter
 	char dateinamezeit[200], dateinamemittel[200], dateinamedummytherm[50]/*, dateinamedummythermplot[50]*/, dateinamedummymessen[50];//dateinamemessen[150],
 	struct timeval anfangmessen, endemessen;//Zeitmessung mit gettimeofday
@@ -58,13 +58,14 @@ int main(int argc, char **argv){
 			gsl_rng_set(generator, seed/*(seed+durchlauf)*/);
 			speedup=1;//aus definition
 			omp_set_num_threads(1);
+			einlesen(gitter, laenge, dummydatei);
 			//sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-cores%.2d-%.2d.txt",laenge,messungen,1, durchlauf);
 			//messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
 			messdatei=fopen(dateinamedummymessen,  "w+");
 			//~ vergleichsdatei=fopen("dummyvergleich.txt", "w+");
 			gettimeofday(&anfangmessen, NULL);
 			//~ messenvergleichen(laenge, temperatur, j, messungen, dummydatei, messdatei, vergleichsdatei, generator);
-			messen(laenge, temperatur, j, messungen, dummydatei, messdatei, generator);
+			messen(laenge, temperatur, j, messungen, gitter/*dummydatei*/, messdatei, generator);
 			gettimeofday(&endemessen, NULL);
 			//~ mittelham=mittelwertberechnungnaiv(vergleichsdatei, messungen, 3, 4);
 			//~ varianzham=varianzberechnungnaiv(vergleichsdatei, messungen, mittelham, 3, 4);
@@ -89,13 +90,14 @@ int main(int argc, char **argv){
 		for (int cores=2;cores<=maxcores;cores+=1){
 			for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
 				omp_set_num_threads(cores);
+				einlesen(gitter, laenge, dummydatei);
 				//sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-cores%.2d-%.2d.txt",laenge,messungen,cores,durchlauf);
 				//messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
 				messdatei=fopen(dateinamedummymessen, "w+");
 				//~ vergleichsdatei=fopen("dummyvergleich.txt", "w+");
 				gettimeofday(&anfangmessen, NULL);
 				//~ messenvergleichen(laenge, temperatur, j, messungen, dummydatei, messdatei, vergleichsdatei, generator);
-				messen(laenge, temperatur, j, messungen, dummydatei, messdatei, generator);
+				messen(laenge, temperatur, j, messungen, gitter/*dummydatei*/, messdatei, generator);
 				gettimeofday(&endemessen, NULL);
 				//~ mittelham=mittelwertberechnungnaiv(vergleichsdatei, messungen, 3, 4);
 				//~ varianzham=varianzberechnungnaiv(vergleichsdatei, messungen, mittelham, 3, 4);
