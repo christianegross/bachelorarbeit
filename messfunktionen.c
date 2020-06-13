@@ -181,6 +181,8 @@ int deltahneu2(char *gitter, int d1, int d2, int laenge){
 }
 
 int deltahlookup(char *gitter, int d1, int d2, int laenge, int *lookupplus, int *lookupminus){
+	//Lookuptable wie in Binder, Heermann vorgeschlagen
+	//macht Berechnungen auf VM schneller, auf qbig allerdings nicht und verringert speedup
 	//berechnet Energieänderung bei Flip des Spins an position d1, d2
 	int delta=0;
 	//-2*aktueller Zustand: 1-(2*1)=-1, (-1)-(-1*2)=1
@@ -382,7 +384,7 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 	int chunk=2;
 	//schwarz: d1+d2 gerade
 	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
-	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)// shared(H, changes)
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2, generator)// shared(H, changes)
 	{
 		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
 		for (d1=0; d1<laenge;d1+=1){
@@ -421,7 +423,8 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 					//~ printf("weiß    Fehler bei delta %d %d\n", d1, d2);
 				//~ }
 				if (/*((d1+d2)%2==1)&&*/(tryflip(generator, wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
-					flipspin(gitter, d1, d2, laenge);//in Gitter speichern
+					//flipspin(gitter, d1, d2, laenge);//in Gitter speichern
+					gitter[laenge*d1+d2]*=-1;
 					veraenderungH+=j*delta;
 					changesklein+=1;
 				}
@@ -564,7 +567,7 @@ void messen(int laenge, double T, double j, int messungen, char* gitter/*, FILE 
 	double H=hamiltonian(gitter, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
-		H=sweeplookup(gitter, laenge, j, T, generator, H, messdatei, lookupplus, lookupminus);//Geht Gitter durch und schreibt Messwerte in Datei
+		H=sweep(gitter, laenge, j, T, generator, H, messdatei/*, lookupplus, lookupminus*/);//Geht Gitter durch und schreibt Messwerte in Datei
 	}
 }
 

@@ -15,7 +15,7 @@ int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
 	int anzahlcores=2;
 	omp_set_num_threads(anzahlcores);//Setzt die nummer an Kernen, die in den parallelen Regionen verwendet werden.
-	int laenge=50;//laenge der verwendeten Gitter
+	int laenge=100;//laenge der verwendeten Gitter
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
 	int N01=10000;//sweeps beim ersten Thermalisieren
@@ -38,10 +38,10 @@ int main(int argc, char **argv){
 	double *blockarray;//Zum Speichern der geblockten Messwerte
 	double blocklenarray[12]={32, 64,128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
 	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
-	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6dthermpruefen.txt",laenge, messungen);//speichert naive Mittelwerte
-	sprintf(dateinamebootstrapalle,"Messungen/Bootstrapges/bootstrapalle-l%.4d-m-%.6dthermpruefen.txt",laenge, messungen);//speichert Mitteelwerte aus Bootstrap
-	sprintf(dateinameableitung,"Messungen/ableitung-laenge-%.4d-m-%.6dthermpruefen.txt",laenge, messungen);//speichert Ableitung
-	sprintf(dateinamezeit,"Messungen/Zeiten/zeiten-laenge-%.4d-m-%.6d-cores-%.2dthermpruefen.txt",laenge, messungen, anzahlcores);//speichert Ableitung
+	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d.txt",laenge, messungen);//speichert naive Mittelwerte
+	sprintf(dateinamebootstrapalle,"Messungen/Bootstrapges/bootstrapalle-l%.4d-m-%.6d.txt",laenge, messungen);//speichert Mitteelwerte aus Bootstrap
+	sprintf(dateinameableitung,"Messungen/ableitung-laenge-%.4d-m-%.6d.txt",laenge, messungen);//speichert Ableitung
+	sprintf(dateinamezeit,"Messungen/Zeiten/zeiten-laenge-%.4d-m-%.6d-cores-%.2d.txt",laenge, messungen, anzahlcores);//speichert Ableitung
 	mittelwertdatei=fopen(dateinamemittel, "w+");
 	bootstrapalledatei=fopen(dateinamebootstrapalle, "w+");
 	ableitungdatei=fopen(dateinameableitung, "w");
@@ -57,12 +57,12 @@ int main(int argc, char **argv){
 	initialisierung(gitter, laenge, seed);
 	dummydatei=fopen("dummytherm.txt", "w");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird
 	gsl_rng_set(generator, seed);
-	thermalisieren(laenge, temperaturarray[100], j, seed, N01, gitter, dummydatei, generator);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
+	thermalisieren(laenge, temperaturarray[0], j, seed, N01, gitter, dummydatei, generator);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	fclose(dummydatei);
-	for (int n=100; n<200; n+=20){    //ueber alle gegebenen Temperaturen messen
+	for (int n=10; n<temperaturzahl; n+=20){    //ueber alle gegebenen Temperaturen messen
 		printf("%d\n", n);
-		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-m%.6d-t%.3dthermpruefen.txt",laenge,messungen,n);//.2, damit alle dateinamengleich lang sind
-		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-t%.3dthermpruefen.txt",laenge,messungen,n);//.2, damit alle dateinamengleich lang sind
+		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-m%.6d-t%.3d.txt",laenge,messungen,n);//.2, damit alle dateinamengleich lang sind
+		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-t%.3d.txt",laenge,messungen,n);//.2, damit alle dateinamengleich lang sind
 		gitterthermdatei = fopen(dateinametherm, "w+");//Zum speichern der thermalisierten Gitter
 		messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
 		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
