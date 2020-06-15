@@ -21,9 +21,9 @@ int main(int argc, char **argv){
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
 	int node=2;//1,2 qbig, 0 vm
-	char merkmal[50]="immerzufallszahlthoch";
+	char merkmal[50]="niezufallszahltniedrig";
 	int durchlaeufe=5;
-	double temperatur=3.5;//Skalierung bei nur einer TEmperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
+	double temperatur=0.5;//Skalierung bei nur einer TEmperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
 		printf("Fehler beim Allokieren der Temperaturen!\n");
