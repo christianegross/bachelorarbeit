@@ -203,7 +203,7 @@ int tryflip(gsl_rng *generator, double wahrscheinlichkeit){
 	//~ else{
 		//double probability=exp(-delta/T);
 	//Zufallszahl zwischen null und eins
-		double random=/*0.5;//*/gsl_rng_uniform(generator);
+		double random=gsl_rng_uniform(generator);
 		if (random<wahrscheinlichkeit){ 
 	//if accepted return 1
 			return 1;

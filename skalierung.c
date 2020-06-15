@@ -20,9 +20,9 @@ int main(int argc, char **argv){
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
-	int node=2;//1,2 qbig, 0 vm
+	int node=1;//1,2 qbig, 0 vm
 	char merkmal[50]="mehreregeneratoren";
-	int durchlaeufe=5;
+	int durchlaeufe=10;
 	double temperatur=0.5;//Skalierung bei nur einer Temperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
