@@ -1,20 +1,108 @@
 set ter pdfcairo size 5 in, 3.5 in
 
-set out "Messungen/speedup.pdf"
+
+
+set out "Messungen/skalierunglaenge.pdf"
+
+f1(x)=c1*(x-a1)**2+b1
+fit f1(x) "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufevmdynamic.txt" u (($1==1)?$2:1/0):3:4 yerrors via a1, b1, c1
+
+f2(x)=c2*(x-a2)**2+b2
+fit f2(x) "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode00dynamicchunk2.txt" u (($1==1)?$2:1/0):3:4 yerrors via a2, b2, c2
+f3(x)=c3*(x-a3)**2+b3
+fit f3(x) "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode00dynamicchunk2.txt" u (($1==2)?$2:1/0):3:4 yerrors via a3, b3, c3
+
+set xlabel "Laenge"
+set ylabel "Zeit"
+
+plot "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufevmdynamic.txt" u (($1==1)?$2:1/0):3:4 w yerrorbars lt 7 ps 0.3 title "1 Kern", f1(x) lt 6 title "Anpassung"
+plot "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode00dynamicchunk2.txt" u (($1==1)?$2:1/0):3:4 w yerrorbars lt 7 ps 0.3 title "1 Kern", f2(x) lt 6 title "Anpassung",\
+	 "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode00dynamicchunk2.txt" u (($1==2)?$2:1/0):3:4 w yerrorbars lt 8 ps 0.3 title "2 Kerne", f3(x) lt 6 title ""
+
+set out "Messungen/speedupmitlaengen.pdf"
 set xlabel "Anzahl Prozessoren"
 set ylabel "Zeit(n Cores)/Zeit(1 Core)"
 
 set title "Vergleich mehrere Längen"
-
+set key top left
 set xrange[0.5:9.5]
-plot "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==10)?$1:1/0):4 lt 1 title "laenge=10",\
+plot "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==6)?$1:1/0):4 lt 7 title "laenge=6",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==10)?$1:1/0):4 lt 1 title "laenge=10",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==20)?$1:1/0):4 lt 8 title "laenge=20",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==36)?$1:1/0):4 lt 9 title "laenge=35",\
 	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==50)?$1:1/0):4 lt 2 title "laenge=50",\
 	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==100)?$1:1/0):4 lt 3 title "laenge=100",\
 	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==200)?$1:1/0):4 lt 4 title "laenge=200",\
 	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==350)?$1:1/0):4 lt 5 title "laenge=350",\
 	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==500)?$1:1/0):4 lt 6 title "laenge=500"
+
+set title "Vergleich mehrere Längen(Ausschnitt)"	 
+set yrange[0:4]
+replot 
+unset yrange
 unset xrange
 
+set ylabel "Zeit(1 Cores)/Zeit(n Cores)"
+
+set title "Vergleich mehrere Längen"
+set key top left
+set xrange[0:9.5]
+plot "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==6)?$1:1/0):(1/$4) lt 7 title "laenge=6",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==10)?$1:1/0):(1/$4) lt 1 title "laenge=10",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==20)?$1:1/0):(1/$4) lt 8 title "laenge=20",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==36)?$1:1/0):(1/$4) lt 9 title "laenge=35",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==50)?$1:1/0):(1/$4) lt 2 title "laenge=50",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==100)?$1:1/0):(1/$4) lt 3 title "laenge=100",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==200)?$1:1/0):(1/$4) lt 4 title "laenge=200",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==350)?$1:1/0):(1/$4) lt 5 title "laenge=350",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u (($5==500)?$1:1/0):(1/$4) lt 6 title "laenge=500"
+
+set title "lcpunode02"	 
+plot "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufelcpunode02.txt" u (($5==6)?$1:1/0):(1/$4) lt 7 title "laenge=6",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufelcpunode02.txt" u (($5==10)?$1:1/0):(1/$4) lt 1 title "laenge=10",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufelcpunode02.txt" u (($5==20)?$1:1/0):(1/$4) lt 8 title "laenge=20",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufelcpunode02.txt" u (($5==36)?$1:1/0):(1/$4) lt 9 title "laenge=35",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufelcpunode02.txt" u (($5==50)?$1:1/0):(1/$4) lt 2 title "laenge=50",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufelcpunode02.txt" u (($5==100)?$1:1/0):(1/$4) lt 3 title "laenge=100",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufelcpunode02.txt" u (($5==200)?$1:1/0):(1/$4) lt 4 title "laenge=200",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufelcpunode02.txt" u (($5==350)?$1:1/0):(1/$4) lt 5 title "laenge=350",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufelcpunode02.txt" u (($5==500)?$1:1/0):(1/$4) lt 6 title "laenge=500"
+	 
+plot "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufelcpunode02.txt" u (($5==200)?$1:1/0):(1/$4) lt 7 title "laenge=200",\
+	 "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufelcpunode02.txt" u (($5==500)?$1:1/0):(1/$4) lt 1 title "laenge=500"
+
+
+
+set out "Messungen/speedupmitlaengengemittelt.pdf"
+set title ""
+plot "Messungen/Zeiten/zeitenmehrerelaengenmittelnaiv.txt" u (($2==6)?$1:1/0):(1/$3) lt 7 title "laenge=6",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaiv.txt" u (($2==10)?$1:1/0):(1/$3) lt 1 title "laenge=10",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaiv.txt" u (($2==20)?$1:1/0):(1/$3) lt 8 title "laenge=20",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaiv.txt" u (($2==36)?$1:1/0):(1/$3) lt 9 title "laenge=36",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaiv.txt" u (($2==50)?$1:1/0):(1/$3) lt 2 title "laenge=50",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaiv.txt" u (($2==100)?$1:1/0):(1/$3) lt 3 title "laenge=100",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaiv.txt" u (($2==200)?$1:1/0):(1/$3) lt 4 title "laenge=200",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaiv.txt" u (($2==350)?$1:1/0):(1/$3) lt 5 title "laenge=350",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaiv.txt" u (($2==500)?$1:1/0):(1/$3) lt 6 title "laenge=500"
+
+set title "lcpunode02"
+set yrange[0:4]
+plot "Messungen/Zeiten/zeitenmehrerelaengenmittelnaivnode029cores.txt" u (($2==6)?$1:1/0):(1/$3):5 w yerrorbars lt 7 title "laenge=6",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaivnode029cores.txt" u (($2==10)?$1:1/0):(1/$3):5 w yerrorbars lt 1 title "laenge=10",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaivnode029cores.txt" u (($2==20)?$1:1/0):(1/$3):5 w yerrorbars lt 8 title "laenge=20",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaivnode029cores.txt" u (($2==36)?$1:1/0):(1/$3):5 w yerrorbars lt 9 title "laenge=36",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaivnode029cores.txt" u (($2==50)?$1:1/0):(1/$3):5 w yerrorbars lt 2 title "laenge=50",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaivnode029cores.txt" u (($2==100)?$1:1/0):(1/$3):5 w yerrorbars lt 3 title "laenge=100",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaivnode029cores.txt" u (($2==200)?$1:1/0):(1/$3):5 w yerrorbars lt 4 title "laenge=200",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaivnode029cores.txt" u (($2==350)?$1:1/0):(1/$3):5 w yerrorbars lt 5 title "laenge=350",\
+	 "Messungen/Zeiten/zeitenmehrerelaengenmittelnaivnode029cores.txt" u (($2==500)?$1:1/0):(1/$3):5 w yerrorbars lt 6 title "laenge=500"
+unset yrange
+unset xrange
+
+#set view map
+#splot "Messungen/Zeiten/zeitenmessen-m001000-mehrerelaengenunddurchlaeufeqbig.txt" u 1:5:4 w image
+
+set out "Messungen/speedup.pdf"
 
 set title "Laenge=50"
 plot "Messungen/Zeiten/zeitenmessen-laenge0050-m100000.txt" u 1:4 lt 7 title "" 
