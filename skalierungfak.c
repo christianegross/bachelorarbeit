@@ -109,4 +109,15 @@ int main(int argc, char **argv){
 		}
 	fclose(zeitdatei);
 	free(ergebnisse);
+	//~ gettimeofday(&anfangmessen, NULL);
+	//~ int pos;
+	//~ for (int i=0; i<messungen;i+=1){
+		//~ //pos=(messungen/2+i)%messungen;
+		//~ pos=(messungen/2+i)>messungen?i-messungen/2:messungen/2+i;
+		//~ }
+	//~ gettimeofday(&endemessen, NULL);
+	//~ sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
+	//~ usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
+	//~ zeitgesmessen=sec+1e-06*usec;
+	//~ printf("Ternaer:%d Messungen\t%f Sekunden\n", messungen, zeitgesmessen);
 }
