@@ -203,7 +203,7 @@ int tryflip(gsl_rng *generator, double wahrscheinlichkeit){
 	//~ else{
 		//double probability=exp(-delta/T);
 	//Zufallszahl zwischen null und eins
-		double random=0.5;//gsl_rng_uniform(generator);
+		double random=/*0.5;//*/gsl_rng_uniform(generator);
 		if (random<wahrscheinlichkeit){ 
 	//if accepted return 1
 			return 1;
@@ -379,11 +379,16 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 	double veraenderungH=0;//misst Veraenderung in einem parallen Thread
 	int delta=0;
 	int d1=0, d2=0;
-	if(j>=0){double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};}
-	else{double wahrscheinlichkeiten[5]={exp(8*j/T), exp(4*j/T),1,1,1};
+	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
+	if (j<0){
+		wahrscheinlichkeiten[1]=wahrscheinlichkeiten[3];
+		wahrscheinlichkeiten[0]=wahrscheinlichkeiten[4];
+		wahrscheinlichkeiten[3]=1;
+		wahrscheinlichkeiten[4]=1;
+		}
 	int changes =0;//misst Gesamtzahl der spinflips
 	int changesklein=0;//misst Spinflips in parallelen Thread
-	int chunk=2;
+	//int chunk=2;
 	//schwarz: d1+d2 gerade
 	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
 	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2, generator)// shared(H, changes)
@@ -444,6 +449,84 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 	return H;
 }
 
+double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl_rng **generatoren, double hamiltonian, FILE *dateimessungen){
+	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
+	//arbeitet parallel in schleifen ueber die einzelnen Farben
+	double H=hamiltonian;//misst Gesamtveraenderung
+	double veraenderungH=0;//misst Veraenderung in einem parallen Thread
+	int delta=0;
+	int d1=0, d2=0;
+	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
+	if (j<0){
+		wahrscheinlichkeiten[1]=wahrscheinlichkeiten[3];
+		wahrscheinlichkeiten[0]=wahrscheinlichkeiten[4];
+		wahrscheinlichkeiten[3]=1;
+		wahrscheinlichkeiten[4]=1;
+		}
+	int changes =0;//misst Gesamtzahl der spinflips
+	int changesklein=0;//misst Spinflips in parallelen Thread
+	//int chunk=2;
+	//schwarz: d1+d2 gerade
+	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)// shared(H, changes)
+	{
+		int threadnummer=omp_get_thread_num();
+		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
+		for (d1=0; d1<laenge;d1+=1){
+			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+				if((d1+d2)%2==0){
+				delta=deltahneu2(gitter, d1, d2, laenge);
+				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
+					//~ printf("schwarz Fehler bei delta\n");
+				//~ }
+				if (/*((d1+d2)%2==0)&&*/(tryflip(generatoren[threadnummer], wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+					//flipspin(gitter, d1, d2, laenge);//in Gitter speichern
+					gitter[laenge*d1+d2]*=-1;
+					veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
+					changesklein+=1;
+				}
+			}
+			}
+		}
+		//~ #pragma omp critical (schwarzepunkte)//damit das updaten keine konflikte verursacht, Name, damit die critical regionen unabhängig voneinander sind 
+		//~ {H+=veraenderungH;
+			//~ changes+=changesklein;}
+		//~ #pragma omp barrier
+	//~ }
+	//~ veraenderungH=0;//Zuruecksetzen, damit in naechster paralleler Region nur deren Veraenderungen gezaehlt werden
+	//~ changesklein=0;
+	//~ //weiss: d1+d2 ungerade, sonst analog zu schwarz
+	//~ #pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2) shared (H, changes)
+	//~ {
+		#pragma omp barrier//damit mit nowait overhead reduziert werden kann
+		#pragma omp for nowait schedule (static)
+		for (d1=0; d1<laenge;d1+=1){
+			for (d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+				if((d1+d2)%2==1){
+				delta=deltahneu2(gitter, d1, d2, laenge);
+				//~ if (j*(double)delta!=deltahalt(gitter, d1, d2, laenge, j)){
+					//~ printf("weiß    Fehler bei delta %d %d\n", d1, d2);
+				//~ }
+				if (/*((d1+d2)%2==1)&&*/(tryflip(generatoren[threadnummer], wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
+					//flipspin(gitter, d1, d2, laenge);//in Gitter speichern
+					gitter[laenge*d1+d2]*=-1;
+					veraenderungH+=j*delta;
+					changesklein+=1;
+				}
+			}
+			}
+		}
+		#pragma omp critical (weissepunkte)
+		{H+=veraenderungH;
+		changes+=changesklein;}
+		#pragma omp barrier
+	}
+	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
+	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
+	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	return H;
+}
+
 double sweeplookup(char *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen,int *lookupplus, int *lookupminus){
 	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
 	//arbeitet parallel in schleifen ueber die einzelnen Farben
@@ -454,7 +537,7 @@ double sweeplookup(char *gitter, int laenge, double j, double T, gsl_rng *genera
 	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
 	int changes =0;//misst Gesamtzahl der spinflips
 	int changesklein=0;//misst Spinflips in parallelen Thread
-	int chunk=2;
+	//int chunk=2;
 	//schwarz: d1+d2 gerade
 	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
 	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)// shared(H, changes)
@@ -571,6 +654,26 @@ void messen(int laenge, double T, double j, int messungen, char* gitter/*, FILE 
 	for (int messung=0; messung<messungen; messung+=1){
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		H=sweep(gitter, laenge, j, T, generator, H, messdatei/*, lookupplus, lookupminus*/);//Geht Gitter durch und schreibt Messwerte in Datei
+	}
+}
+
+void messenmehreregeneratoren(int laenge, double T, double j, int messungen, char* gitter/*, FILE *gitterdatei*/, FILE *messdatei, gsl_rng **generatoren){
+	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
+	//char gitter[laenge*laenge];
+	//einlesen(gitter, laenge, gitterdatei);
+	//~ int lookupplus[laenge], lookupminus[laenge];
+	//~ #pragma omp parallel for
+	//~ for (int element=0;element<laenge;element+=1){
+		//~ lookupplus[element]=element+1;
+		//~ lookupminus[element]=element-1;
+	//~ }
+	//~ lookupplus[laenge-1]=0;
+	//~ lookupminus[0]=laenge-1;
+
+	double H=hamiltonian(gitter, laenge, j);
+	for (int messung=0; messung<messungen; messung+=1){
+		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
+		H=sweepmehreregeneratoren(gitter, laenge, j, T, generatoren, H, messdatei/*, lookupplus, lookupminus*/);//Geht Gitter durch und schreibt Messwerte in Datei
 	}
 }
 
