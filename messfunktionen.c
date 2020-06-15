@@ -197,10 +197,10 @@ int deltahlookup(char *gitter, int d1, int d2, int laenge, int *lookupplus, int 
 int tryflip(gsl_rng *generator, double wahrscheinlichkeit){
 	//versucht, den spin an position d1, d2 umzukehren nach Metropolis-Algorithmus
 	//if deltah<0: accept, return 1
-	if (wahrscheinlichkeit==1){
-		return 1;
-	}
-	else{
+//	if (wahrscheinlichkeit==1){
+//		return 1;
+//	}
+//	else{
 		//double probability=exp(-delta/T);
 	//Zufallszahl zwischen null und eins
 		double random=gsl_rng_uniform(generator);
@@ -212,7 +212,7 @@ int tryflip(gsl_rng *generator, double wahrscheinlichkeit){
 	//if rejected return 0
 			return 0;
 		}
-	}
+//	}
 	return -1;
 }
 
@@ -556,14 +556,14 @@ void messen(int laenge, double T, double j, int messungen, char* gitter/*, FILE 
 	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
 	//char gitter[laenge*laenge];
 	//einlesen(gitter, laenge, gitterdatei);
-	int lookupplus[laenge], lookupminus[laenge];
-	#pragma omp parallel for
-	for (int element=0;element<laenge;element+=1){
-		lookupplus[element]=element+1;
-		lookupminus[element]=element-1;
-	}
-	lookupplus[laenge-1]=0;
-	lookupminus[0]=laenge-1;
+	//int lookupplus[laenge], lookupminus[laenge];
+	//#pragma omp parallel for
+	//for (int element=0;element<laenge;element+=1){
+	//	lookupplus[element]=element+1;
+	//	lookupminus[element]=element-1;
+	//}
+	//lookupplus[laenge-1]=0;
+	//lookupminus[0]=laenge-1;
 	double H=hamiltonian(gitter, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
