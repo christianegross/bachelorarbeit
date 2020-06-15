@@ -203,7 +203,7 @@ int tryflip(gsl_rng *generator, double wahrscheinlichkeit){
 	//~ else{
 		//double probability=exp(-delta/T);
 	//Zufallszahl zwischen null und eins
-		double random=gsl_rng_uniform(generator);
+		double random=0.5;//gsl_rng_uniform(generator);
 		if (random<wahrscheinlichkeit){ 
 	//if accepted return 1
 			return 1;
@@ -212,6 +212,7 @@ int tryflip(gsl_rng *generator, double wahrscheinlichkeit){
 	//if rejected return 0
 			return 0;
 		}
+
 	//~ }
 	return -1;
 }
@@ -565,6 +566,7 @@ void messen(int laenge, double T, double j, int messungen, char* gitter/*, FILE 
 	//~ }
 	//~ lookupplus[laenge-1]=0;
 	//~ lookupminus[0]=laenge-1;
+
 	double H=hamiltonian(gitter, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
