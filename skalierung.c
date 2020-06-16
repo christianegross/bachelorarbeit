@@ -22,9 +22,9 @@ int main(int argc, char **argv){
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
 	int node=2;//1,2 qbig, 0 vm
-	char merkmal[50]="mginlinet1";
+	char merkmal[50]="mg-inline-t4";
 	int durchlaeufe=5;
-	double temperatur=0.5;//Skalierung bei nur einer Temperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
+	double temperatur=4.5;//Skalierung bei nur einer Temperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
 	//t1=0.5, t2=2, t3=2.5, t4=4.5
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
