@@ -211,66 +211,6 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 	return H;
 }
 
-double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl_rng **generatoren, double hamiltonian, FILE *dateimessungen){
-	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
-	//arbeitet parallel in schleifen ueber die einzelnen Farben
-	double H=hamiltonian;//misst Gesamtveraenderung
-	double veraenderungH=0;//misst Veraenderung in einem parallen Thread
-	int delta=0;
-	int d1=0, d2=0;
-	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
-	if (j<0){
-		wahrscheinlichkeiten[1]=wahrscheinlichkeiten[3];
-		wahrscheinlichkeiten[0]=wahrscheinlichkeiten[4];
-		wahrscheinlichkeiten[3]=1;
-		wahrscheinlichkeiten[4]=1;
-		}
-	int changes =0;//misst Gesamtzahl der spinflips
-	int changesklein=0;//misst Spinflips in parallelen Thread
-	//int chunk=2;
-	//schwarz: d1+d2 gerade
-	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
-	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)// shared(H, changes)
-	{
-		int threadnummer=omp_get_thread_num();
-		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
-		for (d1=0; d1<laenge;d1+=1){
-			for (d2=(d1%2); d2<laenge; d2+=2){//geht in zweiter dimension durch (alle Spalten einer Zeile)
-				//if((d1+d2)%2==0){
-				delta=deltahneu2(gitter, d1, d2, laenge);
-				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[delta/4+2])==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
-					gitter[laenge*d1+d2]*=-1;
-					veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
-					changesklein+=1;
-				}
-			}
-			//}
-		}
-		#pragma omp barrier//damit mit nowait overhead reduziert werden kann
-		#pragma omp for nowait schedule (static)
-		for (d1=0; d1<laenge;d1+=1){
-			for (d2=(d1+1)%2; d2<laenge; d2+=2){//geht in zweiter dimension durch (alle Spalten einer Zeile)
-				//if((d1+d2)%2==1){
-				delta=deltahneu2(gitter, d1, d2, laenge);
-				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[delta/4+2])==1)){//Wenn weisser Punkt und Spin geflippt wurde
-					gitter[laenge*d1+d2]*=-1;
-					veraenderungH+=j*delta;
-					changesklein+=1;
-				}
-			}
-			//}
-		}
-		#pragma omp critical (weissepunkte)
-		{H+=veraenderungH;
-		changes+=changesklein;}
-		#pragma omp barrier
-	}
-	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
-	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
-	return H;
-}
-
 double sweeplookup(char *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen,int *lookupplus, int *lookupminus){
 	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
 	//arbeitet parallel in schleifen ueber die einzelnen Farben
@@ -341,3 +281,127 @@ double sweeplookup(char *gitter, int laenge, double j, double T, gsl_rng *genera
 	return H;
 }
 		
+
+double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl_rng **generatoren, double hamiltonian, FILE *dateimessungen){
+	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
+	//arbeitet parallel in schleifen ueber die einzelnen Farben
+	//Fuer jeden Thread einen einzelnen Generator
+	//initialisierung der inneren Schleifen mit modulo, um leere Durchläufe zu verhindern
+	double H=hamiltonian;//misst Gesamtveraenderung
+	double veraenderungH=0;//misst Veraenderung in einem parallen Thread
+	int delta=0;
+	int d1=0, d2=0;
+	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
+	if (j<0){
+		wahrscheinlichkeiten[1]=wahrscheinlichkeiten[3];
+		wahrscheinlichkeiten[0]=wahrscheinlichkeiten[4];
+		wahrscheinlichkeiten[3]=1;
+		wahrscheinlichkeiten[4]=1;
+		}
+	int changes =0;//misst Gesamtzahl der spinflips
+	int changesklein=0;//misst Spinflips in parallelen Thread
+	//int chunk=2;
+	//schwarz: d1+d2 gerade
+	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)// shared(H, changes)
+	{
+		int threadnummer=omp_get_thread_num();
+		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
+		for (d1=0; d1<laenge;d1+=1){
+			for (d2=(d1%2); d2<laenge; d2+=2){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+				//if((d1+d2)%2==0){
+				delta=deltahneu2(gitter, d1, d2, laenge);
+				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[delta/4+2])==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+					gitter[laenge*d1+d2]*=-1;
+					veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
+					changesklein+=1;
+				}
+			}
+			//}
+		}
+		#pragma omp barrier//damit mit nowait overhead reduziert werden kann
+		#pragma omp for nowait schedule (static)
+		for (d1=0; d1<laenge;d1+=1){
+			for (d2=(d1+1)%2; d2<laenge; d2+=2){//geht in zweiter dimension durch (alle Spalten einer Zeile)
+				//if((d1+d2)%2==1){
+				delta=deltahneu2(gitter, d1, d2, laenge);
+				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[delta/4+2])==1)){//Wenn weisser Punkt und Spin geflippt wurde
+					gitter[laenge*d1+d2]*=-1;
+					veraenderungH+=j*delta;
+					changesklein+=1;
+				}
+			}
+			//}
+		}
+		#pragma omp critical (weissepunkte)
+		{H+=veraenderungH;
+		changes+=changesklein;}
+		#pragma omp barrier
+	}
+	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
+	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
+	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	return H;
+}
+
+
+double sweepeineschleife(char *gitter, int laenge, double j, double T, gsl_rng **generatoren, double hamiltonian, FILE *dateimessungen){
+	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
+	//arbeitet parallel in schleifen ueber die einzelnen Farben
+	//Fuer jeden Thread einen einzelnen Generator
+	//Eine Schleife pro Farbe, Zuordnung von d1, d2 aus Schleifenvariable
+	double H=hamiltonian;//misst Gesamtveraenderung
+	double veraenderungH=0;//misst Veraenderung in einem parallen Thread
+	int delta=0;
+	int d1=0, d2=0;
+	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
+	if (j<0){
+		wahrscheinlichkeiten[1]=wahrscheinlichkeiten[3];
+		wahrscheinlichkeiten[0]=wahrscheinlichkeiten[4];
+		wahrscheinlichkeiten[3]=1;
+		wahrscheinlichkeiten[4]=1;
+		}
+	int changes =0;//misst Gesamtzahl der spinflips
+	int changesklein=0;//misst Spinflips in parallelen Thread
+	int lhalbe=laenge/2;
+	//int chunk=2;
+	//schwarz: d1+d2 gerade
+	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)// shared(H, changes)
+	{
+		int threadnummer=omp_get_thread_num();
+		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
+		for (int pos=0; pos<laenge*lhalbe;pos+=1){
+			d1=(pos-(pos%lhalbe))/lhalbe;
+			d2=2*(pos-(d1*lhalbe))+(d1%2);
+			delta=deltahneu2(gitter, d1, d2, laenge);
+			if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[delta/4+2])==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				gitter[laenge*d1+d2]*=-1;
+				veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
+				changesklein+=1;
+			}
+		}
+		#pragma omp barrier//damit mit nowait overhead reduziert werden kann
+		#pragma omp for nowait schedule (static)
+		for (int pos=0; pos<laenge*lhalbe;pos+=1){
+			d1=(pos-(pos%lhalbe))/lhalbe;
+			d2=2*(pos-(d1*lhalbe))+((d1+1)%2);
+			delta=deltahneu2(gitter, d1, d2, laenge);
+			if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[delta/4+2])==1)){//Wenn weisser Punkt und Spin geflippt wurde
+				gitter[laenge*d1+d2]*=-1;
+				veraenderungH+=j*delta;
+				changesklein+=1;
+			}
+		}
+		#pragma omp critical (weissepunkte)
+		{H+=veraenderungH;
+		changes+=changesklein;}
+		#pragma omp barrier
+	}
+	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
+	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
+	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	return H;
+}
+
+

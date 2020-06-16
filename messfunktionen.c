@@ -315,7 +315,7 @@ void messenmehreregeneratoren(int laenge, double T, double j, int messungen, cha
 	double H=hamiltonian(gitter, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
-		H=sweepmehreregeneratoren(gitter, laenge, j, T, generatoren, H, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
+		H=sweepeineschleife(gitter, laenge, j, T, generatoren, H, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
 	}
 }
 
