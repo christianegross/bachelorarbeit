@@ -1,6 +1,49 @@
 set ter pdfcairo size 5 in, 3.5 in
 
+set out "Skalierung_mehrere_generatoren.pdf"
 
+
+set xlabel "Anzahl Prozessoren"
+set ylabel "Zeit(n Cores)/Zeit(1 Core)"
+set key top right
+#set title "lcpunode01"
+set title "Laenge=500"
+plot "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode01mehreregeneratoren.txt" u ((($2==500)&&($1!=0))?$1:1/0):5:6 w yerrorbars lt 6 ps 0.4 title "lcpunode01",\
+	 "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode02mehreregeneratoren.txt" u ((($2==500)&&($1!=0))?$1:1/0):5:6 w yerrorbars lt 7 ps 0.4 title "lcpunode02"
+
+
+set ylabel "Zeit(1 Core)/Zeit(n Cores)"
+set key top left
+plot "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode01mehreregeneratoren.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "lcpunode01",\
+	 "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode02mehreregeneratoren.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "lcpunode02"
+
+set xlabel "Anzahl Prozessoren"
+set ylabel "Zeit(n Cores)/Zeit(1 Core)"
+set key top right
+#set title "lcpunode01"
+set title "Laenge=100"
+plot "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode01mehreregeneratoren.txt" u ((($2==100)&&($1!=0))?$1:1/0):5:6 w yerrorbars lt 6 ps 0.4 title "lcpunode01",\
+	 "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode02mehreregeneratoren.txt" u ((($2==100)&&($1!=0))?$1:1/0):5:6 w yerrorbars lt 7 ps 0.4 title "lcpunode02"
+
+
+set ylabel "Zeit(1 Core)/Zeit(n Cores)"
+set key top left
+plot "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode01mehreregeneratoren.txt" u ((($2==100)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "lcpunode01",\
+	 "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode02mehreregeneratoren.txt" u ((($2==100)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "lcpunode02"
+
+set xlabel "Anzahl Prozessoren"
+set ylabel "Zeit(n Cores)/Zeit(1 Core)"
+set key top right
+#set title "lcpunode01"
+set title "Laenge=10"
+plot "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode01mehreregeneratoren.txt" u ((($2==10)&&($1!=0))?$1:1/0):5:6 w yerrorbars lt 6 ps 0.4 title "lcpunode01",\
+	 "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode02mehreregeneratoren.txt" u ((($2==10)&&($1!=0))?$1:1/0):5:6 w yerrorbars lt 7 ps 0.4 title "lcpunode02"
+
+
+set ylabel "Zeit(1 Core)/Zeit(n Cores)"
+set key top left
+plot "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode01mehreregeneratoren.txt" u ((($2==10)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "lcpunode01",\
+	 "Messungen/Zeiten/zeitenmittel-m001000-mehrerelaengenunddurchlaeufenode02mehreregeneratoren.txt" u ((($2==10)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "lcpunode02"
 
 set out "Messungen/skalierunglaenge.pdf"
 

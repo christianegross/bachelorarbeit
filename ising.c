@@ -9,6 +9,7 @@
 #include <omp.h>//Parallelisierung
 #include <sys/time.h>//Zur Messung der Wallclocktime beim messen ->Vergleich der Sweep-Funktionen
 #include "messfunktionen.h"
+#include "sweeps.h"
 #include "auswertungsfunktionen.h"
 
 int main(int argc, char **argv){
