@@ -1,6 +1,41 @@
 set ter pdfcairo size 5 in, 3.5 in
 
-set out "Skalierung_mehrere_generatoren.pdf"
+set out "Messungen/skalierungtemperaturen.pdf"
+
+set xlabel "Anzahl Prozessoren"
+set ylabel "Zeit(1 Core)/Zeit(n Cores)"
+set key top left
+set title "L=500, zwei Schleifen, ohne leere Durchläufe"
+plot "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t1.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "T=0,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t2.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "T=2,0",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t3.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 8 ps 0.4 title "T=2,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 9 ps 0.4 title "T=4,5",\
+	 
+set title "L=500, zwei Schleifen, ohne leere Durchläufe"
+set yrange [0:22]
+set ylabel "Zeit(1000 Messungen)/s"
+plot "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t1.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 6 ps 0.4 title "T=0,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t2.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 7 ps 0.4 title "T=2,0",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t3.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 8 ps 0.4 title "T=2,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 9 ps 0.4 title "T=4,5",\
+	 
+
+set title "L=500 - mehrere Messmethoden"
+unset yrange
+set ylabel "Zeit(1 Core)/Zeit(n Cores)"
+plot "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "zwei Schleifen ohne leere durchläufe",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-eineschleife-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 8 ps 0.4 title "eine Schleife",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-leeredurchlaeufe-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "zwei Schleifen mit leeren Durchläufen"
+
+set yrange [0:22]
+set ylabel "Zeit(1000 Messungen)/s"
+set title "L=500 - absolute Zeit"
+plot "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 6 ps 0.4 title "zwei Schleifen ohne leere durchläufe",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-eineschleife-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 8 ps 0.4 title "eine Schleife",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-leeredurchlaeufe-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 7 ps 0.4 title "zwei Schleifen mit leeren Durchläufen"
+
+
+set out "Messungen/Skalierung_mehrere_generatoren.pdf"
 
 
 set xlabel "Anzahl Prozessoren"
