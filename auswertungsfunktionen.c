@@ -95,7 +95,7 @@ void bootstrapohnepar(int l, int r, int messungen, double temperatur, double *bl
 		varianz+=(bootstraparray[durchgang]-mittelwert)*(bootstraparray[durchgang]-mittelwert);
 	}
 	varianz=sqrt(varianz/((double)r-1));//Standardschaetzer
-	fprintf(ausgabedatei, "2\t%d\t%d\t%f\t%e\t%f\n", l,r, mittelwert, varianz, temperatur);//Ausgabe
+	fprintf(ausgabedatei, "2\t%4d\t%d\t%f\t%e\t%f\n", l,r, mittelwert, varianz, temperatur);//Ausgabe
 	free(bootstraparray);
 }
 
@@ -118,16 +118,16 @@ void bootstrap(int l, int r, int messungen, double temperatur, double *blockarra
 		bootstraparray[durchgang]=replica;//speichern fuer Varianzbildung
 	}
 	}
-	mittelwert=mittelwertarray(bootstraparray, r);
-	varianz=varianzarray(bootstraparray, r, mittelwert);
-	//~ for (int durchgang=0; durchgang<r; durchgang+=1){//Mittelwert ueber gezogene Replikas
-		//~ mittelwert+=bootstraparray[durchgang];
-	//~ }
-	//~ mittelwert/=r;//Standardschaetzer
-	//~ for (int durchgang=0; durchgang<r; durchgang+=1){//Berechnet Varianz von gezogenen Replikas
-		//~ varianz+=(bootstraparray[durchgang]-mittelwert)*(bootstraparray[durchgang]-mittelwert);
-	//~ }
-	//~ varianz=sqrt(varianz/((double)r-1));//Standardschaetzer
+	//~ mittelwert=mittelwertarray(bootstraparray, r);
+	//~ varianz=varianzarray(bootstraparray, r, mittelwert);
+	for (int durchgang=0; durchgang<r; durchgang+=1){//Mittelwert ueber gezogene Replikas
+		mittelwert+=bootstraparray[durchgang];
+	}
+	mittelwert/=r;//Standardschaetzer
+	for (int durchgang=0; durchgang<r; durchgang+=1){//Berechnet Varianz von gezogenen Replikas
+		varianz+=(bootstraparray[durchgang]-mittelwert)*(bootstraparray[durchgang]-mittelwert);
+	}
+	varianz=sqrt(varianz/((double)r-1));//Standardschaetzer
 	fprintf(ausgabedatei, "1.0\t%f\t%f\t%f\t%e\t%f\n", (double)l,(double)r, mittelwert, varianz, temperatur);//Ausgabe, 1, um zu zeigen, dass parallel gerechnet wurde
 	free(bootstraparray);
 }
