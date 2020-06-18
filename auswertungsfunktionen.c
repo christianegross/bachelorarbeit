@@ -99,7 +99,7 @@ void bootstrapohnepar(int l, int r, int messungen, double temperatur, double *bl
 	free(bootstraparray);
 }
 
-void bootstrap(int l, int r, int messungen, double temperatur, double *blockarray, gsl_rng *generator, FILE *ausgabedatei){
+void bootstrap(int l, int r, int messungen, double temperatur, double *blockarray, gsl_rng **generatoren, FILE *ausgabedatei){
 //berechnet Mittelwert und Varianz aus r gebootstrappten replikas, schreibt es in ausgabedatei
 	double mittelwert=0;//speichern zwischenwerte
 	double replica;//einzelen bootstrapreplica
@@ -109,19 +109,25 @@ void bootstrap(int l, int r, int messungen, double temperatur, double *blockarra
 		printf("Fehler beim Allokieren des arrays fuer die Replika!\n");
 		//return (-1);
 	}
-	#pragma omp parallel for private (replica)
+	#pragma omp parallel private (replica)
+	{
+	int threadnummer=omp_get_thread_num();
+	#pragma omp for
 	for (int durchgang=0; durchgang<r; durchgang+=1){//Zieht r replicas, speichert sie in bootstraparray
-		replica=bootstrap_replication(l, messungen, blockarray, generator);
+		replica=bootstrap_replication(l, messungen, blockarray, generatoren[threadnummer]);
 		bootstraparray[durchgang]=replica;//speichern fuer Varianzbildung
 	}
-	for (int durchgang=0; durchgang<r; durchgang+=1){//Mittelwert ueber gezogene Replikas
-		mittelwert+=bootstraparray[durchgang];
 	}
-	mittelwert/=r;//Standardschaetzer
-	for (int durchgang=0; durchgang<r; durchgang+=1){//Berechnet Varianz von gezogenen Replikas
-		varianz+=(bootstraparray[durchgang]-mittelwert)*(bootstraparray[durchgang]-mittelwert);
-	}
-	varianz=sqrt(varianz/((double)r-1));//Standardschaetzer
+	mittelwert=mittelwertarray(bootstraparray, r);
+	varianz=varianzarray(bootstraparray, r, mittelwert);
+	//~ for (int durchgang=0; durchgang<r; durchgang+=1){//Mittelwert ueber gezogene Replikas
+		//~ mittelwert+=bootstraparray[durchgang];
+	//~ }
+	//~ mittelwert/=r;//Standardschaetzer
+	//~ for (int durchgang=0; durchgang<r; durchgang+=1){//Berechnet Varianz von gezogenen Replikas
+		//~ varianz+=(bootstraparray[durchgang]-mittelwert)*(bootstraparray[durchgang]-mittelwert);
+	//~ }
+	//~ varianz=sqrt(varianz/((double)r-1));//Standardschaetzer
 	fprintf(ausgabedatei, "1.0\t%f\t%f\t%f\t%e\t%f\n", (double)l,(double)r, mittelwert, varianz, temperatur);//Ausgabe, 1, um zu zeigen, dass parallel gerechnet wurde
 	free(bootstraparray);
 }
@@ -160,7 +166,7 @@ void ableitung(int l, int temperaturen, const int spalten, const int spaltemessu
 	}	
 }
 
-double mittelwertarray(double *array, int messungen){
+extern inline double mittelwertarray(double *array, int messungen){
 	//Bestimmt Mittelwert eines arrays, das mit doubles gefüllt ist
 	double summe=0;//Speichert Summe über 
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
@@ -169,7 +175,7 @@ double mittelwertarray(double *array, int messungen){
 	return summe/(double)messungen;
 }
 
-double varianzarray(double *array, int messungen, double mittelwert){
+extern inline double varianzarray(double *array, int messungen, double mittelwert){
 	//Bestimmt die Varianz über alle Elemente in einem array, das mit doubles gefuellt ist, um den Mittelwert
 	double summe=0;//Speichert Summe über Messungen
 	double einwert=0;//Speichert einen ausgelesenen Wert

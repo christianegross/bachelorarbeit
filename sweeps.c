@@ -340,7 +340,7 @@ double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%f\t%f\t%f\t%f\t%f\n",akzeptanzrate, magnetisierung, magnetisierung*magnetisierung, magnetisierung*magnetisierung*magnetisierung*magnetisierung, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
