@@ -15,7 +15,7 @@ double mittelwertberechnungnaiv(FILE *messdatei, int messungen, const int spalte
 	rewind(messdatei);//sichergehen, dass alle Messdaten verwendet werden
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
 		for (int i=0; i<spalten; i+=1){
-			fscanf(messdatei, "%lf", &ergebnisarray[i]);//scannt einzelne doubles
+			fscanf(messdatei, "%le", &ergebnisarray[i]);//scannt einzelne doubles
 			if (i==spalten-1){fscanf(messdatei, "\n");}//sorgt fuer Zeilenumbruch
 		}
 		einwert=ergebnisarray[spalte];//wählt korrekte messung aus
@@ -32,7 +32,7 @@ double varianzberechnungnaiv(FILE *messdatei, int messungen, double mittelwert, 
 	rewind(messdatei);//sichergehen, dass alle Messdaten verwendet werden
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
 		for (int i=0; i<spalten; i+=1){
-			fscanf(messdatei, "%lf", &ergebnisarray[i]);
+			fscanf(messdatei, "%le", &ergebnisarray[i]);
 			if (i==spalten-1){fscanf(messdatei, "\n");}
 		}
 		einwert=ergebnisarray[spalte];//wählt korrekte messung aus
@@ -51,7 +51,7 @@ void blocks_generieren(int l, int messungen, const int spalte, const int spalten
 		zwischensumme=0;
 		for (int wert=0; wert<l; wert+=1){//generiert einzelnes Element des blocks
 			for (int i=0; i<spalten; i+=1){
-				fscanf(messdatei, "%lf", &ergebnisarray[i]);
+				fscanf(messdatei, "%le", &ergebnisarray[i]);
 				if (i==spalten-1){fscanf(messdatei, "\n");}
 			}
 			einwert=ergebnisarray[spalte];//wählt korrekte messung aus
@@ -95,7 +95,7 @@ void bootstrapohnepar(int l, int r, int messungen, double temperatur, double *bl
 		varianz+=(bootstraparray[durchgang]-mittelwert)*(bootstraparray[durchgang]-mittelwert);
 	}
 	varianz=sqrt(varianz/((double)r-1));//Standardschaetzer
-	fprintf(ausgabedatei, "2\t%4d\t%d\t%f\t%e\t%f\n", l,r, mittelwert, varianz, temperatur);//Ausgabe
+	fprintf(ausgabedatei, "2\t%4d\t%d\t%e\t%e\t%e\n", l,r, mittelwert, varianz, temperatur);//Ausgabe
 	free(bootstraparray);
 }
 
@@ -128,7 +128,7 @@ void bootstrap(int l, int r, int messungen, double temperatur, double *blockarra
 		varianz+=(bootstraparray[durchgang]-mittelwert)*(bootstraparray[durchgang]-mittelwert);
 	}
 	varianz=sqrt(varianz/((double)r-1));//Standardschaetzer
-	fprintf(ausgabedatei, "1.0\t%f\t%f\t%f\t%e\t%f\n", (double)l,(double)r, mittelwert, varianz, temperatur);//Ausgabe, 1, um zu zeigen, dass parallel gerechnet wurde
+	fprintf(ausgabedatei, "1.0\t%e\t%e\t%e\t%e\t%e\n", (double)l,(double)r, mittelwert, varianz, temperatur);//Ausgabe, 1, um zu zeigen, dass parallel gerechnet wurde
 	free(bootstraparray);
 }
 
@@ -140,7 +140,7 @@ void ableitung(int l, int temperaturen, const int spalten, const int spaltemessu
 	double ergebnisarray[spalten];//Speichert eingelesene Dateien
 	rewind(messdatei);
 	for (int i=0; i<spalten; i+=1){//erste Zeile scannen: Noch keine Ableitung moeglich
-		fscanf(messdatei, "%lf", &ergebnisarray[i]);
+		fscanf(messdatei, "%le", &ergebnisarray[i]);
 		if (i==spalten-1){fscanf(messdatei, "\n");}
 	}
 	x1=ergebnisarray[spaltetemperatur];//Werte fuer erste Ableitung zuweisen
@@ -148,7 +148,7 @@ void ableitung(int l, int temperaturen, const int spalten, const int spaltemessu
 	dy1=ergebnisarray[spaltefehler];
 	for (int messung=1; messung<temperaturen; messung+=1){//Alle Zeilen durchgehen
 		for (int i=0; i<spalten; i+=1){
-			fscanf(messdatei, "%lf", &ergebnisarray[i]);
+			fscanf(messdatei, "%le", &ergebnisarray[i]);
 			if (i==spalten-1){fscanf(messdatei, "\n");}
 		}
 		if (ergebnisarray[spaltel]==l){//nur Ableitung berechnen, wenn l richtig ist
@@ -158,7 +158,7 @@ void ableitung(int l, int temperaturen, const int spalten, const int spaltemessu
 			mitteltemperatur=(x1+x2)/2;//Berechnung der Temperatur, bei der die Ableitung berechnet wird
 			ableitung=(y2-y1)/(x2-x1);//Zwei-Punkt-Formel mit variablem Abstand möglich
 			fehlerableitung=(sqrt(dy1*dy1+dy2*dy2))/(x2-x1);//Gausssche Fehlerfortpflanzung
-			fprintf(ausgabedatei, "%f\t%f\t%f\n", mitteltemperatur, ableitung, fehlerableitung);
+			fprintf(ausgabedatei, "%e\t%e\t%e\n", mitteltemperatur, ableitung, fehlerableitung);
 			x1=x2;//Zuweisung fuer naechste Zeile
 			y1=y2;
 			dy1=dy2;

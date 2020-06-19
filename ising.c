@@ -26,7 +26,7 @@ int main(int argc, char **argv){
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateiham, *ableitungdatei, *zeitdatei;//benoetigte Dateien zur Ausgabe
 	int temperaturzahl=650;//Temperaturen, beid enen gemessen wird
 	int schritt=2;//Wie viele Punkte werden gemessen?
-	int node=0;//nodes auf vm, qbig
+	int node=2;//nodes auf vm, qbig
 	char dateinametherm[150], dateinamemessen[150], dateinamemittel[150], dateinamebootstrapalleakz[150], dateinamebootstrapalleham[150], dateinameableitung[150], dateinamezeit[150];//Um Dateien mit Variablen benennen zu koennen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler
 	//double U, magquad, varmagquad, magvier, varmagvier;

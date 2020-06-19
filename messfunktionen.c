@@ -264,7 +264,7 @@ void thermalisierenmitplot(int laenge, double T, double j, int seed,int N0, char
 		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
 		Hneu=sweep(gitter, laenge, j, T, generator, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
 	}
-	//printf("%f\t%d\n", T, N0);zum darstellen Schritte gegen Temperatur
+	//printf("%e\t%d\n", T, N0);zum darstellen Schritte gegen Temperatur
 	fclose(dummyfile);
 	ausgabemitplot(gitter, laenge, ausgabedatei, plotdatei);//Gitter muss nicht immer neu thermalisiert werden, sondern kann auch eingelesen werden
 }
@@ -283,7 +283,7 @@ void thermalisieren(int laenge, double T, double j, int seed,int N0, char *gitte
 		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
 		Hneu=sweep(gitter, laenge, j, T, generator, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
 	}
-	//printf("%f\t%d\n", T, N0);zum darstellen Schritte gegen Temperatur
+	//printf("%e\t%d\n", T, N0);zum darstellen Schritte gegen Temperatur
 	fclose(dummyfile);
 	ausgabe(gitter, laenge, ausgabedatei);//Gitter muss nicht immer neu thermalisiert werden, sondern kann auch eingelesen werden
 }
@@ -302,7 +302,7 @@ void thermalisierenmehreregeneratoren(int laenge, double T, double j, int seed,i
 		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
 		Hneu=sweepmehreregeneratoren(gitter, laenge, j, T, generatoren, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
 	}
-	//printf("%f\t%d\n", T, N0);zum darstellen Schritte gegen Temperatur
+	//printf("%e\t%d\n", T, N0);zum darstellen Schritte gegen Temperatur
 	fclose(dummyfile);
 	ausgabe(gitter, laenge, ausgabedatei);//Gitter muss nicht immer neu thermalisiert werden, sondern kann auch eingelesen werden
 }
@@ -322,7 +322,7 @@ void messen(int laenge, double T, double j, int messungen, char* gitter/*, FILE 
 
 	double H=hamiltonian(gitter, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
-		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
+		fprintf(messdatei,"%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		H=sweep(gitter, laenge, j, T, generator, H, messdatei/*, lookupplus, lookupminus*/);//Geht Gitter durch und schreibt Messwerte in Datei
 	}
 }
@@ -333,7 +333,7 @@ void messenmehreregeneratoren(int laenge, double T, double j, int messungen, cha
 	//einlesen(gitter, laenge, gitterdatei);
 	double H=hamiltonian(gitter, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
-		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
+		fprintf(messdatei,"%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		H=sweepmehreregeneratoren(gitter, laenge, j, T, generatoren, H, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
 	}
 }
@@ -347,10 +347,10 @@ void messenvergleichen(int laenge, double T, double j, int messungen, FILE *gitt
 	einlesen(gitter2, laenge, gitterdatei);
 	double H2=hamiltonian(gitter2, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
-		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
+		fprintf(messdatei,"%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		H1=sweepzweipar(gitter1, laenge, j, T, generator, H1, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
 		H2=sweep(gitter2, laenge, j, T, generator, H2, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
-		fprintf(vergleichsdatei, "%f\t%f\t%f\t%f\n", (double)messung, H1, H2, H1-H2);
+		fprintf(vergleichsdatei, "%e\t%e\t%e\t%e\n", (double)messung, H1, H2, H1-H2);
 	}
 	
 }
