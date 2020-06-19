@@ -62,7 +62,7 @@ int main(int argc, char **argv){
 	for (int n=0; n<temperaturzahl; n+=schritt){    //ueber alle gegebenen Temperaturen messen
 		//printf("%d\n", n);
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-t%.3d-node02.txt",laenge,messungen,n);//.2, damit alle dateinamengleich lang sind
-		messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
+		messdatei = fopen(dateinamemessen, "r");//Zum Speichern der Messdaten
 		//gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
 		for(int core=0;core<anzahlcores;core+=1){
 			generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
