@@ -26,7 +26,7 @@ double sweepaltohnepar(char *gitter, int laenge, double j, double T, gsl_rng *ge
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersumme(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%e\t%e\t",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\t%e\t%e\t%e\n",akzeptanzrate, magnetisierung, magnetisierung*magnetisierung, magnetisierung*magnetisierung*magnetisierung*magnetisierung, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -393,9 +393,10 @@ double sweepeineschleife(char *gitter, int laenge, double j, double T, gsl_rng *
 				changesklein+=1;
 			}
 		}
-		#pragma omp critical (weissepunkte)
-		{H+=veraenderungH;
-		changes+=changesklein;}
+		#pragma omp critical (hamiltonian)//zwei kritische Regionen, damit weniger Zeit geblockt wird
+		{H+=veraenderungH;}
+		#pragma omp critical (changes)
+		{changes+=changesklein;}
 		#pragma omp barrier
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;

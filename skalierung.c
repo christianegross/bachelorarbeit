@@ -15,17 +15,24 @@
 int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
 	int maxcores=omp_get_max_threads();//aus Computerarchitektut/batchskript
-	int laenge;//laenge der verwendeten Gitter
-	int lenarray[3]={10, 100, 500};//, 10, 50, 50};
+	if (argc<2){
+		printf("Nicht genug Argumente!\n");
+		fprintf(stderr,"Nicht genug Argumente!\n");
+		laenge=12;
+	}
+	else{	
+	int laenge=atoi(argv[1]);//laenge der verwendeten Gitter
+	}
+	//int lenarray[3]={10, 100, 500};//, 10, 50, 50};
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
 	int node=2;//1,2 qbig, 0 vm
-	char merkmal[50]="mg2snichtimmerzufall-mehreret";
+	char merkmal[50]="kommandoargument";
 	int durchlaeufe=5;
-	double temperatur=4.5;//Skalierung bei nur einer Temperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
-	double temperaturen[4]={0.5, 2, 2.5, 4.5};
+	double temperatur=0.5;//Skalierung bei nur einer Temperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
+	//double temperaturen[4]={0.5, 2, 2.5, 4.5};
 	//t1=0.5, t2=2, t3=2.5, t4=4.5
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
@@ -60,10 +67,10 @@ int main(int argc, char **argv){
 		generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
 		gsl_rng_set(generatoren[core], seed+core);
 	}
-	for(int t=0;t<4;t+=1){
-		temperatur=temperaturen[t];
-	for (int laengen=0; laengen<3; laengen+=1){
-		laenge=lenarray[laengen];
+	//~ for(int t=0;t<4;t+=1){
+		//~ temperatur=temperaturen[t];
+	//~ for (int laengen=0; laengen<3; laengen+=1){
+		//~ laenge=lenarray[laengen];
 		printf("Laenge=%d\n", laenge);
 		char gitter[laenge*laenge];//Gitter erstellen und von thermalisieren ausgeben lassen
 		initialisierung(gitter, laenge, seed);
@@ -154,8 +161,8 @@ int main(int argc, char **argv){
 		zeiteincore=sec+1e-06*usec;
 		fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\n", 0.0, (double)laenge, zeiteincore, 0.0,0.0,0.0, temperatur);
 		fclose(messdatei);
-	}
-	}
+	//~ }
+	//~ }
 
 	
 	fclose(dummydatei);
