@@ -16,13 +16,16 @@ int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
 	int maxcores=omp_get_max_threads();//aus Computerarchitektut/batchskript
 	int laenge;
-	if (argc<2){
+	double temperatur;
+	if (argc<3){
 		printf("Nicht genug Argumente!\n");
 		fprintf(stderr,"Nicht genug Argumente!\n");
 		laenge=12;
+		temperatur=0.5;
 	}
 	else{	
 	laenge=atoi(argv[1]);//laenge der verwendeten Gitter
+	temperatur=atof(argv[2]);//laenge der verwendeten Gitter
 	}
 	//int lenarray[3]={10, 100, 500};//, 10, 50, 50};
 	double j=1.0;
@@ -33,7 +36,7 @@ int main(int argc, char **argv){
 	char merkmal[50];
 	sprintf(merkmal,"kommandoargument%s",argv[1]);
 	int durchlaeufe=5;
-	double temperatur=0.5;//Skalierung bei nur einer Temperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
+	//double temperatur=0.5;//Skalierung bei nur einer Temperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
 	//double temperaturen[4]={0.5, 2, 2.5, 4.5};
 	//t1=0.5, t2=2, t3=2.5, t4=4.5
 	double *ergebnisse;
