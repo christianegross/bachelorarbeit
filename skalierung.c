@@ -7,8 +7,8 @@
 #include "math.h"//exp-Funktion
 #include <omp.h>//Parallelisierung
 #include <sys/time.h>//Zur Messung der Wallclocktime beim messen ->Vergleich der Sweep-Funktionen
-#include "messfunktionen.h"
-#include "sweeps.h"
+#include "messfunktionen1606.h"
+#include "sweeps1606.h"
 #include "auswertungsfunktionen.h"
 
 
@@ -34,7 +34,7 @@ int main(int argc, char **argv){
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
 	int node=2;//1,2 qbig, 0 vm
 	char merkmal[50];
-	sprintf(merkmal,"kommandoargument%s",argv[1]);
+	sprintf(merkmal,"kommandoargumentaltdateien%s",argv[1]);
 	int durchlaeufe=5;
 	//double temperatur=0.5;//Skalierung bei nur einer Temperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
 	//double temperaturen[4]={0.5, 2, 2.5, 4.5};
