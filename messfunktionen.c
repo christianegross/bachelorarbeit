@@ -297,10 +297,17 @@ void thermalisierenmehreregeneratoren(int laenge, double T, double j, int seed,i
 	double H=hamiltonian(gitter, laenge, seed);//Anfangsenergie
 	double Hneu=H;
 	double Halt=H+laenge*j+1;
+	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
+	if (j<0){
+		wahrscheinlichkeiten[1]=wahrscheinlichkeiten[3];
+		wahrscheinlichkeiten[0]=wahrscheinlichkeiten[4];
+		wahrscheinlichkeiten[3]=1;
+		wahrscheinlichkeiten[4]=1;
+		}
 	FILE *dummyfile=fopen("dummy.txt", "w");//speichert messergebnisse waehrend des thermalisierens->Nicht benötigt
 	for (int anzahl=0; anzahl<N0; anzahl+=1){//Thermalisierungskriterium: feste anzhl an sweeps, durch Parameter übergeben
 		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
-		Hneu=sweepmehreregeneratoren(gitter, laenge, j, T, generatoren, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
+		Hneu=sweepmehreregeneratoren(gitter, laenge, j, T, generatoren, Halt, wahrscheinlichkeiten, dummyfile);//neuen Zustand durch sweep vom alten Zustand
 	}
 	//printf("%f\t%d\n", T, N0);zum darstellen Schritte gegen Temperatur
 	fclose(dummyfile);
@@ -332,9 +339,16 @@ void messenmehreregeneratoren(int laenge, double T, double j, int messungen, cha
 	//char gitter[laenge*laenge];
 	//einlesen(gitter, laenge, gitterdatei);
 	double H=hamiltonian(gitter, laenge, j);
+	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
+	if (j<0){
+		wahrscheinlichkeiten[1]=wahrscheinlichkeiten[3];
+		wahrscheinlichkeiten[0]=wahrscheinlichkeiten[4];
+		wahrscheinlichkeiten[3]=1;
+		wahrscheinlichkeiten[4]=1;
+		}
 	for (int messung=0; messung<messungen; messung+=1){
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
-		H=sweepmehreregeneratoren(gitter, laenge, j, T, generatoren, H, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
+		H=sweepmehreregeneratoren(gitter, laenge, j, T, generatoren, H, wahrscheinlichkeiten, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
 		//~ H=sweepaltohnepar(gitter, laenge, j, T, generatoren[0], H, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
 	}
 }

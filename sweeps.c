@@ -282,7 +282,7 @@ double sweeplookup(char *gitter, int laenge, double j, double T, gsl_rng *genera
 }
 		
 
-double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl_rng **generatoren, double hamiltonian, FILE *dateimessungen){
+double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl_rng **generatoren, double hamiltonian, double *wahrscheinlichkeiten, FILE *dateimessungen){
 	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
 	//arbeitet parallel in schleifen ueber die einzelnen Farben
 	//Fuer jeden Thread einen einzelnen Generator
@@ -291,13 +291,6 @@ double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl
 	double veraenderungH=0;//misst Veraenderung in einem parallen Thread
 	int delta=0;
 	int d1=0, d2=0;
-	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
-	if (j<0){
-		wahrscheinlichkeiten[1]=wahrscheinlichkeiten[3];
-		wahrscheinlichkeiten[0]=wahrscheinlichkeiten[4];
-		wahrscheinlichkeiten[3]=1;
-		wahrscheinlichkeiten[4]=1;
-		}
 	int changes =0;//misst Gesamtzahl der spinflips
 	int changesklein=0;//misst Spinflips in parallelen Thread
 	//int chunk=2;
