@@ -14,18 +14,29 @@
 
 int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
-	int anzahlcores=12;
+	int anzahlcores=1;
+	int laenge=48;//laenge der verwendeten Gitter
+	if (argc>=3){
+		laenge=atoi(argv[1]);
+		anzahlcores=atoi(argv[2]);
+	}
+	else{
+		printf("Nicht genug Argumente! Laenge=%d bei %d cores\n", laenge, anzahlcores);
+		fprintf(stderr,"Nicht genug Argumente!\n");
+	}
 	omp_set_num_threads(anzahlcores);//Setzt die nummer an Kernen, die in den parallelen Regionen verwendet werden.
-	int laenge=480;//laenge der verwendeten Gitter
+	
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
-	int N01=10000;//sweeps beim ersten Thermalisieren
-	int N0=5000;//benoetigte sweeps zum Thermalisieren
+	int N01=50000;//sweeps beim ersten Thermalisieren
+	int N0=10000;//benoetigte sweeps zum Thermalisieren
 	int messungen=10000;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateiham, *ableitungdatei, *zeitdatei;//benoetigte Dateien zur Ausgabe
-	int temperaturzahl=100;//Temperaturen, beid enen gemessen wird
-	int schritt=1;//Wie viele Punkte werden gemessen?
+	int temperaturzahl=650;//Temperaturen, beid enen gemessen wird
+	int schritt=100;//Wie viele Punkte werden gemessen?
+	int starttemp=0;
+	int endtemp=temperaturzahl;
 	int node=2;//nodes auf vm, qbig
 	char dateinametherm[150], dateinamemessen[150], dateinamemittel[150], dateinamebootstrapalleakz[150], dateinamebootstrapallemag[150], dateinamebootstrapalleham[150], dateinameableitung[150], dateinamezeit[150];//Um Dateien mit Variablen benennen zu koennen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler
@@ -37,22 +48,24 @@ int main(int argc, char **argv){
 	}
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
 		//MAgnetisierung zur genaueren Bestimmung des kritishen Punktes
-		temperaturarray[i]=2.1+0.0025;
-		//Für Akzeptanzrate, um bis 10.000 zu kommen, gemessen mit Schritt 2
-		//~ if (i<50){temperaturarray[i]=i*0.02+0.02;}
-		//~ if ((i>=50)&&(i<300)){temperaturarray[i]=(i-50)*0.01+1;}
-		//~ if ((i>=300)&&(i<350)){temperaturarray[i]=(i-300)*0.02+3.5;}
-		//~ if ((i>=350)&&(i<450)){temperaturarray[i]=(i-350)*0.06+4.5;}
-		//~ if ((i>=450)&&(i<500)){temperaturarray[i]=(i-450)*0.2+10.01;}
-		//~ if ((i>=500)&&(i<550)){temperaturarray[i]=exp(2.996+(i-500)*0.032);}
-		//~ if ((i>=550)&&(i<600)){temperaturarray[i]=exp(4.605+(i-550)*0.046);}
-		//~ if ((i>=600)&&(i<650)){temperaturarray[i]=exp(6.907+(i-600)*0.046);}
+		//~ if((i<50)){temperaturarray[i]=0.1+0.041*i;}
+		//~ if((i>=50)&&(i<150)){temperaturarray[i]=2.15+0.003*i;}
+		//~ if((i>=150)){temperaturarray[i]=2.45+0.051*i;}
+		//~ //Für Akzeptanzrate, um bis 10.000 zu kommen, gemessen mit Schritt 2
+		if (i<50){temperaturarray[i]=i*0.02+0.02;}
+		if ((i>=50)&&(i<300)){temperaturarray[i]=(i-50)*0.01+1;}
+		if ((i>=300)&&(i<350)){temperaturarray[i]=(i-300)*0.02+3.5;}
+		if ((i>=350)&&(i<450)){temperaturarray[i]=(i-350)*0.06+4.5;}
+		if ((i>=450)&&(i<500)){temperaturarray[i]=(i-450)*0.2+10.01;}
+		if ((i>=500)&&(i<550)){temperaturarray[i]=exp(2.996+(i-500)*0.032);}
+		if ((i>=550)&&(i<600)){temperaturarray[i]=exp(4.605+(i-550)*0.046);}
+		if ((i>=600)&&(i<650)){temperaturarray[i]=exp(6.907+(i-600)*0.046);}
 		//printf("%d\t%e\n", i, temperaturarray[i]);
 	}
 	printf("Ende array\n");
 	int l;//Laenge der Blocks
 	double *blockarray;//Zum Speichern der geblockten Messwerte
-	double blocklenarray[12]={32, 64,128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
+	double blocklenarray[12]={/*1,2,4,8,16,*/32, 64,128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
 	//gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	gsl_rng **generatoren;//mehrere generaotren fuer parallelisierung
 	if ((generatoren=(gsl_rng**)malloc(anzahlcores*sizeof(gsl_rng**)))==NULL){
@@ -67,7 +80,7 @@ int main(int argc, char **argv){
 	sprintf(dateinamebootstrapalleakz,"Messungen/Bootstrapges/bootstrapalle-akzeptanz-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Mitteelwerte aus Bootstrap
 	sprintf(dateinamebootstrapallemag,"Messungen/Bootstrapges/bootstrapalle-magnetisierung-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Mitteelwerte aus Bootstrap
 	sprintf(dateinamebootstrapalleham,"Messungen/Bootstrapges/bootstrapalle-hamiltonian-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Mitteelwerte aus Bootstrap
-	sprintf(dateinameableitung,"Messungen/ableitung-akzeptanz-laenge-%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Ableitung
+	sprintf(dateinameableitung,"Messungen/ableitung-magnetisierung-laenge-%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Ableitung
 	sprintf(dateinamezeit,"Messungen/Zeiten/zeiten-laenge-%.4d-m-%.6d-cores-%.2d-node%.2d.txt",laenge, messungen, anzahlcores, node);//speichert Ableitung
 	mittelwertdatei=fopen(dateinamemittel, "w+");
 	bootstrapalledateiakz=fopen(dateinamebootstrapalleakz, "w+");
@@ -88,7 +101,9 @@ int main(int argc, char **argv){
 	//gsl_rng_set(generator, seed);
 	thermalisierenmehreregeneratoren(laenge, temperaturarray[0], j, seed, N01, gitter, dummydatei, generatoren);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	fclose(dummydatei);
-	for (int n=0; n<temperaturzahl; n+=schritt){    //ueber alle gegebenen Temperaturen messen
+	for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
+		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=20000;}
+		else {N0=5000;}
 		printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-m%.6d-t%.3d-node%.2d.txt",laenge,messungen,n, node);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-t%.3d-node%.2d.txt",laenge,messungen,n, node);//.2, damit alle dateinamengleich lang sind
@@ -108,7 +123,7 @@ int main(int argc, char **argv){
 		usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
 		zeitgesmessen=sec+1e-06*usec;
 		summezeitgesmessen+=zeitgesmessen;
-		//printf("bei T=%f haben %d Messungen %f Sekunden gebraucht\n", temperaturarray[n], messungen, zeitgesmessen);
+		printf("bei T=%f haben %d Messungen %f Sekunden gebraucht\n", temperaturarray[n], messungen, zeitgesmessen);
 		fprintf(zeitdatei, "0.0\t%f\t%f\t%f\n", temperaturarray[n], (double)messungen, zeitgesmessen);
 		//Berechnung der naiven Standardfehler
 		mittelwertakz=mittelwertberechnungnaiv(messdatei, messungen, 1, 6);
@@ -128,7 +143,7 @@ int main(int argc, char **argv){
 				return (-1);
 			};
 			r=4*messungen;//Anzahl an Replikas, die beim Bootstrappen erzeugt werden
-			//~ //akzaptanzrate
+			//akzaptanzrate
 			//~ blocks_generieren(l, messungen, 1, 6, blockarray, messdatei);//blocking
 			//~ //Vergleich bootstrapping mit und ohne parallelisierung
 			//~ bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateiakz);//bootstrapping
@@ -137,7 +152,7 @@ int main(int argc, char **argv){
 			//Vergleich bootstrapping mit und ohne parallelisierung
 			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateimag);//bootstrapping
 			//bootstrapohnepar(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
-			//~ //hamiltonian
+			//hamiltonian
 			//~ blocks_generieren(l, messungen, 5, 6, blockarray, messdatei);//blocking
 			//~ //Vergleich bootstrapping mit und ohne parallelisierung
 			//~ bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateiham);//bootstrapping
@@ -159,7 +174,7 @@ int main(int argc, char **argv){
 	usec= (double)(endeprogramm.tv_usec-anfangprogramm.tv_usec);
 	zeitgesprogramm=sec+1e-06*usec;
 	printf("Insgesamt hat das Messen %f Sekunden gebraucht\n", summezeitgesmessen);
-	printf("Insgesamt hat das Botstrapping %f Sekunden gebraucht\n", summezeitgesbootstrap);
+	printf("Insgesamt hat das Bootstrapping %f Sekunden gebraucht\n", summezeitgesbootstrap);
 	printf("Insgesamt hat das Programm %f Sekunden gebraucht\n", zeitgesprogramm);
 	fprintf(zeitdatei, "2.0\t-1.0\t%f\t%f\n",(double)messungen, summezeitgesbootstrap); 
 	fprintf(zeitdatei, "3.0\t-1.0\t%f\t%f\n",(double)messungen, summezeitgesmessen); 
