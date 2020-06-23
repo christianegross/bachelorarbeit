@@ -104,8 +104,9 @@ double hamiltonian(char *gitter, int laenge, double j){
 	double H=0;
 	for (int d1=0; d1<laenge; d1+=1){//geht in erster dimension durch (Zeile
 		for (int d2=0; d2<laenge; d2+=1){//geht in zweiter dimension durch (alle Spalten einer Zeile)
-			H+=(double)gitter[laenge*d1+d2]*gitter[laenge*d1+((d2+1)%(laenge))];//Bond mit rechtem Nachbar
-			H+=(double)gitter[laenge*d1+d2]*gitter[laenge*((d1+1)%(laenge))+d2];//Bond mit unterem Nachbar
+			H+=(double)gitter[laenge*d1+d2]*(gitter[laenge*d1+((d2+1)%(laenge))]//Bond mit rechtem Nachbar
+											+gitter[laenge*((d1+1)%(laenge))+d2]);//Bond mit unterem Nachbar
+			//~ H+=(double)gitter[laenge*d1+d2]*gitter[laenge*((d1+1)%(laenge))+d2];//Bond mit unterem Nachbar
 			//Von allen Feldern rechts und unten berücksichtig, periodische Randbedingungen->alles berücksichtigt
 		}
 	}
@@ -198,10 +199,10 @@ int deltahlookup(char *gitter, int d1, int d2, int laenge, int *lookupplus, int 
 extern inline int tryflip(gsl_rng *generator, double wahrscheinlichkeit){
 	//versucht, den spin an position d1, d2 umzukehren nach Metropolis-Algorithmus
 	//if deltah<0: accept, return 1
-	if (wahrscheinlichkeit==1){
-		return 1;
-	}
-	else{
+	//~ if (wahrscheinlichkeit==1){
+		//~ return 1;
+	//~ }
+	//~ else{
 	//Zufallszahl zwischen null und eins
 		double random=gsl_rng_uniform(generator);
 		if (random<wahrscheinlichkeit){ 
@@ -213,7 +214,7 @@ extern inline int tryflip(gsl_rng *generator, double wahrscheinlichkeit){
 			return 0;
 		}
 
-	}
+	//~ }
 	return -1;
 }
 
@@ -297,7 +298,7 @@ void thermalisierenmehreregeneratoren(int laenge, double T, double j, int seed,i
 	double H=hamiltonian(gitter, laenge, seed);//Anfangsenergie
 	double Hneu=H;
 	double Halt=H+laenge*j+1;
-	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
+	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};//Wahrscheinlichkeiten fuer Spinflip, muessen nur einmal berechnet werden
 	if (j<0){
 		wahrscheinlichkeiten[1]=wahrscheinlichkeiten[3];
 		wahrscheinlichkeiten[0]=wahrscheinlichkeiten[4];
@@ -339,7 +340,7 @@ void messenmehreregeneratoren(int laenge, double T, double j, int messungen, cha
 	//char gitter[laenge*laenge];
 	//einlesen(gitter, laenge, gitterdatei);
 	double H=hamiltonian(gitter, laenge, j);
-	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
+	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};//Wahrscheinlichkeiten fuer Spinflip, muessen nur einmal berechnet werden
 	if (j<0){
 		wahrscheinlichkeiten[1]=wahrscheinlichkeiten[3];
 		wahrscheinlichkeiten[0]=wahrscheinlichkeiten[4];
