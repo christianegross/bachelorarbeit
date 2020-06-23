@@ -15,14 +15,14 @@ int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
 	int maxcores=omp_get_max_threads();//aus Computerarchitektut/batchskript
 	int laenge;//laenge der verwendeten Gitter
-	int lenarray[3]={10, 100, 500};//, 10, 50, 50};
+	int lenarray[1]={384};//, 10, 50, 50};
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
-	int node=1;//1,2 qbig, 0 vm
-	char merkmal[50]="mehreregeneratoren";
-	int durchlaeufe=10;
+	int node=2;//1,2 qbig, 0 vm
+	char merkmal[50]="stand1506";
+	int durchlaeufe=5;
 	double temperatur=0.5;//Skalierung bei nur einer Temperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
@@ -41,8 +41,8 @@ int main(int argc, char **argv){
 	dummydatei=fopen(dateinamedummytherm, "w+");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird	
 	//dummydateiplot=fopen(dateinamedummythermplot, "w+");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird	
 	//sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-laenge%.4d-m%.6d-mehrere.txt",laenge,messungen);
-	sprintf(dateinamezeit,"Messungen/Zeiten/zeitenmessen-m%.6d-mehrerelaengenunddurchlaeufenode%.2d%s.txt",messungen, node, merkmal);
-	sprintf(dateinamemittel,"Messungen/Zeiten/zeitenmittel-m%.6d-mehrerelaengenunddurchlaeufenode%.2d%s.txt",messungen, node, merkmal);
+	sprintf(dateinamezeit,"Messungen/Zeiten/zmessen-m%.6d-node%.2d%s.txt",messungen, node, merkmal);
+	sprintf(dateinamemittel,"Messungen/Zeiten/zmittel-m%.6d-node%.2d%s.txt",messungen, node, merkmal);
 	zeitdatei=fopen(dateinamezeit, "w+");
 	mitteldatei=fopen(dateinamemittel, "w+");
 	//gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
@@ -57,9 +57,9 @@ int main(int argc, char **argv){
 		generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
 		gsl_rng_set(generatoren[core], seed+core);
 	}
-	for (int laengen=0; laengen<3; laengen+=1){
+	for (int laengen=0; laengen<1; laengen+=1){
 		laenge=lenarray[laengen];
-		printf("Laenge=%d\n", laenge);
+		printf("Laenge=%d\tTemperatur=%f\n", laenge, temperatur);
 		char gitter[laenge*laenge];//Gitter erstellen und von thermalisieren ausgeben lassen
 		initialisierung(gitter, laenge, seed);
 		thermalisieren(laenge, temperatur, j, seed, 500, gitter, dummydatei, generatoren[0]);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
