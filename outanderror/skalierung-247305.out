@@ -1,0 +1,66 @@
+Mon Jun 22 14:47:57 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon Jun 22 14:48:27 CEST 2020 Waiting done, starting task!
+Mon Jun 22 14:48:28 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon Jun 22 14:48:58 CEST 2020 Waiting done, starting task!
+Laenge=192
+bei 1 cores haben 1000 Messungen 1.977953 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 1.973551 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 1.964110 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 1.964583 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 1.965987 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 2.232248 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 2.197377 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 2.165365 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 2.168967 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 2.193086 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 1.508136 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 1.305862 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 1.335033 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 1.229012 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 1.440509 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 1.182187 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 1.195904 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 1.110957 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 1.183715 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 1.193098 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 1.081229 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 1.044825 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 1.108309 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 1.071094 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 1.093962 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 0.949557 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 0.913735 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 0.900419 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 0.945984 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 0.974649 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 0.882200 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 0.927080 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 0.886560 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 0.847526 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 0.855495 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 0.638814 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 0.721719 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 0.631896 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 0.535541 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 0.537511 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 0.688585 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 0.727893 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 0.748887 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 0.706753 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 0.679603 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 0.680118 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 0.642853 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 0.634717 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 0.634417 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 0.650120 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 0.602282 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 0.607437 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 0.626686 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 0.614861 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 0.631400 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 0.608072 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 0.616842 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 0.603813 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 0.603089 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 0.600841 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit

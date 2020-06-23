@@ -1,0 +1,23 @@
+Tue Jun 23 13:42:45 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jun 23 13:43:15 CEST 2020 Waiting done, starting task!
+Tue Jun 23 13:43:15 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jun 23 13:43:45 CEST 2020 Waiting done, starting task!
+Ende array
+0
+bei T=0.020000 haben 10000 Messungen 2.343319 Sekunden gebraucht
+100
+bei T=1.500000 haben 10000 Messungen 2.219033 Sekunden gebraucht
+200
+bei T=2.500000 haben 10000 Messungen 2.455903 Sekunden gebraucht
+300
+bei T=3.500000 haben 10000 Messungen 2.518296 Sekunden gebraucht
+400
+bei T=7.500000 haben 10000 Messungen 2.540167 Sekunden gebraucht
+500
+bei T=20.005355 haben 10000 Messungen 2.451491 Sekunden gebraucht
+600
+bei T=999.245006 haben 10000 Messungen 2.580409 Sekunden gebraucht
+Insgesamt hat das Messen 17.108618 Sekunden gebraucht
+Insgesamt hat das Bootstrapping 3.546348 Sekunden gebraucht
+Insgesamt hat das Programm 45.587696 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit
