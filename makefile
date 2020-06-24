@@ -7,11 +7,11 @@ LIBS:= -lgsl -lgslcblas -lm -fopenmp -lrt
 #skalfak00: skalierungfak.o
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
-skalierungnode02: skalierung.o messfunktionen.o sweeps.o auswertungsfunktionen.o 
-	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
-
-#skalierung1106: skalierung1106.o messfunktionen1106.o auswertungsfunktionen.o
+#skalierungnode02: skalierung.o messfunktionen.o sweeps.o auswertungsfunktionen.o 
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+
+skalierung1606: skalierung.o messfunktionen1606.o auswertungsfunktionen.o sweeps1606.o 
+	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 #sweeps1606.o 
 
 #erstellt programm ising
