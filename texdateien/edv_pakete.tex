@@ -37,7 +37,7 @@
 \usepackage{graphicx} %einbinden von Figuren/Bildern
 %\graphicspath{{figs/}} % Stammverzeichnis der verwendeten Bilder, muss im selben Ordner wie Hauptdatei sein
 %
-\usepackage[backend=biber, style=numeric, sorting=none]{biblatex}
+\usepackage[backend=biber, style=numeric, sorting=none, eprint=false]{biblatex}
 %Verwenden von \cite in \footnote: Bibliographie drucken lassen, mehrmals kompilieren
 \usepackage{hyperref}%erzeugt klickbare Elemente
 \usepackage[all]{hypcap}%hyperref-befehle springen zum oberen Rand des Bildes
@@ -52,6 +52,9 @@
 
 %Text und Bilder nebeneinander
 \usepackage{wrapfig}
+
+%bessere Darstellung von gnuplot?
+\usepackage{epstopdf}
 
 % Die folgenden listings-Einstellungen sind nötig, um
 % deutsche Umlaute und die Tilde (~) in listings-Umgebungen
