@@ -304,7 +304,7 @@ double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=(d1%2); d2<laenge; d2+=2){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				delta=deltahneu2(gitter, d1, d2, laenge);
-				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[(delta/4)+2])==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
 					gitter[laenge*d1+d2]*=-1;
 					veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
 					changesklein+=1;
@@ -316,7 +316,7 @@ double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=(d1+1)%2; d2<laenge; d2+=2){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				delta=deltahneu2(gitter, d1, d2, laenge);
-				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[(delta/4)+2])==1)){//Wenn weisser Punkt und Spin geflippt wurde
+				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeit(delta, wahrscheinlichkeiten))==1)){//Wenn weisser Punkt und Spin geflippt wurde
 					gitter[laenge*d1+d2]*=-1;
 					veraenderungH+=j*delta;
 					changesklein+=1;
