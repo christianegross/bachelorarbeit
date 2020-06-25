@@ -9,7 +9,7 @@
 #include <sys/time.h>//Zur Messung der Wallclocktime beim messen ->Vergleich der Sweep-Funktionen
 #include "messfunktionen.h"
 #include "auswertungsfunktionen.h"
-//
+
 
 int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
@@ -20,10 +20,10 @@ int main(int argc, char **argv){
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
-	int node=2;//1,2 qbig, 0 vm
-	char merkmal[50]="niezufallszahltniedrig";
-	int durchlaeufe=5;
-	double temperatur=0.5;//Skalierung bei nur einer TEmperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
+	int node=1;//1,2 qbig, 0 vm
+	char merkmal[50]="mehreregeneratoren";
+	int durchlaeufe=10;
+	double temperatur=0.5;//Skalierung bei nur einer Temperatur messen niedrig 0.5, mittel2, mittel2 2.5, hoch 3.5
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
 		printf("Fehler beim Allokieren der Temperaturen!\n");
@@ -45,18 +45,32 @@ int main(int argc, char **argv){
 	sprintf(dateinamemittel,"Messungen/Zeiten/zeitenmittel-m%.6d-mehrerelaengenunddurchlaeufenode%.2d%s.txt",messungen, node, merkmal);
 	zeitdatei=fopen(dateinamezeit, "w+");
 	mitteldatei=fopen(dateinamemittel, "w+");
-	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
-	gsl_rng_set(generator, seed);
-
+	//gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
+	//gsl_rng_set(generator, seed);
+	//Versuch: jeder thread einen einzelnen Generator
+	gsl_rng **generatoren;
+	if ((generatoren=(gsl_rng**)malloc(maxcores*sizeof(gsl_rng**)))==NULL){
+		printf("Fehelr beim Allokieren der Generatoren\n");
+	}
+	#pragma omp parallel for
+	for(int core=0;core<maxcores;core+=1){
+		generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
+		gsl_rng_set(generatoren[core], seed+core);
+	}
 	for (int laengen=0; laengen<3; laengen+=1){
 		laenge=lenarray[laengen];
 		printf("Laenge=%d\n", laenge);
 		char gitter[laenge*laenge];//Gitter erstellen und von thermalisieren ausgeben lassen
 		initialisierung(gitter, laenge, seed);
-		thermalisieren(laenge, temperatur, j, seed, 500, gitter, dummydatei, generator);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
+		thermalisieren(laenge, temperatur, j, seed, 500, gitter, dummydatei, generatoren[0]);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
 		for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
 		//Vergleichsmassstab: Messungen bei einem core	
-			gsl_rng_set(generator, seed/*(seed+durchlauf)*/);
+			//gsl_rng_set(generator, seed/*(seed+durchlauf)*/);
+			#pragma omp parallel for
+			for(int core=0;core<maxcores;core+=1){
+					generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
+					gsl_rng_set(generatoren[core], seed+core);
+			}
 			speedup=1;//aus definition
 			omp_set_num_threads(1);
 			einlesen(gitter, laenge, dummydatei);
@@ -66,7 +80,7 @@ int main(int argc, char **argv){
 			//~ vergleichsdatei=fopen("dummyvergleich.txt", "w+");
 			gettimeofday(&anfangmessen, NULL);
 			//~ messenvergleichen(laenge, temperatur, j, messungen, dummydatei, messdatei, vergleichsdatei, generator);
-			messen(laenge, temperatur, j, messungen, gitter/*dummydatei*/, messdatei, generator);
+			messenmehreregeneratoren(laenge, temperatur, j, messungen, gitter/*dummydatei*/, messdatei, generatoren);
 			gettimeofday(&endemessen, NULL);
 			//~ mittelham=mittelwertberechnungnaiv(vergleichsdatei, messungen, 3, 4);
 			//~ varianzham=varianzberechnungnaiv(vergleichsdatei, messungen, mittelham, 3, 4);
@@ -98,7 +112,7 @@ int main(int argc, char **argv){
 				//~ vergleichsdatei=fopen("dummyvergleich.txt", "w+");
 				gettimeofday(&anfangmessen, NULL);
 				//~ messenvergleichen(laenge, temperatur, j, messungen, dummydatei, messdatei, vergleichsdatei, generator);
-				messen(laenge, temperatur, j, messungen, gitter/*dummydatei*/, messdatei, generator);
+				messenmehreregeneratoren(laenge, temperatur, j, messungen, gitter/*dummydatei*/, messdatei, generatoren);
 				gettimeofday(&endemessen, NULL);
 				//~ mittelham=mittelwertberechnungnaiv(vergleichsdatei, messungen, 3, 4);
 				//~ varianzham=varianzberechnungnaiv(vergleichsdatei, messungen, mittelham, 3, 4);
@@ -142,7 +156,10 @@ int main(int argc, char **argv){
 	fclose(zeitdatei);
 	fclose(mitteldatei);
 	
-	gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen
-	
+	//gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen
+	for(int core=0;core<maxcores;core+=1){
+		gsl_rng_free(generatoren[core]);
+	}
 	free(ergebnisse);
+	free(generatoren);
 }
