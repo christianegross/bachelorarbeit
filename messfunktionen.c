@@ -198,10 +198,10 @@ int deltahlookup(char *gitter, int d1, int d2, int laenge, int *lookupplus, int 
 extern inline int tryflip(gsl_rng *generator, double wahrscheinlichkeit){
 	//versucht, den spin an position d1, d2 umzukehren nach Metropolis-Algorithmus
 	//if deltah<0: accept, return 1
-	//~ if (wahrscheinlichkeit==1){
-		//~ return 1;
-	//~ }
-	//~ else{
+	if (wahrscheinlichkeit==1){
+		return 1;
+	}
+	else{
 	//Zufallszahl zwischen null und eins
 		double random=gsl_rng_uniform(generator);
 		if (random<wahrscheinlichkeit){ 
@@ -213,7 +213,7 @@ extern inline int tryflip(gsl_rng *generator, double wahrscheinlichkeit){
 			return 0;
 		}
 
-	//~ }
+	}
 	return -1;
 }
 
@@ -288,6 +288,25 @@ void thermalisieren(int laenge, double T, double j, int seed,int N0, char *gitte
 	ausgabe(gitter, laenge, ausgabedatei);//Gitter muss nicht immer neu thermalisiert werden, sondern kann auch eingelesen werden
 }
 
+void thermalisierenmehreregeneratoren(int laenge, double T, double j, int seed,int N0, char *gitter, FILE *ausgabedatei, gsl_rng **generatoren){
+	//erzeugt ein thermalisiertes Gitter mit laenge*laenge, T, j, seed in ausgabedatei
+	//seed im Moment nicht benoetigt, da Gitter von vorheriger Temperatur benutzt wird
+	//generator für thermalisieren innerhalb derFunktion seeden?
+	//int gitter[laenge*laenge];
+	//initialisierung(gitter, laenge, seed);//Initialisiert Gitter
+	double H=hamiltonian(gitter, laenge, seed);//Anfangsenergie
+	double Hneu=H;
+	double Halt=H+laenge*j+1;
+	FILE *dummyfile=fopen("dummy.txt", "w");//speichert messergebnisse waehrend des thermalisierens->Nicht benötigt
+	for (int anzahl=0; anzahl<N0; anzahl+=1){//Thermalisierungskriterium: feste anzhl an sweeps, durch Parameter übergeben
+		Halt=Hneu;//Zustand der vorherigen Iteration speichern zum Vergleich
+		Hneu=sweepmehreregeneratoren(gitter, laenge, j, T, generatoren, Halt, dummyfile);//neuen Zustand durch sweep vom alten Zustand
+	}
+	//printf("%f\t%d\n", T, N0);zum darstellen Schritte gegen Temperatur
+	fclose(dummyfile);
+	ausgabe(gitter, laenge, ausgabedatei);//Gitter muss nicht immer neu thermalisiert werden, sondern kann auch eingelesen werden
+}
+
 void messen(int laenge, double T, double j, int messungen, char* gitter/*, FILE *gitterdatei*/, FILE *messdatei, gsl_rng *generator){
 	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
 	//char gitter[laenge*laenge];
@@ -315,7 +334,7 @@ void messenmehreregeneratoren(int laenge, double T, double j, int messungen, cha
 	double H=hamiltonian(gitter, laenge, j);
 	for (int messung=0; messung<messungen; messung+=1){
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
-		H=sweepeineschleife(gitter, laenge, j, T, generatoren, H, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
+		H=sweepmehreregeneratoren(gitter, laenge, j, T, generatoren, H, messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
 	}
 }
 

@@ -1,6 +1,17 @@
 set ter pdfcairo size 4in,5.5in
 
 
+set out "Messungen/ergebnisseparallel.pdf"
+set xlabel "Temperatur"
+set ylabel "Magnetisierung"
+set yrange [-0.05:1.05]
+litresult(x)=(1-(1/(sinh(2/x)*sinh(2/x)))**2)**(1.0/8)
+set title "laenge=100"
+
+plot "Messungen/Mittelwerte/messenmittel-l0100-m-010000.txt" u 2:6:7 w yerrorbars lt 7 title ""
+set ylabel "Akzeptanzrate"
+plot "Messungen/Mittelwerte/messenmittel-l0100-m-010000.txt" u 2:4:5 w yerrorbars lt 7 title ""
+
 #Magnetisierung
 set xlabel "Temperatur"
 set ylabel "Magnetisierung"

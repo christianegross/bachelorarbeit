@@ -25,6 +25,7 @@ int main(int argc, char **argv){
 	int r;//Anzahl an samples für den Bootstrap
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledatei, *ableitungdatei, *zeitdatei;//benoetigte Dateien zur Ausgabe
 	int temperaturzahl=300;//Temperaturen, beid enen gemessen wird
+	int schritt=5;//Wie viele Punkte werden gemessen?
 	char dateinametherm[150], dateinamemessen[150], dateinamemittel[150], dateinamebootstrapalle[150], dateinameableitung[150], dateinamezeit[150];//Um Dateien mit Variablen benennen zu koennen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler
 	double *temperaturarray;
@@ -34,11 +35,21 @@ int main(int argc, char **argv){
 	}
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
 		temperaturarray[i]=0.015*i+0.015;
+		if (i>250){temperaturarray[i]+=(i-250)*0.03;}
 	}
 	int l;//Laenge der Blocks
 	double *blockarray;//Zum Speichern der geblockten Messwerte
 	double blocklenarray[12]={32, 64,128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
-	gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
+	//gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
+		gsl_rng **generatoren;
+	if ((generatoren=(gsl_rng**)malloc(anzahlcores*sizeof(gsl_rng**)))==NULL){
+		printf("Fehler beim Allokieren der Generatoren\n");
+	}
+	for(int core=0;core<anzahlcores;core+=1){
+		generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
+		gsl_rng_set(generatoren[core], seed+core);
+	}
+	
 	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d.txt",laenge, messungen);//speichert naive Mittelwerte
 	sprintf(dateinamebootstrapalle,"Messungen/Bootstrapges/bootstrapalle-l%.4d-m-%.6d.txt",laenge, messungen);//speichert Mitteelwerte aus Bootstrap
 	sprintf(dateinameableitung,"Messungen/ableitung-laenge-%.4d-m-%.6d.txt",laenge, messungen);//speichert Ableitung
@@ -57,19 +68,24 @@ int main(int argc, char **argv){
 	char gitter[laenge*laenge];
 	initialisierung(gitter, laenge, seed);
 	dummydatei=fopen("dummytherm.txt", "w");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird
-	gsl_rng_set(generator, seed);
-	thermalisieren(laenge, temperaturarray[0], j, seed, N01, gitter, dummydatei, generator);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
+	//gsl_rng_set(generator, seed);
+	thermalisierenmehreregeneratoren(laenge, temperaturarray[0], j, seed, N01, gitter, dummydatei, generatoren);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	fclose(dummydatei);
-	for (int n=10; n<temperaturzahl; n+=20){    //ueber alle gegebenen Temperaturen messen
+	for (int n=0; n<temperaturzahl; n+=schritt){    //ueber alle gegebenen Temperaturen messen
 		printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-m%.6d-t%.3d.txt",laenge,messungen,n);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-t%.3d.txt",laenge,messungen,n);//.2, damit alle dateinamengleich lang sind
 		gitterthermdatei = fopen(dateinametherm, "w+");//Zum speichern der thermalisierten Gitter
 		messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
-		gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
-		thermalisieren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generator);
+		//gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
+		for(int core=0;core<anzahlcores;core+=1){
+			generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
+			gsl_rng_set(generatoren[core], seed+core);
+		}
+		
+		thermalisierenmehreregeneratoren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generatoren);
 		gettimeofday(&anfangmessen, NULL);
-		messen(laenge, temperaturarray[n], j, messungen, gitter/*thermdatei*/, messdatei, generator);
+		messenmehreregeneratoren(laenge, temperaturarray[n], j, messungen, gitter/*thermdatei*/, messdatei, generatoren);
 		gettimeofday(&endemessen, NULL);
 		sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
 		usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
@@ -94,7 +110,7 @@ int main(int argc, char **argv){
 			r=0;//r=4*messungen;//Anzahl an Replikas, die beim Bootstrappen erzeugt werden
 			blocks_generieren(l, messungen, 2, 3, blockarray, messdatei);//blocking
 			//Vergleich bootstrapping mit und ohne parallelisierung
-			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
+			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren[0],bootstrapalledatei);//bootstrapping
 			//bootstrapohnepar(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
 			free(blockarray);
 		}
@@ -125,7 +141,11 @@ int main(int argc, char **argv){
 	fclose(bootstrapalledatei);
 	fclose(ableitungdatei);
 	fclose(zeitdatei);
-	free(temperaturarray);
-	gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen
+	free(temperaturarray);	
+	//gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen
+	for(int core=0;core<anzahlcores;core+=1){
+		gsl_rng_free(generatoren[core]);
+	}
+	free(generatoren);
 	return 0;
 }
