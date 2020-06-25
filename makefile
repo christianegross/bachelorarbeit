@@ -11,12 +11,12 @@ LIBS:= -lgsl -lgslcblas -lm -fopenmp -lrt
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
 #erstellt programm ising
-#ising: ising.o messfunktionen.o sweeps.o auswertungsfunktionen.o
-#	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
-
-
-bootstrap: bootstrap.o messfunktionen.o sweeps.o auswertungsfunktionen.o
+ising: ising.o messfunktionen.o sweeps.o auswertungsfunktionen.o
 	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+
+
+#bootstrap: bootstrap.o messfunktionen.o sweeps.o auswertungsfunktionen.o
+#	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 	
 #erstellt aus allen .c dateien eine .o datei	
 %.o: %.c

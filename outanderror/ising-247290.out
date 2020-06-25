@@ -1,0 +1,56 @@
+Thu Jun 18 16:51:02 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Thu Jun 18 16:51:32 CEST 2020 Waiting done, starting task!
+Thu Jun 18 16:51:32 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Thu Jun 18 16:52:02 CEST 2020 Waiting done, starting task!
+bei T=0.010000 hat das Bootstrapping 7.850571 Sekunden gebraucht
+bei T=0.110000 hat das Bootstrapping 7.956002 Sekunden gebraucht
+bei T=0.210000 hat das Bootstrapping 7.740095 Sekunden gebraucht
+bei T=0.310000 hat das Bootstrapping 7.748775 Sekunden gebraucht
+bei T=0.410000 hat das Bootstrapping 7.839266 Sekunden gebraucht
+bei T=0.510000 hat das Bootstrapping 7.736503 Sekunden gebraucht
+bei T=0.610000 hat das Bootstrapping 7.964577 Sekunden gebraucht
+bei T=0.710000 hat das Bootstrapping 7.727092 Sekunden gebraucht
+bei T=0.810000 hat das Bootstrapping 7.714287 Sekunden gebraucht
+bei T=0.910000 hat das Bootstrapping 7.820792 Sekunden gebraucht
+bei T=1.010000 hat das Bootstrapping 7.727355 Sekunden gebraucht
+bei T=1.110000 hat das Bootstrapping 7.749399 Sekunden gebraucht
+bei T=1.210000 hat das Bootstrapping 7.733957 Sekunden gebraucht
+bei T=1.310000 hat das Bootstrapping 7.753406 Sekunden gebraucht
+bei T=1.410000 hat das Bootstrapping 7.740495 Sekunden gebraucht
+bei T=1.510000 hat das Bootstrapping 7.752661 Sekunden gebraucht
+bei T=1.610000 hat das Bootstrapping 7.921200 Sekunden gebraucht
+bei T=1.710000 hat das Bootstrapping 7.771465 Sekunden gebraucht
+bei T=1.810000 hat das Bootstrapping 7.830869 Sekunden gebraucht
+bei T=1.910000 hat das Bootstrapping 7.756934 Sekunden gebraucht
+bei T=2.010000 hat das Bootstrapping 7.722209 Sekunden gebraucht
+bei T=2.110000 hat das Bootstrapping 7.717276 Sekunden gebraucht
+bei T=2.210000 hat das Bootstrapping 7.765583 Sekunden gebraucht
+bei T=2.310000 hat das Bootstrapping 7.751177 Sekunden gebraucht
+bei T=2.410000 hat das Bootstrapping 7.833715 Sekunden gebraucht
+bei T=2.510000 hat das Bootstrapping 7.833625 Sekunden gebraucht
+bei T=2.710000 hat das Bootstrapping 7.789749 Sekunden gebraucht
+bei T=2.910000 hat das Bootstrapping 7.781140 Sekunden gebraucht
+bei T=3.110000 hat das Bootstrapping 7.722158 Sekunden gebraucht
+bei T=3.310000 hat das Bootstrapping 7.763702 Sekunden gebraucht
+bei T=3.510000 hat das Bootstrapping 7.896259 Sekunden gebraucht
+bei T=3.710000 hat das Bootstrapping 7.859320 Sekunden gebraucht
+bei T=3.910000 hat das Bootstrapping 8.150075 Sekunden gebraucht
+bei T=4.110000 hat das Bootstrapping 7.754598 Sekunden gebraucht
+bei T=4.310000 hat das Bootstrapping 7.746126 Sekunden gebraucht
+bei T=4.510000 hat das Bootstrapping 7.829533 Sekunden gebraucht
+bei T=4.710000 hat das Bootstrapping 7.742418 Sekunden gebraucht
+bei T=4.910000 hat das Bootstrapping 7.728629 Sekunden gebraucht
+bei T=5.110000 hat das Bootstrapping 7.765529 Sekunden gebraucht
+bei T=5.310000 hat das Bootstrapping 7.772502 Sekunden gebraucht
+bei T=5.510000 hat das Bootstrapping 8.044010 Sekunden gebraucht
+bei T=5.710000 hat das Bootstrapping 7.961177 Sekunden gebraucht
+bei T=5.910000 hat das Bootstrapping 7.784915 Sekunden gebraucht
+bei T=6.110000 hat das Bootstrapping 7.759331 Sekunden gebraucht
+bei T=6.310000 hat das Bootstrapping 7.777959 Sekunden gebraucht
+bei T=6.510000 hat das Bootstrapping 7.785938 Sekunden gebraucht
+bei T=6.710000 hat das Bootstrapping 7.731211 Sekunden gebraucht
+bei T=6.910000 hat das Bootstrapping 7.768269 Sekunden gebraucht
+bei T=7.110000 hat das Bootstrapping 7.776278 Sekunden gebraucht
+bei T=7.310000 hat das Bootstrapping 7.742181 Sekunden gebraucht
+Insgesamt hat das Botstrapping 389.892293 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit
