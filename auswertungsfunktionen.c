@@ -15,7 +15,7 @@ double mittelwertberechnungnaiv(FILE *messdatei, int messungen, const int spalte
 	rewind(messdatei);//sichergehen, dass alle Messdaten verwendet werden
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
 		for (int i=0; i<spalten; i+=1){
-			fscanf(messdatei, "%le", &ergebnisarray[i]);//scannt einzelne doubles
+			fscanf(messdatei, "%lf", &ergebnisarray[i]);//scannt einzelne doubles
 			if (i==spalten-1){fscanf(messdatei, "\n");}//sorgt fuer Zeilenumbruch
 		}
 		einwert=ergebnisarray[spalte];//wählt korrekte messung aus
@@ -32,7 +32,7 @@ double varianzberechnungnaiv(FILE *messdatei, int messungen, double mittelwert, 
 	rewind(messdatei);//sichergehen, dass alle Messdaten verwendet werden
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
 		for (int i=0; i<spalten; i+=1){
-			fscanf(messdatei, "%le", &ergebnisarray[i]);
+			fscanf(messdatei, "%lf", &ergebnisarray[i]);
 			if (i==spalten-1){fscanf(messdatei, "\n");}
 		}
 		einwert=ergebnisarray[spalte];//wählt korrekte messung aus
@@ -51,7 +51,7 @@ void blocks_generieren(int l, int messungen, const int spalte, const int spalten
 		zwischensumme=0;
 		for (int wert=0; wert<l; wert+=1){//generiert einzelnes Element des blocks
 			for (int i=0; i<spalten; i+=1){
-				fscanf(messdatei, "%le", &ergebnisarray[i]);
+				fscanf(messdatei, "%lf", &ergebnisarray[i]);
 				if (i==spalten-1){fscanf(messdatei, "\n");}
 			}
 			einwert=ergebnisarray[spalte];//wählt korrekte messung aus
@@ -140,7 +140,7 @@ void ableitung(int l, int temperaturen, const int spalten, const int spaltemessu
 	double ergebnisarray[spalten];//Speichert eingelesene Dateien
 	rewind(messdatei);
 	for (int i=0; i<spalten; i+=1){//erste Zeile scannen: Noch keine Ableitung moeglich
-		fscanf(messdatei, "%le", &ergebnisarray[i]);
+		fscanf(messdatei, "%lf", &ergebnisarray[i]);
 		if (i==spalten-1){fscanf(messdatei, "\n");}
 	}
 	x1=ergebnisarray[spaltetemperatur];//Werte fuer erste Ableitung zuweisen
@@ -148,7 +148,7 @@ void ableitung(int l, int temperaturen, const int spalten, const int spaltemessu
 	dy1=ergebnisarray[spaltefehler];
 	for (int messung=1; messung<temperaturen; messung+=1){//Alle Zeilen durchgehen
 		for (int i=0; i<spalten; i+=1){
-			fscanf(messdatei, "%le", &ergebnisarray[i]);
+			fscanf(messdatei, "%lf", &ergebnisarray[i]);
 			if (i==spalten-1){fscanf(messdatei, "\n");}
 		}
 		if (ergebnisarray[spaltel]==l){//nur Ableitung berechnen, wenn l richtig ist

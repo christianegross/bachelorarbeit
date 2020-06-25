@@ -1,0 +1,16 @@
+#!/bin/bash -x
+#set arg1=%1 #%for batch
+arg1=$1 #$ for bash
+echo ${arg1}
+./kommandozeile ${arg1}
+
+#~ //Ausprobieren von Kommandozeilenparametern
+#~ #include <stdio.h>
+#~ #include <stdlib.h>
+
+#~ int main(int argc, char **argv){
+#~ int zahl=atoi(argv[1]);
+#~ printf("%d\n", zahl);
+#~ return 0;
+#~ }
+
