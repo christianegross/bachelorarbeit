@@ -298,8 +298,7 @@ double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl
 	//int chunk=2;
 	//schwarz: d1+d2 gerade
 	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
-	#pragma omp parallel \
-	firstprivate (delta, veraenderungH, changesklein, d1, d2, wahrscheinlichkeiten)//wahrscheinlichkeiten[0], wahrscheinlichkeiten[1], wahrscheinlichkeiten[2], wahrscheinlichkeiten[3], wahrscheinlichkeiten[4])// shared(H, changes)
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2, wahrscheinlichkeiten)//wahrscheinlichkeiten[0], wahrscheinlichkeiten[1], wahrscheinlichkeiten[2], wahrscheinlichkeiten[3], wahrscheinlichkeiten[4])// shared(H, changes)
 	{
 		int threadnummer=omp_get_thread_num();
 		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
@@ -436,8 +435,7 @@ double sweepmehreregeneratorenv1(char *gitter, int laenge, double j, double T, g
 		wahrscheinlichkeiten[3]=1;
 		wahrscheinlichkeiten[4]=1;
 		}
-	#pragma omp parallel \
-	firstprivate (delta, veraenderungH, changesklein, d1, d2)//wahrscheinlichkeiten[0], wahrscheinlichkeiten[1], wahrscheinlichkeiten[2], wahrscheinlichkeiten[3], wahrscheinlichkeiten[4])// shared(H, changes)
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)//wahrscheinlichkeiten[0], wahrscheinlichkeiten[1], wahrscheinlichkeiten[2], wahrscheinlichkeiten[3], wahrscheinlichkeiten[4])// shared(H, changes)
 	{
 		int threadnummer=omp_get_thread_num();
 		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
@@ -499,8 +497,7 @@ double sweepmehreregeneratorenv2(char *gitter, int laenge, double j, double T, g
 		wahrscheinlichkeiten[3]=1;
 		wahrscheinlichkeiten[4]=1;
 		}
-	#pragma omp parallel \
-	firstprivate (delta, veraenderungH, changesklein, d1, d2)//wahrscheinlichkeiten[0], wahrscheinlichkeiten[1], wahrscheinlichkeiten[2], wahrscheinlichkeiten[3], wahrscheinlichkeiten[4])// shared(H, changes)
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)//wahrscheinlichkeiten[0], wahrscheinlichkeiten[1], wahrscheinlichkeiten[2], wahrscheinlichkeiten[3], wahrscheinlichkeiten[4])// shared(H, changes)
 	{
 		int threadnummer=omp_get_thread_num();
 		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
@@ -558,8 +555,7 @@ double sweepmehreregeneratorenv3(char *gitter, int laenge, double j, double T, g
 		wahrscheinlichkeiten[3]=1;
 		wahrscheinlichkeiten[4]=1;
 		}
-	#pragma omp parallel \
-	firstprivate (delta, veraenderungH, changesklein, d1, d2)//wahrscheinlichkeiten[0], wahrscheinlichkeiten[1], wahrscheinlichkeiten[2], wahrscheinlichkeiten[3], wahrscheinlichkeiten[4])// shared(H, changes)
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)//wahrscheinlichkeiten[0], wahrscheinlichkeiten[1], wahrscheinlichkeiten[2], wahrscheinlichkeiten[3], wahrscheinlichkeiten[4])// shared(H, changes)
 	{
 		int threadnummer=omp_get_thread_num();
 		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
@@ -610,8 +606,7 @@ double sweepmehreregeneratorenv4(char *gitter, int laenge, double j, double T, g
 	int d1=0, d2=0;
 	int changes =0;//misst Gesamtzahl der spinflips
 	int changesklein=0;//misst Spinflips in parallelen Thread
-	#pragma omp parallel \
-	firstprivate (delta, veraenderungH, changesklein, d1, d2)//wahrscheinlichkeiten[0], wahrscheinlichkeiten[1], wahrscheinlichkeiten[2], wahrscheinlichkeiten[3], wahrscheinlichkeiten[4])// shared(H, changes)
+	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)//wahrscheinlichkeiten[0], wahrscheinlichkeiten[1], wahrscheinlichkeiten[2], wahrscheinlichkeiten[3], wahrscheinlichkeiten[4])// shared(H, changes)
 	{
 		int threadnummer=omp_get_thread_num();
 		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
