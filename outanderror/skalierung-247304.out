@@ -1,0 +1,66 @@
+Mon Jun 22 14:41:57 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon Jun 22 14:42:27 CEST 2020 Waiting done, starting task!
+Mon Jun 22 14:42:27 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon Jun 22 14:42:57 CEST 2020 Waiting done, starting task!
+Laenge=96
+bei 1 cores haben 1000 Messungen 0.499928 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 0.618797 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 0.495325 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 0.502780 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 0.596963 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 0.635302 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 0.581960 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 0.581982 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 0.581992 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 0.582991 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 0.394279 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 0.396159 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 0.396615 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 0.394674 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 0.398075 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 0.316328 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 0.332069 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 0.332223 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 0.336394 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 0.332536 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 0.268603 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 0.285568 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 0.258225 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 0.264218 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 0.264074 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 0.236347 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 0.247060 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 0.236953 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 0.245565 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 0.231891 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 0.219697 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 0.220084 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 0.220201 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 0.206908 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 0.201953 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 0.189374 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 0.186673 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 0.181426 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 0.218867 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 0.218116 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 0.200113 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 0.174473 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 0.174282 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 0.178078 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 0.165992 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 0.183763 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 0.169288 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 0.178722 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 0.179255 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 0.181665 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 0.260212 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 0.169702 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 0.169071 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 0.168224 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 0.168199 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 0.156571 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 0.154326 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 0.154536 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 0.154315 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 0.154083 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit

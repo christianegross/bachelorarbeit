@@ -1,0 +1,9 @@
++ export OMP_NUM_THREAD=12
++ OMP_NUM_THREAD=12
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=192
++ temperatur=0.5
++ srun /hiskp4/gross/bachelorarbeit/skalierungnode02 192 0.5
++ cd -

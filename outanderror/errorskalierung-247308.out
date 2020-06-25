@@ -1,0 +1,11 @@
++ export OMP_NUM_THREAD=12
++ OMP_NUM_THREAD=12
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=960
++ srun /hiskp4/gross/bachelorarbeit/skalierungnode02 960
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** JOB 247308 ON lcpunode02 CANCELLED AT 2020-06-22T15:40:23 ***
+slurmstepd: error: *** STEP 247308.0 ON lcpunode02 CANCELLED AT 2020-06-22T15:40:23 ***
+srun: error: lcpunode02: task 0: Terminated

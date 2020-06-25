@@ -282,7 +282,7 @@ double sweeplookup(char *gitter, int laenge, double j, double T, gsl_rng *genera
 }
 		
 
-double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl_rng **generatoren, double hamiltonian, FILE *dateimessungen){
+double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl_rng **generatoren, double hamiltonian, double *wahrscheinlichkeiten, FILE *dateimessungen){
 	//geht erst alle schwarzen und dann alle weissen Punkte des Gitters durch, macht ein Metropolis-Update an jedem Punkt, schreibt Akzeptanzrate und MAgnetisierung in dateimessungen
 	//arbeitet parallel in schleifen ueber die einzelnen Farben
 	//Fuer jeden Thread einen einzelnen Generator
@@ -291,47 +291,37 @@ double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl
 	double veraenderungH=0;//misst Veraenderung in einem parallen Thread
 	int delta=0;
 	int d1=0, d2=0;
-	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};
-	if (j<0){
-		wahrscheinlichkeiten[1]=wahrscheinlichkeiten[3];
-		wahrscheinlichkeiten[0]=wahrscheinlichkeiten[4];
-		wahrscheinlichkeiten[3]=1;
-		wahrscheinlichkeiten[4]=1;
-		}
 	int changes =0;//misst Gesamtzahl der spinflips
 	int changesklein=0;//misst Spinflips in parallelen Thread
 	//int chunk=2;
 	//schwarz: d1+d2 gerade
 	//int chunksize=(int)ceil((double)laenge/2.0/(double)omp_get_num_threads());
-	#pragma omp parallel firstprivate (delta, veraenderungH, changesklein, d1, d2)// shared(H, changes)
+	#pragma omp parallel \
+	firstprivate (delta, veraenderungH, changesklein, d1, d2, wahrscheinlichkeiten)//wahrscheinlichkeiten[0], wahrscheinlichkeiten[1], wahrscheinlichkeiten[2], wahrscheinlichkeiten[3], wahrscheinlichkeiten[4])// shared(H, changes)
 	{
 		int threadnummer=omp_get_thread_num();
 		#pragma omp for nowait schedule (static) //Versuche overhead zu reduzieren
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=(d1%2); d2<laenge; d2+=2){//geht in zweiter dimension durch (alle Spalten einer Zeile)
-				//if((d1+d2)%2==0){
 				delta=deltahneu2(gitter, d1, d2, laenge);
-				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[delta/4+2])==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[(delta/4)+2])==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
 					gitter[laenge*d1+d2]*=-1;
 					veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
 					changesklein+=1;
 				}
 			}
-			//}
 		}
 		#pragma omp barrier//damit mit nowait overhead reduziert werden kann
 		#pragma omp for nowait schedule (static)
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=(d1+1)%2; d2<laenge; d2+=2){//geht in zweiter dimension durch (alle Spalten einer Zeile)
-				//if((d1+d2)%2==1){
 				delta=deltahneu2(gitter, d1, d2, laenge);
-				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[delta/4+2])==1)){//Wenn weisser Punkt und Spin geflippt wurde
+				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[(delta/4)+2])==1)){//Wenn weisser Punkt und Spin geflippt wurde
 					gitter[laenge*d1+d2]*=-1;
 					veraenderungH+=j*delta;
 					changesklein+=1;
 				}
 			}
-			//}
 		}
 		#pragma omp critical (weissepunkte)
 		{H+=veraenderungH;
@@ -340,7 +330,9 @@ double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%f\t%f\t%f\t%f\t%f\n",akzeptanzrate, magnetisierung, magnetisierung*magnetisierung, magnetisierung*magnetisierung*magnetisierung*magnetisierung, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	double magquadrat=magnetisierung*magnetisierung;
+	double magvier=magquadrat*magquadrat;
+	fprintf(dateimessungen, "%f\t%f\t%f\t%f\t%f\n",akzeptanzrate, magnetisierung, magquadrat, magvier, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 

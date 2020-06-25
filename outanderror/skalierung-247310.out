@@ -1,0 +1,66 @@
+Mon Jun 22 16:10:00 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon Jun 22 16:10:30 CEST 2020 Waiting done, starting task!
+Mon Jun 22 16:10:30 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Mon Jun 22 16:11:00 CEST 2020 Waiting done, starting task!
+Laenge=500
+bei 1 cores haben 1000 Messungen 13.804391 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 13.495834 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 13.505884 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 13.369270 Sekunden gebraucht
+bei 1 cores haben 1000 Messungen 13.369030 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 15.270954 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 15.174940 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 15.173582 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 15.328560 Sekunden gebraucht
+bei 2 cores haben 1000 Messungen 15.436550 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 10.692249 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 10.614348 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 10.519401 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 10.511944 Sekunden gebraucht
+bei 3 cores haben 1000 Messungen 10.692120 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 8.236844 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 8.125975 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 8.634615 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 8.322983 Sekunden gebraucht
+bei 4 cores haben 1000 Messungen 8.305111 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 7.442197 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 7.451423 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 7.296083 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 7.336023 Sekunden gebraucht
+bei 5 cores haben 1000 Messungen 7.215811 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 7.316126 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 6.244918 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 6.350797 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 6.546656 Sekunden gebraucht
+bei 6 cores haben 1000 Messungen 6.362589 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 5.168041 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 5.814005 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 5.745570 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 5.662689 Sekunden gebraucht
+bei 7 cores haben 1000 Messungen 5.788383 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 4.881364 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 4.892497 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 5.272844 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 5.243577 Sekunden gebraucht
+bei 8 cores haben 1000 Messungen 4.860161 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 4.893277 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 4.561117 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 4.571810 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 4.925620 Sekunden gebraucht
+bei 9 cores haben 1000 Messungen 5.019328 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 4.489740 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 4.551658 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 4.463752 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 4.417838 Sekunden gebraucht
+bei 10 cores haben 1000 Messungen 4.513946 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 4.160090 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 3.988158 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 4.264840 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 4.294436 Sekunden gebraucht
+bei 11 cores haben 1000 Messungen 4.022246 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 3.795381 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 3.692112 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 4.156257 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 3.650910 Sekunden gebraucht
+bei 12 cores haben 1000 Messungen 3.807977 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit

@@ -10,12 +10,13 @@ LIBS:= -lgsl -lgslcblas -lm -fopenmp -lrt
 #skalierungnode00: skalierung.o messfunktionen.o sweeps.o auswertungsfunktionen.o 
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
-skalierung1606: skalierung.o messfunktionen1606.o sweeps1606.o auswertungsfunktionen.o
-	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+#skalierung1506: skalierung1506.o messfunktionen1506.o auswertungsfunktionen.o
+#	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+#sweeps1606.o 
 
 #erstellt programm ising
-#ising: ising.o messfunktionen.o sweeps.o auswertungsfunktionen.o
-#	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+ising: ising.o messfunktionen.o sweeps.o auswertungsfunktionen.o
+	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
 
 #bootstrap: bootstrap.o messfunktionen.o sweeps.o auswertungsfunktionen.o
