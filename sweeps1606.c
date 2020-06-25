@@ -6,8 +6,8 @@
 #include "math.h"//exp-Funktion
 #include <omp.h>//Parallelisierung
 #include <sys/time.h>//Zur Messung der Wallclocktime beim messen ->Vergleich der Sweep-Funktionen
-#include "messfunktionen.h"
-#include "sweeps.h"
+#include "messfunktionen1606.h"
+#include "sweeps1606.h"
 
 double sweepaltohnepar(char *gitter, int laenge, double j, double T, gsl_rng *generator, double hamiltonian, FILE *dateimessungen){
 	//geht das ganze Gitter durch und versucht, jeden Spin umzudrehen. Zählt die Veränderungen, misst Akzeptanzrate und Magneitiserung und gibt aktuellen Hamiltonian zurück

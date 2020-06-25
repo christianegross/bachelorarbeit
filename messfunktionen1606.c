@@ -6,8 +6,8 @@
 #include "math.h"//exp-Funktion
 #include <omp.h>//Parallelisierung
 #include <sys/time.h>//Zur Messung der Wallclocktime beim messen ->Vergleich der Sweep-Funktionen
-#include "messfunktionen.h"
-#include "sweeps.h"
+#include "messfunktionen1606.h"
+#include "sweeps1606.h"
 
 
 void initialisierung(char *gitter, int laenge, int seed){
