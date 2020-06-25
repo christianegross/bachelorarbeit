@@ -1,5 +1,60 @@
 set ter pdfcairo size 5 in, 3.5 in
 
+set xlabel "Anzahl Prozessoren"
+set ylabel "Zeit(1 Core)/Zeit(n Cores)"
+set key top left
+
+set out "Messungen/skalierungkeinbackslash.pdf"
+
+set title "T=0,5"
+
+plot "Messungen/Zeiten/zmittel-m001000-node02v5t05keinescpar-l12.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "L=12",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5t05keinescpar-l36.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 12 ps 0.4 title "L=36",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5t05keinescpar-l48.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "L=48",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5t05keinescpar-l96.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 8 ps 0.4 title "L=96",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5t05keinescpar-l768.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 11 ps 0.4 title "L=768",\
+#	 "Messungen/Zeiten/zmittel-m001000-node02v5t05keinescpar-l192.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 9 ps 0.4 title "L=192",\
+#	 "Messungen/Zeiten/zmittel-m001000-node02v5t05keinescpar-l384.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 10 ps 0.4 title "L=384",\
+
+set out "Messungen/versionensweepmehreregeneratoren"
+
+set title "L=100, T=0,5"
+
+plot "Messungen/Zeiten/zmittel-m001000-node02sweepmgv1-l100.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "v1",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv2-l100.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "v2",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv3-l100.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 8 ps 0.4 title "v3",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv4-l100.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 9 ps 0.4 title "v4",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv5-l100.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 10 ps 0.4 title "v5",\
+
+
+set title "L=500, T=0,5"
+
+plot "Messungen/Zeiten/zmittel-m001000-node02sweepmgv1-l500.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "v1",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv2-l500.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "v2",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv3-l500.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 8 ps 0.4 title "v3",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv4-l500.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 9 ps 0.4 title "v4",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv5-l500.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 10 ps 0.4 title "v5",\
+
+set key top right
+set title "L=100, T=0,5"
+
+set ylabel "Zeit(1000 Messungen)/s"
+
+
+plot "Messungen/Zeiten/zmittel-m001000-node02sweepmgv1-l100.txt" u (($1!=0)?$1:1/0):3:4 w yerrorbars lt 6 ps 0.4 title "v1",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv2-l100.txt" u (($1!=0)?$1:1/0):3:4 w yerrorbars lt 7 ps 0.4 title "v2",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv3-l100.txt" u (($1!=0)?$1:1/0):3:4 w yerrorbars lt 8 ps 0.4 title "v3",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv4-l100.txt" u (($1!=0)?$1:1/0):3:4 w yerrorbars lt 9 ps 0.4 title "v4",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv5-l100.txt" u (($1!=0)?$1:1/0):3:4 w yerrorbars lt 10 ps 0.4 title "v5",\
+
+set title "L=500, T=0,5"
+
+plot "Messungen/Zeiten/zmittel-m001000-node02sweepmgv1-l500.txt" u (($1!=0)?$1:1/0):3:4 w yerrorbars lt 6 ps 0.4 title "v1",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv2-l500.txt" u (($1!=0)?$1:1/0):3:4 w yerrorbars lt 7 ps 0.4 title "v2",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv3-l500.txt" u (($1!=0)?$1:1/0):3:4 w yerrorbars lt 8 ps 0.4 title "v3",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv4-l500.txt" u (($1!=0)?$1:1/0):3:4 w yerrorbars lt 9 ps 0.4 title "v4",\
+	 "Messungen/Zeiten/zmittel-m001000-node02sweepmgv5-l500.txt" u (($1!=0)?$1:1/0):3:4 w yerrorbars lt 10 ps 0.4 title "v5",\
+
 set out "Messungen/skalierungtemperaturen.pdf"
 
 set xlabel "Anzahl Prozessoren"
@@ -10,16 +65,24 @@ plot "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t1.txt" u ((($2==500)&&($
 	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t2.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "T=2,0",\
 	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t3.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 8 ps 0.4 title "T=2,5",\
 	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 9 ps 0.4 title "T=4,5",\
+
+set key top right
+set title "L=10, zwei Schleifen, ohne leere Durchläufe"
+plot "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t1.txt" u ((($2==10)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "T=0,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t2.txt" u ((($2==10)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "T=2,0",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t3.txt" u ((($2==10)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 8 ps 0.4 title "T=2,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t4.txt" u ((($2==10)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 9 ps 0.4 title "T=4,5",\
 	 
 set title "L=500, zwei Schleifen, ohne leere Durchläufe"
 set yrange [0:22]
 set ylabel "Zeit(1000 Messungen)/s"
-plot "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t1.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 6 ps 0.4 title "T=0,5",\
-	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t2.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 7 ps 0.4 title "T=2,0",\
-	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t3.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 8 ps 0.4 title "T=2,5",\
-	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 9 ps 0.4 title "T=4,5",\
-	 
 
+plot "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t1.txt" u ((($2==500)&&($1!=0)&&($7==0.5))?$1:1/0):3:4 w yerrorbars lt 6 ps 0.4 title "T=0,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t2.txt" u ((($2==500)&&($1!=0)&&($7==2.0))?$1:1/0):3:4 w yerrorbars lt 7 ps 0.4 title "T=2,0",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t3.txt" u ((($2==500)&&($1!=0)&&($7==2.5))?$1:1/0):3:4 w yerrorbars lt 8 ps 0.4 title "T=2,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t4.txt" u ((($2==500)&&($1!=0)&&($7==4.5))?$1:1/0):3:4 w yerrorbars lt 9 ps 0.4 title "T=4,5"
+unset yrange
+	 
 set title "L=500 - mehrere Messmethoden"
 unset yrange
 set ylabel "Zeit(1 Core)/Zeit(n Cores)"
@@ -33,7 +96,26 @@ set title "L=500 - absolute Zeit"
 plot "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 6 ps 0.4 title "zwei Schleifen ohne leere durchläufe",\
 	 "Messungen/Zeiten/zmittel-m001000-node02mg-eineschleife-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 8 ps 0.4 title "eine Schleife",\
 	 "Messungen/Zeiten/zmittel-m001000-node02mg-leeredurchlaeufe-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 7 ps 0.4 title "zwei Schleifen mit leeren Durchläufen"
+unset yrange
 
+set out "Messungen/skalierungtryflip.pdf"
+
+set title "L=500, nur ziehen, wenn noetig"
+plot "Messungen/Zeiten/zmittel-m001000-node02mg2snichtimmerzufall-mehreret.txt" u ((($2==500)&&($1!=0)&&($7==0.5))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "T=0,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg2snichtimmerzufall-mehreret.txt" u ((($2==500)&&($1!=0)&&($7==2.0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "T=2,0",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg2snichtimmerzufall-mehreret.txt" u ((($2==500)&&($1!=0)&&($7==2.5))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 8 ps 0.4 title "T=2,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg2snichtimmerzufall-mehreret.txt" u ((($2==500)&&($1!=0)&&($7==4.5))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 9 ps 0.4 title "T=4,5",\
+	  "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t1.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 10 ps 0.4 title "T=0,5, immer ziehen",\
+	  "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 11 ps 0.4 title "T=4,5, immer ziehen",\
+	 
+set title "L=500, nur ziehen, wenn noetig"
+set key top right
+plot "Messungen/Zeiten/zmittel-m001000-node02mg2snichtimmerzufall-mehreret.txt" u ((($2==500)&&($1!=0)&&($7==0.5))?$1:1/0):3:4 w yerrorbars lt 6 ps 0.4 title "T=0,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg2snichtimmerzufall-mehreret.txt" u ((($2==500)&&($1!=0)&&($7==2.0))?$1:1/0):3:4 w yerrorbars lt 7 ps 0.4 title "T=2,0",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg2snichtimmerzufall-mehreret.txt" u ((($2==500)&&($1!=0)&&($7==2.5))?$1:1/0):3:4 w yerrorbars lt 8 ps 0.4 title "T=2,5",\
+	 "Messungen/Zeiten/zmittel-m001000-node02mg2snichtimmerzufall-mehreret.txt" u ((($2==500)&&($1!=0)&&($7==4.5))?$1:1/0):3:4 w yerrorbars lt 9 ps 0.4 title "T=4,5",\
+	  "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t1.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 10 ps 0.4 title "T=0,5, immer ziehen",\
+	  "Messungen/Zeiten/zmittel-m001000-node02mg-inline-t4.txt" u ((($2==500)&&($1!=0))?$1:1/0):3:4 w yerrorbars lt 11 ps 0.4 title "T=4,5, immer ziehen",\
 
 set out "Messungen/Skalierung_mehrere_generatoren.pdf"
 

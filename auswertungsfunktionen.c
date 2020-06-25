@@ -185,3 +185,14 @@ extern inline double varianzarray(double *array, int messungen, double mittelwer
 	}
 	return sqrt(summe/((double)messungen-1));
 }
+
+extern inline double minarray(double *array, int messungen){
+	//Bestimmt Minimum aus array mit gegebener Laenge
+	double minwert= array[0];//Fange mit nulltem Wert an
+	for (int messung=1; messung<messungen; messung+=1){// gehe alle Elemente durch, fange bei erstem Element an, da nulltes der Startwert ist
+		if (array[messung]<minwert){//Vergleich
+			minwert=array[messung];//Wenn noetig, Update
+		}
+	}
+	return minwert;
+}

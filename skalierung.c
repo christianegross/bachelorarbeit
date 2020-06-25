@@ -18,23 +18,24 @@ int main(int argc, char **argv){
 	int maxcores=omp_get_max_threads();//aus Computerarchitektut/batchskript
 	int laenge;
 	double temperatur;
+	char merkmal[50];
 	if (argc<3){
 		printf("Nicht genug Argumente!\n");
 		fprintf(stderr,"Nicht genug Argumente!\n");
 		laenge=12;
 		temperatur=0.5;
+		sprintf(merkmal,"nichtgenugargumente");
 	}
 	else{	
 	laenge=atoi(argv[1]);//laenge der verwendeten Gitter
 	temperatur=atof(argv[2]);//Temperatur
+	sprintf(merkmal,"%s-l%s",argv[3], argv[1]);
 	}
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
 	int node=2;//1,2 qbig, 0 vm
-	char merkmal[50];
-	sprintf(merkmal,"%s-l%s",argv[3], argv[1]);
 	int durchlaeufe=5;
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
@@ -68,6 +69,14 @@ int main(int argc, char **argv){
 	char gitter[laenge*laenge];//Gitter erstellen und von thermalisieren ausgeben lassen
 	initialisierung(gitter, laenge, seed);
 	thermalisieren(laenge, temperatur, j, seed, 500, gitter, dummydatei, generatoren[0]);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
+	
+	//Test Minarray
+	double testarray[20];
+	for (int i=0; i<20;i+=1){
+		testarray[i]=(i-5.5)*(i-5.5)-5;
+	}
+	printf("erwarte t%f\tErgebnis %f\n", 5.0/20.0, minarray(testarray, 20));
+	
 	for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
 	//Vergleichsmassstab: Messungen bei einem core	
 		#pragma omp parallel for//Fuer jede Messreihe neu intialisieren, damit immer dasselbe gemessen wird

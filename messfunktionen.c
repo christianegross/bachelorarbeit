@@ -348,7 +348,6 @@ void messenmehreregeneratoren(int laenge, double T, double j, int messungen, cha
 		wahrscheinlichkeiten[3]=1;
 		wahrscheinlichkeiten[4]=1;
 		}
-	printf("Richtige Funktion!\n");
 	for (int messung=0; messung<messungen; messung+=1){
 		fprintf(messdatei,"%f\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		H=sweepmehreregeneratorenv0(gitter, laenge, j, T, generatoren, H, /*wahrscheinlichkeiten, */messdatei);//Geht Gitter durch und schreibt Messwerte in Datei
