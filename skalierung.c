@@ -35,8 +35,9 @@ int main(int argc, char **argv){
 	int seed=5;//fuer den zufallsgenerator
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
+	double zeitmin, zeitmineincore, speedupmin;
 	int node=2;//1,2 qbig, 0 vm
-	int durchlaeufe=5;
+	int durchlaeufe=10;
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
 		printf("Fehler beim Allokieren der Temperaturen!\n");
@@ -70,12 +71,12 @@ int main(int argc, char **argv){
 	initialisierung(gitter, laenge, seed);
 	thermalisieren(laenge, temperatur, j, seed, 500, gitter, dummydatei, generatoren[0]);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
 	
-	//Test Minarray
-	double testarray[20];
-	for (int i=0; i<20;i+=1){
-		testarray[i]=(i-5.5)*(i-5.5)-5;
-	}
-	printf("erwarte t%f\tErgebnis %f\n", 5.0/20.0, minarray(testarray, 20));
+	//~ //Test Minarray
+	//~ double testarray[20];
+	//~ for (int i=0; i<20;i+=1){
+		//~ testarray[i]=(i-5.5)*(i-5.5)-5;
+	//~ }
+	//~ printf("erwarte t%f\tErgebnis %f\n", 5.0/20.0, minarray(testarray, 20));
 	
 	for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
 	//Vergleichsmassstab: Messungen bei einem core	
@@ -95,7 +96,7 @@ int main(int argc, char **argv){
 		usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
 		zeiteincore=sec+1e-06*usec;
 		ergebnisse[durchlauf]=zeiteincore;
-		printf("bei %d cores haben %d Messungen %f Sekunden gebraucht\n", 1, messungen, zeiteincore);
+		//printf("bei %d cores haben %d Messungen %f Sekunden gebraucht\n", 1, messungen, zeiteincore);
 		fprintf(zeitdatei, "%f\t%f\t%f\t%f\t%f\n", 1.0, (double)messungen, zeiteincore, 1.0, (double)laenge);//cores messungen Zeit Speedup
 		fclose(messdatei);
 	}
@@ -105,7 +106,8 @@ int main(int argc, char **argv){
 	varianzeincore=varianzzeit;
 	speedupmittel=1;
 	speedupfehler=varianzzeit/mittelzeit;
-	fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\n", 1.0, (double)laenge, mittelzeit, varianzzeit, speedupmittel, speedupfehler, temperatur);
+	zeitmineincore=minarray(ergebnisse, durchlaeufe);
+	fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", 1.0, (double)laenge, mittelzeit, varianzzeit, speedupmittel, speedupfehler, temperatur, zeitmineincore, 1.0);
 		//Messungen bei mehreren cores
 	for (int cores=2;cores<=maxcores;cores+=1){
 		for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
@@ -125,7 +127,7 @@ int main(int argc, char **argv){
 			zeitgesmessen=sec+1e-06*usec;
 			ergebnisse[durchlauf]=zeitgesmessen;
 			speedup=zeitgesmessen/zeiteincore;
-			printf("bei %d cores haben %d Messungen %f Sekunden gebraucht\n", cores, messungen, zeitgesmessen);
+			//printf("bei %d cores haben %d Messungen %f Sekunden gebraucht\n", cores, messungen, zeitgesmessen);
 			fprintf(zeitdatei, "%f\t%f\t%f\t%f\t%f\n", (double)cores, (double)messungen, zeitgesmessen, speedup, (double)laenge);
 			fclose(messdatei);
 		}
@@ -133,7 +135,9 @@ int main(int argc, char **argv){
 		varianzzeit=varianzarray(ergebnisse, durchlaeufe, mittelzeit);
 		speedupmittel=mittelzeit/zeiteincore;
 		speedupfehler=sqrt(((varianzzeit/zeiteincore)*(varianzzeit/zeiteincore))+(mittelzeit*varianzeincore/zeiteincore/zeiteincore)*(mittelzeit*varianzeincore/zeiteincore/zeiteincore));
-		fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\n", (double)cores, (double)laenge, mittelzeit, varianzzeit, speedupmittel, speedupfehler, temperatur);
+		zeitmin=minarray(ergebnisse, durchlaeufe);
+		speedupmin=zeitmin/zeitmineincore;
+		fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", (double)cores, (double)laenge, mittelzeit, varianzzeit, speedupmittel, speedupfehler, temperatur, zeitmin, speedupmin);
 	}
 		//Messungen overhead
 	einlesen(gitter, laenge, dummydatei);
@@ -149,7 +153,7 @@ int main(int argc, char **argv){
 	sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
 	usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
 	zeiteincore=sec+1e-06*usec;
-	fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\n", 0.0, (double)laenge, zeiteincore, 0.0,0.0,0.0, temperatur);
+	fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", 0.0, (double)laenge, zeiteincore, 0.0,0.0,0.0, temperatur,0.0,0.0);
 	fclose(messdatei);
 
 	
