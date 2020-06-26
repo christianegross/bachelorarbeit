@@ -362,12 +362,7 @@
 	In Bild \ref{fig:ergebnisakzeptanzrate} ist die Akzeptanzrate als Funktion von der Temperatur dargestellt. Bei kleinen Temperaturen ist sie null, steigt ab ca. T=1 an, hat bei ca. T=2,2 einen Wendepunkt mit Akzeptanzrate ca. 0,2 und nähert sich danach asymptotisch dem Wert 1.
 	
 	\begin{figure}[htbp]
-		\begin{minipage}{0.48\textwidth}
-			\include{Bilder/akzeptanzrategrob}
-		\end{minipage}
-		\begin{minipage}{0.48\textwidth}
-			\input{Bilder/akzeptanzratefein}
-		\end{minipage}
+		\include{Bilder/akzeptanzrate}
 		\caption[Akzeptanzrate in Abhängigkeit von der Temperatur]{Akzeptanzrate in Abhängigkeit von der Temperatur, gemessen bei Gitterlänge 120, mit Blocklänge 128 zur Fehlerberechnung. Die Fehler sind so klein, dass sie fast nicht sichtbar sind.}
 		\label{fig:ergebnisakzeptanzrate}
 	\end{figure}
@@ -375,12 +370,7 @@
 	Der Hamiltonian verhält sich qualitativ ähnlich, siehe Bild \ref{fig:ergebnishamiltonian}. Bei geringen Temperaturen hat er den Wert $-2\cdot\text{laenge}^2$, was auf ein vollkommen homogen ausgerichtetes Gitter hinweist. Bei ca T=2,2 beträgt der Hamiltonian ca. $-1,4\cdot\text{laenge}^2$ und nähert sich dann asymptotisch null.
 	
 	\begin{figure}[htbp]
-		\begin{minipage}{0.48\textwidth}
-			\include{Bilder/hamiltoniangrob}
-		\end{minipage}
-		\begin{minipage}{0.48\textwidth}
-			\input{Bilder/hamiltonianfein}
-		\end{minipage}
+		\include{Bilder/hamiltonian}
 		\caption[Hamiltonian in Abhängigkeit von der Temperatur]{Hamiltonian in Abhängigkeit von der Temperatur, gemessen bei Gitterlänge 120, mit Blocklänge 128 zur Fehlerberechnung. Die Fehler sind so klein, dass sie fast nicht sichtbar sind.}
 		\label{fig:ergebnishamiltonian}
 	\end{figure}
@@ -394,12 +384,7 @@
 
 	
 	\begin{figure}[htbp]
-		\begin{minipage}{0.48\textwidth}
-			\include{Bilder/magnetisierunggrob}
-		\end{minipage}
-		\begin{minipage}{0.48\textwidth}
-			\input{Bilder/magnetisierungfein}
-		\end{minipage}
+		\include{Bilder/magnetisierung}
 		\caption[Magnetisierung in Abhängigkeit von der Temperatur]{Magnetisierung in Abhängigkeit von der Temperatur, gemessen bei Gitterlänge 120, mit Blocklänge 128 zur Fehlerberechnung. Die Fehler sind teilweise so klein, dass sie fast nicht sichtbar sind.}
 		\label{fig:ergebnismagnetisierung}
 	\end{figure}	
@@ -502,15 +487,15 @@
 %	Verhalten: Bei niedrigen Temperaturen nur ein großer, einfarbiger Bezirk, dann bei höheren Temperaturen einige Punkte mit anderer Farbe, bei hohen Temperaturen nur Rauschen.
 %	
 %	\begin{figure}
-%	\begin{minipage}{0.48\textwidth}
+%	\begin{subfigure}{0.48\textwidth}
 %		\input{Bilder/Gitter/gitter-laenge0050-t000.tex}
-%	\end{minipage}
-%	\begin{minipage}{0.48\textwidth}
+%	\end{subfigure}
+%	\begin{subfigure}{0.48\textwidth}
 %		\input{Bilder/Gitter/gitter-laenge0050-t100.tex}
-%	\end{minipage}
-%	\begin{minipage}{0.48\textwidth}
+%	\end{subfigure}
+%	\begin{subfigure}{0.48\textwidth}
 %		\input{Bilder/Gitter/gitter-laenge0050-t250.tex}
-%	\end{minipage}
+%	\end{subfigure}
 %	\caption{Gitter bei verschiedenen Temperaturen}
 %	\label{fig:gitter}
 %	\end{figure}
