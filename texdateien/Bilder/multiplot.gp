@@ -2,7 +2,7 @@
 set ter epslatex size 3in, 3in color colortext
 
 set macros
-
+#In Anlehnung an http://www.gnuplotting.org/tag/multiplot/
 LEFT='set lmargin at screen 0.15; set rmargin at screen 0.55; set xtics 0, 2000, 10000; set xrange [-10:10000]; set format y '
 RIGHT='set lmargin at screen 0.55; set rmargin at screen 0.95; set xtics 0,1,5; set xrange [0:5]; unset ylabel; set format y '''
 
@@ -84,3 +84,5 @@ plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/
 @RIGHT
 plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 1 title ''
 unset multiplot
+
+set output

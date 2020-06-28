@@ -1,0 +1,112 @@
+\chapter{Theoretischer Hintergrund}
+	\label{chap:theorie}
+	
+	\section{Das Ising-Modell}
+	\label{sec:isingtheorie}
+	Beim Ising-Modell handelt es sich um ein Modell für einen Ferromagneten mit starker uniaxialer Anisotropie \cite[S. 7]{binderheermann}. %Hierbei werden Teilchen, die Spin $\pm 1$ haben können, auf ein quadratisches Gitter mit konstantem Abstand zwischen den Teilchen verteilt. % Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang. Hier: zweidimensionales Gitter.
+	
+	Der Hamiltonian des Systems ist dann nach \cite[S. 7]{binderheermann}:
+	\begin{equation}
+	H=-J\sum_{\langle i,j\rangle }s_is_j
+	\label{eq:hamiltonianising}
+	\end{equation}
+	Wobei $\langle i,j\rangle$ alle benachbarten Paare sind, die Austauschenergie $J$ in beide Richtungen gleich und konstant ist und die Spins $s_i$ die  Werte $\pm 1$ annehmen können. Das Vorzeichen von $J$ bestimmt, ob der Magnet ferro- oder antiferromagnetisch ist. Es ist möglich, durch einen zusätzlichen Term ein äußeres Magnetfeld zu simulieren, dies wurde in dieser Arbeit jedoch nicht getan.%Äußeres Magnetfeld möglich, aber hier vernachlässigt.
+
+	
+	%Erwarte einen kritischen Punkt mit Phasenübergang zweiter Ordnung. \cite{OnsagerCrystal1}
+	Beim Ising-Modell in zwei Dimensionen wird ein Phasenübergang bei einer kritischen Temperatur erwartet, unterhalb derer sich der Magnet ferromagnetisch verhält\cite[vgl. ][]{peierls_1936}.
+	
+	Dieser befindet sich nach \cite{OnsagerCrystal1} bei \[\sinh^2\left(\frac{2J}{k_BT_c}\right) =1\]
+	
+	\begin{equation}
+	\Leftrightarrow k_BT_c=\frac{2J}{\ln(1+\sqrt{2})}
+	\label{eq:kritischetemperatur}
+	\end{equation}
+	wobei $T_c$ die kritische Temperatur und $k_B$ die Boltzmann-Konstante ist.
+	
+	%Magnetisierung: Erwartungswert der Spins, \[
+	%M^2=\lim\limits_{m\to\infty}\left\langle s_i s_{i+m}\right\rangle \]
+	
+	Bei der Magnetisierung handelt es sich um den Erwartungswert der Spins, bei einem endlichen Gitter mit $N$ Punkten also\cite[vgl. ][S. 8]{binderheermann}:
+	\begin{equation}
+	M=\langle s \rangle=\frac{1}{N}\left\langle  \sum_{i=1}^{N} s_i \right\rangle
+	\label{eq:magnetisierung}
+	\end{equation}
+
+	
+	Sie ist ein Maß dafür, wie stark das Gitter nach außen als Magnet wirkt. Die erwartete Magnetisierung unterhalb des kritischen Punkt ist nach \cite{YangMagnetization}, \cite{MontrollMagnetization}:
+	\begin{equation} M=\left[1-\left(\sinh\left(\frac{2J}{k_BT}\right)\right)^{-4}\right]^{\frac{1}{8}}
+	\label{eq:magnetisierungsgleichungliteratur}
+	\end{equation}
+	
+	Oberhalb der kritischen Temperatur ist die Magnetisierung null \cite[Gl. 81]{MontrollMagnetization}.
+	
+	Es kommt hier also zu einer Unstetigkeit in der Magnetisierung.
+	
+	\section{Monte-Carlo Simulationen}
+	\label{sec:mctheorie}
+	Die Messwerte, an denen Interesse besteht, lassen sich nach \cite[S. 8]{binderheermann}  mit \[
+	\langle A(\mathbf{x}) \rangle=\frac{1}{Z}\int A(\mathbf{x}) \exp(-H(\mathbf{x})/k_BT)\dif \mathbf{x}\]
+	
+	\[
+	Z=\int \exp(-H(\mathbf{x})/k_BT) \dif \mathbf{x}
+	\]
+	berechnen, wobei $\mathbf{x}$ eine mögliche Konfiguration des Systems ist.
+	
+	
+	Hierbei kann der Boltzmann-Faktor $p(\mathbf{x})=Z^{-1} \exp(-H(\mathbf{x})/k_BT)$ als die Wahrscheinlichkeit angesehen werden, mit der ein bestimmter Zustand auftritt\cite[vgl. ][S. 8 f.]{binderheermann}.
+	
+	Dies ist analytisch nicht machbar, da dieses Integral sehr hochdimensional ist und gleichzeitig viele Zustände nur einen sehr kleinen Beitrag zum Gesamtintegral leisten\cite[vgl. ][S. 9]{binderheermann}.
+	
+	Die Idee der Monte-Carlo-Simulationen ist es, solche Integrale zu Diskretisieren
+	und über alle berechneten Zustände einen Mittelwert mit Gewichtung der einzelnen Zustände mit $p(\mathbf{x})$ zu berechnen. Alternativ können die Zustände auch so gezogen werden, dass sie von Anfang an nach $p(\mathbf{x})$ verteilt sind, dann ist bei der Bildung des Mittelwerts keine Gewichtung mehr notwendig.(Zitate) %und die Zustände mit mehr Gewicht öfter zu berechnen, damit sie bei der Summierung entsprechend mehr ins Gewicht fallen. Dafür werden die zu berechnenden Zustände $A$ so gezogen, dass sie nach $Z^{-1} \exp(-H_i/k_BT)$ verteilt sind.
+	
+	Dies wird durch den Metropolis-Algorithmus ermöglicht, entwickelt in \cite{metropolisupdate}:
+	Es wird eine Veränderung des Systems mit Energieänderung $\Delta H$ vorgeschlagen, in diesem Fall die Umdrehung eines einzelnen Spins. Diese Änderung wird auf jeden Fall angenommen, wenn sie die Energie des Systems verringert, und wenn sie die Energie erhöht, wird die Änderung mit Wahrscheinlichkeit $\exp(-\Delta H/k_BT)$ angenommen.
+	
+	Insgesamt ist die Wahrscheinlichkeit zur Umdrehung eines Spins also $P=\min \left[1, \exp(-\Delta H/k_BT)\right]$
+	
+	Dies führt dazu, dass alle zu berechnenden Zustände aus den vorher berechneten generiert werden. Die Zustände bilden also eine Markovkette, es handelt sich um Markov Chain Monte Carlo (deutsche Bezeichnung?, Zitat)
+	
+	Der erste Zustand wird zufällig generiert, befindet sich also nicht im Gleichgewicht und hat vermutlich ein sehr geringes Gewicht. Um in eine Region mit lokalen Energieminima/Hohen Gewichten zu kommen, ist erst eine Thermalisierung notwendig, das heißt, einige Updates, deren Ergebnisse nicht verwendet werden können, um einen Mittelwert zu bilden\cite[vgl. ][Abschnitt 3.4]{binderheermann}. %(Zitate?)
+	
+	Thermodynamisches Mittel=Mittel über Messungen?(Zitat)
+	
+%	Suche Observablen von komplexen Systemen. Problem: Zustandssumme, Observable $<A>$ nicht/nur schwer analytisch bestimmbar. \[Z=\int_{Alle Konfigurationen}\exp(-H/T)\] \[<A>=1/Z\int_{alle Konfigurationen} A\exp(-H/T)\] Generell: Integral bestimmen, nicht analytisch lösbar.
+%	Idee: Diskretisiere Integral, verteile Summe nicht gleichmäßig, sondern summiere bevorzugt über Zustände, die ein höheres Gewicht haben. Zwei Funktionen Multiplizieren, Zahlen aus einer ziehen.
+%%	wie Zustände generieren? Aus Zufallszahlen, nicht deterministisch, Zufallszahlen so verteilt, dass gewichtigere Zustände öfter vorkommen. Summiere über A, wobei A für Zustände mit höherem Gewicht öfter berechnet wurde.
+%%	Wie Zufallszahlen generieren? Mit Markov-Kette, also aus vorherigem Zustand. Funktion zum Generieren: Metropolis-Update: Gehe von jeweils aktuellen zustand aus, schlage eine Veränderung vor(einen Spin auswählen und umdrehen), nehme an, wenn Energie kleiner wird, sonst mit Wahrscheinlichkeit $\exp(-\Delta H/T)$.
+%%	
+%	Am Anfang \enquote{Thermalisieren} oder Einbrennen nötig, da erst eine Region gefunden werden muss, in der die Zustände gut verteilt sind. Die Daten währen des Einbrennens werden nicht benötigt.
+%	Quelle: Skript
+%	\cite{binderheermann}
+		
+	\section{Parallelrechner}
+	\label{sec:partheorie}
+	Um die Berechnungen eines Standardrechner, der seriell arbeitet, zu beschleunigen, können mehrere Prozessoren oder mehrere Computer gleichzeitig an einem Programm arbeiten. Dazu gibt es zwei weit verbreitete Konzepte:
+	%Parallelrechner: Durch Benutzung mehrerer Prozessorkerne oder mehrerer Computer benötigte Rechenzeit aufteilen und schneller Ergebnisse haben. Zwei Konzepte:
+	\subsection{Shared Memory, hier mit OpenMP}
+	\label{subsec:openmptheorie}
+	Eine Möglichkeit ist, dass mehrere Prozessoren auf einen gemeinsamen Speicher zugreifen. Dies wurde in dieser Arbeit mit OpenMP umgesetzt, ein von einer nonprofit Organisation entwickelter Satz an Compilerdirektiven\cite{specificationsopenmp}.
+	
+	Dadurch, dass die Parallelisierung mit Compilerdirektiven umgesetzt wird, ist die Kompilierung nicht mit allen Compilern möglich. Dafür ist es aber möglich, auf einem recht hohen Abstraktionsniveau zu programmieren, ohne sich um jede Kleinigkeit beim Parallelisieren explizit zu kümmern\cite[vgl. ][S. 209]{pachecoparallel}.	
+	
+	In einer parallelen Region arbeiten mehrere Threads gleichzeitig an einem Teil des Programms, oder teilen sich Schleifendurchläufe auf. Hierbei kann entweder jeder Thread auf die gleichen Variablen zugreifen (shared variables) oder eine eigene Version der Variable zur Verfügung haben, die von anderen Threads nicht verändert werden kann(private variables)\cite[vgl. ][S. 231 f.]{pachecoparallel}. 
+	
+	Um das Verhalten der Laufzeit bei mehreren Kernen zu vergleichen, wird der Speedup gemessen:
+	%Erwartetes Laufzeitverhalten bei mehr Kernen: gemessen als 
+	\[\text{Speedup(n Kernen)}=\frac{\text{Laufzeit bei einem Prozessorkern}}{\text{Laufzeit bei n Prozessorkernen}}\]
+	
+	Naiv ist zu erwarten, dass der Sppedup linear mit der Anzahl der Kerne zunimmt. Dies berücksichtigt allerdings nicht, dass mit der Parallelisierung für jeden Kern eine zusätzliche Synchronisierung benötigt wird oder nicht alle Kerne gleichzeitig arbeiten, sondern zwischendurch auch (idle? deutsch?) sind. Daher ist zu erwarten, dass der Speedup weniger als linear zunimmt\cite[vgl. ][S. 58 f.]{pachecoparallel}.
+	% linear, allerdings mehr Synchronisierungsarbeiten und anderer overhead durch parallelisierung ->. Zunahme des speedup flacht ab. (Zitat? Buch parallelisierung?) \cite{pachecoparallel}
+	 
+	
+		
+	Jede Parallelisierung führt zu mehr Overhead, also zusätzlich benötigten Rechnungen. Falls es viel Overhead gibt, wird zu dessen Ausführung genauso viel oder sogar mehr Zeit gebraucht, wie durch die Parallelisierung eingespart wurde. In diesem Fall wird der Sppedup bei höherer Anzahl an Kernen wieder kleiner.
+	%Open Multi-Processing\cite{specificationsopenmp}
+	%Mehrere Prozessoren greifen auf einen gemeinsamen Speicher zu, alle Prozesse können freigegebene Variablen verändern, Verhindern von Speicherproblemen durch critical-Bereiche, die nur ein Thread zu einer Zeit ausführen kann. Auch möglich, Variablen privat zu setzen, dann hat jeder Thread eine eigene Kopie der variable. Anwendung über Compiler-Pragmas\cite{tutorialopenmp}
+	\subsection{MPI}
+	\label{subsecmpitheorie}
+	Message Passing Interface
+	Mehrere Rechner mit separatem Speicher arbeiten an einem Problem, Rechner kommunizieren untereinander.
+	
