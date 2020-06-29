@@ -6,7 +6,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12
 #SBATCH --mem=200mb
-#SBATCH --time=00:45:00
+#SBATCH --time=00:30:00
 #SBATCH --output=outanderror/skalierung-%j.out
 #SBATCH --error=outanderror/errorskalierung-%j.out
 #SBATCH --nodelist=lcpunode02
@@ -16,6 +16,9 @@ export KMP_AFFINITY=balanced,granularity=fine,verbose
 
 cd /hiskp4/gross/bachelorarbeit
 
-srun /hiskp4/gross/bachelorarbeit/skalierungnode02
+laenge=$1
+temperatur=$2
+merkmal=$3
+srun /hiskp4/gross/bachelorarbeit/skalierungnode02 ${laenge} ${temperatur} ${merkmal}
 
 cd -

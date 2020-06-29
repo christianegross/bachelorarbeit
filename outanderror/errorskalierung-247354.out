@@ -1,0 +1,10 @@
++ export OMP_NUM_THREAD=12
++ OMP_NUM_THREAD=12
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=500
++ temperatur=0.5
++ merkmal=sweepmgv1
+/var/spool/slurmd/job247354/slurm_script: line 22: unexpected EOF while looking for matching `]'
+/var/spool/slurmd/job247354/slurm_script: line 25: syntax error: unexpected end of file

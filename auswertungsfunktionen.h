@@ -12,3 +12,4 @@ void bootstrap(int l, int r, int messungen, double temperatur, double *blockarra
 void ableitung(int l, int temperaturen, const int spalten, const int spaltemessung, const int spaltefehler, const int spaltetemperatur, const int spaltel, FILE *messdatei, FILE *ausgabedatei);
 double mittelwertarray(double *array, int messungen);
 double varianzarray(double *array, int messungen, double mittelwert);
+double minarray(double *array, int messungen);
