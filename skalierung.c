@@ -80,11 +80,11 @@ int main(int argc, char **argv){
 	
 	for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
 	//Vergleichsmassstab: Messungen bei einem core	
-		#pragma omp parallel for//Fuer jede Messreihe neu intialisieren, damit immer dasselbe gemessen wird
-		for(int core=0;core<maxcores;core+=1){
-				generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
-				gsl_rng_set(generatoren[core], seed+core);
-		}
+	//	#pragma omp parallel for//Fuer jede Messreihe neu intialisieren, damit immer dasselbe gemessen wird
+	//	for(int core=0;core<maxcores;core+=1){
+	//			generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
+	//			gsl_rng_set(generatoren[core], seed+core);
+	//	}
 		speedup=1;//aus definition
 		omp_set_num_threads(1);
 		einlesen(gitter, laenge, dummydatei);
@@ -112,11 +112,11 @@ int main(int argc, char **argv){
 	for (int cores=2;cores<=maxcores;cores+=1){
 		for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
 			omp_set_num_threads(cores);
-			#pragma omp parallel for//Fuer jede Messreihe neu intialisieren, damit immer dasselbe gemessen wird
-			for(int core=0;core<maxcores;core+=1){
-				generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
-				gsl_rng_set(generatoren[core], seed+core);
-			}
+		//	#pragma omp parallel for//Fuer jede Messreihe neu intialisieren, damit immer dasselbe gemessen wird
+		//	for(int core=0;core<maxcores;core+=1){
+		//		generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
+		//		gsl_rng_set(generatoren[core], seed+core);
+		//	}
 			einlesen(gitter, laenge, dummydatei);
 			messdatei=fopen(dateinamedummymessen, "w+");
 			gettimeofday(&anfangmessen, NULL);
