@@ -9,17 +9,33 @@
 		\label{fig:vergleichham}
 	\end{figure}
 	
-	Um zu ermitteln, mit wie vielen Cores idealerweise gemessen werden sollte, wurde die Skalierung der sweep-Funktion betrachtet. Hierbei wurde für verschiedene Gitterlängen und Temperaturen die Zeit, die für 10.000 Ausführungen der sweep-Funktion benötigt wurde, gemessen. 
+	Um zu ermitteln, mit wie vielen Cores idealerweise gemessen werden sollte, wurde die Skalierung der sweep-Funktion betrachtet. Hierbei wurde für verschiedene Gitterlängen und Temperaturen die Zeit, die für 1.000 Ausführungen der sweep-Funktion benötigt wurde, gemessen. Von zehn solchen Messungen wurden mittels der Standardschätzer Mittelwert und Varianz gebildet. 
 	
-	Wie man an Bild sieht, ist die Parallelisierung für kleine Gitterlängen sinnlos, es wird nur mehr overhead eingeführt und die benötigte Zeit steigt mit Anzahl der Cores.
+	\begin{figure}[htbp]
+		\input{Bilder/speeduplaenge}
+		\caption[Speedup in Abhängigkeit von der Gitterlänge]{Speedup in Abhängigkeit von der Gitterlänge, Mittelwert über $10 \cdot 1000$ Messungen, gemessen bei $T=\num{0,5}$}
+		\label{fig:skalierunglaenge}
+	\end{figure}
 	
-	Ab einer gewissen Gitterlänge sinkt die benötigte Rechenzeit mit mehr Cores, sinkt allerdings für mehr Cores, wenn es mehr Overhead gibt. Bei steigender Gitterlänge wird allerdings auch die Laufzeitverbesserung für mehr Cores sichtbar, es bildet sich erst ein Plateau, was für lange Gitterlängen schließlich in eine monoton steigende Funktion übergeht.
+	In Abbildung \ref{fig:skalierunglaenge} ist die Skalierung bei verschiedenen Gitterlängen aufgetragen. Gemessen wurde auf der lcpunode02 des Clusterrechners QBiG. (weitere Werte?).
 	
-	Wenn man sich die Skalierung bei verschiedenen Temperaturen anguckt, gibt es auch hier Unterschiede bei konstanter Gitterlänge: für niedrigere Temperaturen ist die Laufzeit geringer, allerdings der maximale speedup kleiner. Vermutlich kommt dies daher, dass bei niedrigen Temperaturen die Akzeptanzrate geringer ist und somit seltener eine Addition beim Hamiltonian durchgeführt werden muss.
+	Bei kleinen Gitterlängen wie $10$ wird die Durchführung durch das Verwenden mehrerer Kerne nicht beschleunigt, der overhead der Parallelisierung verlangsamt die Durchführung sogar noch. Bei etwas größeren Gitterlängen wie z.{}B.{} 40, wird die Funktion mit steigender Anzahl an Kernen erst schneller durchgeführt, ab einer gewissen Zahl an Kernen, hier $6$, überwiegt allerdings der overhead gegenüber der Beschleunigung durch weiteres Parallelisieren und der Speedup wird mit steigender Anzahl der Kerne wieder kleiner. Die Fehler sind hier recht groß, das das Programm nicht lange für die ausführung benötigt, nur ca.{} $\num{0,04}\si{\second}$ bei 5 Kernen, sodass hier die natürlichen Variationen der Kerne aufgrund von Hitze o.{}Ä.{} zu einem großen relativen Fehler führen. Der Maximale Speedup ist $\num{3,4\pm0,6}$ Mit steigender Gitterlänge, hier im Beispiel 70, wird der Overhead im Vergleich zur Rechenzeit geringer, sodass der Speedup mit der Anzahl der Kerne annähernd monoton ansteigt, und bei 12 ein Maximum von $\num{4,76\pm0,94}$.
+	Bei größeren Gitterlängen wird der Einfluss der Overheads nochmal geringer, wodurch der Anstieg des Speedups steiler wird und bei Gitterlänge 500 der maximale Speedup, bei $12$ Kernen, $\num{6,32\pm0,15}$ beträgt.
+ 	
+	%Wie man an Bild sieht, ist die Parallelisierung für kleine Gitterlängen sinnlos, es wird nur mehr overhead eingeführt und die benötigte Zeit steigt mit Anzahl der Cores.
 	
-	Bei Gitterlängen ab  entspricht das Ergebnis somit den Erwartungen aus Abschnitt \ref{subsec:openmptheorie}
+	%Ab einer gewissen Gitterlänge sinkt die benötigte Rechenzeit mit mehr Cores, sinkt allerdings für mehr Cores, wenn es mehr Overhead gibt. Bei steigender Gitterlänge wird allerdings auch die Laufzeitverbesserung für mehr Cores sichtbar, es bildet sich erst ein Plateau, was für lange Gitterlängen schließlich in eine monoton steigende Funktion übergeht.
+	\begin{figure}[htbp]
+		\input{Bilder/speeduptemperatur}
+		\caption[Speedup in Abhängigkeit von der Temperatur]{Speedup in Abhängigkeit von der Temperatur, Mittelwert über $10 \cdot 1000$ Messungen, gemessen bei Gitterlänge 500}
+		\label{fig:skalierungtemp}
+	\end{figure}
+		
+	Wenn man sich die Skalierung bei verschiedenen Temperaturen anguckt, siehe Abb. \ref{fig:skalierungtemp}, gibt es auch hier Unterschiede bei konstanter Gitterlänge: für niedrigere Temperaturen ist die Laufzeit geringer, allerdings der maximale speedup kleiner. Vermutlich kommt dies daher, dass bei niedrigen Temperaturen die Akzeptanzrate geringer ist und somit seltener eine Addition beim Hamiltonian durchgeführt werden muss. Diese Unterschiede entsprechen ungefähr einer Standarabweichung, dies ist allerdings recht gering und selbst beim größten Speedup beträgt der unterschied wischen den Temperaturen nur $\num{0,17}$.
+	
+	Bei Gitterlängen ab $70$ entspricht das Verhalten des Speedups somit den Erwartungen aus Abschnitt \ref{subsec:openmptheorie}. Da im Folgenden das Verhalten bei großen Gitterlängen betrachtet wird, wird nach Möglichkeit mit der maximalen Anzahl an Kernen gerechnet. Einige Messungen wurden auch auf einem Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz durchgeführt.
 	%Insgesamt entspricht somit die Skalierung bei hohen Gitterlängen dem Ahmdahlschen Gesetz.
-	Messungen der Parallelisierung von messen/sweep auf lcpunode02 in QBiG: Bis zu 12 Kerne. Kennwerte von lcpunode02?
+	%Messungen der Parallelisierung von messen/sweep auf lcpunode02 in QBiG: Bis zu 12 Kerne. Kennwerte von lcpunode02?
 	%Parallelisierung Bootstrap?
 	
 	%Zuerst: Vergleich der verschiedenen sweep-Funktionen: Hamiltonian gleich. Bild.
@@ -48,7 +64,7 @@
 %	test
 %	\end{verbatim}
 
-	Die Magnetisierung verhält sich wie nach Gl. \ref{eq:magnetisierungsgleichungliteratur} erwartet: Bei geringen Temperaturen ist sie eins, danach wird sich kleiner. Bei ca. $\num{2,2}$ hat sie einen starken Abfall, und nähert sich danach einem konstanten Wert größer als null an. Nach Gl. \ref{eq:magnetisierungsgleichungliteratur} wäre zu erwarten, dass der Abfall eine scharfe Kante bildet und danach die Magnetisierung null ist, dies ist allerdings aufgrund der endlichen Gittergöße nicht der Fall, wie in \cite[Abschnitt 2.3.3]{binderheermann} erläutert wird.
+	Die Magnetisierung verhält sich wie nach Gl. \ref{eq:magnetisierungsgleichungliteratur} erwartet: Bei geringen Temperaturen ist sie eins, danach wird sich kleiner. Bei ca. $\num{2,2}$ hat sie einen starken Abfall, und nähert sich danach einem konstanten Wert größer als null an. Nach Gl. \ref{eq:magnetisierungsgleichungliteratur} wäre zu erwarten, dass der Abfall eine scharfe Kante bildet und danach die Magnetisierung null ist, dies ist allerdings aufgrund der endlichen Gittergöße nicht der Fall, wie in~\cite[Abschnitt 2.3.3]{binderheermann} erläutert wird.
 
 	
 	\begin{figure}[htbp]
@@ -58,7 +74,7 @@
 	\end{figure}	
 	
 	%Dann Magnetisierung: Vergleich zweier Längen, Erklärung finite size Effekts wie in Binder-Heermann erwähnt.
-	In Bild \ref{fig:ergebnismagnetisierung} ist dieses Verhalten zu sehen. In Bild \ref{fig:maglaenge} ist dies noch deutlicher zu sehen, dort wird die Magnetisierung bei zwei verschiedenen Längen miteinander verglichen. Es fällt auf, dass bei kleineren Längen der Abfall der Magnetisierung weniger steil ist, sowie die Magnetisierung oberhalb des kritischen Punktes einen größeren Wert hat. Auch dies deckt sich mit den Erwartungen aus \cite[Abschnitt 2.3.3]{binderheermann}.%, ebenso wie der Vergleich zweier Längen: bei kleineren Gitterlängen ist der Abfall weniger steil und der Wert der Magnetisierung bei hohen Temperaturen größer.
+	In Bild \ref{fig:ergebnismagnetisierung} ist dieses Verhalten zu sehen. In Bild \ref{fig:maglaenge} ist dies noch deutlicher zu sehen, dort wird die Magnetisierung bei zwei verschiedenen Längen miteinander verglichen. Es fällt auf, dass bei kleineren Längen der Abfall der Magnetisierung weniger steil ist, sowie die Magnetisierung oberhalb des kritischen Punktes einen größeren Wert hat. Auch dies deckt sich mit den Erwartungen aus~\cite[Abschnitt 2.3.3]{binderheermann}.%, ebenso wie der Vergleich zweier Längen: bei kleineren Gitterlängen ist der Abfall weniger steil und der Wert der Magnetisierung bei hohen Temperaturen größer.
 	
 	
 	\begin{figure}[htbp]
