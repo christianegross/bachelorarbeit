@@ -30,11 +30,11 @@ int main(int argc, char **argv){
 	int seed=5;//fuer den zufallsgenerator
 	int N01=50000;//sweeps beim ersten Thermalisieren
 	int N0=10000;//benoetigte sweeps zum Thermalisieren
-	int messungen=10000;//pro temperatur, zweierpotenz um blocken einfacher zu machen
+	int messungen=20480;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateiham, *ableitungdatei, *zeitdatei;//benoetigte Dateien zur Ausgabe
-	int temperaturzahl=650;//Temperaturen, beid enen gemessen wird
-	int schritt=100;//Wie viele Punkte werden gemessen?
+	int temperaturzahl=200;//Temperaturen, beid enen gemessen wird
+	int schritt=1;//Wie viele Punkte werden gemessen?
 	int starttemp=0;
 	int endtemp=temperaturzahl;
 	int node=2;//nodes auf vm, qbig
@@ -47,19 +47,23 @@ int main(int argc, char **argv){
 		return (-1);
 	}
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
+		//genaue Messung der Magnetisierung:
+		if((i<20)){temperaturarray[i]=2.0+0.008*i;}
+		if((i>=120)){temperaturarray[i]=2.4+0.008*(i-120);}
+		if((i>=20)&&(i<120)){temperaturarray[i]=2.2+0.002*(i-20);}
 		//MAgnetisierung zur genaueren Bestimmung des kritishen Punktes
 		//~ if((i<50)){temperaturarray[i]=0.1+0.041*i;}
 		//~ if((i>=50)&&(i<150)){temperaturarray[i]=2.15+0.003*i;}
 		//~ if((i>=150)){temperaturarray[i]=2.45+0.051*i;}
-		//~ //Für Akzeptanzrate, um bis 10.000 zu kommen, gemessen mit Schritt 2
-		if (i<50){temperaturarray[i]=i*0.02+0.02;}
-		if ((i>=50)&&(i<300)){temperaturarray[i]=(i-50)*0.01+1;}
-		if ((i>=300)&&(i<350)){temperaturarray[i]=(i-300)*0.02+3.5;}
-		if ((i>=350)&&(i<450)){temperaturarray[i]=(i-350)*0.06+4.5;}
-		if ((i>=450)&&(i<500)){temperaturarray[i]=(i-450)*0.2+10.01;}
-		if ((i>=500)&&(i<550)){temperaturarray[i]=exp(2.996+(i-500)*0.032);}
-		if ((i>=550)&&(i<600)){temperaturarray[i]=exp(4.605+(i-550)*0.046);}
-		if ((i>=600)&&(i<650)){temperaturarray[i]=exp(6.907+(i-600)*0.046);}
+		//Für Akzeptanzrate, um bis 10.000 zu kommen, gemessen mit Schritt 2
+		//~ if (i<50){temperaturarray[i]=i*0.02+0.02;}
+		//~ if ((i>=50)&&(i<300)){temperaturarray[i]=(i-50)*0.01+1;}
+		//~ if ((i>=300)&&(i<350)){temperaturarray[i]=(i-300)*0.02+3.5;}
+		//~ if ((i>=350)&&(i<450)){temperaturarray[i]=(i-350)*0.06+4.5;}
+		//~ if ((i>=450)&&(i<500)){temperaturarray[i]=(i-450)*0.2+10.01;}
+		//~ if ((i>=500)&&(i<550)){temperaturarray[i]=exp(2.996+(i-500)*0.032);}
+		//~ if ((i>=550)&&(i<600)){temperaturarray[i]=exp(4.605+(i-550)*0.046);}
+		//~ if ((i>=600)&&(i<650)){temperaturarray[i]=exp(6.907+(i-600)*0.046);}
 		//printf("%d\t%e\n", i, temperaturarray[i]);
 	}
 	printf("Ende array\n");
@@ -102,7 +106,7 @@ int main(int argc, char **argv){
 	thermalisierenmehreregeneratoren(laenge, temperaturarray[0], j, seed, N01, gitter, dummydatei, generatoren);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	fclose(dummydatei);
 	for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
-		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=20000;}
+		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=100000;}
 		else {N0=5000;}
 		printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-m%.6d-t%.3d-node%.2d.txt",laenge,messungen,n, node);//.2, damit alle dateinamengleich lang sind
@@ -157,7 +161,7 @@ int main(int argc, char **argv){
 			//~ //Vergleich bootstrapping mit und ohne parallelisierung
 			//~ bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateiham);//bootstrapping
 			free(blockarray);
-		}
+		}//
 		gettimeofday(&endebootstrap, NULL);
 		sec= (double)(endebootstrap.tv_sec-anfangbootstrap.tv_sec);
 		usec= (double)(endebootstrap.tv_usec-anfangbootstrap.tv_usec);
