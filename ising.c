@@ -30,10 +30,10 @@ int main(int argc, char **argv){
 	int seed=5;//fuer den zufallsgenerator
 	int N01=50000;//sweeps beim ersten Thermalisieren
 	int N0=10000;//benoetigte sweeps zum Thermalisieren
-	int messungen=20480;//pro temperatur, zweierpotenz um blocken einfacher zu machen
+	int messungen=10240;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateiham, *ableitungdatei, *zeitdatei;//benoetigte Dateien zur Ausgabe
-	int temperaturzahl=200;//Temperaturen, beid enen gemessen wird
+	int temperaturzahl=210;//Temperaturen, beid enen gemessen wird
 	int schritt=1;//Wie viele Punkte werden gemessen?
 	int starttemp=0;
 	int endtemp=temperaturzahl;
@@ -48,9 +48,10 @@ int main(int argc, char **argv){
 	}
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
 		//genaue Messung der Magnetisierung:
-		if((i<20)){temperaturarray[i]=2.0+0.008*i;}
-		if((i>=120)){temperaturarray[i]=2.4+0.008*(i-120);}
-		if((i>=20)&&(i<120)){temperaturarray[i]=2.2+0.002*(i-20);}
+		if((i<10)){temperaturarray[i]=0.1+i*0.2;}
+		if((i>=10)&&(i<30)){temperaturarray[i]=2.0+0.008*(i-10);}
+		if((i>=130)){temperaturarray[i]=2.4+0.008*(i-130);}
+		if((i>=30)&&(i<130)){temperaturarray[i]=2.2+0.002*(i-30);}
 		//MAgnetisierung zur genaueren Bestimmung des kritishen Punktes
 		//~ if((i<50)){temperaturarray[i]=0.1+0.041*i;}
 		//~ if((i>=50)&&(i<150)){temperaturarray[i]=2.15+0.003*i;}
@@ -69,7 +70,7 @@ int main(int argc, char **argv){
 	printf("Ende array\n");
 	int l;//Laenge der Blocks
 	double *blockarray;//Zum Speichern der geblockten Messwerte
-	double blocklenarray[12]={/*1,2,4,8,16,*/32, 64,128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
+	double blocklenarray[10]={/*1,2,4,8,16,32, 64,*/128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
 	//gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	gsl_rng **generatoren;//mehrere generaotren fuer parallelisierung
 	if ((generatoren=(gsl_rng**)malloc(anzahlcores*sizeof(gsl_rng**)))==NULL){
@@ -106,7 +107,7 @@ int main(int argc, char **argv){
 	thermalisierenmehreregeneratoren(laenge, temperaturarray[0], j, seed, N01, gitter, dummydatei, generatoren);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	fclose(dummydatei);
 	for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
-		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=100000;}
+		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=20000;}
 		else {N0=5000;}
 		printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-m%.6d-t%.3d-node%.2d.txt",laenge,messungen,n, node);//.2, damit alle dateinamengleich lang sind
@@ -139,7 +140,7 @@ int main(int argc, char **argv){
 		U=1-(magvier/3/magquad/magquad);
 		fprintf(mittelwertdatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", (double)laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag, temperaturarray[n]/j, U);
 		gettimeofday(&anfangbootstrap, NULL);
-		for(int len=0;len<12;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
+		for(int len=0;len<10;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
 			l=blocklenarray[len];
 			//printf("%d\t%d\n", n, l);
 			if((blockarray=(double*)malloc(sizeof(double)*messungen/l))==NULL){//zum Speichern der Blocks, prüft, ob Speicherplatz richitg bereitgestellt wurde
