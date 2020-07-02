@@ -28,17 +28,17 @@ int main(int argc, char **argv){
 	
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
-	int N01=50000;//sweeps beim ersten Thermalisieren
+	int N01=1000;//sweeps beim ersten Thermalisieren
 	int N0=10000;//benoetigte sweeps zum Thermalisieren
 	int messungen=10240;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
-	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateiham, *ableitungdatei, *zeitdatei;//benoetigte Dateien zur Ausgabe
+	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateimqu, *bootstrapalledateiham, *ableitungdatei, *zeitdatei;//benoetigte Dateien zur Ausgabe
 	int temperaturzahl=210;//Temperaturen, beid enen gemessen wird
 	int schritt=1;//Wie viele Punkte werden gemessen?
 	int starttemp=0;
 	int endtemp=temperaturzahl;
 	int node=2;//nodes auf vm, qbig
-	char dateinametherm[150], dateinamemessen[150], dateinamemittel[150], dateinamebootstrapalleakz[150], dateinamebootstrapallemag[150], dateinamebootstrapalleham[150], dateinameableitung[150], dateinamezeit[150];//Um Dateien mit Variablen benennen zu koennen
+	char dateinametherm[150], dateinamemessen[150], dateinamemittel[150], dateinamebootstrapalleakz[150], dateinamebootstrapallemag[150], dateinamebootstrapallemqu[150], dateinamebootstrapalleham[150], dateinameableitung[150], dateinamezeit[150];//Um Dateien mit Variablen benennen zu koennen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler
 	double U, magquad, varmagquad, magvier, varmagvier;
 	double *temperaturarray;
@@ -84,12 +84,14 @@ int main(int argc, char **argv){
 	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert naive Mittelwerte
 	sprintf(dateinamebootstrapalleakz,"Messungen/Bootstrapges/bootstrapalle-akzeptanz-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Mitteelwerte aus Bootstrap
 	sprintf(dateinamebootstrapallemag,"Messungen/Bootstrapges/bootstrapalle-magnetisierung-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Mitteelwerte aus Bootstrap
+	sprintf(dateinamebootstrapallemqu,"Messungen/Bootstrapges/bootstrapalle-magquad-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Mitteelwerte aus Bootstrap
 	sprintf(dateinamebootstrapalleham,"Messungen/Bootstrapges/bootstrapalle-hamiltonian-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Mitteelwerte aus Bootstrap
 	sprintf(dateinameableitung,"Messungen/ableitung-magnetisierung-laenge-%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Ableitung
 	sprintf(dateinamezeit,"Messungen/Zeiten/zeiten-laenge-%.4d-m-%.6d-cores-%.2d-node%.2d.txt",laenge, messungen, anzahlcores, node);//speichert Ableitung
 	mittelwertdatei=fopen(dateinamemittel, "w+");
 	bootstrapalledateiakz=fopen(dateinamebootstrapalleakz, "w+");
 	bootstrapalledateimag=fopen(dateinamebootstrapallemag, "w+");
+	bootstrapalledateimqu=fopen(dateinamebootstrapallemqu, "w+");
 	bootstrapalledateiham=fopen(dateinamebootstrapalleham, "w+");
 	ableitungdatei=fopen(dateinameableitung, "w");
 	zeitdatei=fopen(dateinamezeit, "w");
@@ -156,6 +158,10 @@ int main(int argc, char **argv){
 			blocks_generieren(l, messungen, 2, 6, blockarray, messdatei);//blocking
 			//Vergleich bootstrapping mit und ohne parallelisierung
 			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateimag);//bootstrapping
+			//magnetisierungquadrat
+			blocks_generieren(l, messungen, 3, 6, blockarray, messdatei);//blocking
+			//Vergleich bootstrapping mit und ohne parallelisierung
+			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateimqu);//bootstrapping
 			//bootstrapohnepar(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
 			//hamiltonian
 			//~ blocks_generieren(l, messungen, 5, 6, blockarray, messdatei);//blocking

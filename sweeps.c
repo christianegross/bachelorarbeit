@@ -27,7 +27,7 @@ double sweepaltohnepar(char *gitter, int laenge, double j, double T, gsl_rng *ge
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersumme(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%f\t%f\t%f\t%f\t%f\n",akzeptanzrate, magnetisierung, magnetisierung*magnetisierung, magnetisierung*magnetisierung*magnetisierung*magnetisierung, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\t%e\t%e\t%e\n",akzeptanzrate, magnetisierung, magnetisierung*magnetisierung, magnetisierung*magnetisierung*magnetisierung*magnetisierung, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -49,7 +49,7 @@ double sweepalt(char *gitter, int laenge, double j, double T, gsl_rng *generator
 			}
 		}
 	}
-	//printf("\nVeraenderung ohne parallel: %f\t", veraenderungH);
+	//printf("\nVeraenderung ohne parallel: %e\t", veraenderungH);
 	H+=veraenderungH;
 	//weiss: d1+d2 ungerade
 	for (int d1=0; d1<laenge;d1+=1){
@@ -64,7 +64,7 @@ double sweepalt(char *gitter, int laenge, double j, double T, gsl_rng *generator
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersumme(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%f\t%f\t",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\t",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -131,7 +131,7 @@ double sweepzweipar(char *gitter, int laenge, double j, double T, gsl_rng *gener
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -208,7 +208,7 @@ double sweep(char *gitter, int laenge, double j, double T, gsl_rng *generator, d
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -278,7 +278,7 @@ double sweeplookup(char *gitter, int laenge, double j, double T, gsl_rng *genera
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 		
@@ -305,7 +305,7 @@ double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=(d1%2); d2<laenge; d2+=2){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				delta=deltahneu2(gitter, d1, d2, laenge);
-				if ((tryflip(generatoren[threadnummer], 0.5)==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
+				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[(delta/4)+2])==1)){//Wenn schwarzer Punkt und Spin geflippt wurde
 					gitter[laenge*d1+d2]*=-1;
 					veraenderungH+=j*delta;//Zwischenvariable, damit es keine Konflikte beim updaten gibt
 					changesklein+=1;
@@ -317,7 +317,7 @@ double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl
 		for (d1=0; d1<laenge;d1+=1){
 			for (d2=(d1+1)%2; d2<laenge; d2+=2){//geht in zweiter dimension durch (alle Spalten einer Zeile)
 				delta=deltahneu2(gitter, d1, d2, laenge);
-				if ((tryflip(generatoren[threadnummer], 0.5)==1)){//Wenn weisser Punkt und Spin geflippt wurde
+				if ((tryflip(generatoren[threadnummer], wahrscheinlichkeiten[(delta/4)+2])==1)){//Wenn weisser Punkt und Spin geflippt wurde
 					gitter[laenge*d1+d2]*=-1;
 					veraenderungH+=j*delta;
 					changesklein+=1;
@@ -333,7 +333,7 @@ double sweepmehreregeneratoren(char *gitter, int laenge, double j, double T, gsl
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
 	double magquadrat=magnetisierung*magnetisierung;
 	double magvier=magquadrat*magquadrat;
-	fprintf(dateimessungen, "%f\t%f\t%f\t%f\t%f\n",akzeptanzrate, magnetisierung, magquadrat, magvier, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\t%e\t%e\t%e\n",akzeptanzrate, magnetisierung, magquadrat, magvier, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -412,7 +412,7 @@ double sweepmehreregeneratorenv0(char *gitter, int laenge, double j, double T, g
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -474,7 +474,7 @@ double sweepmehreregeneratorenv1(char *gitter, int laenge, double j, double T, g
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
 	//~ double magquadrat=magnetisierung*magnetisierung;
 	//~ double magvier=magquadrat*magquadrat;
-	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung);//, magquadrat, magvier, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\n",akzeptanzrate, magnetisierung);//, magquadrat, magvier, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -532,7 +532,7 @@ double sweepmehreregeneratorenv2(char *gitter, int laenge, double j, double T, g
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
 	//~ double magquadrat=magnetisierung*magnetisierung;
 	//~ double magvier=magquadrat*magquadrat;
-	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung);//, magquadrat, magvier, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\n",akzeptanzrate, magnetisierung);//, magquadrat, magvier, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -590,7 +590,7 @@ double sweepmehreregeneratorenv3(char *gitter, int laenge, double j, double T, g
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
 	//~ double magquadrat=magnetisierung*magnetisierung;
 	//~ double magvier=magquadrat*magquadrat;
-	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung);//, magquadrat, magvier, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\n",akzeptanzrate, magnetisierung);//, magquadrat, magvier, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -641,7 +641,7 @@ double sweepmehreregeneratorenv4(char *gitter, int laenge, double j, double T, g
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
 	//~ double magquadrat=magnetisierung*magnetisierung;
 	//~ double magvier=magquadrat*magquadrat;
-	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung);//, magquadrat, magvier, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\n",akzeptanzrate, magnetisierung);//, magquadrat, magvier, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
@@ -703,7 +703,7 @@ double sweepeineschleife(char *gitter, int laenge, double j, double T, gsl_rng *
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersummeohnepar(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%f\t%f\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\n",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
