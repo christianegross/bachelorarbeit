@@ -37,7 +37,7 @@ int main(int argc, char **argv){
 	int schritt=1;//Wie viele Punkte werden gemessen?
 	int starttemp=0;
 	int endtemp=temperaturzahl;
-	int node=2;//nodes auf vm, qbig
+	int node=0;//nodes auf vm, qbig
 	char dateinametherm[150], dateinamemessen[150], dateinamemittel[150], dateinamebootstrapalleakz[150], dateinamebootstrapallemag[150], dateinamebootstrapallemqu[150], dateinamebootstrapalleham[150], dateinameableitung[150], dateinamezeit[150];//Um Dateien mit Variablen benennen zu koennen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler
 	double U, magquad, varmagquad, magvier, varmagvier;
@@ -46,12 +46,15 @@ int main(int argc, char **argv){
 		printf("Fehler beim Allokieren der Temperaturen!\n");
 		return (-1);
 	}
+	FILE*testdateitemp=fopen("testtemp.txt", "w");
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
 		//genaue Messung der Magnetisierung:
-		if((i<10)){temperaturarray[i]=0.1+i*0.2;}
-		if((i>=10)&&(i<30)){temperaturarray[i]=2.0+0.008*(i-10);}
-		if((i>=130)){temperaturarray[i]=2.4+0.008*(i-130);}
-		if((i>=30)&&(i<130)){temperaturarray[i]=2.2+0.002*(i-30);}
+		if((i<20)){temperaturarray[i]=0.05+i*0.1;}
+		if((i>=20)&&(i<48)){temperaturarray[i]=2.0+0.008*(i-20);}
+		if((i>=48)&&(i<136)){temperaturarray[i]=2.224+0.002*(i-48);}
+		if((i>=136)&&(i<181)){temperaturarray[i]=2.4+0.008*(i-136);}
+		if((i>=181)){temperaturarray[i]=2.76+0.032*(i-181);}
+		fprintf(testdateitemp, "%f\n", temperaturarray[i]);
 		//MAgnetisierung zur genaueren Bestimmung des kritishen Punktes
 		//~ if((i<50)){temperaturarray[i]=0.1+0.041*i;}
 		//~ if((i>=50)&&(i<150)){temperaturarray[i]=2.15+0.003*i;}
@@ -67,6 +70,7 @@ int main(int argc, char **argv){
 		//~ if ((i>=600)&&(i<650)){temperaturarray[i]=exp(6.907+(i-600)*0.046);}
 		//printf("%d\t%e\n", i, temperaturarray[i]);
 	}
+	fclose(testdateitemp);
 	printf("Ende array\n");
 	int l;//Laenge der Blocks
 	double *blockarray;//Zum Speichern der geblockten Messwerte
