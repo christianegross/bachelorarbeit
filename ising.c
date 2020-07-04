@@ -16,9 +16,11 @@ int main(int argc, char **argv){
 	//benoetigte Variablen initialisieren
 	int anzahlcores=1;
 	int laenge=48;//laenge der verwendeten Gitter
-	if (argc>=3){
+	int schritt=2;//Wie viele Punkte werden gemessen?
+	if (argc>=4){
 		laenge=atoi(argv[1]);
 		anzahlcores=atoi(argv[2]);
+		schritt=atoi(argv[3]);
 	}
 	else{
 		printf("Nicht genug Argumente! Laenge=%d bei %d cores\n", laenge, anzahlcores);
@@ -30,11 +32,10 @@ int main(int argc, char **argv){
 	int seed=5;//fuer den zufallsgenerator
 	int N01=1000;//sweeps beim ersten Thermalisieren
 	int N0=10000;//benoetigte sweeps zum Thermalisieren
-	int messungen=10240;//pro temperatur, zweierpotenz um blocken einfacher zu machen
+	int messungen=10368;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateimqu, *bootstrapalledateiham, *ableitungdatei, *zeitdatei;//benoetigte Dateien zur Ausgabe
 	int temperaturzahl=210;//Temperaturen, beid enen gemessen wird
-	int schritt=2;//Wie viele Punkte werden gemessen?
 	int starttemp=0;
 	int endtemp=temperaturzahl;
 	int node=2;//nodes auf vm, qbig
@@ -46,7 +47,7 @@ int main(int argc, char **argv){
 		printf("Fehler beim Allokieren der Temperaturen!\n");
 		return (-1);
 	}
-	FILE*testdateitemp=fopen("testtemp.txt", "w");
+	//FILE*testdateitemp=fopen("testtemp.txt", "w");
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
 		//genaue Messung der Magnetisierung:
 		if((i<20)){temperaturarray[i]=0.05+i*0.1;}
@@ -54,7 +55,7 @@ int main(int argc, char **argv){
 		if((i>=48)&&(i<136)){temperaturarray[i]=2.224+0.002*(i-48);}
 		if((i>=136)&&(i<181)){temperaturarray[i]=2.4+0.008*(i-136);}
 		if((i>=181)){temperaturarray[i]=2.76+0.032*(i-181);}
-		fprintf(testdateitemp, "%f\n", temperaturarray[i]);
+		//fprintf(testdateitemp, "%f\n", temperaturarray[i]);
 		//MAgnetisierung zur genaueren Bestimmung des kritishen Punktes
 		//~ if((i<50)){temperaturarray[i]=0.1+0.041*i;}
 		//~ if((i>=50)&&(i<150)){temperaturarray[i]=2.15+0.003*i;}
@@ -70,8 +71,8 @@ int main(int argc, char **argv){
 		//~ if ((i>=600)&&(i<650)){temperaturarray[i]=exp(6.907+(i-600)*0.046);}
 		//printf("%d\t%e\n", i, temperaturarray[i]);
 	}
-	fclose(testdateitemp);
-	printf("Ende array\n");
+	//fclose(testdateitemp);
+	//printf("Ende array\n");
 	int l;//Laenge der Blocks
 	double *blockarray;//Zum Speichern der geblockten Messwerte
 	double blocklenarray[10]={/*1,2,4,8,16,32, 64,*/128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
@@ -90,14 +91,14 @@ int main(int argc, char **argv){
 	sprintf(dateinamebootstrapallemag,"Messungen/Bootstrapges/bootstrapalle-magnetisierung-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
 	sprintf(dateinamebootstrapallemqu,"Messungen/Bootstrapges/bootstrapalle-magquad-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
 	sprintf(dateinamebootstrapalleham,"Messungen/Bootstrapges/bootstrapalle-hamiltonian-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
-	sprintf(dateinameableitung,"Messungen/ableitung-magnetisierung-laenge-%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Ableitung
+	//sprintf(dateinameableitung,"Messungen/Ableitungen/ableitung-magnetisierung-laenge-%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Ableitung
 	sprintf(dateinamezeit,"Messungen/Zeiten/zeiten-laenge-%.4d-m-%.6d-cores-%.2d-node%.2d-sch-%.2d.txt",laenge, messungen, anzahlcores, node, schritt);//speichert Ableitung
 	mittelwertdatei=fopen(dateinamemittel, "w+");
 	bootstrapalledateiakz=fopen(dateinamebootstrapalleakz, "w+");
 	bootstrapalledateimag=fopen(dateinamebootstrapallemag, "w+");
 	bootstrapalledateimqu=fopen(dateinamebootstrapallemqu, "w+");
 	bootstrapalledateiham=fopen(dateinamebootstrapalleham, "w+");
-	ableitungdatei=fopen(dateinameableitung, "w");
+	//ableitungdatei=fopen(dateinameableitung, "w");
 	zeitdatei=fopen(dateinamezeit, "w");
 	//Messen der zeit, die während des Programms vergeht, aus C-Kurs kopiert:
 	struct timeval anfangmessen, endemessen, anfangbootstrap, endebootstrap, anfangprogramm, endeprogramm;
@@ -114,9 +115,9 @@ int main(int argc, char **argv){
 	fclose(dummydatei);
 	for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
 		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=30000;}
-		if ((2.25<temperaturarray[n])&&(temperaturarray[n]<2.3)){N0=100000;}
-		else {N0=5000;}
-		printf("%d\n", n);
+		if ((2.25<temperaturarray[n])&&(temperaturarray[n]<2.4)){N0=100000;}
+		if((2>=temperaturarray[n])||(temperaturarray[n]<=3)) {N0=5000;}
+		printf("%d\t", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-m%.6d-t%.3d-node%.2d.txt",laenge,messungen,n, node);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-t%.3d-node%.2d.txt",laenge,messungen,n, node);//.2, damit alle dateinamengleich lang sind
 		gitterthermdatei = fopen(dateinametherm, "w+");//Zum speichern der thermalisierten Gitter
@@ -129,13 +130,13 @@ int main(int argc, char **argv){
 		
 		thermalisierenmehreregeneratoren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generatoren);
 		gettimeofday(&anfangmessen, NULL);
-		messenmehreregeneratoren(laenge, temperaturarray[n], j, messungen, gitter/*thermdatei*/, messdatei, generatoren);
+		messenmehreregeneratoren(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generatoren);
 		gettimeofday(&endemessen, NULL);
 		sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
 		usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
 		zeitgesmessen=sec+1e-06*usec;
 		summezeitgesmessen+=zeitgesmessen;
-		printf("bei T=%f haben %d Messungen %f Sekunden gebraucht\n", temperaturarray[n], messungen, zeitgesmessen);
+		//printf("bei T=%f haben %d Messungen %f Sekunden gebraucht\n", temperaturarray[n], messungen, zeitgesmessen);
 		fprintf(zeitdatei, "0.0\t%f\t%f\t%f\n", temperaturarray[n], (double)messungen, zeitgesmessen);
 		//Berechnung der naiven Standardfehler
 		mittelwertakz=mittelwertberechnungnaiv(messdatei, messungen, 1, 6);
@@ -157,20 +158,15 @@ int main(int argc, char **argv){
 			r=4*messungen;//Anzahl an Replikas, die beim Bootstrappen erzeugt werden
 			//akzaptanzrate
 			//~ blocks_generieren(l, messungen, 1, 6, blockarray, messdatei);//blocking
-			//~ //Vergleich bootstrapping mit und ohne parallelisierung
 			//~ bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateiakz);//bootstrapping
 			//magnetisierung
 			blocks_generieren(l, messungen, 2, 6, blockarray, messdatei);//blocking
-			//Vergleich bootstrapping mit und ohne parallelisierung
 			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateimag);//bootstrapping
 			//magnetisierungquadrat
 			blocks_generieren(l, messungen, 3, 6, blockarray, messdatei);//blocking
-			//Vergleich bootstrapping mit und ohne parallelisierung
 			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateimqu);//bootstrapping
-			//bootstrapohnepar(l, r, messungen, temperaturarray[n], blockarray, generator,bootstrapalledatei);//bootstrapping
 			//hamiltonian
 			//~ blocks_generieren(l, messungen, 5, 6, blockarray, messdatei);//blocking
-			//~ //Vergleich bootstrapping mit und ohne parallelisierung
 			//~ bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateiham);//bootstrapping
 			free(blockarray);
 		}//
@@ -184,7 +180,7 @@ int main(int argc, char **argv){
 		fclose(messdatei);
 		fclose(gitterthermdatei);
 	}
-	ableitung(128, temperaturzahl/schritt*12, 6, 3,4,5,1, bootstrapalledateimag, ableitungdatei);
+	//ableitung(128, temperaturzahl/schritt*12, 6, 3,4,5,1, bootstrapalledateimag, ableitungdatei);
 	gettimeofday(&endeprogramm, NULL);
 	sec= (double)(endeprogramm.tv_sec-anfangprogramm.tv_sec);
 	usec= (double)(endeprogramm.tv_usec-anfangprogramm.tv_usec);
@@ -201,7 +197,7 @@ int main(int argc, char **argv){
 	fclose(bootstrapalledateiakz);
 	fclose(bootstrapalledateimag);
 	fclose(bootstrapalledateiham);
-	fclose(ableitungdatei);
+	//fclose(ableitungdatei);
 	fclose(zeitdatei);
 	free(temperaturarray);	
 	//gsl_rng_free(generator);//free, close: zum Verhindern von Speicherproblemen

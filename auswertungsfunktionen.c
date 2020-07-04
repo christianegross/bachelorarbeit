@@ -166,6 +166,50 @@ void ableitung(int l, int temperaturen, const int spalten, const int spaltemessu
 	}	
 }
 
+void ableitungdreipunkt(int l, int temperaturen, const int spalten, const int spaltemessung, const int spaltefehler, const int spaltetemperatur, const int spaltel, FILE *messdatei, FILE *ausgabedatei){
+	//Bildet die ableitung nach Zei-Punkt-Formel
+	//Fehler nach Gaussscher Fehlerfortpflanzung
+	double x1, x2, x3, y1, y2, y3, dy1, dy2, dy3;//Zur Berechnung benoetigte Groessen
+	double mitteltemperatur, ableitung, fehlerableitung;//Groessen die berechnet werden sollen
+	double ergebnisarray[spalten];//Speichert eingelesene Dateien
+	rewind(messdatei);
+	for (int i=0; i<spalten; i+=1){//erste Zeile scannen: Noch keine Ableitung moeglich
+		fscanf(messdatei, "%le", &ergebnisarray[i]);
+		if (i==spalten-1){fscanf(messdatei, "\n");}
+	}
+	x1=ergebnisarray[spaltetemperatur];//Werte fuer erste Ableitung zuweisen
+	y1=ergebnisarray[spaltemessung];	
+	dy1=ergebnisarray[spaltefehler];
+	for (int i=0; i<spalten; i+=1){//erste Zeile scannen: Noch keine Ableitung moeglich
+		fscanf(messdatei, "%le", &ergebnisarray[i]);
+		if (i==spalten-1){fscanf(messdatei, "\n");}
+	}
+	x2=ergebnisarray[spaltetemperatur];//Werte fuer erste Ableitung zuweisen
+	y2=ergebnisarray[spaltemessung];	
+	dy2=ergebnisarray[spaltefehler];
+	for (int messung=2; messung<temperaturen; messung+=1){//Alle Zeilen durchgehen
+		for (int i=0; i<spalten; i+=1){
+			fscanf(messdatei, "%le", &ergebnisarray[i]);
+			if (i==spalten-1){fscanf(messdatei, "\n");}
+		}
+		if (ergebnisarray[spaltel]==l){//nur Ableitung berechnen, wenn l richtig ist
+			x3=ergebnisarray[spaltetemperatur];//Wertezuweisen
+			y3=ergebnisarray[spaltemessung];	
+			dy3=ergebnisarray[spaltefehler];
+			mitteltemperatur=(x1+x3)/2;//Berechnung der Temperatur, bei der die Ableitung berechnet wird
+			ableitung=(y3-y1)/(x3-x1);//Zwei-Punkt-Formel mit variablem Abstand möglich
+			fehlerableitung=(sqrt(dy1*dy1+dy3*dy3))/(x3-x1);//Gausssche Fehlerfortpflanzung
+			fprintf(ausgabedatei, "%e\t%e\t%e\n", mitteltemperatur, ableitung, fehlerableitung);
+			x1=x2;//Zuweisung fuer naechste Zeile
+			y1=y2;
+			dy1=dy2;
+			x2=x3;//Zuweisung fuer naechste Zeile
+			y2=y3;
+			dy2=dy3;
+		}
+	}	
+}
+
 extern inline double mittelwertarray(double *array, int messungen){
 	//Bestimmt Mittelwert eines arrays, das mit doubles gefüllt ist
 	double summe=0;//Speichert Summe über 
@@ -196,3 +240,51 @@ extern inline double minarray(double *array, int messungen){
 	}
 	return minwert;
 }
+
+void minline(FILE *datei, const int spalten, const int minwertspalte, const int zeilen){
+	double minzeile[spalten];
+	double aktuellezeile[spalten];
+	int minzeilenzaehler=1;
+	int zeilenzaehler=1;
+	rewind(datei);
+	for (int i=0; i<spalten; i+=1){
+		fscanf(datei, "%le", &aktuellezeile[i]);
+		minzeile[i]=aktuellezeile[i];
+		if (i==spalten-1){fscanf(datei, "\n");}
+	}
+	for	(zeilenzaehler=2;zeilenzaehler<=zeilen; zeilenzaehler+=1){
+		for (int i=0; i<spalten; i+=1){
+			fscanf(datei, "%le", &aktuellezeile[i]);
+			if (i==spalten-1){fscanf(datei, "\n");}
+		}
+		if (aktuellezeile[minwertspalte]<=minzeile[minwertspalte]){
+			for (int i=0; i<spalten; i+=1){
+				minzeile[i]=aktuellezeile[i];
+			}
+			minzeilenzaehler=zeilenzaehler;
+		}
+	}
+	//printf("minimale Zeile: %d\t mit Werten:\n",minzeilenzaehler);
+	printf("%e\t",(double)minzeilenzaehler);
+	for (int i=0; i<spalten; i+=1){
+		printf("%e\t", minzeile[i]);
+	}
+	printf("\n");
+}
+
+void sqrtspalte(FILE *einlesedatei, FILE *ausgabedatei, const int spalten, const int spalte, const int zeilen){
+	double aktuellezeile[spalten];
+	
+	for (int zeile=0;zeile<zeilen;zeile+=1){
+		for (int i=0; i<spalten; i+=1){
+			fscanf(einlesedatei, "%le", &aktuellezeile[i]);
+			if (i==spalten-1){fscanf(einlesedatei, "\n");}
+		}
+		aktuellezeile[spalte]=sqrt(aktuellezeile[spalte]);
+		for (int i=0; i<spalten; i+=1){
+			fprintf(ausgabedatei, "%e\t", aktuellezeile[i]);
+			if (i==spalten-1){fprintf(ausgabedatei, "\n");}
+		}
+	}
+}
+	
