@@ -34,10 +34,10 @@ int main(int argc, char **argv){
 	int r;//Anzahl an samples für den Bootstrap
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateimqu, *bootstrapalledateiham, *ableitungdatei, *zeitdatei;//benoetigte Dateien zur Ausgabe
 	int temperaturzahl=210;//Temperaturen, beid enen gemessen wird
-	int schritt=1;//Wie viele Punkte werden gemessen?
+	int schritt=2;//Wie viele Punkte werden gemessen?
 	int starttemp=0;
 	int endtemp=temperaturzahl;
-	int node=0;//nodes auf vm, qbig
+	int node=2;//nodes auf vm, qbig
 	char dateinametherm[150], dateinamemessen[150], dateinamemittel[150], dateinamebootstrapalleakz[150], dateinamebootstrapallemag[150], dateinamebootstrapallemqu[150], dateinamebootstrapalleham[150], dateinameableitung[150], dateinamezeit[150];//Um Dateien mit Variablen benennen zu koennen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler
 	double U, magquad, varmagquad, magvier, varmagvier;
@@ -85,13 +85,13 @@ int main(int argc, char **argv){
 		gsl_rng_set(generatoren[core], seed+core);
 	}
 	
-	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert naive Mittelwerte
-	sprintf(dateinamebootstrapalleakz,"Messungen/Bootstrapges/bootstrapalle-akzeptanz-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Mitteelwerte aus Bootstrap
-	sprintf(dateinamebootstrapallemag,"Messungen/Bootstrapges/bootstrapalle-magnetisierung-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Mitteelwerte aus Bootstrap
-	sprintf(dateinamebootstrapallemqu,"Messungen/Bootstrapges/bootstrapalle-magquad-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Mitteelwerte aus Bootstrap
-	sprintf(dateinamebootstrapalleham,"Messungen/Bootstrapges/bootstrapalle-hamiltonian-l%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Mitteelwerte aus Bootstrap
-	sprintf(dateinameableitung,"Messungen/ableitung-magnetisierung-laenge-%.4d-m-%.6d-node%.2d.txt",laenge, messungen, node);//speichert Ableitung
-	sprintf(dateinamezeit,"Messungen/Zeiten/zeiten-laenge-%.4d-m-%.6d-cores-%.2d-node%.2d.txt",laenge, messungen, anzahlcores, node);//speichert Ableitung
+	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert naive Mittelwerte
+	sprintf(dateinamebootstrapalleakz,"Messungen/Bootstrapges/bootstrapalle-akzeptanz-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
+	sprintf(dateinamebootstrapallemag,"Messungen/Bootstrapges/bootstrapalle-magnetisierung-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
+	sprintf(dateinamebootstrapallemqu,"Messungen/Bootstrapges/bootstrapalle-magquad-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
+	sprintf(dateinamebootstrapalleham,"Messungen/Bootstrapges/bootstrapalle-hamiltonian-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
+	sprintf(dateinameableitung,"Messungen/ableitung-magnetisierung-laenge-%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Ableitung
+	sprintf(dateinamezeit,"Messungen/Zeiten/zeiten-laenge-%.4d-m-%.6d-cores-%.2d-node%.2d-sch-%.2d.txt",laenge, messungen, anzahlcores, node, schritt);//speichert Ableitung
 	mittelwertdatei=fopen(dateinamemittel, "w+");
 	bootstrapalledateiakz=fopen(dateinamebootstrapalleakz, "w+");
 	bootstrapalledateimag=fopen(dateinamebootstrapallemag, "w+");
@@ -113,7 +113,8 @@ int main(int argc, char **argv){
 	thermalisierenmehreregeneratoren(laenge, temperaturarray[0], j, seed, N01, gitter, dummydatei, generatoren);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	fclose(dummydatei);
 	for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
-		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=20000;}
+		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=30000;}
+		if ((2.25<temperaturarray[n])&&(temperaturarray[n]<2.3)){N0=100000;}
 		else {N0=5000;}
 		printf("%d\n", n);
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-m%.6d-t%.3d-node%.2d.txt",laenge,messungen,n, node);//.2, damit alle dateinamengleich lang sind
@@ -121,10 +122,10 @@ int main(int argc, char **argv){
 		gitterthermdatei = fopen(dateinametherm, "w+");//Zum speichern der thermalisierten Gitter
 		messdatei = fopen(dateinamemessen, "w+");//Zum Speichern der Messdaten
 		//gsl_rng_set(generator, seed);//initialisieren, bei jedem Durchlauf mit gleichem seed
-		for(int core=0;core<anzahlcores;core+=1){
-			generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
-			gsl_rng_set(generatoren[core], seed+core);
-		}
+	//	for(int core=0;core<anzahlcores;core+=1){
+	//		generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
+	//		gsl_rng_set(generatoren[core], seed+core);
+	//	}
 		
 		thermalisierenmehreregeneratoren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generatoren);
 		gettimeofday(&anfangmessen, NULL);
