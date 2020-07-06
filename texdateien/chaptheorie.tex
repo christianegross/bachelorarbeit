@@ -3,7 +3,8 @@
 	
 	\section{Das Ising-Modell}
 	\label{sec:isingtheorie}
-	Beim Ising-Modell handelt es sich um ein Modell für einen Ferromagneten mit starker uniaxialer Anisotropie~\cite[S. 7]{binderheermann}. %Hierbei werden Teilchen, die Spin $\pm 1$ haben können, auf ein quadratisches Gitter mit konstantem Abstand zwischen den Teilchen verteilt. % Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang. Hier: zweidimensionales Gitter.
+	Beim Ising-Modell handelt es sich um ein Modell für einen Ferromagneten mit starker uniaxialer Anisotropie. %Hierbei werden Teilchen, die Spin $\pm 1$ haben können, auf ein quadratisches Gitter mit konstantem Abstand zwischen den Teilchen verteilt. % Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang. Hier: zweidimensionales Gitter.
+	Das Modell beschreibt Teilchen, die auf den Knotenpunkten eines Gitter sitzen, und den Spin $s_i$ haben~\cite[S. 7]{binderheermann}. In dieser Arbeit wurde das Ising-Modell in zwei Dimensionen betrachtet. 
 	
 	Der Hamiltonian des Systems ist dann nach~\cite[S. 7]{binderheermann}:
 	\begin{equation}
@@ -70,7 +71,7 @@
 	Dies wird durch den Metropolis-Algorithmus ermöglicht, entwickelt in~\cite{metropolisupdate}:
 	Es wird eine Veränderung des Systems mit Energieänderung $\Delta H$ vorgeschlagen, in diesem Fall die Umdrehung eines einzelnen Spins. Diese Änderung wird auf jeden Fall angenommen, wenn sie die Energie des Systems verringert, und wenn sie die Energie erhöht, wird die Änderung mit Wahrscheinlichkeit $\exp(-\Delta H/k_BT)$ angenommen.
 	
-	Insgesamt ist die Wahrscheinlichkeit zur Umdrehung eines Spins also $P=\min \left[1, \exp(-\Delta H/k_BT)\right]$.
+	Insgesamt ist die Wahrscheinlichkeit zur Umdrehung eines Spins also $P=\min \left[1, \exp(-\Delta H/k_BT)\right]$. Der Versuch, einen Spin umzudrehen, ist ein Metropolis-Update.
 	
 	Dass die Zustände nach $p(\mathbf{x})$ verteil sind, wird durch eine Markov-Kette erreicht, das heißt, alle Zustände werden aus dem vorherigen Zustand mit einer gewissen Übergangswahrscheinlichkeit generiert~\cite[vgl. ][S. 19 f.]{binderheermann}. 
 	
@@ -78,8 +79,9 @@
 	%weiterer Vorteil: Eigenschaften der Zustände sind sehr ähnlich, erleichtert Berechnungen, nicht immer H neu ausrechnen
 	%Dies führt dazu, dass alle zu berechnenden Zustände aus den vorher berechneten generiert werden. Die Zustände bilden also eine Markovkette, es handelt sich um Markov Chain Monte Carlo (deutsche Bezeichnung?, Zitat)
 	
-	Der erste Zustand wird zufällig generiert, befindet sich also nicht im Gleichgewicht und hat vermutlich ein sehr geringes Gewicht. Um in eine Region mit lokalen Energieminima und somit hohen Gewichten zu kommen, ist erst eine Thermalisierung notwendig, das heißt, einige Updates, deren Ergebnisse nicht verwendet werden können, um einen Mittelwert zu bilden~\cite[vgl. ][S. 100 f.]{binderheermann}. %(Zitate?)
-	Bessere Ergebnisse für kleinere Gitterlängen, wenn mit komplett ausgerichtetem Gitter gestartet wird.
+	Der erste Zustand wird zufällig generiert, befindet sich also nicht im Gleichgewicht und hat vermutlich ein sehr geringes Gewicht. Um in eine Region mit lokalen Energieminima und somit hohen Gewichten zu kommen, ist erst eine Thermalisierung notwendig, das heißt, es werden einige Observablen berechnet, deren Ergebnisse nicht verwendet werden können, um einen Mittelwert zu bilden. %(Zitate?)
+	Es stellt sich heraus, dass ein Gleichgewichtszustand recht schnell erreicht wird, wenn am Anfang mit einem komplett homogen ausgerichtetem Gitter gestartet wird~\cite[vgl. ][S. 100 f.]{binderheermann}.
+	%Bessere Ergebnisse für kleinere Gitterlängen, wenn mit komplett ausgerichtetem Gitter gestartet wird.
 	
 	%Thermodynamisches Mittel=Mittel über Messungen?(Zitat)
 	
@@ -96,7 +98,7 @@
 	
 	\section{Auswertung der Messdaten}
 	\label{sec:theorieauswertung}
-	Um die Ergebnisse der Monte-Carlo-Simulationen auszuwerten, müssen Mittelwerte und Standardabweichungen der einzelnen Funktionswerte berechnet werden.
+	Um die Ergebnisse der Monte-Carlo-Simulationen auszuwerten, müssen Mittelwerte und Standardabweichungen der einzelnen Ergebnisse der Observablen berechnet werden.
 	
 	Am einfachsten ist es, die folgenden Standardschätzer für Mittelwert $\mu$ und Standardabweichung $\sigma$ zu berechnen~\cite[vgl. ][S. 54 f.]{skriptcompphys}:
 	
@@ -123,7 +125,7 @@
 	
 	Um die Fehler noch besser abschätzen zu können, wird die sogenannte Bootstrap-Methode verwendet~\cite[vgl. ][S. 64 ff.]{skriptcompphys}:
 	
-	Zuerst werden Bootstrapreplicas erzeugt. Dazu werden aus den gemessenen bzw. geblockten Werten mit zurücklegen so viele Werte gezogen, wie es insgesamt Werte gibt. Der arithmetische Mittelwert nach Gl.~\ref{eq:standardmitteundfehler} aus diesen Werten ist dann ein Replica.
+	Zuerst werden Bootstrapreplicas erzeugt. Dazu werden aus den gemessenen bzw. geblockten Werten mit Zurücklegen so viele Werte gezogen, wie es insgesamt Werte gibt. Der arithmetische Mittelwert nach Gl.~\ref{eq:standardmitteundfehler} aus diesen Werten ist dann ein Replica.
 	
 	Insgesamt werden $r$ Replicas gezogen. Der Bootstrapschätzer für Mittelwert und Standardabweichung wird gebildet, indem die Standardschätzer für $\mu$ und $\sigma$ aus den Replicas gebildet werden.
 	
