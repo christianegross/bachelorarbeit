@@ -21,6 +21,9 @@ ising: ising.o messfunktionen.o sweeps.o auswertungsfunktionen.o
 
 #bootstrap: bootstrap.o messfunktionen.o sweeps.o auswertungsfunktionen.o
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+
+minline: minline.o auswertungsfunktionen.o 
+	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 	
 #erstellt aus allen .c dateien eine .o datei	
 %.o: %.c
