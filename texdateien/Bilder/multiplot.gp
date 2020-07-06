@@ -46,7 +46,7 @@ plot 'bootstrapalle-hamiltonian-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):
 unset xrange
 
 
-set ter epslatex size 6in, 3in color colortext
+set ter epslatex size 15 cm, 7.5cm color colortext
 set out 'akzeptanzrate.tex'
 set multiplot layout 1,2
 set yrange [-0.01:1.01]
@@ -83,6 +83,48 @@ plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/
 
 @RIGHT
 plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 1 title ''
+unset multiplot
+
+set output
+
+set ter epslatex size 6in, 3in color colortext
+set out 'akzeptanzratefehler.tex'
+unset yrange
+set multiplot layout 1,2
+#set yrange [-0.01:1.01]
+set ylabel 'Akzeptanzrate'
+
+@LEFT
+plot 'bootstrapalle-akzeptanz-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):5 ls 1 title ''
+
+@RIGHT
+plot 'bootstrapalle-akzeptanz-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):5  ls 1 title ''
+
+unset multiplot
+
+set out 'hamiltonianfehler.tex'
+set multiplot layout 1,2
+#set yrange [-2.01:0.01]
+set ylabel '$H/\text{laenge}^2$'
+
+@LEFT
+plot 'bootstrapalle-hamiltonian-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):($5/120**2) ls 1 title ''
+
+@RIGHT
+plot 'bootstrapalle-hamiltonian-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):($5/120**2) ls 1 title ''
+
+unset multiplot
+
+set out 'magnetisierungfehler.tex'
+set multiplot layout 1,2
+#set yrange [-0.01:1.01]
+set ylabel '$M$'
+
+@LEFT
+plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):5 ls 1 title ''
+
+@RIGHT
+plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):5 ls 1 title ''
 unset multiplot
 
 set output

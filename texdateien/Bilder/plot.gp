@@ -1,10 +1,12 @@
-set ter epslatex size 6in, 4.5in color colortext
+set ter epslatex size 15 cm, 10.6cm color colortext
 
 set style line 1 lc 7 lt 7 pt 7 #ps 0.2
 set style line 2 lc 1 lt 7 pt 9
 set style line 3 lc 2 lt 7 pt 11
 set style line 4 lc 3 lt 7 pt 3
 set style line 5 lc 4 lt 7 pt 5#4 gut
+set style line 6 lc 5 lt 7 pt 4#4 gut
+
 
 #Literaturergbnis Magnetisierung
 litresult(x)=(1-(1/(sinh(2/x)*sinh(2/x)))**2)**(1.0/8)*(x<=2.269)+0*(x>2.269)
@@ -38,18 +40,24 @@ unset xlabel
 unset ylabel
 
 
-set ter epslatex size 6in, 4.5in color colortext
+set ter epslatex size 15 cm, 10.6cm color colortext
 #Vergleich Magnetisieurng verschiedene Längen
 set xlabel 'Temperatur'
 set ylabel '$M$'
 
 set out 'magnetisierunglaenge.tex'
 set key top right
-set xrange [1:4]
+set xrange [1:3.6]
 set yrange[0:1]
-plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 2 title '$\text{laenge}=120$',\
-	 'bootstrapalle-magnetisierung-l0036-m-010000-node00.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 3 title '$\text{laenge}=36$',\
-	 litresult(x) ls 1 title 'Theorie'
+plot litresult(x) ls 1 title 'Theorie',\
+	 'bootstrapalle-magnetisierung-l0012-m-010368-node02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 2 title '$\text{laenge}=12$',\
+	 'bootstrapalle-magnetisierung-l0024-m-010368-node02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 3 title '$\text{laenge}=24$',\
+	 'bootstrapalle-magnetisierung-l0048-m-010368-node02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 4 title '$\text{laenge}=48$',\
+	 'bootstrapalle-magnetisierung-l0768-m-010368-node02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 5 title '$\text{laenge}=768$'
+#'bootstrapalle-magnetisierung-l0192-m-010368-node02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 5 title '$\text{laenge}=192$',\
+#plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 2 title '$\text{laenge}=120$',\
+#	 'bootstrapalle-magnetisierung-l0036-m-010000-node00.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 3 title '$\text{laenge}=36$',\
+#	 litresult(x) ls 1 title 'Theorie'
 unset xrange
 unset yrange
 
@@ -69,10 +77,10 @@ set xlabel 'Verwendete Kerne'
 set ylabel 'Speedup'
 set key top left
 set xrange[0:12.5]
-plot 'zmittel-m001000-node02v5schedstatt05weninit-l10.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 1 title 'L=10',\
-	 'zmittel-m001000-node02v5schedstatt05weninit-l40.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 2 title 'L=40',\
-	 'zmittel-m001000-node02v5schedstatt05weninit-l70.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 3 title 'L=70',\
-	 'zmittel-m001000-node02v5schedstatt05weninit-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 4 title 'L=500',\
+plot 'zmittel-m001000-node02-l10.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 1 title 'L=10',\
+	 'zmittel-m001000-node02-l40.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 2 title 'L=40',\
+	 'zmittel-m001000-node02-l110.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 3 title 'L=110',\
+	 'zmittel-m001000-node02-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 4 title 'L=500',\
 	 einslinie(x) lt 0 dt 5 title ''
 unset yrange
 
@@ -83,12 +91,31 @@ set xlabel 'Verwendete Kerne'
 set ylabel 'Speedup'
 set key top left
 set xrange[0:12.5]
-plot 'zmittel-m001000-node02v5schedstatt05weninit-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 4 title '$T=\num{0,5}$',\
-	 'zmittel-m001000-node02v5schedstatt22weninit-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 3 title '$T=\num{2,2}$',\
-	 'zmittel-m001000-node02v5schedstatt23weninit-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 2 title '$T=\num{2,3}$',\
-	 'zmittel-m001000-node02v5schedstatt100weninit-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 1 title '$T=\num{100}$',\
+plot 'zmittel-m001000-node02-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 4 title '$T=\num{0,5}$',\
+	 'zmittel-m001000-node02t22-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 3 title '$T=\num{2,2}$',\
+	 'zmittel-m001000-node02t23-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 2 title '$T=\num{2,3}$',\
+	 'zmittel-m001000-node02t100-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 1 title '$T=\num{100}$',\
 	 einslinie(x) lt 0 dt 5 title ''
-unset yrange
+unset xrange
+
+set out 'tkritvonl.tex'
+tkrit(x)=2.269
+yfehler=0.002
+set logscale x
+set key top right
+set xrange [10:1000]
+set xtics 12, 2, 1000
+set xlabel 'Gitterlänge'
+set ylabel '$T_{\text{krit}}$'
+plot tkrit(x) lt 0 dt 5 title 'theoretischer Wert',\
+	 '25laengenl128.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:(0.002) w yerrorbars lt 7 title 'bestimmte Werte'
+#plot 'allesm10368mit768mitnormundsqrt.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:yfehler ls 1 title 'bestimmte Werte',\
+#	 'allesm10368mit768mitnormundsqrtl256.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:yfehler ls 2 title 'bestimmte Werte',\
+#	 'allesm10368mit768mitnormundsqrtl1536.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:yfehler ls 3 title 'bestimmte Werte',\
+#	 'allesm10368mit768mitnormundsqrtl1024.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:yfehler ls 4 title 'bestimmte Werte',\
+#	 tkrit(x) lt 0 dt 5 title 'theoretischer Wert'
+unset logscale x
+unset xrange
 
 set ter epslatex size 3.5in, 3.5in color colortext
 #Schachbrett 

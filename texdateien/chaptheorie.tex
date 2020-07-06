@@ -3,9 +3,9 @@
 	
 	\section{Das Ising-Modell}
 	\label{sec:isingtheorie}
-	Beim Ising-Modell handelt es sich um ein Modell für einen Ferromagneten mit starker uniaxialer Anisotropie \cite[S. 7]{binderheermann}. %Hierbei werden Teilchen, die Spin $\pm 1$ haben können, auf ein quadratisches Gitter mit konstantem Abstand zwischen den Teilchen verteilt. % Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang. Hier: zweidimensionales Gitter.
+	Beim Ising-Modell handelt es sich um ein Modell für einen Ferromagneten mit starker uniaxialer Anisotropie~\cite[S. 7]{binderheermann}. %Hierbei werden Teilchen, die Spin $\pm 1$ haben können, auf ein quadratisches Gitter mit konstantem Abstand zwischen den Teilchen verteilt. % Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang. Hier: zweidimensionales Gitter.
 	
-	Der Hamiltonian des Systems ist dann nach \cite[S. 7]{binderheermann}:
+	Der Hamiltonian des Systems ist dann nach~\cite[S. 7]{binderheermann}:
 	\begin{equation}
 	H=-J\sum_{\langle i,j\rangle }s_is_j
 	\label{eq:hamiltonianising}
@@ -13,10 +13,10 @@
 	Wobei $\langle i,j\rangle$ alle benachbarten Paare sind, die Austauschenergie $J$ in beide Richtungen gleich und konstant ist und die Spins $s_i$ die  Werte $\pm 1$ annehmen können. Das Vorzeichen von $J$ bestimmt, ob der Magnet ferro- oder antiferromagnetisch ist. Es ist möglich, durch einen zusätzlichen Term ein äußeres Magnetfeld zu simulieren, dies wurde in dieser Arbeit jedoch nicht getan.%Äußeres Magnetfeld möglich, aber hier vernachlässigt.
 
 	
-	%Erwarte einen kritischen Punkt mit Phasenübergang zweiter Ordnung. \cite{OnsagerCrystal1}
-	Beim Ising-Modell in zwei Dimensionen wird ein Phasenübergang bei einer kritischen Temperatur erwartet, unterhalb derer sich der Magnet ferromagnetisch verhält\cite[vgl. ][]{peierls_1936}.
+	%Erwarte einen kritischen Punkt mit Phasenübergang zweiter Ordnung.~\cite{OnsagerCrystal1}
+	Beim Ising-Modell in zwei Dimensionen wird ein Phasenübergang bei einer kritischen Temperatur erwartet, unterhalb derer sich der Magnet ferromagnetisch verhält~\cite[vgl. ][]{peierls_1936}.
 	
-	Dieser befindet sich nach \cite{OnsagerCrystal1} bei \[\sinh^2\left(\frac{2J}{k_BT_c}\right) =1\]
+	Dieser befindet sich nach~\cite{OnsagerCrystal1} bei \[\sinh^2\left(\frac{2J}{k_BT_c}\right) =1\]
 	
 	\begin{equation}
 	\Leftrightarrow k_BT_c=\frac{2J}{\ln(1+\sqrt{2})}
@@ -27,50 +27,61 @@
 	%Magnetisierung: Erwartungswert der Spins, \[
 	%M^2=\lim\limits_{m\to\infty}\left\langle s_i s_{i+m}\right\rangle \]
 	
-	Bei der Magnetisierung handelt es sich um den Erwartungswert der Spins, bei einem endlichen Gitter mit $N$ Punkten also\cite[vgl. ][S. 8]{binderheermann}:
+	Bei der Magnetisierung handelt es sich um den Erwartungswert der Spins, bei einem endlichen Gitter mit $N$ Punkten also~\cite[vgl. ][S. 8]{binderheermann}:
 	\begin{equation}
 	M=\langle s \rangle=\frac{1}{N}\left\langle  \sum_{i=1}^{N} s_i \right\rangle
 	\label{eq:magnetisierung}
 	\end{equation}
 
 	
-	Sie ist ein Maß dafür, wie stark das Gitter nach außen als Magnet wirkt. Die erwartete Magnetisierung unterhalb des kritischen Punkt ist nach \cite{YangMagnetization}, \cite{MontrollMagnetization}:
+	Sie ist ein Maß dafür, wie stark das Gitter nach außen als Magnet wirkt. Die erwartete Magnetisierung unterhalb des kritischen Punkt ist nach~\cite{YangMagnetization},~\cite{MontrollMagnetization}:
 	\begin{equation} M=\left[1-\left(\sinh\left(\frac{2J}{k_BT}\right)\right)^{-4}\right]^{\frac{1}{8}}
 	\label{eq:magnetisierungsgleichungliteratur}
 	\end{equation}
 	
-	Oberhalb der kritischen Temperatur ist die Magnetisierung null \cite[Gl. 81]{MontrollMagnetization}.
+	Oberhalb der kritischen Temperatur ist die Magnetisierung null~\cite[Gl. 81]{MontrollMagnetization}.
 	
 	Es kommt hier also zu einer Unstetigkeit in der Magnetisierung.
 	
 	\section{Monte-Carlo Simulationen}
 	\label{sec:mctheorie}
-	Die Messwerte, an denen Interesse besteht, lassen sich nach \cite[S. 8]{binderheermann}  mit \[
+	Die Messwerte, an denen Interesse besteht, lassen sich nach~\cite[S. 8]{binderheermann}  mit \[
 	\langle A(\mathbf{x}) \rangle=\frac{1}{Z}\int A(\mathbf{x}) \exp(-H(\mathbf{x})/k_BT)\dif \mathbf{x}\]
 	
 	\[
 	Z=\int \exp(-H(\mathbf{x})/k_BT) \dif \mathbf{x}
 	\]
-	berechnen, wobei $\mathbf{x}$ eine mögliche Konfiguration des Systems ist.
+	berechnen, wobei $\mathbf{x}$ eine mögliche Konfiguration des Systems und $A$ eine Observable des Systems ist.
 	
 	
-	Hierbei kann der Boltzmann-Faktor $p(\mathbf{x})=Z^{-1} \exp(-H(\mathbf{x})/k_BT)$ als die Wahrscheinlichkeit angesehen werden, mit der ein bestimmter Zustand auftritt\cite[vgl. ][S. 8 f.]{binderheermann}.
+	Hierbei kann der Boltzmann-Faktor $p(\mathbf{x})=Z^{-1} \exp(-H(\mathbf{x})/k_BT)$ als die Wahrscheinlichkeit angesehen werden, mit der ein bestimmter Zustand auftritt~\cite[vgl. ][S. 8 f.]{binderheermann}.
 	
-	Dies ist analytisch nicht machbar, da dieses Integral sehr hochdimensional ist und gleichzeitig viele Zustände nur einen sehr kleinen Beitrag zum Gesamtintegral leisten\cite[vgl. ][S. 9]{binderheermann}.
+	Dies ist analytisch nicht machbar, da dieses Integral sehr hochdimensional ist und gleichzeitig viele Zustände nur einen sehr kleinen Beitrag zum Gesamtintegral leisten~\cite[vgl. ][S. 9]{binderheermann}.
 	
 	Die Idee der Monte-Carlo-Simulationen ist es, solche Integrale zu Diskretisieren
-	und über alle berechneten Zustände einen Mittelwert mit Gewichtung der einzelnen Zustände mit $p(\mathbf{x})$ zu berechnen. Alternativ können die Zustände auch so gezogen werden, dass sie von Anfang an nach $p(\mathbf{x})$ verteilt sind, dann ist bei der Bildung des Mittelwerts keine Gewichtung mehr notwendig.(Zitate) %und die Zustände mit mehr Gewicht öfter zu berechnen, damit sie bei der Summierung entsprechend mehr ins Gewicht fallen. Dafür werden die zu berechnenden Zustände $A$ so gezogen, dass sie nach $Z^{-1} \exp(-H_i/k_BT)$ verteilt sind.
+	und über alle berechneten Zustände einen Mittelwert zu bilden, um das Ergebnis abzuschätzen. 
+	Die einfachste Methode hierzu ist das sogenannte simple sampling, wobei von zufällig, aber gleichmäßig verteilten Zuständen sowohl der Wert der Observablen als auch der Boltzmann-Faktor berechnet wird. Der Erwartungswert $\langle A(\mathbf{x}) \rangle$ berechnet sich dann als der gewichtete Mittelwert der Observablen, wobei $p(\mathbf{x})$ das Gewicht ist~\cite[vgl. ][S. 9 f.]{binderheermann}.
+	%simple sampling != accept-reject, welches vorstellen? überhaupt benötigt?
+	%simple sampling: Zustände zufällig auf gesamten Konfigurationsraum verteilt, Integral als diskrete Summe angenähert Entspricht gewichtetem Mittelwert mit Gewicht p.
+	%Dies ist einerseits über das sogenannte simple sampling möglich. Hierbei erhält jeder Zustand das Gewicht $p(\mathbf{x})$ und um das Ergebnis zu erhalten, wird der gewichtete Mittelwert über alle Zustände gebildet\cite[vgl. ][S. 9 f.]{binderheermann}\cite[vgl. ][S. 91 f.]{skriptcompphys}. %mit Gewichtung der einzelnen Zustände mit $p(\mathbf{x})$ zu berechnen(accept-reject).
+	 Alternativ können die Zustände auch so gezogen werden, dass sie von Anfang an nach $p(\mathbf{x})$ verteilt sind, dann ist bei der Bildung des Mittelwerts keine Gewichtung mehr notwendig. Dies nennt sich importance sampling~\cite[vgl. ][S. 19 f.]{binderheermann}.
+	 %(importance sampling).(Zitate) %und die Zustände mit mehr Gewicht öfter zu berechnen, damit sie bei der Summierung entsprechend mehr ins Gewicht fallen. Dafür werden die zu berechnenden Zustände $A$ so gezogen, dass sie nach $Z^{-1} \exp(-H_i/k_BT)$ verteilt sind.
 	
-	Dies wird durch den Metropolis-Algorithmus ermöglicht, entwickelt in \cite{metropolisupdate}:
+	Dies wird durch den Metropolis-Algorithmus ermöglicht, entwickelt in~\cite{metropolisupdate}:
 	Es wird eine Veränderung des Systems mit Energieänderung $\Delta H$ vorgeschlagen, in diesem Fall die Umdrehung eines einzelnen Spins. Diese Änderung wird auf jeden Fall angenommen, wenn sie die Energie des Systems verringert, und wenn sie die Energie erhöht, wird die Änderung mit Wahrscheinlichkeit $\exp(-\Delta H/k_BT)$ angenommen.
 	
-	Insgesamt ist die Wahrscheinlichkeit zur Umdrehung eines Spins also $P=\min \left[1, \exp(-\Delta H/k_BT)\right]$
+	Insgesamt ist die Wahrscheinlichkeit zur Umdrehung eines Spins also $P=\min \left[1, \exp(-\Delta H/k_BT)\right]$.
 	
-	Dies führt dazu, dass alle zu berechnenden Zustände aus den vorher berechneten generiert werden. Die Zustände bilden also eine Markovkette, es handelt sich um Markov Chain Monte Carlo (deutsche Bezeichnung?, Zitat)
+	Dass die Zustände nach $p(\mathbf{x})$ verteil sind, wird durch eine Markov-Kette erreicht, das heißt, alle Zustände werden aus dem vorherigen Zustand mit einer gewissen Übergangswahrscheinlichkeit generiert~\cite[vgl. ][S. 19 f.]{binderheermann}. 
 	
-	Der erste Zustand wird zufällig generiert, befindet sich also nicht im Gleichgewicht und hat vermutlich ein sehr geringes Gewicht. Um in eine Region mit lokalen Energieminima/Hohen Gewichten zu kommen, ist erst eine Thermalisierung notwendig, das heißt, einige Updates, deren Ergebnisse nicht verwendet werden können, um einen Mittelwert zu bilden\cite[vgl. ][Abschnitt 3.4]{binderheermann}. %(Zitate?)
+	Diese sogenannte Markov-Chain-Monte-Carlo-Simulation führt dazu, dass nur ein einfacher Mittelwert zur Bestimmung der Ergebnisse nötig ist~\cite[vgl. ][S. 19 f.]{binderheermann}, allerdings führt die Abhängigkeit der Zustände voneinander zu einer Autokorrelation der Messergebnisse, die die Fehlerbestimmung erschwert~\cite[vgl. ][S. 72 ff.]{skriptcompphys}. Ein sich dadurch ergebender Vorteil dieser Methode ist, dass sich die einzelnen Zustände nicht viel voneinander unterscheiden, was die Berechnung der Observablen in manchen Fällen einfacher macht~\cite[vgl. ][S. 102 f.]{binderheermann}.
+	%weiterer Vorteil: Eigenschaften der Zustände sind sehr ähnlich, erleichtert Berechnungen, nicht immer H neu ausrechnen
+	%Dies führt dazu, dass alle zu berechnenden Zustände aus den vorher berechneten generiert werden. Die Zustände bilden also eine Markovkette, es handelt sich um Markov Chain Monte Carlo (deutsche Bezeichnung?, Zitat)
 	
-	Thermodynamisches Mittel=Mittel über Messungen?(Zitat)
+	Der erste Zustand wird zufällig generiert, befindet sich also nicht im Gleichgewicht und hat vermutlich ein sehr geringes Gewicht. Um in eine Region mit lokalen Energieminima und somit hohen Gewichten zu kommen, ist erst eine Thermalisierung notwendig, das heißt, einige Updates, deren Ergebnisse nicht verwendet werden können, um einen Mittelwert zu bilden~\cite[vgl. ][S. 100 f.]{binderheermann}. %(Zitate?)
+	Bessere Ergebnisse für kleinere Gitterlängen, wenn mit komplett ausgerichtetem Gitter gestartet wird.
+	
+	%Thermodynamisches Mittel=Mittel über Messungen?(Zitat)
 	
 %	Suche Observablen von komplexen Systemen. Problem: Zustandssumme, Observable $<A>$ nicht/nur schwer analytisch bestimmbar. \[Z=\int_{Alle Konfigurationen}\exp(-H/T)\] \[<A>=1/Z\int_{alle Konfigurationen} A\exp(-H/T)\] Generell: Integral bestimmen, nicht analytisch lösbar.
 %	Idee: Diskretisiere Integral, verteile Summe nicht gleichmäßig, sondern summiere bevorzugt über Zustände, die ein höheres Gewicht haben. Zwei Funktionen Multiplizieren, Zahlen aus einer ziehen.
@@ -81,6 +92,46 @@
 %	Quelle: Skript
 %	\cite{binderheermann}
 		
+
+	
+	\section{Auswertung der Messdaten}
+	\label{sec:theorieauswertung}
+	Um die Ergebnisse der Monte-Carlo-Simulationen auszuwerten, müssen Mittelwerte und Standardabweichungen der einzelnen Funktionswerte berechnet werden.
+	
+	Am einfachsten ist es, die folgenden Standardschätzer für Mittelwert $\mu$ und Standardabweichung $\sigma$ zu berechnen~\cite[vgl. ][S. 54 f.]{skriptcompphys}:
+	
+	\begin{equation}
+	\mu=\frac{1}{N}\sum\limits_{i}^{N} x_i
+	\qquad
+	\sigma^2=\frac{1}{N-1}\sum\limits_{i}^{N}(x_i-\mu)^2
+	\label{eq:standardmitteundfehler}
+	\end{equation}
+	Hierbei ist $N$ die Anzahl der Messungen und $x_i$ der einzelne Messwert.
+	
+	%Mittelwert muss gebildet werden, um Erwartungswert zu bestimmen/MC-Simulation zu vervollständigen:
+	
+	%naiver Schätzer von Mittelwert und standardabweichung: 
+	
+	%Dabei wird allerdings nicht berücksichtigt, dass die einzelnen Zustände, an denen die Messungen durchgeführt werden, jeweils aus den vorherigen Zuständen entstehen, und die Messwerte somit autokorreliert sind. 
+	Dies vernachlässigt allerdings die Autokorrelation der Daten, die dazu führt, dass der naive Schätzer der Standardabweichung kein richtiges Ergebnis mehr liefert~\cite[vgl. ][S. 72 ff.]{skriptcompphys}. Daher werden zur Analyse nicht die einzelnen Messwerte verwendet, sondern Blöcke der Länge $l$ aus den Messwerten gebildet, in denen jeweils der Mittelwert über $l$ konsekutive Messwerte enthalten ist. Aus $N$ Messwerten werden so $\lfloor N/l \rfloor$ Blöcke gebildet. Die Fehler, die mittels dieser Blöcke ermittelt werden, hängen von $l$ ab, und zwar steigen sie erst, bis sie dann ab einem gewissen $l$ ein Plateau erreichen, also ab einem gewissen $l$ die Blöcke nicht mehr messbar autokorreliert sind~\cite[vgl. ][S. 75 ff.]{skriptcompphys}.
+	
+	%Autokorrelation der Daten, da aus vorherigem Zustand generiert.
+	
+	%Daher Blocking: Mittelwert aus je l Daten
+	
+	%Fehler steigt mit l, bis ein Plateau erreicht ist.
+	
+	Um die Fehler noch besser abschätzen zu können, wird die sogenannte Bootstrap-Methode verwendet~\cite[vgl. ][S. 64 ff.]{skriptcompphys}:
+	
+	Zuerst werden Bootstrapreplicas erzeugt. Dazu werden aus den gemessenen bzw. geblockten Werten mit zurücklegen so viele Werte gezogen, wie es insgesamt Werte gibt. Der arithmetische Mittelwert nach Gl.~\ref{eq:standardmitteundfehler} aus diesen Werten ist dann ein Replica.
+	
+	Insgesamt werden $r$ Replicas gezogen. Der Bootstrapschätzer für Mittelwert und Standardabweichung wird gebildet, indem die Standardschätzer für $\mu$ und $\sigma$ aus den Replicas gebildet werden.
+	
+	%Bootstrapping: Replica ziehen: Soviele zufällige Ergebnisse ziehen, wie es Messungen gibt, daraus den Mittelwert bilden.
+	
+	%Aus r Replicas mit Standardschätzern Mittelwert und Varianz bestimmen.
+
+
 	\section{Parallelrechner}
 	\label{sec:partheorie}
 	Um die Berechnungen eines Standardrechner, der seriell arbeitet, zu beschleunigen, können mehrere Prozessoren oder mehrere Computer gleichzeitig an einem Programm arbeiten. Dazu gibt es zwei weit verbreitete Konzepte:
@@ -95,18 +146,20 @@
 	
 	Um das Verhalten der Laufzeit bei mehreren Kernen zu vergleichen, wird der Speedup gemessen:
 	%Erwartetes Laufzeitverhalten bei mehr Kernen: gemessen als 
-	\[\text{Speedup(n Kernen)}=\frac{\text{Laufzeit bei einem Prozessorkern}}{\text{Laufzeit bei n Prozessorkernen}}\]
+	\begin{equation}
+	\text{Speedup(n Kernen)}=\frac{\text{Laufzeit bei einem Prozessorkern}}{\text{Laufzeit bei n Prozessorkernen}}
+	\label{eq:speedup}
+	\end{equation}
 	
-	Naiv ist zu erwarten, dass der Sppedup linear mit der Anzahl der Kerne zunimmt. Dies berücksichtigt allerdings nicht, dass mit der Parallelisierung für jeden Kern eine zusätzliche Synchronisierung benötigt wird oder nicht alle Kerne gleichzeitig arbeiten, sondern zwischendurch auch (idle? deutsch?) sind. Daher ist zu erwarten, dass der Speedup weniger als linear zunimmt\cite[vgl. ][S. 58 f.]{pachecoparallel}.
-	% linear, allerdings mehr Synchronisierungsarbeiten und anderer overhead durch parallelisierung ->. Zunahme des speedup flacht ab. (Zitat? Buch parallelisierung?) \cite{pachecoparallel}
-	 
+	Naiv ist zu erwarten, dass der Speedup linear mit der Anzahl der Kerne zunimmt. Dies berücksichtigt allerdings nicht, dass mit der Parallelisierung für jeden Kern eine zusätzliche Synchronisierung benötigt wird oder nicht alle Kerne gleichzeitig arbeiten, sondern zwischendurch auch (idle? deutsch?) sind. Daher ist zu erwarten, dass der Speedup weniger als linear zunimmt\cite[vgl. ][S. 58 f.]{pachecoparallel}.
+	% linear, allerdings mehr Synchronisierungsarbeiten und anderer overhead durch parallelisierung ->. Zunahme des speedup flacht ab. (Zitat? Buch parallelisierung?)~\cite{pachecoparallel}
 	
-		
-	Jede Parallelisierung führt zu mehr Overhead, also zusätzlich benötigten Rechnungen. Falls es viel Overhead gibt, wird zu dessen Ausführung genauso viel oder sogar mehr Zeit gebraucht, wie durch die Parallelisierung eingespart wurde. In diesem Fall wird der Sppedup bei höherer Anzahl an Kernen wieder kleiner.
+	
+	
+	Jede Parallelisierung führt zu mehr Overhead, also zusätzlich benötigten Rechnungen. Falls es viel Overhead gibt, wird zu dessen Ausführung genauso viel oder sogar mehr Zeit gebraucht, wie durch die Parallelisierung eingespart wurde. In diesem Fall wird der Speedup bei höherer Anzahl an Kernen wieder kleiner.
 	%Open Multi-Processing\cite{specificationsopenmp}
 	%Mehrere Prozessoren greifen auf einen gemeinsamen Speicher zu, alle Prozesse können freigegebene Variablen verändern, Verhindern von Speicherproblemen durch critical-Bereiche, die nur ein Thread zu einer Zeit ausführen kann. Auch möglich, Variablen privat zu setzen, dann hat jeder Thread eine eigene Kopie der variable. Anwendung über Compiler-Pragmas\cite{tutorialopenmp}
 	\subsection{MPI}
 	\label{subsecmpitheorie}
 	Message Passing Interface
-	Mehrere Rechner mit separatem Speicher arbeiten an einem Problem, Rechner kommunizieren untereinander.
-	
+	Mehrere Rechner mit separatem Speicher arbeiten an einem Problem, Rechner kommunizieren untereinander.	
