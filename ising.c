@@ -38,7 +38,7 @@ int main(int argc, char **argv){
 	int temperaturzahl=210;//Temperaturen, beid enen gemessen wird
 	int starttemp=0;
 	int endtemp=temperaturzahl;
-	int node=2;//nodes auf vm, qbig
+	int node=0;//nodes auf vm, qbig
 	char dateinametherm[150], dateinamemessen[150], dateinamemittel[150], dateinamebootstrapalleakz[150], dateinamebootstrapallemag[150], dateinamebootstrapallemqu[150], dateinamebootstrapalleham[150], dateinameableitung[150], dateinamezeit[150];//Um Dateien mit Variablen benennen zu koennen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler
 	double U, magquad, varmagquad, magvier, varmagvier;
@@ -157,8 +157,8 @@ int main(int argc, char **argv){
 			};
 			r=4*messungen;//Anzahl an Replikas, die beim Bootstrappen erzeugt werden
 			//akzaptanzrate
-			//~ blocks_generieren(l, messungen, 1, 6, blockarray, messdatei);//blocking
-			//~ bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateiakz);//bootstrapping
+			blocks_generieren(l, messungen, 1, 6, blockarray, messdatei);//blocking
+			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateiakz);//bootstrapping
 			//magnetisierung
 			blocks_generieren(l, messungen, 2, 6, blockarray, messdatei);//blocking
 			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateimag);//bootstrapping
@@ -166,8 +166,8 @@ int main(int argc, char **argv){
 			blocks_generieren(l, messungen, 3, 6, blockarray, messdatei);//blocking
 			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateimqu);//bootstrapping
 			//hamiltonian
-			//~ blocks_generieren(l, messungen, 5, 6, blockarray, messdatei);//blocking
-			//~ bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateiham);//bootstrapping
+			blocks_generieren(l, messungen, 5, 6, blockarray, messdatei);//blocking
+			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateiham);//bootstrapping
 			free(blockarray);
 		}//
 		gettimeofday(&endebootstrap, NULL);
