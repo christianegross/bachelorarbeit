@@ -37,40 +37,6 @@ unset logscale x
 unset xlabel
 unset ylabel
 
-#Hamiltonian, Akzeptanzrate und Magnetisierung grob und fein
-set ter epslatex size 3in, 3in color colortext
-set xlabel 'Temperatur'
-
-set out 'akzeptanzrategrob.tex'
-set ylabel 'Akzeptanzrate'
-set xtics 400
-plot 'bootstrapalle-akzeptanz-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 1 title ''
-
-set out 'magnetisierunggrob.tex'
-set ylabel '$M$'
-set xtics 400
-plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 1 title ''
-
-set out 'hamiltoniangrob.tex'
-set ylabel '$H/\text{laenge}^2$'
-set xtics 400
-plot 'bootstrapalle-hamiltonian-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):($4/120**2):($5/120**2)  w yerrorbars ls 1 title ''
-unset xtics
-set xtics auto
-
-set xrange[0:5]
-set out 'akzeptanzratefein.tex'
-set ylabel 'Akzeptanzrate'
-plot 'bootstrapalle-akzeptanz-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 1 title ''
-
-set out 'magnetisierungfein.tex'
-set ylabel '$M$'
-plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 1 title ''
-
-set out 'hamiltonianfein.tex'
-set ylabel '$H/\text{laenge}^2$'
-plot 'bootstrapalle-hamiltonian-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):($4/120**2):($5/120**2)  w yerrorbars ls 1 title ''
-unset xrange
 
 set ter epslatex size 6in, 4.5in color colortext
 #Vergleich Magnetisieurng verschiedene Längen
@@ -90,7 +56,7 @@ unset yrange
 #ableitung
 set out 'ableitung120128.tex'
 set xlabel 'Temperatur'
-set ylabel '$\dpd{M}{T}$'
+set ylabel 'dM/dT'
 set xrange[1:4]
 plot 'ableitung-magnetisierung-laenge-0120-m-010000-node02.txt' u 1:2:3 w yerrorbars ls 1 title ''
 unset xrange
@@ -113,3 +79,5 @@ set xrange [-0.5:9.5]
 set yrange [9.5:-0.5] 
 set title ''
 splot 'schachbrett.txt' u 1:2:3 w image title ''
+
+set output
