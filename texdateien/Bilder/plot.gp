@@ -61,6 +61,35 @@ set xrange[1:4]
 plot 'ableitung-magnetisierung-laenge-0120-m-010000-node02.txt' u 1:2:3 w yerrorbars ls 1 title ''
 unset xrange
 
+#speedup
+set out 'speeduplaenge.tex' 
+
+einslinie(x)=1
+set xlabel 'Verwendete Kerne'
+set ylabel 'Speedup'
+set key top left
+set xrange[0:12.5]
+plot 'zmittel-m001000-node02v5schedstatt05weninit-l10.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 1 title 'L=10',\
+	 'zmittel-m001000-node02v5schedstatt05weninit-l40.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 2 title 'L=40',\
+	 'zmittel-m001000-node02v5schedstatt05weninit-l70.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 3 title 'L=70',\
+	 'zmittel-m001000-node02v5schedstatt05weninit-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 4 title 'L=500',\
+	 einslinie(x) lt 0 dt 5 title ''
+unset yrange
+
+set out 'speeduptemperatur.tex' 
+
+einslinie(x)=1
+set xlabel 'Verwendete Kerne'
+set ylabel 'Speedup'
+set key top left
+set xrange[0:12.5]
+plot 'zmittel-m001000-node02v5schedstatt05weninit-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 4 title '$T=\num{0,5}$',\
+	 'zmittel-m001000-node02v5schedstatt22weninit-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 3 title '$T=\num{2,2}$',\
+	 'zmittel-m001000-node02v5schedstatt23weninit-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 2 title '$T=\num{2,3}$',\
+	 'zmittel-m001000-node02v5schedstatt100weninit-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 1 title '$T=\num{100}$',\
+	 einslinie(x) lt 0 dt 5 title ''
+unset yrange
+
 set ter epslatex size 3.5in, 3.5in color colortext
 #Schachbrett 
 

@@ -30,11 +30,11 @@ int main(int argc, char **argv){
 	int seed=5;//fuer den zufallsgenerator
 	int N01=50000;//sweeps beim ersten Thermalisieren
 	int N0=10000;//benoetigte sweeps zum Thermalisieren
-	int messungen=10000;//pro temperatur, zweierpotenz um blocken einfacher zu machen
+	int messungen=10240;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateiham, *ableitungdatei, *zeitdatei;//benoetigte Dateien zur Ausgabe
-	int temperaturzahl=650;//Temperaturen, beid enen gemessen wird
-	int schritt=100;//Wie viele Punkte werden gemessen?
+	int temperaturzahl=210;//Temperaturen, beid enen gemessen wird
+	int schritt=1;//Wie viele Punkte werden gemessen?
 	int starttemp=0;
 	int endtemp=temperaturzahl;
 	int node=2;//nodes auf vm, qbig
@@ -47,25 +47,30 @@ int main(int argc, char **argv){
 		return (-1);
 	}
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
+		//genaue Messung der Magnetisierung:
+		if((i<10)){temperaturarray[i]=0.1+i*0.2;}
+		if((i>=10)&&(i<30)){temperaturarray[i]=2.0+0.008*(i-10);}
+		if((i>=130)){temperaturarray[i]=2.4+0.008*(i-130);}
+		if((i>=30)&&(i<130)){temperaturarray[i]=2.2+0.002*(i-30);}
 		//MAgnetisierung zur genaueren Bestimmung des kritishen Punktes
 		//~ if((i<50)){temperaturarray[i]=0.1+0.041*i;}
 		//~ if((i>=50)&&(i<150)){temperaturarray[i]=2.15+0.003*i;}
 		//~ if((i>=150)){temperaturarray[i]=2.45+0.051*i;}
-		//~ //Für Akzeptanzrate, um bis 10.000 zu kommen, gemessen mit Schritt 2
-		if (i<50){temperaturarray[i]=i*0.02+0.02;}
-		if ((i>=50)&&(i<300)){temperaturarray[i]=(i-50)*0.01+1;}
-		if ((i>=300)&&(i<350)){temperaturarray[i]=(i-300)*0.02+3.5;}
-		if ((i>=350)&&(i<450)){temperaturarray[i]=(i-350)*0.06+4.5;}
-		if ((i>=450)&&(i<500)){temperaturarray[i]=(i-450)*0.2+10.01;}
-		if ((i>=500)&&(i<550)){temperaturarray[i]=exp(2.996+(i-500)*0.032);}
-		if ((i>=550)&&(i<600)){temperaturarray[i]=exp(4.605+(i-550)*0.046);}
-		if ((i>=600)&&(i<650)){temperaturarray[i]=exp(6.907+(i-600)*0.046);}
+		//Für Akzeptanzrate, um bis 10.000 zu kommen, gemessen mit Schritt 2
+		//~ if (i<50){temperaturarray[i]=i*0.02+0.02;}
+		//~ if ((i>=50)&&(i<300)){temperaturarray[i]=(i-50)*0.01+1;}
+		//~ if ((i>=300)&&(i<350)){temperaturarray[i]=(i-300)*0.02+3.5;}
+		//~ if ((i>=350)&&(i<450)){temperaturarray[i]=(i-350)*0.06+4.5;}
+		//~ if ((i>=450)&&(i<500)){temperaturarray[i]=(i-450)*0.2+10.01;}
+		//~ if ((i>=500)&&(i<550)){temperaturarray[i]=exp(2.996+(i-500)*0.032);}
+		//~ if ((i>=550)&&(i<600)){temperaturarray[i]=exp(4.605+(i-550)*0.046);}
+		//~ if ((i>=600)&&(i<650)){temperaturarray[i]=exp(6.907+(i-600)*0.046);}
 		//printf("%d\t%e\n", i, temperaturarray[i]);
 	}
 	printf("Ende array\n");
 	int l;//Laenge der Blocks
 	double *blockarray;//Zum Speichern der geblockten Messwerte
-	double blocklenarray[12]={/*1,2,4,8,16,*/32, 64,128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
+	double blocklenarray[10]={/*1,2,4,8,16,32, 64,*/128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
 	//gsl_rng *generator=gsl_rng_alloc(gsl_rng_mt19937);//Mersenne-Twister
 	gsl_rng **generatoren;//mehrere generaotren fuer parallelisierung
 	if ((generatoren=(gsl_rng**)malloc(anzahlcores*sizeof(gsl_rng**)))==NULL){
@@ -135,7 +140,7 @@ int main(int argc, char **argv){
 		U=1-(magvier/3/magquad/magquad);
 		fprintf(mittelwertdatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", (double)laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag, temperaturarray[n]/j, U);
 		gettimeofday(&anfangbootstrap, NULL);
-		for(int len=0;len<12;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
+		for(int len=0;len<10;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
 			l=blocklenarray[len];
 			//printf("%d\t%d\n", n, l);
 			if((blockarray=(double*)malloc(sizeof(double)*messungen/l))==NULL){//zum Speichern der Blocks, prüft, ob Speicherplatz richitg bereitgestellt wurde
@@ -157,7 +162,7 @@ int main(int argc, char **argv){
 			//~ //Vergleich bootstrapping mit und ohne parallelisierung
 			//~ bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateiham);//bootstrapping
 			free(blockarray);
-		}
+		}//
 		gettimeofday(&endebootstrap, NULL);
 		sec= (double)(endebootstrap.tv_sec-anfangbootstrap.tv_sec);
 		usec= (double)(endebootstrap.tv_usec-anfangbootstrap.tv_usec);
