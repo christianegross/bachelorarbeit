@@ -17,3 +17,5 @@ export KMP_AFFINITY=balanced,granularity=fine,verbose
 cd /hiskp4/gross/bachelorarbeit
 
 srun /hiskp4/gross/bachelorarbeit/skalierungnode01
+
+cd -
