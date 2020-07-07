@@ -1,0 +1,13 @@
++ export OMP_NUM_THREAD=12
++ OMP_NUM_THREAD=12
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=128
++ cores=8
++ schritte=1
++ srun /hiskp4/gross/bachelorarbeit/ising 128 8 1
+slurmstepd: error: Exceeded job memory limit at some point.
+srun: error: lcpunode02: task 0: Out Of Memory
++ cd -
+slurmstepd: error: Exceeded job memory limit at some point.
