@@ -8,7 +8,7 @@
 	
 	\begin{figure}[htbp]
 		\input{Bilder/vergleichham}
-		\caption[Hamiltonian mit und ohne Parallelisierung]{Hamiltonian mit und ohne Parallelisierung bei verschiedenen Temperaturen gemessen. Die Fehler sind mit Blocklänge 128 bestimmt und so klein, dass sie fast nicht sichtbar sind.}
+		\caption[Hamiltonian mit und ohne Parallelisierung]{Hamiltonian bei Gitterlänge 120 mit und ohne Parallelisierung bei verschiedenen Temperaturen gemessen. Die Fehler sind mit Blocklänge 128 bestimmt und so klein, dass sie fast nicht sichtbar sind.}
 		\label{fig:vergleichham}
 	\end{figure}
 	
@@ -38,8 +38,7 @@
 		
 	Wenn man sich die Skalierung bei verschiedenen Temperaturen anguckt, siehe Abb.~\ref{fig:skalierungtemp}, gibt es auch hier Unterschiede bei konstanter Gitterlänge: für niedrigere Temperaturen ist die Laufzeit geringer, allerdings der maximale Speedup kleiner. Vermutlich kommt dies daher, dass bei niedrigen Temperaturen die Akzeptanzrate geringer ist und somit seltener eine Addition beim Hamiltonian durchgeführt werden muss. Diese Unterschiede entsprechen ungefähr einer Standarabweichung, dies ist allerdings recht gering und selbst beim größten Speedup beträgt der Unterschied wischen den Temperaturen nur $\num{0,17}$.
 	
-	Bei Gitterlängen ab $110$ entspricht das Verhalten des Speedups somit den Erwartungen aus Abschnitt~\ref{subsec:openmptheorie}. Einige Messungen wurden auch auf einem Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz mit zwei Kernen durchgeführt.
-	Daher werden ab einer Gitterlänge von 90 die Messungen mit der maximalen Anzahl an Kernen durchgeführt, bei kleineren Gitterlängen wird auch eine entsprechend kleinere Anzahl an Kernen verwendet. 
+	Bei Gitterlängen ab $110$ entspricht das Verhalten des Speedups somit den Erwartungen aus Abschnitt~\ref{subsec:openmptheorie}. Daher werden ab einer Gitterlänge von 90 die Messungen mit der maximalen Anzahl an Kernen durchgeführt, bei kleineren Gitterlängen wird auch eine entsprechend kleinere Anzahl an Kernen verwendet. 
 	
 	%Da im Folgenden das Verhalten bei großen Gitterlängen betrachtet wird, wird nach Möglichkeit mit der maximalen Anzahl an Kernen gerechnet. 
 	%Insgesamt entspricht somit die Skalierung bei hohen Gitterlängen dem Ahmdahlschen Gesetz.
@@ -82,7 +81,7 @@
 %	test
 %	\end{verbatim}
 
-	Die Magnetisierung verhält sich wie nach Gl.~\ref{eq:magnetisierungsgleichungliteratur} erwartet: Bei geringen Temperaturen ist sie eins, danach wird sie kleiner. Bei ca. $\num{2,2}$ hat sie einen starken Abfall, und nähert sich danach einem konstanten Wert größer als null an. Nach Gl.~\ref{eq:magnetisierungsgleichungliteratur} wäre zu erwarten, dass der Abfall eine scharfe Kante bildet und danach die Magnetisierung null ist, dies ist allerdings aufgrund der endlichen Gittergröße nicht der Fall, wie in~\cite[S. 45 f.]{binderheermann} erläutert wird.
+	Die Magnetisierung verhält sich wie nach Gl.~\ref{eq:magnetisierungsgleichungliteratur} erwartet, siehe Abb. \ref{fig:ergebnismagnetisierung}: Bei geringen Temperaturen ist sie eins, danach wird sie kleiner. Bei ca. $\num{2,2}$ hat sie einen starken Abfall, und nähert sich danach einem konstanten Wert größer als null an. Nach Gl.~\ref{eq:magnetisierungsgleichungliteratur} wäre zu erwarten, dass der Abfall eine scharfe Kante bildet und danach die Magnetisierung null ist, dies ist allerdings aufgrund der endlichen Gittergröße nicht der Fall, wie in~\cite[S. 45 f.]{binderheermann} erläutert wird.
 	
 	%Dia Varianz der Magnetisierung ist sowohl bei niedrigen als auch bei hohen Temperaturen niedrig, ca.{}
 
@@ -106,7 +105,7 @@
 	
 	\begin{figure}[htbp]
 		\input{Bilder/magnetisierunglaenge}
-		\caption[Magnetisierung bei verschiedenen Gitterlängen]{Magnetisierung bei verschiedenen Gitterlängen, vergleichen mit Literaturergebnis, Werte bestimmt mit Blocklänge 128 zur Fehlerberechnung.}
+		\caption[Magnetisierung bei verschiedenen Gitterlängen]{Magnetisierung bei verschiedenen Gitterlängen, verglichen mit Literaturergebnis, Werte bestimmt mit Blocklänge 128 zur Fehlerberechnung.}
 		\label{fig:maglaenge}
 	\end{figure}
 	
