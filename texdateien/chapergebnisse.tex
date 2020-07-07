@@ -1,15 +1,20 @@
 	\chapter{Ergebnisse}
 	\label{chap:ergebnisse}
 	
-	Zuerst wird sichergestellt, dass das Programm sowohl bei paralleler als auch bei serieller Ausführung das gleiche Verhalten aufweist. Wie man an Bild \ref{fig:vergleichham} sieht, ist das der Fall, die Ergebnisse liegen aufeinander und sind insbesondere in ihren Fehlergrenzen gleich.
+	
+	\section{Laufzeitskalierung bei mehreren Kernen}
+	\label{sec:ergebnisparallel}
+	Zuerst wird sichergestellt, dass das Programm sowohl bei paralleler als auch bei serieller Ausführung das gleiche Verhalten aufweist. Wie man an Bild~\ref{fig:vergleichham} sieht, ist das der Fall, die Ergebnisse des Hamiltonians liegen aufeinander und sind insbesondere in ihren Fehlergrenzen gleich.
 	
 	\begin{figure}[htbp]
 		\input{Bilder/vergleichham}
-		\caption[Hamiltonian mit und ohne Parallelisierung]{Hamiltonian mit und ohne Parallelisierung bei verschiedenen Temperaturen gemessen. Die Fehler sind mit Blocklänge 128 bestimmt und so klein, dass sie fast nicht sichtbar sind.}
+		\caption[Hamiltonian mit und ohne Parallelisierung]{Hamiltonian bei Gitterlänge 120 mit und ohne Parallelisierung bei verschiedenen Temperaturen gemessen. Die Fehler sind mit Blocklänge 128 bestimmt und so klein, dass sie fast nicht sichtbar sind.}
 		\label{fig:vergleichham}
 	\end{figure}
 	
-	Um zu ermitteln, mit wie vielen Cores idealerweise gemessen werden sollte, wurde die Skalierung der sweep-Funktion betrachtet. Hierbei wurde für verschiedene Gitterlängen und Temperaturen die Zeit, die für 1.000 Ausführungen der sweep-Funktion benötigt wurde, gemessen. Von zehn solchen Messungen wurden mittels der Standardschätzer Mittelwert und Varianz gebildet. 
+	Die Graphiken in dieser Arbeit wurden mittels \texttt{gnuplot}\cite{gnuplotdoc}, im speziellen den Programmen \texttt{plot.gp} und \texttt{multiplot.gp} erstellt.
+	
+	Um zu ermitteln, mit wie vielen Cores idealerweise gemessen werden sollte, wurde die Skalierung der \texttt{messenmehreregeneratoren}-Funktion betrachtet. Die Messungen wurden wie in Abschnitt~\ref{sec:parallelimplementierung} durchgeführt, aufgetragen wurde der Kehrwert des gemessenen Mittelwertes. Die Fehler wurden wiederum mit Gaußscher Fehlerfortpflanzung bestimmt, aufgetragen ist somit der Speedup nach der Definition aus Gl.~\ref{eq:speedup}.%Hierbei wurde für verschiedene Gitterlängen und Temperaturen die Zeit, die für 1.000 Ausführungen der sweep-Funktion benötigt wurde, gemessen. Von zehn solchen Messungen wurden mittels der Standardschätzer Mittelwert und Varianz gebildet. 
 	
 	\begin{figure}[htbp]
 		\input{Bilder/speeduplaenge}
@@ -17,10 +22,10 @@
 		\label{fig:skalierunglaenge}
 	\end{figure}
 	
-	In Abbildung \ref{fig:skalierunglaenge} ist die Skalierung bei verschiedenen Gitterlängen aufgetragen. Gemessen wurde auf der lcpunode02 des Clusterrechners QBiG. (weitere Werte?).
+	In Abbildung~\ref{fig:skalierunglaenge} ist die Skalierung bei verschiedenen Gitterlängen aufgetragen. Gemessen wurde auf der lcpunode02 des Clusterrechners QBiG. Hierbei handelt es sich um eine Intel(R) Xeon(R) CPU E5-2620 0 @2.00 GHz mit 12 Kernen.%(weitere Werte?).
 	
-	Bei kleinen Gitterlängen wie $10$ wird die Durchführung durch das Verwenden mehrerer Kerne nicht beschleunigt, der overhead der Parallelisierung verlangsamt die Durchführung sogar noch. Bei etwas größeren Gitterlängen wie z.{}B.{} 40, wird die Funktion mit steigender Anzahl an Kernen erst schneller durchgeführt, ab einer gewissen Zahl an Kernen, hier $6$, überwiegt allerdings der overhead gegenüber der Beschleunigung durch weiteres Parallelisieren und der Speedup wird mit steigender Anzahl der Kerne wieder kleiner. Die Fehler sind hier recht groß, das das Programm nicht lange für die ausführung benötigt, nur ca.{} $\num{0,04}\si{\second}$ bei 5 Kernen, sodass hier die natürlichen Variationen der Kerne aufgrund von Hitze o.{}Ä.{} zu einem großen relativen Fehler führen. Der Maximale Speedup ist $\num{3,4\pm0,6}$ Mit steigender Gitterlänge, hier im Beispiel 70, wird der Overhead im Vergleich zur Rechenzeit geringer, sodass der Speedup mit der Anzahl der Kerne annähernd monoton ansteigt, und bei 12 ein Maximum von $\num{4,76\pm0,94}$.
-	Bei größeren Gitterlängen wird der Einfluss der Overheads nochmal geringer, wodurch der Anstieg des Speedups steiler wird und bei Gitterlänge 500 der maximale Speedup, bei $12$ Kernen, $\num{6,32\pm0,15}$ beträgt.
+	Bei kleinen Gitterlängen wie $10$ wird die Durchführung durch das Verwenden mehrerer Kerne nicht beschleunigt, der Overhead der Parallelisierung verlangsamt die Durchführung sogar noch. Der minimale Speedup ist hier $\num{0,56\pm0,01}$ bei 12 Kernen. Bei etwas größeren Gitterlängen wie z.{}B.{} 40, wird die Funktion mit steigender Anzahl an Kernen erst schneller durchgeführt, ab einer gewissen Zahl an Kernen, hier $8$, überwiegt allerdings der Overhead gegenüber der Beschleunigung durch mehr Kerne und der Speedup wird mit steigender Anzahl der Kerne wieder kleiner. Die Fehler sind hier recht groß, da das Programm nicht lange für die ausführung benötigt, nur ca.{} $\num{0,03}\si{\second}$ bei 7 Kernen, sodass hier die natürlichen Variationen der Kerne aufgrund von Hitze o.{}Ä.{} zu einem großen relativen Fehler führen. Der maximale Speedup ist $\num{3,57\pm0,45}$. Mit steigender Gitterlänge, hier im Beispiel 110, wird der Overhead im Vergleich zur Rechenzeit geringer, sodass der Speedup mit der Anzahl der Kerne annähernd monoton ansteigt, und bei 12 ein Maximum von $\num{5,26\pm0,14}$.
+	Bei größeren Gitterlängen wird der Einfluss der Overheads nochmal geringer, wodurch der Anstieg des Speedups steiler wird und bei Gitterlänge 500 der maximale Speedup, bei $12$ Kernen, $\num{5,99\pm0,12}$ beträgt.
  	
 	%Wie man an Bild sieht, ist die Parallelisierung für kleine Gitterlängen sinnlos, es wird nur mehr overhead eingeführt und die benötigte Zeit steigt mit Anzahl der Cores.
 	
@@ -31,9 +36,11 @@
 		\label{fig:skalierungtemp}
 	\end{figure}
 		
-	Wenn man sich die Skalierung bei verschiedenen Temperaturen anguckt, siehe Abb. \ref{fig:skalierungtemp}, gibt es auch hier Unterschiede bei konstanter Gitterlänge: für niedrigere Temperaturen ist die Laufzeit geringer, allerdings der maximale speedup kleiner. Vermutlich kommt dies daher, dass bei niedrigen Temperaturen die Akzeptanzrate geringer ist und somit seltener eine Addition beim Hamiltonian durchgeführt werden muss. Diese Unterschiede entsprechen ungefähr einer Standarabweichung, dies ist allerdings recht gering und selbst beim größten Speedup beträgt der unterschied wischen den Temperaturen nur $\num{0,17}$.
+	Wenn man sich die Skalierung bei verschiedenen Temperaturen anguckt, siehe Abb.~\ref{fig:skalierungtemp}, gibt es auch hier Unterschiede bei konstanter Gitterlänge: für niedrigere Temperaturen ist die Laufzeit geringer, allerdings der maximale Speedup kleiner. Vermutlich kommt dies daher, dass bei niedrigen Temperaturen die Akzeptanzrate geringer ist und somit seltener eine Addition beim Hamiltonian durchgeführt werden muss. Diese Unterschiede entsprechen ungefähr einer Standarabweichung, dies ist allerdings recht gering und selbst beim größten Speedup beträgt der Unterschied wischen den Temperaturen nur $\num{0,17}$.
 	
-	Bei Gitterlängen ab $70$ entspricht das Verhalten des Speedups somit den Erwartungen aus Abschnitt \ref{subsec:openmptheorie}. Da im Folgenden das Verhalten bei großen Gitterlängen betrachtet wird, wird nach Möglichkeit mit der maximalen Anzahl an Kernen gerechnet. Einige Messungen wurden auch auf einem Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz durchgeführt.
+	Bei Gitterlängen ab $110$ entspricht das Verhalten des Speedups somit den Erwartungen aus Abschnitt~\ref{subsec:openmptheorie}. Daher werden ab einer Gitterlänge von 90 die Messungen mit der maximalen Anzahl an Kernen durchgeführt, bei kleineren Gitterlängen wird auch eine entsprechend kleinere Anzahl an Kernen verwendet. 
+	
+	%Da im Folgenden das Verhalten bei großen Gitterlängen betrachtet wird, wird nach Möglichkeit mit der maximalen Anzahl an Kernen gerechnet. 
 	%Insgesamt entspricht somit die Skalierung bei hohen Gitterlängen dem Ahmdahlschen Gesetz.
 	%Messungen der Parallelisierung von messen/sweep auf lcpunode02 in QBiG: Bis zu 12 Kerne. Kennwerte von lcpunode02?
 
@@ -44,7 +51,13 @@
 	%Skalierung auf lcpunode2: Vergleich zwei Schleifen/tryflip/Temperaturen?
 	%Bild von idealem Code, Skalierung wie erwartet (nach Ahmdahls law?)
 	
-	In Bild \ref{fig:ergebnisakzeptanzrate} ist die Akzeptanzrate als Funktion von der Temperatur dargestellt. Bei kleinen Temperaturen ist sie null, steigt ab ca. $T=1$ an, hat bei ca. $T=\num{2,2}$ einen Wendepunkt mit Akzeptanzrate ca. $\num{0,2}$ und nähert sich danach asymptotisch dem Wert $1$.
+	\section{Verhalten der beobachteten Observablen}
+	\label{sec:ergebnisobservablen}
+	
+	Einige Messungen wurden auch auf einem Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz mit zwei Kernen durchgeführt. 
+	In Bild~\ref{fig:ergebnisakzeptanzrate} ist die Akzeptanzrate als Funktion von der Temperatur dargestellt. Bei kleinen Temperaturen ist sie null, steigt ab ca. $T=1$ an, hat bei ca. $T=\num{2,2}$ einen Wendepunkt mit Akzeptanzrate ca. $\num{0,2}$ und nähert sich danach asymptotisch dem Wert $1$. 
+	
+	%Die Varianz der Akzeptanzrate ist bei geringer Temperatur sehr klein, ca.{} $10^{-8}$ , wird im Bereich um $T=\num{2,2}$ groß, mit Maximalwert ca.{} $10^{-3}}$, und danach wieder kleiner, ca.{} $10^{-4}$.
 	
 	\begin{figure}[htbp]
 		\input{Bilder/akzeptanzrate}
@@ -52,7 +65,11 @@
 		\label{fig:ergebnisakzeptanzrate}
 	\end{figure}
 	
-	Der Hamiltonian verhält sich qualitativ ähnlich, siehe Bild \ref{fig:ergebnishamiltonian}. Bei geringen Temperaturen hat er den Wert $-2\cdot\text{laenge}^2$, was auf ein vollkommen homogen ausgerichtetes Gitter hinweist. Bei ca T=2,2 beträgt der Hamiltonian ca. $-\num{1,4}\cdot\text{laenge}^2$ und nähert sich dann asymptotisch null.
+	Der Hamiltonian verhält sich qualitativ ähnlich, siehe Bild~\ref{fig:ergebnishamiltonian}. Bei geringen Temperaturen hat er den Wert $-2\cdot\text{laenge}^2$, was auf ein vollkommen homogen ausgerichtetes Gitter hinweist. Bei ca.{} T=2,2 beträgt der Hamiltonian ca.{} $-\num{1,4}\cdot\text{laenge}^2$ und nähert sich dann asymptotisch null.
+	
+	%Auch hier ist die Varianz anfangs klein, ca.{} 
+	
+	
 	
 	\begin{figure}[htbp]
 		\input{Bilder/hamiltonian}
@@ -65,7 +82,9 @@
 %	test
 %	\end{verbatim}
 
-	Die Magnetisierung verhält sich wie nach Gl. \ref{eq:magnetisierungsgleichungliteratur} erwartet: Bei geringen Temperaturen ist sie eins, danach wird sich kleiner. Bei ca. $\num{2,2}$ hat sie einen starken Abfall, und nähert sich danach einem konstanten Wert größer als null an. Nach Gl. \ref{eq:magnetisierungsgleichungliteratur} wäre zu erwarten, dass der Abfall eine scharfe Kante bildet und danach die Magnetisierung null ist, dies ist allerdings aufgrund der endlichen Gittergöße nicht der Fall, wie in~\cite[Abschnitt 2.3.3]{binderheermann} erläutert wird.
+	Die Magnetisierung verhält sich wie nach Gl.~\ref{eq:magnetisierungsgleichungliteratur} erwartet, siehe Abb. \ref{fig:ergebnismagnetisierung}: Bei geringen Temperaturen ist sie eins, danach wird sie kleiner. Bei ca. $\num{2,2}$ hat sie einen starken Abfall, und nähert sich danach einem konstanten Wert größer als null an. Nach Gl.~\ref{eq:magnetisierungsgleichungliteratur} wäre zu erwarten, dass der Abfall eine scharfe Kante bildet und danach die Magnetisierung null ist, dies ist allerdings aufgrund der endlichen Gittergröße nicht der Fall, wie in~\cite[S. 45 f.]{binderheermann} erläutert wird.
+	
+	%Dia Varianz der Magnetisierung ist sowohl bei niedrigen als auch bei hohen Temperaturen niedrig, ca.{}
 
 
 	
@@ -73,29 +92,80 @@
 		\input{Bilder/magnetisierung}
 		\caption[Magnetisierung in Abhängigkeit von der Temperatur]{Magnetisierung in Abhängigkeit von der Temperatur, gemessen bei Gitterlänge 120, mit Blocklänge 128 zur Fehlerberechnung. Die Fehler sind teilweise so klein, dass sie fast nicht sichtbar sind.}
 		\label{fig:ergebnismagnetisierung}
-	\end{figure}	
+	\end{figure}
 	
-	%Dann Magnetisierung: Vergleich zweier Längen, Erklärung finite size Effekts wie in Binder-Heermann erwähnt.
-
-	In Bild \ref{fig:ergebnismagnetisierung} ist dieses Verhalten zu sehen. In Bild \ref{fig:maglaenge} ist dies noch deutlicher zu sehen, dort wird die Magnetisierung bei zwei verschiedenen Längen miteinander verglichen. Es fällt auf, dass bei kleineren Längen der Abfall der Magnetisierung weniger steil ist, sowie die Magnetisierung oberhalb des kritischen Punktes einen größeren Wert hat. Auch dies deckt sich mit den Erwartungen aus~\cite[Abschnitt 2.3.3]{binderheermann}.%, ebenso wie der Vergleich zweier Längen: bei kleineren Gitterlängen ist der Abfall weniger steil und der Wert der Magnetisierung bei hohen Temperaturen größer.
-
+	In der kritischen Region um $T=\num{2,2}$ herum sind die Standardabweichungen der beobachteten Observablen am größten, außerhalb dieser Region sind sie fast null. Lediglich beim Hamiltonian gibt es bei größeren Temperaturen auch größere Fehler. 
+	%Fehler der jeweiligen Messwerte: am größten in Bereich um T=2,2, relativen Fehler angeben? DAvor fast null, danach sehr gering, nur bei Hamiltonian nochmal ein Anstieg bei hohen Temperaturen.
 	
+	\section{Bestimmung des kritischen Punktes}
+	\label{sec:bestkritpunkt}
+	
+	Wie in Abschnitt \ref{sec:isingtheorie} erläutert, ist am kritischen Punkt eine Unstetigkeit in der Magnetisierung zu erwarten. Dadurch, dass die Gitterlänge nur endlich ist, kommt es in der Ableitung der Magnetisierung nach der Temperatur nur zu einem Extremum, nicht zu einer Polstelle. Zusätzlich kommt es zu einer \enquote{Verschmierung} des kritischen Punktes\cite[vgl. ][S. 104]{binderheermann}.
+	
+	Für $J=1$ wird der kritische Punkt nach Gl. \ref{eq:kritischetemperatur} bei $T=\num{2,269}$ erwartet.
+	Um zu sehen, wie gut die Monte-Carlo-Simulation die analytisch bestimmte Erwartung reproduziert, wurde die Magnetisierung für verschiedene Gitterlängen bestimmt, mit besonders vielen Messpunkten in der Region, in der der kritische Punkt erwartet wird. Beim Vergleich der Ergebnisse fällt auf, dass der Abfall der Magnetisierung bei größeren Gitterlängen steiler ist. Der Wert, den die Magnetisierung überhalb der kritischen Temperatur annimmt, ist geringer für größere Gitterlängen.
 	
 	\begin{figure}[htbp]
 		\input{Bilder/magnetisierunglaenge}
-		\caption[Magnetisierung bei verschiedenen Längen]{Magnetisierung bei verschiedenen Längen, Fehler gemessen mit Blocklänge 128}
+		\caption[Magnetisierung bei verschiedenen Gitterlängen]{Magnetisierung bei verschiedenen Gitterlängen, verglichen mit Literaturergebnis, Werte bestimmt mit Blocklänge 128 zur Fehlerberechnung.}
 		\label{fig:maglaenge}
 	\end{figure}
-
+	
 	\begin{figure}[htbp]
-		\input{Bilder/ableitung120128}
-		\caption[Ableitung der Magnetisierung]{Ableitung der Magnetisierung, berechnet mit Zwei-Punkt-Formel. Fehler mit Gaußscher Fehlerfortpflanzung aus den Fehlern bei Blocklänge 128 bestimmt}
-		\label{fig:ableitung120128}
+		\input{Bilder/tkritvonl}
+		\caption[kritische Temperatur in Abhängigkeit der Gitterlänge]{kritische Temperatur in Abhängigkeit der Gitterlänge. Untersucht wurde die Ableitung der Werte mit Blocklänge 128}
+		\label{fig:tkritlaenge}
 	\end{figure}
 	
-	In Bild \ref{fig:maglaenge} ist zusätzlich die nach Gl. \ref{eq:magnetisierungsgleichungliteratur} erwartete Magnetisierung eingezeichnet. Bis zum theoretischen kritischen Punkt, nach Gl. \ref{eq:kritischetemperatur} bei $T=\num{2,269}$, liegen alle Messdaten in ihren Fehlergrenzen auf der erwarteten Kurve, erst danach kommt es aufgrund des weniger starken Abfalls zu Abweichungen.
+	Für verschiedene Gitterlängen wurde ein Schätzer für die kritische Temperatur bestimmt. Dieser ist die Stelle, wo die Ableitung am kleinsten ist, die Kurve der Magnetisierung also am steilsten verläuft. Die so bestimmten Werte der kritischen Temperatur sind in Abb. \ref{fig:tkritlaenge} zu sehen. Alle Schätzer sind größer als die theoretische erwartete Temperatur, jedoch beträgt die größte Abweichung nur ca 6\%. Die Schätzer variieren stark, jedoch sind sie bei kleineren Gitterlängen eher größer und scheinen sich asymptotisch dem theoretisch erwarteten Wert anzunähern.
+	%Schätzer für kritische Temperatur: Temperatur bei der die Ableitung Minimum hat. Für verschiedene Gitterlängen bestimmt, siehe Abb. \ref{fig:tkritlaenge}. Schon bei geringen Gitterlängen wie 12 Abweichungne nicht größer als 6\% vom erwarteten Wert. bestimmte tkrit variiert zwischen Gitterlängen, ist aber immer größer als erwarteter Wert. Variation scheint abzunehmen und Tkrit scheint sich asymptotisch dem erwarteten Wert anzunähern.
 	
-	Um den kritischen Punkt genauer zu bestimmen, wird zusätzlich mit der Zei-Punkt-Formel die Ableitung der gemessenen Magnetisierung bestimmt, siehe Bild \ref{fig:ableitung120128}. Dort wird sichtbar, dass die Änderungsrate der Magnetisierung meist sehr klein ist, nur um den kritischenb Punkt herum ist sie groß.% Die größte Änderung fand im Intervall $2,285\pm0,1$ statt, dies ist minimal größer als der theoretisch erwartete kritische Punkt, die Abweichung beträgt $1,5 \sigma$. 
+	Die Monte-Carlo-Simulationen reproduzieren also gut die Ergebnisse der analytischen Betrachtung aus Abschnitt~\ref{sec:isingtheorie}. Je größer die Gitterlänge ist, desto ähnlicher sind die Simulationsergebnisse zu der Theorie.
+	%Zeigt, dass Simulation gut analytische Werte reproduziert.
+	
+	%Abschlusssatz?
+	%Die jeweilige Schätzung für den kritischen Punkt wurde bestimmt Ableitung Zwei/Dreipunkt, Magnetisierung oder sqrt(mag*mag)? Alles in der Region des erwarteten kritischen Punktes, eventuell für größere Gitterlängen näher?
+	
+%	
+%		\begin{figure}[htbp]
+%			\input{Bilder/akzeptanzratefehler}
+%			\caption{Fehler Akzeptanzrate}
+%			\label{fig:fehlersakzeptanzrate}
+%		\end{figure}
+%		\begin{figure}[htbp]
+%			\input{Bilder/magnetisierungfehler}
+%			\caption{Fehler Magnetisierung}
+%			\label{fig:fehlermagnetisierung}
+%		\end{figure}
+%		\begin{figure}[htbp]
+%			\input{Bilder/hamiltonianfehler}
+%			\caption{Fehler Hamiltonian}
+%			\label{fig:fehlerhamiltonian}
+%		\end{figure}
+	%Mittels der Zwei-Punkt-Formel wurde zusätzlich die Ableitung der Magnetisierung bestimmt, und damit der Schätzer für die kritische Temperatur in Abhängigkeit der Gitterlänge bestimmt. Als Fehler der Abschätzung wurde jeweils der Abstand zum nächsten Punkt angenommen. Wie man an Bild \ref{fig:tkritlaenge} sieht, nähert sich die kritische Temperatur mit steigender Gitterlänge asymptotisch an den erwarteten Wert an. 
+	
+	
+	%Wie bei der Diskussion von	
+	
+	%Dann Magnetisierung: Vergleich zweier Längen, Erklärung finite size Effekts wie in Binder-Heermann erwähnt.
+%	In Bild~\ref{fig:ergebnismagnetisierung} ist dieses Verhalten zu sehen. In Bild~\ref{fig:maglaenge} ist dies noch deutlicher zu sehen, dort wird die Magnetisierung bei zwei verschiedenen Gitterlängen miteinander verglichen. Es fällt auf, dass bei kleineren Längen der Abfall der Magnetisierung weniger steil ist, sowie die Magnetisierung oberhalb des kritischen Punktes einen größeren Wert hat. Auch dies deckt sich mit den Erwartungen aus~\cite[S. 45 f.]{binderheermann}.%, ebenso wie der Vergleich zweier Längen: bei kleineren Gitterlängen ist der Abfall weniger steil und der Wert der Magnetisierung bei hohen Temperaturen größer.
+%	
+%	
+%	\begin{figure}[htbp]
+%		\input{Bilder/magnetisierunglaenge}
+%		\caption[Magnetisierung bei verschiedenen Längen]{Magnetisierung bei verschiedenen Längen, Fehler gemessen mit Blocklänge 128}
+%		\label{fig:maglaenge}
+%	\end{figure}
+%
+%	\begin{figure}[htbp]
+%		\input{Bilder/ableitung120128}
+%		\caption[Ableitung der Magnetisierung]{Ableitung der Magnetisierung, berechnet mit Zwei-Punkt-Formel. Fehler mit Gaußscher Fehlerfortpflanzung aus den Fehlern bei Blocklänge 128 bestimmt}
+%		\label{fig:ableitung120128}
+%	\end{figure}
+%	
+%	In Bild~\ref{fig:maglaenge} ist zusätzlich die nach Gl.~\ref{eq:magnetisierungsgleichungliteratur} erwartete Magnetisierung eingezeichnet. Bis zum theoretischen kritischen Punkt, nach Gl.~\ref{eq:kritischetemperatur} bei $T=\num{2,269}$, liegen alle Messdaten in ihren Fehlergrenzen auf der erwarteten Kurve, erst danach kommt es aufgrund des weniger starken Abfalls zu Abweichungen.
+%	
+%	Um den kritischen Punkt genauer zu bestimmen, wird zusätzlich mit der Zwei-Punkt-Formel die Ableitung der gemessenen Magnetisierung bestimmt, siehe Bild~\ref{fig:ableitung120128}. Dort wird sichtbar, dass die Änderungsrate der Magnetisierung meist sehr klein ist, nur um den kritischen Punkt herum ist sie groß.% Die größte Änderung fand im Intervall $2,285\pm0,1$ statt, dies ist minimal größer als der theoretisch erwartete kritische Punkt, die Abweichung beträgt $1,5 \sigma$. 
 %	Vergleich gemessene/theoretische Magnetisierung: Nur graphisch oder auch Rechnerisch: Anpassung an Bereich mit Fehlern != 0?
 	%Größte Ableitung bei 2,285 pm 0,1 bei Länge 120.
 	

@@ -7,7 +7,7 @@
 *.run
 *.toc
 *.pdf
-*.sty
+#*.sty
 *.run.xml
 *.synctex.gz
 *.bbl

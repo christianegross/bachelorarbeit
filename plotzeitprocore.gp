@@ -4,6 +4,46 @@ set xlabel "Anzahl Prozessoren"
 set ylabel "Zeit(1 Core)/Zeit(n Cores)"
 set key top left
 
+set out "Messungen/skalierungweniginit.pdf"
+
+set title "T=0,5, Mittelwert mit wahrscheinlichkeit"
+
+plot "Messungen/Zeiten/zmittel-m001000-node02richtigewahrsch-l10.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "L=10",\
+  "Messungen/Zeiten/zmittel-m001000-node02richtigewahrsch-l40.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "L=40",\
+  "Messungen/Zeiten/zmittel-m001000-node02richtigewahrsch-l110.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 13 ps 0.4 title "L=110",\
+  "Messungen/Zeiten/zmittel-m001000-node02richtigewahrsch-l120.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 14 ps 0.4 title "L=120",\
+  "Messungen/Zeiten/zmittel-m001000-node02richtigewahrsch-l500.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 10 ps 0.4 title "L=500",\
+  
+set title "L=500"
+
+plot "Messungen/Zeiten/zmittel-m001000-node02richtigewahrsch-l500.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 10 ps 0.4 title "T=0,5",\
+  "Messungen/Zeiten/zmittel-m001000-node02richtigewahrscht22-l500.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 9 ps 0.4 title "T=2,2",\
+  "Messungen/Zeiten/zmittel-m001000-node02richtigewahrscht23-l500.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 8 ps 0.4 title "T=2,3",\
+  "Messungen/Zeiten/zmittel-m001000-node02richtigewahrscht100-l500.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "T=100",\
+
+set title "T=0,5, Mittelwert"
+
+plot "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l10.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 6 ps 0.4 title "L=10",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l30.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 7 ps 0.4 title "L=30",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l40.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 8 ps 0.4 title "L=40",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l50.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 13 ps 0.4 title "L=50",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l60.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 14 ps 0.4 title "L=60",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l70.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 15 ps 0.4 title "L=70",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l80.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 9 ps 0.4 title "L=80",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l150.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 10 ps 0.4 title "L=150",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05wenigerinitialisieren-l300.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 11 ps 0.4 title "L=300",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l500.txt" u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars lt 12 ps 0.4 title "L=500"
+
+set title "T=0,5, Minimum"
+
+plot "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l10.txt" u (($1!=0)?$1:1/0):(1/$9) w lp lt 6 ps 0.4 title "L=10",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l30.txt" u (($1!=0)?$1:1/0):(1/$9) w lp lt 7 ps 0.4 title "L=30",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l50.txt" u (($1!=0)?$1:1/0):(1/$9) w lp lt 8 ps 0.4 title "L=50",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l80.txt" u (($1!=0)?$1:1/0):(1/$9) w lp lt 9 ps 0.4 title "L=80",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l150.txt" u (($1!=0)?$1:1/0):(1/$9) w lp lt 10 ps 0.4 title "L=150",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05wenigerinitialisieren-l300.txt" u (($1!=0)?$1:1/0):(1/$9) w lp lt 11 ps 0.4 title "L=300",\
+	 "Messungen/Zeiten/zmittel-m001000-node02v5schedstatt05weninit-l500.txt" u (($1!=0)?$1:1/0):(1/$9) w lp lt 12 ps 0.4 title "L=500"
+
 set out "Messungen/skalierungkeinbackslash.pdf"
 
 set title "T=0,5"
