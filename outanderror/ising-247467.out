@@ -1,0 +1,429 @@
+Thu Jul  2 18:31:45 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Thu Jul  2 18:32:15 CEST 2020 Waiting done, starting task!
+Thu Jul  2 18:32:15 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Thu Jul  2 18:32:45 CEST 2020 Waiting done, starting task!
+Ende array
+0
+bei T=0.100000 haben 10240 Messungen 1.143454 Sekunden gebraucht
+1
+bei T=0.300000 haben 10240 Messungen 1.122356 Sekunden gebraucht
+2
+bei T=0.500000 haben 10240 Messungen 1.167351 Sekunden gebraucht
+3
+bei T=0.700000 haben 10240 Messungen 1.136202 Sekunden gebraucht
+4
+bei T=0.900000 haben 10240 Messungen 1.177722 Sekunden gebraucht
+5
+bei T=1.100000 haben 10240 Messungen 1.147477 Sekunden gebraucht
+6
+bei T=1.300000 haben 10240 Messungen 1.279563 Sekunden gebraucht
+7
+bei T=1.500000 haben 10240 Messungen 0.757586 Sekunden gebraucht
+8
+bei T=1.700000 haben 10240 Messungen 1.232910 Sekunden gebraucht
+9
+bei T=1.900000 haben 10240 Messungen 1.281020 Sekunden gebraucht
+10
+bei T=2.000000 haben 10240 Messungen 1.293528 Sekunden gebraucht
+11
+bei T=2.008000 haben 10240 Messungen 1.294666 Sekunden gebraucht
+12
+bei T=2.016000 haben 10240 Messungen 1.257921 Sekunden gebraucht
+13
+bei T=2.024000 haben 10240 Messungen 1.200533 Sekunden gebraucht
+14
+bei T=2.032000 haben 10240 Messungen 1.221966 Sekunden gebraucht
+15
+bei T=2.040000 haben 10240 Messungen 1.185894 Sekunden gebraucht
+16
+bei T=2.048000 haben 10240 Messungen 1.232246 Sekunden gebraucht
+17
+bei T=2.056000 haben 10240 Messungen 1.170034 Sekunden gebraucht
+18
+bei T=2.064000 haben 10240 Messungen 1.222111 Sekunden gebraucht
+19
+bei T=2.072000 haben 10240 Messungen 1.137121 Sekunden gebraucht
+20
+bei T=2.080000 haben 10240 Messungen 1.155440 Sekunden gebraucht
+21
+bei T=2.088000 haben 10240 Messungen 1.164261 Sekunden gebraucht
+22
+bei T=2.096000 haben 10240 Messungen 1.146809 Sekunden gebraucht
+23
+bei T=2.104000 haben 10240 Messungen 1.185026 Sekunden gebraucht
+24
+bei T=2.112000 haben 10240 Messungen 1.215676 Sekunden gebraucht
+25
+bei T=2.120000 haben 10240 Messungen 1.182186 Sekunden gebraucht
+26
+bei T=2.128000 haben 10240 Messungen 1.171252 Sekunden gebraucht
+27
+bei T=2.136000 haben 10240 Messungen 1.303289 Sekunden gebraucht
+28
+bei T=2.144000 haben 10240 Messungen 1.292490 Sekunden gebraucht
+29
+bei T=2.152000 haben 10240 Messungen 1.318033 Sekunden gebraucht
+30
+bei T=2.200000 haben 10240 Messungen 1.316887 Sekunden gebraucht
+31
+bei T=2.202000 haben 10240 Messungen 1.311494 Sekunden gebraucht
+32
+bei T=2.204000 haben 10240 Messungen 1.325645 Sekunden gebraucht
+33
+bei T=2.206000 haben 10240 Messungen 1.330995 Sekunden gebraucht
+34
+bei T=2.208000 haben 10240 Messungen 1.125872 Sekunden gebraucht
+35
+bei T=2.210000 haben 10240 Messungen 1.090010 Sekunden gebraucht
+36
+bei T=2.212000 haben 10240 Messungen 1.118512 Sekunden gebraucht
+37
+bei T=2.214000 haben 10240 Messungen 1.163470 Sekunden gebraucht
+38
+bei T=2.216000 haben 10240 Messungen 1.179166 Sekunden gebraucht
+39
+bei T=2.218000 haben 10240 Messungen 1.253542 Sekunden gebraucht
+40
+bei T=2.220000 haben 10240 Messungen 1.245760 Sekunden gebraucht
+41
+bei T=2.222000 haben 10240 Messungen 1.233800 Sekunden gebraucht
+42
+bei T=2.224000 haben 10240 Messungen 1.278246 Sekunden gebraucht
+43
+bei T=2.226000 haben 10240 Messungen 1.247779 Sekunden gebraucht
+44
+bei T=2.228000 haben 10240 Messungen 1.252785 Sekunden gebraucht
+45
+bei T=2.230000 haben 10240 Messungen 1.240205 Sekunden gebraucht
+46
+bei T=2.232000 haben 10240 Messungen 1.287240 Sekunden gebraucht
+47
+bei T=2.234000 haben 10240 Messungen 1.285945 Sekunden gebraucht
+48
+bei T=2.236000 haben 10240 Messungen 1.283745 Sekunden gebraucht
+49
+bei T=2.238000 haben 10240 Messungen 1.261916 Sekunden gebraucht
+50
+bei T=2.240000 haben 10240 Messungen 1.263025 Sekunden gebraucht
+51
+bei T=2.242000 haben 10240 Messungen 1.223375 Sekunden gebraucht
+52
+bei T=2.244000 haben 10240 Messungen 1.255448 Sekunden gebraucht
+53
+bei T=2.246000 haben 10240 Messungen 1.244229 Sekunden gebraucht
+54
+bei T=2.248000 haben 10240 Messungen 1.167486 Sekunden gebraucht
+55
+bei T=2.250000 haben 10240 Messungen 1.165120 Sekunden gebraucht
+56
+bei T=2.252000 haben 10240 Messungen 1.207742 Sekunden gebraucht
+57
+bei T=2.254000 haben 10240 Messungen 1.149522 Sekunden gebraucht
+58
+bei T=2.256000 haben 10240 Messungen 1.184988 Sekunden gebraucht
+59
+bei T=2.258000 haben 10240 Messungen 1.270502 Sekunden gebraucht
+60
+bei T=2.260000 haben 10240 Messungen 1.302852 Sekunden gebraucht
+61
+bei T=2.262000 haben 10240 Messungen 1.176325 Sekunden gebraucht
+62
+bei T=2.264000 haben 10240 Messungen 1.148325 Sekunden gebraucht
+63
+bei T=2.266000 haben 10240 Messungen 1.161873 Sekunden gebraucht
+64
+bei T=2.268000 haben 10240 Messungen 1.129970 Sekunden gebraucht
+65
+bei T=2.270000 haben 10240 Messungen 1.147427 Sekunden gebraucht
+66
+bei T=2.272000 haben 10240 Messungen 1.166178 Sekunden gebraucht
+67
+bei T=2.274000 haben 10240 Messungen 1.149593 Sekunden gebraucht
+68
+bei T=2.276000 haben 10240 Messungen 1.119169 Sekunden gebraucht
+69
+bei T=2.278000 haben 10240 Messungen 1.283709 Sekunden gebraucht
+70
+bei T=2.280000 haben 10240 Messungen 1.298819 Sekunden gebraucht
+71
+bei T=2.282000 haben 10240 Messungen 1.258764 Sekunden gebraucht
+72
+bei T=2.284000 haben 10240 Messungen 1.148923 Sekunden gebraucht
+73
+bei T=2.286000 haben 10240 Messungen 1.165830 Sekunden gebraucht
+74
+bei T=2.288000 haben 10240 Messungen 1.139285 Sekunden gebraucht
+75
+bei T=2.290000 haben 10240 Messungen 1.265069 Sekunden gebraucht
+76
+bei T=2.292000 haben 10240 Messungen 1.274692 Sekunden gebraucht
+77
+bei T=2.294000 haben 10240 Messungen 1.283564 Sekunden gebraucht
+78
+bei T=2.296000 haben 10240 Messungen 1.262910 Sekunden gebraucht
+79
+bei T=2.298000 haben 10240 Messungen 1.275617 Sekunden gebraucht
+80
+bei T=2.300000 haben 10240 Messungen 1.262514 Sekunden gebraucht
+81
+bei T=2.302000 haben 10240 Messungen 1.175783 Sekunden gebraucht
+82
+bei T=2.304000 haben 10240 Messungen 1.277834 Sekunden gebraucht
+83
+bei T=2.306000 haben 10240 Messungen 1.271088 Sekunden gebraucht
+84
+bei T=2.308000 haben 10240 Messungen 1.171228 Sekunden gebraucht
+85
+bei T=2.310000 haben 10240 Messungen 1.158698 Sekunden gebraucht
+86
+bei T=2.312000 haben 10240 Messungen 1.194914 Sekunden gebraucht
+87
+bei T=2.314000 haben 10240 Messungen 1.171185 Sekunden gebraucht
+88
+bei T=2.316000 haben 10240 Messungen 1.177094 Sekunden gebraucht
+89
+bei T=2.318000 haben 10240 Messungen 1.209337 Sekunden gebraucht
+90
+bei T=2.320000 haben 10240 Messungen 1.213602 Sekunden gebraucht
+91
+bei T=2.322000 haben 10240 Messungen 1.217641 Sekunden gebraucht
+92
+bei T=2.324000 haben 10240 Messungen 1.236220 Sekunden gebraucht
+93
+bei T=2.326000 haben 10240 Messungen 1.233032 Sekunden gebraucht
+94
+bei T=2.328000 haben 10240 Messungen 1.378626 Sekunden gebraucht
+95
+bei T=2.330000 haben 10240 Messungen 1.354280 Sekunden gebraucht
+96
+bei T=2.332000 haben 10240 Messungen 1.383006 Sekunden gebraucht
+97
+bei T=2.334000 haben 10240 Messungen 1.289368 Sekunden gebraucht
+98
+bei T=2.336000 haben 10240 Messungen 1.286360 Sekunden gebraucht
+99
+bei T=2.338000 haben 10240 Messungen 1.303113 Sekunden gebraucht
+100
+bei T=2.340000 haben 10240 Messungen 1.254493 Sekunden gebraucht
+101
+bei T=2.342000 haben 10240 Messungen 1.354770 Sekunden gebraucht
+102
+bei T=2.344000 haben 10240 Messungen 1.374246 Sekunden gebraucht
+103
+bei T=2.346000 haben 10240 Messungen 1.196591 Sekunden gebraucht
+104
+bei T=2.348000 haben 10240 Messungen 1.199349 Sekunden gebraucht
+105
+bei T=2.350000 haben 10240 Messungen 1.181040 Sekunden gebraucht
+106
+bei T=2.352000 haben 10240 Messungen 1.275922 Sekunden gebraucht
+107
+bei T=2.354000 haben 10240 Messungen 1.255169 Sekunden gebraucht
+108
+bei T=2.356000 haben 10240 Messungen 1.245175 Sekunden gebraucht
+109
+bei T=2.358000 haben 10240 Messungen 1.240910 Sekunden gebraucht
+110
+bei T=2.360000 haben 10240 Messungen 1.246743 Sekunden gebraucht
+111
+bei T=2.362000 haben 10240 Messungen 1.363286 Sekunden gebraucht
+112
+bei T=2.364000 haben 10240 Messungen 1.316315 Sekunden gebraucht
+113
+bei T=2.366000 haben 10240 Messungen 1.286198 Sekunden gebraucht
+114
+bei T=2.368000 haben 10240 Messungen 1.264791 Sekunden gebraucht
+115
+bei T=2.370000 haben 10240 Messungen 1.322203 Sekunden gebraucht
+116
+bei T=2.372000 haben 10240 Messungen 1.303951 Sekunden gebraucht
+117
+bei T=2.374000 haben 10240 Messungen 1.270951 Sekunden gebraucht
+118
+bei T=2.376000 haben 10240 Messungen 1.390068 Sekunden gebraucht
+119
+bei T=2.378000 haben 10240 Messungen 1.363191 Sekunden gebraucht
+120
+bei T=2.380000 haben 10240 Messungen 1.382120 Sekunden gebraucht
+121
+bei T=2.382000 haben 10240 Messungen 1.347979 Sekunden gebraucht
+122
+bei T=2.384000 haben 10240 Messungen 1.363447 Sekunden gebraucht
+123
+bei T=2.386000 haben 10240 Messungen 1.376833 Sekunden gebraucht
+124
+bei T=2.388000 haben 10240 Messungen 1.330805 Sekunden gebraucht
+125
+bei T=2.390000 haben 10240 Messungen 1.354689 Sekunden gebraucht
+126
+bei T=2.392000 haben 10240 Messungen 1.304797 Sekunden gebraucht
+127
+bei T=2.394000 haben 10240 Messungen 1.379424 Sekunden gebraucht
+128
+bei T=2.396000 haben 10240 Messungen 1.285464 Sekunden gebraucht
+129
+bei T=2.398000 haben 10240 Messungen 1.315213 Sekunden gebraucht
+130
+bei T=2.400000 haben 10240 Messungen 1.275870 Sekunden gebraucht
+131
+bei T=2.408000 haben 10240 Messungen 1.281346 Sekunden gebraucht
+132
+bei T=2.416000 haben 10240 Messungen 1.302372 Sekunden gebraucht
+133
+bei T=2.424000 haben 10240 Messungen 1.385622 Sekunden gebraucht
+134
+bei T=2.432000 haben 10240 Messungen 1.300183 Sekunden gebraucht
+135
+bei T=2.440000 haben 10240 Messungen 1.331981 Sekunden gebraucht
+136
+bei T=2.448000 haben 10240 Messungen 1.338193 Sekunden gebraucht
+137
+bei T=2.456000 haben 10240 Messungen 1.340678 Sekunden gebraucht
+138
+bei T=2.464000 haben 10240 Messungen 1.312099 Sekunden gebraucht
+139
+bei T=2.472000 haben 10240 Messungen 1.321423 Sekunden gebraucht
+140
+bei T=2.480000 haben 10240 Messungen 1.397898 Sekunden gebraucht
+141
+bei T=2.488000 haben 10240 Messungen 1.414013 Sekunden gebraucht
+142
+bei T=2.496000 haben 10240 Messungen 1.414851 Sekunden gebraucht
+143
+bei T=2.504000 haben 10240 Messungen 1.405888 Sekunden gebraucht
+144
+bei T=2.512000 haben 10240 Messungen 1.409960 Sekunden gebraucht
+145
+bei T=2.520000 haben 10240 Messungen 0.913268 Sekunden gebraucht
+146
+bei T=2.528000 haben 10240 Messungen 0.906841 Sekunden gebraucht
+147
+bei T=2.536000 haben 10240 Messungen 0.930212 Sekunden gebraucht
+148
+bei T=2.544000 haben 10240 Messungen 0.918719 Sekunden gebraucht
+149
+bei T=2.552000 haben 10240 Messungen 0.906739 Sekunden gebraucht
+150
+bei T=2.560000 haben 10240 Messungen 0.920571 Sekunden gebraucht
+151
+bei T=2.568000 haben 10240 Messungen 0.941070 Sekunden gebraucht
+152
+bei T=2.576000 haben 10240 Messungen 1.224571 Sekunden gebraucht
+153
+bei T=2.584000 haben 10240 Messungen 1.235412 Sekunden gebraucht
+154
+bei T=2.592000 haben 10240 Messungen 1.231315 Sekunden gebraucht
+155
+bei T=2.600000 haben 10240 Messungen 1.276973 Sekunden gebraucht
+156
+bei T=2.608000 haben 10240 Messungen 1.394914 Sekunden gebraucht
+157
+bei T=2.616000 haben 10240 Messungen 1.391873 Sekunden gebraucht
+158
+bei T=2.624000 haben 10240 Messungen 1.231318 Sekunden gebraucht
+159
+bei T=2.632000 haben 10240 Messungen 1.404385 Sekunden gebraucht
+160
+bei T=2.640000 haben 10240 Messungen 1.238465 Sekunden gebraucht
+161
+bei T=2.648000 haben 10240 Messungen 1.237527 Sekunden gebraucht
+162
+bei T=2.656000 haben 10240 Messungen 1.235181 Sekunden gebraucht
+163
+bei T=2.664000 haben 10240 Messungen 1.394530 Sekunden gebraucht
+164
+bei T=2.672000 haben 10240 Messungen 1.399798 Sekunden gebraucht
+165
+bei T=2.680000 haben 10240 Messungen 1.435697 Sekunden gebraucht
+166
+bei T=2.688000 haben 10240 Messungen 1.441946 Sekunden gebraucht
+167
+bei T=2.696000 haben 10240 Messungen 1.416327 Sekunden gebraucht
+168
+bei T=2.704000 haben 10240 Messungen 1.389778 Sekunden gebraucht
+169
+bei T=2.712000 haben 10240 Messungen 1.236906 Sekunden gebraucht
+170
+bei T=2.720000 haben 10240 Messungen 1.226744 Sekunden gebraucht
+171
+bei T=2.728000 haben 10240 Messungen 1.466446 Sekunden gebraucht
+172
+bei T=2.736000 haben 10240 Messungen 1.255540 Sekunden gebraucht
+173
+bei T=2.744000 haben 10240 Messungen 1.252339 Sekunden gebraucht
+174
+bei T=2.752000 haben 10240 Messungen 1.249386 Sekunden gebraucht
+175
+bei T=2.760000 haben 10240 Messungen 1.253720 Sekunden gebraucht
+176
+bei T=2.768000 haben 10240 Messungen 1.273877 Sekunden gebraucht
+177
+bei T=2.776000 haben 10240 Messungen 1.377496 Sekunden gebraucht
+178
+bei T=2.784000 haben 10240 Messungen 1.245235 Sekunden gebraucht
+179
+bei T=2.792000 haben 10240 Messungen 1.257990 Sekunden gebraucht
+180
+bei T=2.800000 haben 10240 Messungen 1.327626 Sekunden gebraucht
+181
+bei T=2.808000 haben 10240 Messungen 1.316337 Sekunden gebraucht
+182
+bei T=2.816000 haben 10240 Messungen 1.228597 Sekunden gebraucht
+183
+bei T=2.824000 haben 10240 Messungen 1.258086 Sekunden gebraucht
+184
+bei T=2.832000 haben 10240 Messungen 1.251989 Sekunden gebraucht
+185
+bei T=2.840000 haben 10240 Messungen 1.275552 Sekunden gebraucht
+186
+bei T=2.848000 haben 10240 Messungen 1.336960 Sekunden gebraucht
+187
+bei T=2.856000 haben 10240 Messungen 1.335949 Sekunden gebraucht
+188
+bei T=2.864000 haben 10240 Messungen 1.425933 Sekunden gebraucht
+189
+bei T=2.872000 haben 10240 Messungen 1.365398 Sekunden gebraucht
+190
+bei T=2.880000 haben 10240 Messungen 1.376226 Sekunden gebraucht
+191
+bei T=2.888000 haben 10240 Messungen 1.274684 Sekunden gebraucht
+192
+bei T=2.896000 haben 10240 Messungen 1.304089 Sekunden gebraucht
+193
+bei T=2.904000 haben 10240 Messungen 1.248219 Sekunden gebraucht
+194
+bei T=2.912000 haben 10240 Messungen 1.308352 Sekunden gebraucht
+195
+bei T=2.920000 haben 10240 Messungen 1.292835 Sekunden gebraucht
+196
+bei T=2.928000 haben 10240 Messungen 1.281318 Sekunden gebraucht
+197
+bei T=2.936000 haben 10240 Messungen 1.266129 Sekunden gebraucht
+198
+bei T=2.944000 haben 10240 Messungen 1.376330 Sekunden gebraucht
+199
+bei T=2.952000 haben 10240 Messungen 1.368239 Sekunden gebraucht
+200
+bei T=2.960000 haben 10240 Messungen 1.397247 Sekunden gebraucht
+201
+bei T=2.968000 haben 10240 Messungen 1.377305 Sekunden gebraucht
+202
+bei T=2.976000 haben 10240 Messungen 1.396315 Sekunden gebraucht
+203
+bei T=2.984000 haben 10240 Messungen 1.384797 Sekunden gebraucht
+204
+bei T=2.992000 haben 10240 Messungen 1.403354 Sekunden gebraucht
+205
+bei T=3.000000 haben 10240 Messungen 1.322813 Sekunden gebraucht
+206
+bei T=3.008000 haben 10240 Messungen 1.407735 Sekunden gebraucht
+207
+bei T=3.016000 haben 10240 Messungen 1.414207 Sekunden gebraucht
+208
+bei T=3.024000 haben 10240 Messungen 1.419178 Sekunden gebraucht
+209
+bei T=3.032000 haben 10240 Messungen 1.463570 Sekunden gebraucht
+Insgesamt hat das Messen 264.581379 Sekunden gebraucht
+Insgesamt hat das Bootstrapping 141.898861 Sekunden gebraucht
+Insgesamt hat das Programm 934.928116 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit

@@ -1,0 +1,11 @@
++ export OMP_NUM_THREAD=12
++ OMP_NUM_THREAD=12
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=40
++ cores=4
++ srun /hiskp4/gross/bachelorarbeit/ising 40 4
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 247441.0 ON lcpunode02 CANCELLED AT 2020-07-01T20:11:18 DUE TO TIME LIMIT ***
+slurmstepd: error: *** JOB 247441 ON lcpunode02 CANCELLED AT 2020-07-01T20:11:18 DUE TO TIME LIMIT ***

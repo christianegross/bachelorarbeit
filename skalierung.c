@@ -36,7 +36,7 @@ int main(int argc, char **argv){
 	int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, speedupmittel, speedupfehler, speedup;
 	double zeitmin, zeitmineincore, speedupmin;
-	int node=2;//1,2 qbig, 0 vm
+	int node=0;//1,2 qbig, 0 vm
 	int durchlaeufe=10;
 	double *ergebnisse;
 	if((ergebnisse=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
