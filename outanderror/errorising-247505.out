@@ -1,0 +1,10 @@
++ export OMP_NUM_THREAD=12
++ OMP_NUM_THREAD=12
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=12
++ cores=2
++ schritte=1
++ srun /hiskp4/gross/bachelorarbeit/ising 12 2 1
++ cd -

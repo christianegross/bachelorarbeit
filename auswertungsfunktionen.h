@@ -10,6 +10,8 @@ double bootstrap_replication(int l, int messungen, double *blockarray, gsl_rng *
 void bootstrapohnepar(int l, int r, int messungen, double temperatur, double *blockarray, gsl_rng *generator, FILE *ausgabedatei);
 void bootstrap(int l, int r, int messungen, double temperatur, double *blockarray, gsl_rng **generatoren, FILE *ausgabedatei);
 void ableitung(int l, int temperaturen, const int spalten, const int spaltemessung, const int spaltefehler, const int spaltetemperatur, const int spaltel, FILE *messdatei, FILE *ausgabedatei);
+void ableitungdreipunkt(int l, int temperaturen, const int spalten, const int spaltemessung, const int spaltefehler, const int spaltetemperatur, const int spaltel, FILE *messdatei, FILE *ausgabedatei);
 double mittelwertarray(double *array, int messungen);
 double varianzarray(double *array, int messungen, double mittelwert);
-double minarray(double *array, int messungen);
+double minarray(double *array, int messungen);void minline(FILE *datei, const int spalten, const int minwertspalte, const int zeilen);
+void sqrtspalte(FILE *einlesedatei, FILE *ausgabedatei, const int spalten, const int spalte, const int zeilen);

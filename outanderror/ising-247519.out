@@ -1,0 +1,8 @@
+Sat Jul  4 14:47:02 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Sat Jul  4 14:47:32 CEST 2020 Waiting done, starting task!
+Sat Jul  4 14:47:32 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Sat Jul  4 14:48:02 CEST 2020 Waiting done, starting task!
+0	5	10	15	20	25	30	35	40	45	50	55	60	65	70	75	80	85	90	95	100	105	110	115	120	125	130	135	140	145	150	155	160	165	170	175	180	185	190	195	200	205	Insgesamt hat das Messen 29.027865 Sekunden gebraucht
+Insgesamt hat das Bootstrapping 32.518420 Sekunden gebraucht
+Insgesamt hat das Programm 82.425168 Sekunden gebraucht
+/hiskp4/gross/bachelorarbeit

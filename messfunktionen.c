@@ -336,10 +336,10 @@ void messen(int laenge, double T, double j, int messungen, char* gitter/*, FILE 
 	}
 }
 
-void messenmehreregeneratoren(int laenge, double T, double j, int messungen, char* gitter/*, FILE *gitterdatei*/, FILE *messdatei, gsl_rng **generatoren){
+void messenmehreregeneratoren(int laenge, double T, double j, int messungen/*, char* gitter*/, FILE *gitterdatei, FILE *messdatei, gsl_rng **generatoren){
 	//Führt  messungen Messungen an Gitter in gitterdatei durch mit T, j, generator, speichert das Ergebnis in messdatei
-	//char gitter[laenge*laenge];
-	//einlesen(gitter, laenge, gitterdatei);
+	char gitter[laenge*laenge];
+	einlesen(gitter, laenge, gitterdatei);
 	double H=hamiltonian(gitter, laenge, j);
 	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};//Wahrscheinlichkeiten fuer Spinflip, muessen nur einmal berechnet werden
 	if (j<0){
