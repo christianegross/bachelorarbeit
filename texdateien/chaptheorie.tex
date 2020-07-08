@@ -28,9 +28,9 @@
 	%Magnetisierung: Erwartungswert der Spins, \[
 	%M^2=\lim\limits_{m\to\infty}\left\langle s_i s_{i+m}\right\rangle \]
 	
-	Bei der Magnetisierung handelt es sich um den Erwartungswert der Spins, bei einem endlichen Gitter mit $N$ Punkten also~\cite[vgl. ][S. 8]{binderheermann}:
+	Bei der Magnetisierung handelt es sich um den Erwartungswert der Spins, bei einem endlichen Gitter mit $L^2$ Punkten also~\cite[vgl. ][S. 8]{binderheermann}:
 	\begin{equation}
-	M=\langle s \rangle=\frac{1}{N}\left\langle  \sum_{i=1}^{N} s_i \right\rangle
+	M=\langle s \rangle=\frac{1}{L^2}\left\langle  \sum_{i=1}^{L^2} s_i \right\rangle
 	\label{eq:magnetisierung}
 	\end{equation}
 
@@ -43,6 +43,12 @@
 	Oberhalb der kritischen Temperatur ist die Magnetisierung null~\cite[Gl. 81]{MontrollMagnetization}.
 	
 	Es kommt hier also zu einer Unstetigkeit in der Magnetisierung.
+	
+	Die analytischen Herleitungen ~\cite{OnsagerCrystal1,YangMagnetization,MontrollMagnetization} sind alle für ein unendlich langes Gitter. Dies kann nicht simuliert werden, jedoch kann verglichen werden, wie gut die Simulation beim Annähern an den sogenannten thermodynamischen Limes $L^2\to\infty$ die analytischen Ergebnisse reproduziert.
+	Statt einer Unstetigkeit in der Magnetisierung ist also ein Wendepunkt zu erwarten, nach~\cite[S. 45ff., S.101f.]{binderheermann} ist auch zu erwarten, dass die Magnetisierung oberhalb der kritischen Temperatur von null verschieden ist, sowie, dass die kritische Temperatur verschmiert.
+	%Anderes Verhalten im Modell: nur endliche Gitterlänge, in analytischen Betrachtungen (cite ising, montroll?) immer thermodynamischer limes laenge -> unendlich.
+	
+	%Daher Abweichungen: kritischer Punkt verschmiert, Unstetigkeit wird zu Wendepunkt, Magnetisierung überhalb T_c >0
 	
 	\section{Monte-Carlo Simulationen}
 	\label{sec:mctheorie}
@@ -61,11 +67,11 @@
 	
 	Die Idee der Monte-Carlo-Simulationen ist es, solche Integrale zu Diskretisieren
 	und über alle berechneten Zustände einen Mittelwert zu bilden, um das Ergebnis abzuschätzen. 
-	Die einfachste Methode hierzu ist das sogenannte simple sampling, wobei von zufällig, aber gleichmäßig verteilten Zuständen sowohl der Wert der Observablen als auch der Boltzmann-Faktor berechnet wird. Der Erwartungswert $\langle A(\mathbf{x}) \rangle$ berechnet sich dann als der gewichtete Mittelwert der Observablen, wobei $p(\mathbf{x})$ das Gewicht ist~\cite[vgl. ][S. 9 f.]{binderheermann}.
+	Die einfachste Methode hierzu ist das sogenannte \textit{simple sampling}, wobei von zufällig, aber gleichmäßig verteilten Zuständen sowohl der Wert der Observablen als auch der Boltzmann-Faktor berechnet wird. Der Erwartungswert $\langle A(\mathbf{x}) \rangle$ berechnet sich dann als der gewichtete Mittelwert der Observablen, wobei $p(\mathbf{x})$ das Gewicht ist~\cite[vgl. ][S. 9 f.]{binderheermann}.
 	%simple sampling != accept-reject, welches vorstellen? überhaupt benötigt?
 	%simple sampling: Zustände zufällig auf gesamten Konfigurationsraum verteilt, Integral als diskrete Summe angenähert Entspricht gewichtetem Mittelwert mit Gewicht p.
 	%Dies ist einerseits über das sogenannte simple sampling möglich. Hierbei erhält jeder Zustand das Gewicht $p(\mathbf{x})$ und um das Ergebnis zu erhalten, wird der gewichtete Mittelwert über alle Zustände gebildet\cite[vgl. ][S. 9 f.]{binderheermann}\cite[vgl. ][S. 91 f.]{skriptcompphys}. %mit Gewichtung der einzelnen Zustände mit $p(\mathbf{x})$ zu berechnen(accept-reject).
-	 Alternativ können die Zustände auch so gezogen werden, dass sie von Anfang an nach $p(\mathbf{x})$ verteilt sind, dann ist bei der Bildung des Mittelwerts keine Gewichtung mehr notwendig. Dies nennt sich importance sampling~\cite[vgl. ][S. 19 f.]{binderheermann}.
+	 Alternativ können die Zustände auch so gezogen werden, dass sie von Anfang an nach $p(\mathbf{x})$ verteilt sind, dann ist bei der Bildung des Mittelwerts keine Gewichtung mehr notwendig. Dies nennt sich \textit{importance sampling}~\cite[vgl. ][S. 19 f.]{binderheermann}.
 	 %(importance sampling).(Zitate) %und die Zustände mit mehr Gewicht öfter zu berechnen, damit sie bei der Summierung entsprechend mehr ins Gewicht fallen. Dafür werden die zu berechnenden Zustände $A$ so gezogen, dass sie nach $Z^{-1} \exp(-H_i/k_BT)$ verteilt sind.
 	
 	Dies wird durch den Metropolis-Algorithmus ermöglicht, entwickelt in~\cite{metropolisupdate}:
@@ -75,7 +81,7 @@
 	
 	Dass die Zustände nach $p(\mathbf{x})$ verteil sind, wird durch eine Markov-Kette erreicht, das heißt, alle Zustände werden aus dem vorherigen Zustand mit einer gewissen Übergangswahrscheinlichkeit generiert~\cite[vgl. ][S. 19 f.]{binderheermann}. 
 	
-	Diese sogenannte Markov-Chain-Monte-Carlo-Simulation führt dazu, dass nur ein einfacher Mittelwert zur Bestimmung der Ergebnisse nötig ist~\cite[vgl. ][S. 19 f.]{binderheermann}, allerdings führt die Abhängigkeit der Zustände voneinander zu einer Autokorrelation der Messergebnisse, die die Fehlerbestimmung erschwert~\cite[vgl. ][S. 72 ff.]{skriptcompphys}. Ein sich dadurch ergebender Vorteil dieser Methode ist, dass sich die einzelnen Zustände nicht viel voneinander unterscheiden, was die Berechnung der Observablen in manchen Fällen einfacher macht~\cite[vgl. ][S. 102 f.]{binderheermann}.
+	Diese sogenannte \textit{Markov-Chain-Monte-Carlo}-Simulation führt dazu, dass nur ein einfacher Mittelwert zur Bestimmung der Ergebnisse nötig ist~\cite[vgl. ][S. 19 f.]{binderheermann}, allerdings führt die Abhängigkeit der Zustände voneinander zu einer Autokorrelation der Messergebnisse, die die Fehlerbestimmung erschwert~\cite[vgl. ][S. 72 ff.]{skriptcompphys}. Ein sich dadurch ergebender Vorteil dieser Methode ist, dass sich die einzelnen Zustände nicht viel voneinander unterscheiden, was die Berechnung der Observablen in manchen Fällen einfacher macht~\cite[vgl. ][S. 102 f.]{binderheermann}.
 	%weiterer Vorteil: Eigenschaften der Zustände sind sehr ähnlich, erleichtert Berechnungen, nicht immer H neu ausrechnen
 	%Dies führt dazu, dass alle zu berechnenden Zustände aus den vorher berechneten generiert werden. Die Zustände bilden also eine Markovkette, es handelt sich um Markov Chain Monte Carlo (deutsche Bezeichnung?, Zitat)
 	
@@ -123,11 +129,11 @@
 	
 	%Fehler steigt mit l, bis ein Plateau erreicht ist.
 	
-	Um die Fehler noch besser abschätzen zu können, wird die sogenannte Bootstrap-Methode verwendet~\cite[vgl. ][S. 64 ff.]{skriptcompphys}:
+	Um die Fehler noch besser abschätzen zu können, wird die sogenannte \textit{Bootstrap}-Methode verwendet~\cite[vgl. ][S. 64 ff.]{skriptcompphys}:
 	
-	Zuerst werden Bootstrapreplicas erzeugt. Dazu werden aus den gemessenen bzw. geblockten Werten mit Zurücklegen so viele Werte gezogen, wie es insgesamt Werte gibt. Der arithmetische Mittelwert nach Gl.~\ref{eq:standardmitteundfehler} aus diesen Werten ist dann ein Replica.
+	Zuerst werden \textit{Bootstrapreplicas} erzeugt. Dazu werden aus den gemessenen bzw. geblockten Werten mit Zurücklegen so viele Werte gezogen, wie es insgesamt Werte gibt. Der arithmetische Mittelwert nach Gl.~\ref{eq:standardmitteundfehler} aus diesen Werten ist dann ein \textit{Replica}.
 	
-	Insgesamt werden $r$ Replicas gezogen. Der Bootstrapschätzer für Mittelwert und Standardabweichung wird gebildet, indem die Standardschätzer für $\mu$ und $\sigma$ aus den Replicas gebildet werden.
+	Insgesamt werden $r$ \textit{Replicas} gezogen. Der Bootstrapschätzer für Mittelwert und Standardabweichung wird gebildet, indem die Standardschätzer für $\mu$ und $\sigma$ aus den \textit{Replicas} gebildet werden.
 	
 	%Bootstrapping: Replica ziehen: Soviele zufällige Ergebnisse ziehen, wie es Messungen gibt, daraus den Mittelwert bilden.
 	
@@ -144,21 +150,21 @@
 	
 	Dadurch, dass die Parallelisierung mit Compilerdirektiven umgesetzt wird, ist die Kompilierung nicht mit allen Compilern möglich. Dafür ist es aber möglich, auf einem recht hohen Abstraktionsniveau zu programmieren, ohne sich um jede Kleinigkeit beim Parallelisieren explizit zu kümmern\cite[vgl. ][S. 209]{pachecoparallel}.	
 	
-	In einer parallelen Region arbeiten mehrere Threads gleichzeitig an einem Teil des Programms, oder teilen sich Schleifendurchläufe auf. Hierbei kann entweder jeder Thread auf die gleichen Variablen zugreifen (shared variables) oder eine eigene Version der Variable zur Verfügung haben, die von anderen Threads nicht verändert werden kann(private variables)\cite[vgl. ][S. 231 f.]{pachecoparallel}. 
+	In einer parallelen Region arbeiten mehrere \textit{Threads} gleichzeitig an einem Teil des Programms, oder teilen sich Schleifendurchläufe auf. Hierbei kann entweder jeder \textit{Thread} auf die gleichen Variablen zugreifen (\textit{shared variables}) oder eine eigene Version der Variable zur Verfügung haben, die von anderen \textit{Threads} nicht verändert werden kann(\textit{private variables})\cite[vgl. ][S. 231 f.]{pachecoparallel}. 
 	
-	Um das Verhalten der Laufzeit bei mehreren Kernen zu vergleichen, wird der Speedup gemessen:
+	Um das Verhalten der Laufzeit bei mehreren Kernen zu vergleichen, wird der \textit{Speedup} gemessen:
 	%Erwartetes Laufzeitverhalten bei mehr Kernen: gemessen als 
 	\begin{equation}
 	\text{Speedup(n Kernen)}=\frac{\text{Laufzeit bei einem Prozessorkern}}{\text{Laufzeit bei n Prozessorkernen}}
 	\label{eq:speedup}
 	\end{equation}
 	
-	Naiv ist zu erwarten, dass der Speedup linear mit der Anzahl der Kerne zunimmt. Dies berücksichtigt allerdings nicht, dass mit der Parallelisierung für jeden Kern eine zusätzliche Synchronisierung benötigt wird oder nicht alle Kerne gleichzeitig arbeiten, sondern zwischendurch auch (idle? deutsch?) sind. Daher ist zu erwarten, dass der Speedup weniger als linear zunimmt\cite[vgl. ][S. 58 f.]{pachecoparallel}.
+	Naiv ist zu erwarten, dass der \textit{Speedup} linear mit der Anzahl der Kerne zunimmt. Dies berücksichtigt allerdings nicht, dass mit der Parallelisierung für jeden Kern eine zusätzliche Synchronisierung benötigt wird oder nicht alle Kerne gleichzeitig arbeiten, sondern zwischendurch auch \textit{idle} sind. Daher ist zu erwarten, dass der \textit{Speedup} weniger als linear zunimmt\cite[vgl. ][S. 58 f.]{pachecoparallel}.
 	% linear, allerdings mehr Synchronisierungsarbeiten und anderer overhead durch parallelisierung ->. Zunahme des speedup flacht ab. (Zitat? Buch parallelisierung?)~\cite{pachecoparallel}
 	
 	
 	
-	Jede Parallelisierung führt zu mehr Overhead, also zusätzlich benötigten Rechnungen. Falls es viel Overhead gibt, wird zu dessen Ausführung genauso viel oder sogar mehr Zeit gebraucht, wie durch die Parallelisierung eingespart wurde. In diesem Fall wird der Speedup bei höherer Anzahl an Kernen wieder kleiner.
+	Jede Parallelisierung führt zu mehr \textit{Overhead}, also zusätzlich benötigten Rechnungen. Falls es viel \textit{Overhead} gibt, wird zu dessen Ausführung genauso viel oder sogar mehr Zeit gebraucht, wie durch die Parallelisierung eingespart wurde. In diesem Fall wird der \textit{Speedup} bei höherer Anzahl an Kernen wieder kleiner.
 	%Open Multi-Processing\cite{specificationsopenmp}
 	%Mehrere Prozessoren greifen auf einen gemeinsamen Speicher zu, alle Prozesse können freigegebene Variablen verändern, Verhindern von Speicherproblemen durch critical-Bereiche, die nur ein Thread zu einer Zeit ausführen kann. Auch möglich, Variablen privat zu setzen, dann hat jeder Thread eine eigene Kopie der variable. Anwendung über Compiler-Pragmas\cite{tutorialopenmp}
 	\subsection{MPI}
