@@ -4,8 +4,8 @@ LIBS:= -lgsl -lgslcblas -lm -fopenmp -lrt
 #auswertung: auswertungzeit.o
 #	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
-#skalfak00: skalierungfak.o
-#	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+skalfak00: skalierungfak.o
+	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
 skalierungnode00: skalierung.o messfunktionen.o sweeps.o auswertungsfunktionen.o 
 	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
@@ -24,6 +24,9 @@ ising: ising.o messfunktionen.o sweeps.o auswertungsfunktionen.o
 
 minline: minline.o auswertungsfunktionen.o 
 	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+
+mpifunktionen: mpifunktionen.c
+	mpicc -g -Wall -pedantic -o mpifunktionen mpifunktionen.c -lgsl -lm -lgslcblas
 	
 #erstellt aus allen .c dateien eine .o datei	
 %.o: %.c
