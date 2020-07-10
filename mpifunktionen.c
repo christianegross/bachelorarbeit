@@ -128,7 +128,7 @@ double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzpr
 	int delta;//potentielle Energieaenderung
 	double ergebnisse[3]={0,0,0};//Nach sweep benutzen, um H, akz, mag aus reduzierung abzuspeichern
 	double ergebnisselokal[3]={0,0,0};//Lokale Ergebnisse fuer H, akz, mag speichern
-	int sendbuffer[laenge];
+	int sendbufferoben[laenge], sendbufferunten[laenge];
 	//Untergitter durchgehen, an jedem Punkt Metropolis-Update
 	//erst schwarze Punkte:
 	for(int d1=0;d1<teillaenge;d1+=1){
@@ -145,36 +145,47 @@ double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzpr
 	}
 	//~ printf("sweep schwarz in Prozess %d\t", myrank);
 	//Austausch Raender
-	if(myrank%2==0){
-		for(int i=0;i<laenge;i+=1){
-			sendbuffer[i]=untergitter[(laenge*(teillaenge-1))+i];
-		}
-		MPI_Send(sendbuffer, laenge, MPI_INT,(myrank+1)%anzproz, 0, MPI_COMM_WORLD);
-		MPI_Recv(nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	for(int i=0;i<laenge;i+=1){
+		//rechter Rand
+		sendbufferunten[i]=untergitter[(laenge*(teillaenge-1))+i];
+		//linker Rand
+		sendbufferoben[i]=untergitter[i];
 	}
-	if(myrank%2==1){
-		for(int i=0;i<laenge;i+=1){
-			sendbuffer[i]=untergitter[i];
-		}
-		MPI_Recv(nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-		MPI_Send(sendbuffer, laenge, MPI_INT,(myrank-1+anzproz)%anzproz, 1, MPI_COMM_WORLD);
-	}
-	MPI_Barrier(MPI_COMM_WORLD);	
-	if(myrank%2==0){
-		for(int i=0;i<laenge;i+=1){
-			sendbuffer[i]=untergitter[i];
-		}
-		MPI_Send(sendbuffer, laenge, MPI_INT,(myrank-1+anzproz)%anzproz, 2, MPI_COMM_WORLD);
-		MPI_Recv(nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-	}
-	if(myrank%2==1){
-		for(int i=0;i<laenge;i+=1){
-			sendbuffer[i]=untergitter[(laenge*(teillaenge-1))+i];
-		}
-		MPI_Recv(nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-		MPI_Send(sendbuffer, laenge, MPI_INT,(myrank+1)%anzproz, 3, MPI_COMM_WORLD);
-	}
-	MPI_Barrier(MPI_COMM_WORLD);
+	//Erst Neue Raender nach oben senden/von unten empfangen
+	MPI_Sendrecv(sendbufferoben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 0, nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	//Dann nach unten senden/von oben empfangen -> beide Male geschlossener Kreis
+	MPI_Sendrecv(sendbufferunten, laenge, MPI_INT, (myrank+1)%anzproz, 1, nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	//printf("nach schwarz gesendet\n");
+	//~ if(myrank%2==0){
+		//~ for(int i=0;i<laenge;i+=1){
+			//~ sendbuffer[i]=untergitter[(laenge*(teillaenge-1))+i];
+		//~ }
+		//~ MPI_Send(sendbuffer, laenge, MPI_INT,(myrank+1)%anzproz, 0, MPI_COMM_WORLD);
+		//~ MPI_Recv(nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	//~ }
+	//~ if(myrank%2==1){
+		//~ for(int i=0;i<laenge;i+=1){
+			//~ sendbuffer[i]=untergitter[i];
+		//~ }
+		//~ MPI_Recv(nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		//~ MPI_Send(sendbuffer, laenge, MPI_INT,(myrank-1+anzproz)%anzproz, 1, MPI_COMM_WORLD);
+	//~ }
+	//~ MPI_Barrier(MPI_COMM_WORLD);	
+	//~ if(myrank%2==0){
+		//~ for(int i=0;i<laenge;i+=1){
+			//~ sendbuffer[i]=untergitter[i];
+		//~ }
+		//~ MPI_Send(sendbuffer, laenge, MPI_INT,(myrank-1+anzproz)%anzproz, 2, MPI_COMM_WORLD);
+		//~ MPI_Recv(nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	//~ }
+	//~ if(myrank%2==1){
+		//~ for(int i=0;i<laenge;i+=1){
+			//~ sendbuffer[i]=untergitter[(laenge*(teillaenge-1))+i];
+		//~ }
+		//~ MPI_Recv(nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		//~ MPI_Send(sendbuffer, laenge, MPI_INT,(myrank+1)%anzproz, 3, MPI_COMM_WORLD);
+	//~ }
+	//~ MPI_Barrier(MPI_COMM_WORLD);
 	//~ printf("Kommunikation in  %d\n", myrank);
 	//~ for (int i=0;i<laenge;i+=1){
 		//~ printf("no %d, nu %d, sb %d in %d-%d\n", nachbaroben[i], nachbarunten[i], sendbuffer[i], myrank, i);
@@ -203,46 +214,57 @@ double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzpr
 	//~ printf("sweep weiss in Prozess %d\t", myrank);
 	//Dann wieder Update Raender
 		//Austausch Raender
-	if(myrank%2==0){
-		for(int i=0;i<laenge;i+=1){
-			sendbuffer[i]=untergitter[(laenge*(teillaenge-1))+i];
-		}
-		MPI_Send(sendbuffer, laenge, MPI_INT,(myrank+1)%anzproz, 0, MPI_COMM_WORLD);
-		MPI_Recv(nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		
+	
+	for(int i=0;i<laenge;i+=1){
+		sendbufferunten[i]=untergitter[(laenge*(teillaenge-1))+i];
 	}
-	if(myrank%2==1){
-		for(int i=0;i<laenge;i+=1){
-			sendbuffer[i]=untergitter[i];
-		}
-		MPI_Recv(nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-		MPI_Send(sendbuffer, laenge, MPI_INT,(myrank-1+anzproz)%anzproz, 1, MPI_COMM_WORLD);
+	for(int i=0;i<laenge;i+=1){
+		sendbufferoben[i]=untergitter[i];
 	}
-	MPI_Barrier(MPI_COMM_WORLD);	
-	if(myrank%2==0){
-		for(int i=0;i<laenge;i+=1){
-			sendbuffer[i]=untergitter[i];
-		}
-		MPI_Send(sendbuffer, laenge, MPI_INT,(myrank-1+anzproz)%anzproz, 2, MPI_COMM_WORLD);
-		MPI_Recv(nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-	}
-	if(myrank%2==1){
-		for(int i=0;i<laenge;i+=1){
-			sendbuffer[i]=untergitter[(laenge*(teillaenge-1))+i];
-		}
-		MPI_Recv(nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-		MPI_Send(sendbuffer, laenge, MPI_INT,(myrank+1)%anzproz, 3, MPI_COMM_WORLD);
-	}
-	MPI_Barrier(MPI_COMM_WORLD);
+	MPI_Sendrecv(sendbufferoben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 0, nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	MPI_Sendrecv(sendbufferunten, laenge, MPI_INT, (myrank+1)%anzproz, 1, nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	//printf("nach weiss gesendet\n");
+	//~ if(myrank%2==0){
+		//~ for(int i=0;i<laenge;i+=1){
+			//~ sendbuffer[i]=untergitter[(laenge*(teillaenge-1))+i];
+		//~ }
+		//~ MPI_Send(sendbuffer, laenge, MPI_INT,(myrank+1)%anzproz, 0, MPI_COMM_WORLD);
+		//~ MPI_Recv(nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	//~ }
+	//~ if(myrank%2==1){
+		//~ for(int i=0;i<laenge;i+=1){
+			//~ sendbuffer[i]=untergitter[i];
+		//~ }
+		//~ MPI_Recv(nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		//~ MPI_Send(sendbuffer, laenge, MPI_INT,(myrank-1+anzproz)%anzproz, 1, MPI_COMM_WORLD);
+	//~ }
+	//~ MPI_Barrier(MPI_COMM_WORLD);	
+	//~ if(myrank%2==0){
+		//~ for(int i=0;i<laenge;i+=1){
+			//~ sendbuffer[i]=untergitter[i];
+		//~ }
+		//~ MPI_Send(sendbuffer, laenge, MPI_INT,(myrank-1+anzproz)%anzproz, 2, MPI_COMM_WORLD);
+		//~ MPI_Recv(nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	//~ }
+	//~ if(myrank%2==1){
+		//~ for(int i=0;i<laenge;i+=1){
+			//~ sendbuffer[i]=untergitter[(laenge*(teillaenge-1))+i];
+		//~ }
+		//~ MPI_Recv(nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		//~ MPI_Send(sendbuffer, laenge, MPI_INT,(myrank+1)%anzproz, 3, MPI_COMM_WORLD);
+	//~ }
+	//~ MPI_Barrier(MPI_COMM_WORLD);
 	//~ printf("Kommunikation in  %d\n", myrank);	
 	//Gather nach jedem sweep noetig, damit nachbararrays gebildet werden können
 	//ersetzen durch einzelne send/receive-Funktionen?
 	MPI_Allreduce(ergebnisselokal, ergebnisse, 3, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);//H, akz, mag berechnen, indem Ergebnis aus jedem Teilgitter aufaddiert wird
 	ergebnisse[0]+=H;//Bis jetzt wurde nur Veraenderung des Hamiltonians gemessen->jetzt auch aktualisierung auf Basis des vorherigen Wert
 	if(myrank==0){
-		double magnetisierung=(ergebnisse[2]>0?ergebnisse[2]/laenge/laenge:-ergebnisse[2]/laenge/laenge);//Betrag bilden
+		double magnetisierung=(ergebnisse[2]>0?ergebnisse[2]/(double)laenge/(double)laenge:-ergebnisse[2]/(double)laenge/(double)laenge);//Betrag bilden
 		double magquadrat=magnetisierung*magnetisierung;
 		double magvier=magquadrat*magquadrat;
-		fprintf(ausgabedatei, "%e\t%e\t%e\t%e\t%e\n",ergebnisse[1]/laenge/laenge, magnetisierung, magquadrat, magvier, ergebnisse[0]);//akz, mag, magquad, magvier, H
+		fprintf(ausgabedatei, "%e\t%e\t%e\t%e\t%e\n",ergebnisse[1]/(double)laenge/(double)laenge, magnetisierung, magquadrat, magvier, ergebnisse[0]);//akz, mag, magquad, magvier, H
 	}
 	return ergebnisse[0];//Hamiltonian, fuer naechste Rechnung benoetit, zurueckgeben
 			
@@ -355,7 +377,7 @@ int main(int argc, char **argv){
 	int temperaturzahl=210;//Temperaturen, beid enen gemessen wird
 	int starttemp=0;
 	int endtemp=temperaturzahl;
-	int schritt=1;
+	int schritt=3;
 	double *temperaturarray;
 	if((temperaturarray=(double*)malloc(sizeof(double)*temperaturzahl))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
 		printf("Fehler beim Allokieren der Temperaturen!\n");
