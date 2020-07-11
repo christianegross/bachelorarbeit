@@ -25,8 +25,11 @@ ising: ising.o messfunktionen.o sweeps.o auswertungsfunktionen.o
 minline: minline.o auswertungsfunktionen.o 
 	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 
-mpifunktionen: mpifunktionen.c
-	mpicc -g -Wall -pedantic -o mpifunktionen mpifunktionen.c -lgsl -lm -lgslcblas
+mpiising: mpifunktionen.c mpiising.c
+	mpicc -g -Wall -pedantic -o $@ $^ $(LIBS)
+
+mpiskalierung: mpifunktionen.c skalierungmpi.c
+	mpicc -g -Wall -pedantic -o $@ $^ $(LIBS)
 	
 #erstellt aus allen .c dateien eine .o datei	
 %.o: %.c
