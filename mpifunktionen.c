@@ -229,10 +229,13 @@ void messenmpi(int messungen, int laenge, double T, double j, int *gitter, FILE 
 		nachbaroben[i]=gitter[((teillaenge*myrank-1+laenge)%laenge)*laenge+i];
 		nachbarunten[i]=gitter[((teillaenge*(myrank+1))%laenge)*laenge+i];
 	}
+	//printf("Gitter verteilt in Prozess %d\n", myrank);
 	for (int messung=0; messung<messungen; messung+=1){
 		if(myrank==0){
 			fprintf(ausgabedatei,"%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		}
+		
+		//printf("vor sweep in  %d\n", myrank);
 		H=sweepmpi(laenge,ausgabedatei, generatoren,  anzproz, myrank, teillaenge, untergitter, nachbarunten, nachbaroben,  wahrscheinlichkeiten,  j,  H);
 	}
 	//Gitter aktualisieren nach sweep: In jedem Prozess Inhalte der einzelnen Untergitter in Gitter aneinanderreihen

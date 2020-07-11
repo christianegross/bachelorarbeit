@@ -36,47 +36,31 @@ int main(int argc, char **argv){
 	}
 	double j=1.0;
 	const int seed=5;//fuer den zufallsgenerator
-	const int messungen=1000;//pro temperatur
-	double mittelzeit, varianzzeit;
-	double zeitmin, zeitmax;
+	const int messungen=100;//pro temperatur
+	double mittelzeit, varianzzeit, mittelzeitges, varianzzeitges;
+	double zeitmin, zeitmax, zeitminges, zeitmaxges;
 	struct timeval anfangmessen, endemessen;//Zeitmessung mit gettimeofday
 	double sec, usec, zeitgesmessen;
 	const int rechner=0;//1,2 qbig, 0 vm
-	const int durchlaeufe=10;
-	//~ double *ergebnisselokal, *ergebnisseglobal, *mittelglobal;//mittellokal erst bei erstmaliger Verwendung definiert
+	const int durchlaeufe=2;
 	double ergebnisselokal[durchlaeufe], ergebnisseglobal[durchlaeufe*anzproz], mittelglobal[5*anzproz];//mittellokal erst bei erstmaliger Verwendung definiert
-	//~ if((ergebnisselokal=(double*)malloc(sizeof(double)*durchlaeufe))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
-		//~ printf("Fehler beim Allokieren der Temperaturen!\n");
-		//~ fprintf(stderr, "Fehler beim Allokieren der Temperaturen!\n");
-		//~ return (-1);
-	//~ }
-	//~ if((ergebnisseglobal=(double*)malloc(sizeof(double)*durchlaeufe*anzproz))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
-		//~ printf("Fehler beim Allokieren der Temperaturen!\n");
-		//~ fprintf(stderr, "Fehler beim Allokieren der Temperaturen!\n");
-		//~ return (-1);
-	//~ }
-	//~ if((mittelglobal=(double*)malloc(sizeof(double)*5*anzproz))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
-		//~ printf("Fehler beim Allokieren der Temperaturen!\n");
-		//~ fprintf(stderr, "Fehler beim Allokieren der Temperaturen!\n");
-		//~ return (-1);
-	//~ }
-	FILE *messdatei, *dummydatei, *zeitdatei, *mitteldatei;//speichern der Messergenbnisse der einzelnen Messungen, der Zeiten und ein nicht benoetigtes nicht thermalisiertes Gitter
-	char dateinamezeit[200], dateinamemittel[200], dateinamedummytherm[50]/*, dateinamedummythermplot[50]*/, dateinamedummymessen[50];//dateinamemessen[150],
+	FILE *messdatei, *dummydatei/*, *zeitdatei*/, *mitteldatei;//speichern der Messergenbnisse der einzelnen Messungen, der Zeiten und ein nicht benoetigtes nicht thermalisiertes Gitter
+	char /*dateinamezeit[200], */dateinamemittel[200], dateinamedummytherm[50], dateinamedummythermplot[50], dateinamedummymessen[50];//dateinamemessen[150],
 	sprintf(dateinamedummytherm, "dummytherm%.2d.txt", rechner);
 	sprintf(dateinamedummymessen, "dummymessen%.2d.txt", rechner);
-	sprintf(dateinamezeit,"Messungen/Zeiten/zmessen-m%.6d-proz%.2d-%.2d%s.txt",messungen, rechner, anzproz, merkmal);
+	//sprintf(dateinamezeit,"Messungen/Zeiten/zmessen-m%.6d-proz%.2d-%.2d%s.txt",messungen, rechner, anzproz, merkmal);
 	sprintf(dateinamemittel,"Messungen/Zeiten/zmittel-m%.6d-proz%.2d-%.2d%s.txt",messungen, rechner, anzproz, merkmal);
 	if(myrank==0){
 		messdatei=fopen(dateinamedummymessen,  "w+");
 		dummydatei=fopen(dateinamedummytherm, "w+");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird	
-		zeitdatei=fopen(dateinamezeit, "w+");
+		//zeitdatei=fopen(dateinamezeit, "w+");
 		mitteldatei=fopen(dateinamemittel, "w+");
 	}
 	MPI_Barrier(MPI_COMM_WORLD);
 	if(myrank!=0){
 		messdatei=fopen(dateinamedummymessen,  "r");
 		dummydatei=fopen(dateinamedummytherm, "r");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird	
-		zeitdatei=fopen(dateinamezeit, "r");
+		//zeitdatei=fopen(dateinamezeit, "r");
 		mitteldatei=fopen(dateinamemittel, "r");
 	}
 	gsl_rng **generatoren;
@@ -95,15 +79,20 @@ int main(int argc, char **argv){
 		initialisierenhomogen(gitter, laenge);
 	}
 	MPI_Bcast(gitter, laenge*laenge, MPI_INT, 0, MPI_COMM_WORLD);
-	thermalisierenmpi(messungen, laenge, temperatur, j, gitter, messdatei, dummydatei, generatoren);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
-	//~ printf("4 Laenge=%d\tTemperatur=%f\n", laenge, temperatur);
+	printf("3 %d\n", myrank);
+	thermalisierenmpi(10, laenge, temperatur, j, gitter, messdatei, dummydatei, generatoren);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
+	printf("4 Laenge=%d\tTemperatur=%f\n", laenge, temperatur);
+	fclose(messdatei);
 	for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
 		//einlesen(gitter, laenge, dummydatei);
-		if(myrank==0){messdatei=fopen(dateinamedummymessen,  "w+");}
+		if(myrank==0){messdatei=fopen(dateinamedummymessen,  "w+");printf("%d\n", durchlauf);}
 		MPI_Barrier(MPI_COMM_WORLD);
 		if(myrank!=0){messdatei=fopen(dateinamedummymessen,  "r");}
+		
+	//printf("5 %d\n", myrank);
 		gettimeofday(&anfangmessen, NULL);
 		messenmpi(messungen, laenge, temperatur, j, gitter, messdatei, generatoren);
+	//printf("6 %d\n", myrank);
 		gettimeofday(&endemessen, NULL);
 		sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
 		usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
@@ -113,57 +102,35 @@ int main(int argc, char **argv){
 		printf("%f\t%f\t%f\t%f\t%f\n", (double)myrank, (double)anzproz, (double)messungen, (double)laenge, zeitgesmessen);//cores messungen Zeit Speedup
 		fclose(messdatei);
 	}
-	printf("vor gather2 in %d\n", myrank);
-	MPI_Allgather(ergebnisselokal, durchlaeufe, MPI_DOUBLE, ergebnisseglobal, durchlaeufe*anzproz, MPI_DOUBLE, MPI_COMM_WORLD);
+	//printf("vor gather2 in %d\n", myrank);
+	MPI_Gather(ergebnisselokal, durchlaeufe, MPI_DOUBLE, ergebnisseglobal, durchlaeufe, MPI_DOUBLE,0, MPI_COMM_WORLD);
 	mittelzeit=mittelwertarray(ergebnisselokal, durchlaeufe);
 	varianzzeit=varianzarray(ergebnisselokal, durchlaeufe, mittelzeit);
 	zeitmin=minarray(ergebnisselokal, durchlaeufe);
 	zeitmax=maxarray(ergebnisselokal, durchlaeufe);
+	mittelzeitges=mittelwertarray(ergebnisseglobal, durchlaeufe*anzproz);
+	varianzzeitges=varianzarray(ergebnisseglobal, durchlaeufe*anzproz, mittelzeitges);
+	zeitminges=minarray(ergebnisseglobal, durchlaeufe*anzproz);
+	zeitmaxges=maxarray(ergebnisseglobal, durchlaeufe*anzproz);
 	double mittellokal[5]={(double)myrank, mittelzeit, varianzzeit, zeitmin, zeitmax};
-	printf("vor gather in %d\n", myrank);
-	MPI_Allgather(mittellokal, 5, MPI_DOUBLE, mittelglobal, 5*anzproz, MPI_DOUBLE, MPI_COMM_WORLD);
-	
-	printf("nach gather in %d\n", myrank);
+	MPI_Gather(mittellokal, 5, MPI_DOUBLE, mittelglobal, 5, MPI_DOUBLE,0 , MPI_COMM_WORLD);
+	//printf("nach gather in %d\n", myrank);
 	if(myrank==0){
 		for(int i=0; i<anzproz; i+=1){
 			fprintf(mitteldatei,  "%f\t%f\t%f\t%f\t%f\t%f\t%f\n",
 				mittelglobal[5*i], (double)anzproz, (double)temperatur, mittelglobal[5*i+1], mittelglobal[5*i+2], mittelglobal[5*i+3], mittelglobal[5*i+4]); 
 		}
-	}
-	printf("Ausgabe in %d\n", myrank);
-	//fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\n", (double)laenge, temperatur, mittelzeit, varianzzeit, zeitmineincore);
-	
-		//Messungen overhead
-	//einlesen(gitter, laenge, dummydatei);
-	//~ if(myrank==0){messdatei=fopen(dateinamedummymessen,  "w+");}
-	//~ MPI_Barrier(MPI_COMM_WORLD);
-	//~ if(myrank!=0){messdatei=fopen(dateinamedummymessen,  "r");}
-	//~ gettimeofday(&anfangmessen, NULL);
-	//~ einlesen(gitter, laenge, dummydatei);
-	//~ double H=hamiltonian(gitter, laenge, j);
-	//~ for (int i=0;i<messungen;i+=1){
-		//~ fprintf(messdatei, "%f\t", (double)i);
-		//~ fprintf(messdatei, "%f\n", H);
-		//~ H=hamiltonian(gitter, laenge, j);
-	//~ }
-	//~ gettimeofday(&endemessen, NULL);
-	//~ sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
-	//~ usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
-	//~ zeiteincore=sec+1e-06*usec;
-	//~ fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", 0.0, (double)laenge, zeiteincore, 0.0,0.0,0.0, temperatur,0.0,0.0);
-	//~ fclose(messdatei);
-
-	
-	printf("vor close in %d\n", myrank);
+		fprintf(mitteldatei,  "%f\t%f\t%f\t%f\t%f\t%f\t%f\n",
+				(double)anzproz, (double)anzproz, (double)temperatur, mittelzeitges, varianzzeitges, zeitminges, zeitmaxges); 
+	}	
+	//printf("Ausgabe in %d\n", myrank);
+	ausgabe(gitter, laenge, dummydatei);
 	fclose(dummydatei);
-	fclose(zeitdatei);
+	//fclose(zeitdatei);
 	fclose(mitteldatei);
-	
 	for(int core=0;core<anzproz;core+=1){
 		gsl_rng_free(generatoren[core]);
 	}
-	
-	printf("vor free malloc in %d\n", myrank);
 	free(generatoren);
 	MPI_Finalize();
 }
