@@ -36,13 +36,13 @@ int main(int argc, char **argv){
 	}
 	double j=1.0;
 	const int seed=5;//fuer den zufallsgenerator
-	const int messungen=100;//pro temperatur
+	const int messungen=1000;//pro temperatur
 	double mittelzeit, varianzzeit, mittelzeitges, varianzzeitges;
 	double zeitmin, zeitmax, zeitminges, zeitmaxges;
 	struct timeval anfangmessen, endemessen;//Zeitmessung mit gettimeofday
 	double sec, usec, zeitgesmessen;
 	const int rechner=0;//1,2 qbig, 0 vm
-	const int durchlaeufe=2;
+	const int durchlaeufe=10;
 	double ergebnisselokal[durchlaeufe], ergebnisseglobal[durchlaeufe*anzproz], mittelglobal[5*anzproz];//mittellokal erst bei erstmaliger Verwendung definiert
 	FILE *messdatei, *dummydatei/*, *zeitdatei*/, *mitteldatei;//speichern der Messergenbnisse der einzelnen Messungen, der Zeiten und ein nicht benoetigtes nicht thermalisiertes Gitter
 	char /*dateinamezeit[200], */dateinamemittel[200], dateinamedummytherm[50], dateinamedummythermplot[50], dateinamedummymessen[50];//dateinamemessen[150],
@@ -79,13 +79,16 @@ int main(int argc, char **argv){
 		initialisierenhomogen(gitter, laenge);
 	}
 	MPI_Bcast(gitter, laenge*laenge, MPI_INT, 0, MPI_COMM_WORLD);
-	printf("3 %d\n", myrank);
+	//printf("3 %d\n", myrank);
 	thermalisierenmpi(10, laenge, temperatur, j, gitter, messdatei, dummydatei, generatoren);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
-	printf("4 Laenge=%d\tTemperatur=%f\n", laenge, temperatur);
+	//printf("4 Laenge=%d\tTemperatur=%f\n", laenge, temperatur);
 	fclose(messdatei);
 	for (int durchlauf=0; durchlauf<durchlaeufe;durchlauf+=1){//mehrere Durchläufe, um Unstimmigkeiten mit gettimeofday herauszufinden
 		//einlesen(gitter, laenge, dummydatei);
-		if(myrank==0){messdatei=fopen(dateinamedummymessen,  "w+");printf("%d\n", durchlauf);}
+		if(myrank==0){
+			messdatei=fopen(dateinamedummymessen,  "w+");
+			//printf("%d\n", durchlauf);
+			}
 		MPI_Barrier(MPI_COMM_WORLD);
 		if(myrank!=0){messdatei=fopen(dateinamedummymessen,  "r");}
 		
@@ -117,11 +120,11 @@ int main(int argc, char **argv){
 	//printf("nach gather in %d\n", myrank);
 	if(myrank==0){
 		for(int i=0; i<anzproz; i+=1){
-			fprintf(mitteldatei,  "%f\t%f\t%f\t%f\t%f\t%f\t%f\n",
-				mittelglobal[5*i], (double)anzproz, (double)temperatur, mittelglobal[5*i+1], mittelglobal[5*i+2], mittelglobal[5*i+3], mittelglobal[5*i+4]); 
+			fprintf(mitteldatei,  "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n",
+				mittelglobal[5*i], (double)anzproz, (double)temperatur, (double)laenge, mittelglobal[5*i+1], mittelglobal[5*i+2], mittelglobal[5*i+3], mittelglobal[5*i+4]); 
 		}
-		fprintf(mitteldatei,  "%f\t%f\t%f\t%f\t%f\t%f\t%f\n",
-				(double)anzproz, (double)anzproz, (double)temperatur, mittelzeitges, varianzzeitges, zeitminges, zeitmaxges); 
+		fprintf(mitteldatei,  "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n",
+				(double)anzproz, (double)anzproz, (double)temperatur, (double)laenge, mittelzeitges, varianzzeitges, zeitminges, zeitmaxges); 
 	}	
 	//printf("Ausgabe in %d\n", myrank);
 	ausgabe(gitter, laenge, dummydatei);
