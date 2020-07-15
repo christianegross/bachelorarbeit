@@ -19,3 +19,5 @@ cd /hiskp4/gross/bachelorarbeit
 srun /hiskp4/gross/bachelorarbeit/skalierungnode02
 
 cd -
+
+#ERste Version zur Messung der Skalierung der sweep-Funktion

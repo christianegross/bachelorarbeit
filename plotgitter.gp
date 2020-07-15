@@ -1,3 +1,4 @@
+#plottet thermalisierte, teilweise nicht genug thermalisierte Gitter bei verschiedenen Laengen und Temperaturen
 set ter pdfcairo size 8in,8in
 
 set view map

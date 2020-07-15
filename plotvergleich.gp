@@ -1,3 +1,4 @@
+#plottet hamiltonian und akzeptanzrate, die durch unterschiedliche sweep-Funktionen gemessen wurde, plottet teilweide auch deren Differenz
 set terminal pdfcairo size 4in, 2.75in color colortext
 
 

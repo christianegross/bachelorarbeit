@@ -1,16 +1,23 @@
+#Plotten verschiedener Ergebnisse zu Magnetisierung von Temperatur oder !/T, Akzeptanzrate...
+#Plots am Ende nicht benoetigt
 set ter pdfcairo size 4in,5.5in
 
 
 set out "Messungen/ergebnisseparallel.pdf"
+litresult(x)=(1-(1/(sinh(2/x)*sinh(2/x)))**2)**(1.0/8)
 set xlabel "Temperatur"
 set ylabel "Magnetisierung"
 set yrange [-0.05:1.05]
-litresult(x)=(1-(1/(sinh(2/x)*sinh(2/x)))**2)**(1.0/8)
+litresult(J,x)=(1-(1/(sinh((2*J)/x)*sinh((2*J)/x)))**2)**(1.0/8)
 set title "laenge=100"
 
-plot "Messungen/Mittelwerte/messenmittel-l0100-m-010000.txt" u 2:6:7 w yerrorbars lt 7 title ""
+plot "Messungen/Mittelwerte/messenmittel-l0100-m-010000.txt" u 2:6:7 w yerrorbars ps 0.4 lt 7 title "", litresult(1,x) title "Erwarteter Verlauf"
 set ylabel "Akzeptanzrate"
-plot "Messungen/Mittelwerte/messenmittel-l0100-m-010000.txt" u 2:4:5 w yerrorbars lt 7 title ""
+plot "Messungen/Mittelwerte/messenmittel-l0100-m-010000.txt" u 2:4:5 w yerrorbars ps 0.4 lt 7 title ""
+
+set ylabel "Magnetisierung"
+set xlabel "Temperatur/J"
+plot "Messungen/Mittelwerte/messenmittel-l0100-m-010000.txt" u 2:6:7 w yerrorbars ps 0.4 lt 7 title "", litresult(1,x) title "Erwarteter Verlauf",	 "Messungen/Mittelwerte/messenmittel-l0100-m-010000-j-02.txt" u 2:6:7 w yerrorbars ps 0.4 lt 8 title "", litresult(2,x) title "Erwarteter Verlauf", 
 
 #Magnetisierung
 set xlabel "Temperatur"

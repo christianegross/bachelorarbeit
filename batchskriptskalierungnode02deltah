@@ -19,3 +19,5 @@ cd /hiskp4/gross/bachelorarbeit
 srun /hiskp4/gross/bachelorarbeit/skalierungnode02deltah
 
 cd -
+
+#Messung der skalierung der sweepfunktion auf lcpunode02, mit einer bestimmten deltah-Funktion->damit schneller Vergleich durchgefuehrt werden kann

@@ -1,3 +1,4 @@
+#Plottet Skalierung der Laufzeit bei mehreren Kernen von verschiedenen Messungen, Messungen mit gettimeofday, Verwendung von OpenMP
 set ter pdfcairo size 5 in, 3.5 in
 
 set xlabel "Anzahl Prozessoren"

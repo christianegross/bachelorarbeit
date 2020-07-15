@@ -1,7 +1,6 @@
-//Christiane, start 15.04.20
-//Erste Implementierung Ising-Modell für Bachelorarbeit
-//Versuch Metropolis-Algorithmus
-
+//Christiane, start 18.06.20
+//Bootstrapping der Messergebnisse in eigenes Programm ausgelagert
+//Entschieden, Bootstrapping doch weiter in Programm ising.c zu machen, da uebersichtlicher und nicht vergessen/falsche geoeffnet/... wird
 
 #include <stdio.h>
 #include <gsl/gsl_rng.h>//Zufallszahlen

@@ -1,10 +1,14 @@
+#Erstellung der Bilder fuer die bachelorarbeit, die als Multiplot ausgegeben werden, und deren nciht-Multiplot-Aequivalente
+#Hier Multiplot mit 2x1Bildern von Magnetisierung, Akzeptanzrate und Hamiltonian, in grober und feiner Ansicht
+#Zusaetzlich Plot von deren standardabweichungen
+
 #Hamiltonian, Akzeptanzrate und Magnetisierung grob und fein
 set ter epslatex size 3in, 3in color colortext
 
 set macros
 #In Anlehnung an http://www.gnuplotting.org/tag/multiplot/
-LEFT='set lmargin at screen 0.15; set rmargin at screen 0.55; set xtics 0, 2000, 10000; set xrange [-10:10000]; set format y '
-RIGHT='set lmargin at screen 0.55; set rmargin at screen 0.95; set xtics 0,1,5; set xrange [0:5]; unset ylabel; set format y '''
+LEFT='set lmargin at screen 0.15; set rmargin at screen 0.545; set xtics 0,1,4; set xrange [0:5];  set format y '
+RIGHT='set lmargin at screen 0.555; set rmargin at screen 0.95; set xtics 0, 2000, 10000; set xrange [-10:10000]; unset ylabel; set format y '''
 
 set style line 1 lc 7 lt 7 pt 7 #ps 0.2
 set style line 2 lc 1 lt 7 pt 9

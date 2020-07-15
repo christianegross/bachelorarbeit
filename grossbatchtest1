@@ -13,3 +13,5 @@
 gcc -std=c99 -Wall -pedantic -fopenmp ising.c -c
 gcc -std=c99 -Wall -pedantic -o ising_grosstest1 ising.o -lgsl -lgslcblas -lm -fopenmp
 ./ising_grosstest1
+
+#erster Verscuh eines Batchskripts, falsch, da Kompilierung nicht in skript ausgefuehrt wird
