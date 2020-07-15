@@ -1,5 +1,6 @@
 //Christiane, 25.05.20
 //Skalierungstest von sweep fuer verschiedene cores
+//Variante von skalierung.c, wo nicht gettimeofday, sondern clock_gettime verwendet wurde, clock_gettime hat allerdings keine sinnvollen ergebnisse geliefert, daher wieder aufgegeben
 
 
 #include <stdio.h>

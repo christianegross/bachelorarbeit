@@ -1,4 +1,6 @@
 //Ausprobieren der Skalierung auf QBiG
+//Misst dafuer die Skalierung der mehrfachen Berechnung der Fakultaet
+//Gemacht, da sweep-Funktionen seltsam skaliert haben
 //Christiane, 11.06.20
 
 #include <stdio.h>

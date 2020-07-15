@@ -1,3 +1,4 @@
+#plot der Bilder, die fuer Bachelorarbeit benoetigt werden und nicht multiplot sind, z.B. Magnetisierung bei verschiedenen Laengen, Hamiltonian von verschiedenen sweep-Funktionen, speedup von cores, tkrit(l), schachbrettmuster
 set ter epslatex size 15 cm, 10.6cm color colortext
 
 set style line 1 lc 7 lt 7 pt 7 #ps 0.2
@@ -106,7 +107,7 @@ set key top right
 set xrange [10:1000]
 set xtics 12, 2, 1000
 set xlabel 'Gitterlänge'
-set ylabel '$T_{\text{krit}}$'
+set ylabel '$T_c$'
 plot tkrit(x) lt 0 dt 5 title 'theoretischer Wert',\
 	 '25laengenl128.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:(0.002) w yerrorbars lt 7 title 'bestimmte Werte'
 #plot 'allesm10368mit768mitnormundsqrt.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:yfehler ls 1 title 'bestimmte Werte',\
@@ -117,7 +118,7 @@ plot tkrit(x) lt 0 dt 5 title 'theoretischer Wert',\
 unset logscale x
 unset xrange
 
-set ter epslatex size 3.5in, 3.5in color colortext
+set ter epslatex size 3in, 3in color colortext
 #Schachbrett 
 
 set out 'schachbrett.tex'
@@ -131,8 +132,8 @@ set bmargin 0
 set tmargin 0
 set palette defined (0 'black' , 50 'gray', 100 'white')
 set cbrange [0:1]
-set xrange [-0.5:9.5] 
-set yrange [9.5:-0.5] 
+set xrange [-0.5:7.5] 
+set yrange [7.5:-0.5] 
 set title ''
 splot 'schachbrett.txt' u 1:2:3 w image title ''
 

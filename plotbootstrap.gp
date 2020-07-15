@@ -1,3 +1,4 @@
+#plottet mit Bootstrap bestimmt Mittelwerte und Standardabweichungen bei verschiedenen Temperaturen
 set ter pdfcairo size 4in,5.5in
 
 set out "Messungen/bootstrap.pdf"

@@ -1,3 +1,4 @@
+#plottet fuer verschiedene Laenge, Messzahlen Magnetisierung oder ableizung Magnetisierung in Abhängigkeit von der Temperatur
 set ter pdfcairo size 4in,5.5in
 
 set out "Messungen/magnetisierungmitbootstrap.pdf"

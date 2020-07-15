@@ -22,3 +22,5 @@ merkmal=$3
 srun /hiskp4/gross/bachelorarbeit/skalierungnode02 ${laenge} ${temperatur} ${merkmal}
 
 cd -
+
+#Messung der skalierung der sweepfunktion auf lcpunode02, Moeglichkeit von Uebergabe von Paramtern aus der Kommandozeile

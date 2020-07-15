@@ -5,8 +5,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12
-#SBATCH --mem=500mb
-#SBATCH --time=01:30:00
+#SBATCH --mem=200mb
+#SBATCH --time=01:00:00
 #SBATCH --output=outanderror/ising-%j.out
 #SBATCH --error=outanderror/errorising-%j.out
 #SBATCH --nodelist=lcpunode02
@@ -16,6 +16,11 @@ export KMP_AFFINITY=balanced,granularity=fine,verbose
 
 cd /hiskp4/gross/bachelorarbeit
 
-srun /hiskp4/gross/bachelorarbeit/ising
+laenge=$1
+cores=$2
+schritte=$3
+srun /hiskp4/gross/bachelorarbeit/ising ${laenge} ${cores} ${schritte}
 
 cd -
+
+#bacthskript, mit dem das Programm ising zur Messung der Observablen bei verschiedenen Temperaturen ausgefuehrt wird, mit Moeglichkeit der Uebergabe von Parametern aus der Kommandozeile
