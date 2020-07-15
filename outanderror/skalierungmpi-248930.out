@@ -1,0 +1,99 @@
+Wed Jul 15 14:08:57 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 14:09:27 CEST 2020 Waiting done, starting task!
+Wed Jul 15 14:09:27 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 14:09:27 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 14:09:27 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 14:09:27 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 14:09:57 CEST 2020 Waiting done, starting task!
+Wed Jul 15 14:09:57 CEST 2020 Waiting done, starting task!
+--------------------------------------------------------------------------
+WARNING: There are more than one active ports on host 'lnode14', but the
+default subnet GID prefix was detected on more than one of these
+ports.  If these ports are connected to different physical IB
+networks, this configuration will fail in Open MPI.  This version of
+Open MPI requires that every physically separate IB subnet that is
+used between connected MPI processes must have different subnet ID
+values.
+
+Please see this FAQ entry for more details:
+
+  http://www.open-mpi.org/faq/?category=openfabrics#ofa-default-subnet-gid
+
+NOTE: You can turn off this warning by setting the MCA parameter
+      btl_openib_warn_default_gid_prefix to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: There are more than one active ports on host 'lnode13', but the
+default subnet GID prefix was detected on more than one of these
+ports.  If these ports are connected to different physical IB
+networks, this configuration will fail in Open MPI.  This version of
+Open MPI requires that every physically separate IB subnet that is
+used between connected MPI processes must have different subnet ID
+values.
+
+Please see this FAQ entry for more details:
+
+  http://www.open-mpi.org/faq/?category=openfabrics#ofa-default-subnet-gid
+
+NOTE: You can turn off this warning by setting the MCA parameter
+      btl_openib_warn_default_gid_prefix to 0.
+--------------------------------------------------------------------------
+Wed Jul 15 14:09:57 CEST 2020 Waiting done, starting task!
+Wed Jul 15 14:09:57 CEST 2020 Waiting done, starting task!
+--------------------------------------------------------------------------
+WARNING: There are more than one active ports on host 'lnode15', but the
+default subnet GID prefix was detected on more than one of these
+ports.  If these ports are connected to different physical IB
+networks, this configuration will fail in Open MPI.  This version of
+Open MPI requires that every physically separate IB subnet that is
+used between connected MPI processes must have different subnet ID
+values.
+
+Please see this FAQ entry for more details:
+
+  http://www.open-mpi.org/faq/?category=openfabrics#ofa-default-subnet-gid
+
+NOTE: You can turn off this warning by setting the MCA parameter
+      btl_openib_warn_default_gid_prefix to 0.
+--------------------------------------------------------------------------
+3.000000	4.000000	1000.000000	768.000000	4.846606
+3.000000	4.000000	1000.000000	768.000000	4.766123
+3.000000	4.000000	1000.000000	768.000000	4.869160
+3.000000	4.000000	1000.000000	768.000000	4.840637
+3.000000	4.000000	1000.000000	768.000000	4.791973
+3.000000	4.000000	1000.000000	768.000000	4.925666
+3.000000	4.000000	1000.000000	768.000000	4.933340
+3.000000	4.000000	1000.000000	768.000000	4.878687
+3.000000	4.000000	1000.000000	768.000000	4.911408
+3.000000	4.000000	1000.000000	768.000000	4.907910
+2.000000	4.000000	1000.000000	768.000000	4.846584
+2.000000	4.000000	1000.000000	768.000000	4.766115
+2.000000	4.000000	1000.000000	768.000000	4.868591
+2.000000	4.000000	1000.000000	768.000000	4.840644
+2.000000	4.000000	1000.000000	768.000000	4.791999
+2.000000	4.000000	1000.000000	768.000000	4.925568
+2.000000	4.000000	1000.000000	768.000000	4.933429
+2.000000	4.000000	1000.000000	768.000000	4.878615
+2.000000	4.000000	1000.000000	768.000000	4.911350
+2.000000	4.000000	1000.000000	768.000000	4.907927
+0.000000	4.000000	1000.000000	768.000000	4.846648
+0.000000	4.000000	1000.000000	768.000000	4.766133
+0.000000	4.000000	1000.000000	768.000000	4.868910
+0.000000	4.000000	1000.000000	768.000000	4.840848
+0.000000	4.000000	1000.000000	768.000000	4.792189
+0.000000	4.000000	1000.000000	768.000000	4.925835
+0.000000	4.000000	1000.000000	768.000000	4.933580
+0.000000	4.000000	1000.000000	768.000000	4.878860
+0.000000	4.000000	1000.000000	768.000000	4.911545
+0.000000	4.000000	1000.000000	768.000000	4.908131
+1.000000	4.000000	1000.000000	768.000000	4.846620
+1.000000	4.000000	1000.000000	768.000000	4.766112
+1.000000	4.000000	1000.000000	768.000000	4.868738
+1.000000	4.000000	1000.000000	768.000000	4.840656
+1.000000	4.000000	1000.000000	768.000000	4.791969
+1.000000	4.000000	1000.000000	768.000000	4.925543
+1.000000	4.000000	1000.000000	768.000000	4.933393
+1.000000	4.000000	1000.000000	768.000000	4.878623
+1.000000	4.000000	1000.000000	768.000000	4.911314
+1.000000	4.000000	1000.000000	768.000000	4.907946
+/hiskp4/gross/bachelorarbeit
