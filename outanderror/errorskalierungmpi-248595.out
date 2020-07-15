@@ -1,0 +1,12 @@
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=12
++ temperatur=0.5
++ merkmal=testmpiqbig
++ nodes=
++ srun -n1 /hiskp4/gross/bachelorarbeit/mpiskalierung 12 0.5 testmpiqbig
+slurmstepd: error: Exceeded job memory limit at some point.
+srun: error: lnode13: task 0: Out Of Memory
++ cd -
+slurmstepd: error: Exceeded job memory limit at some point.
