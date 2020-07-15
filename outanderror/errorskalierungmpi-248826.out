@@ -1,0 +1,9 @@
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=48
++ temperatur=0.5
++ merkmal=testmpiqbig
++ nodes=
++ srun -n1 /hiskp4/gross/bachelorarbeit/mpiskalierung 48 0.5 testmpiqbig
++ cd -
