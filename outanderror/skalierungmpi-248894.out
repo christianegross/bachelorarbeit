@@ -1,0 +1,59 @@
+Wed Jul 15 13:08:53 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 13:09:23 CEST 2020 Waiting done, starting task!
+Wed Jul 15 13:09:23 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 13:09:23 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 13:09:53 CEST 2020 Waiting done, starting task!
+Wed Jul 15 13:09:53 CEST 2020 Waiting done, starting task!
+--------------------------------------------------------------------------
+WARNING: There are more than one active ports on host 'lnode13', but the
+default subnet GID prefix was detected on more than one of these
+ports.  If these ports are connected to different physical IB
+networks, this configuration will fail in Open MPI.  This version of
+Open MPI requires that every physically separate IB subnet that is
+used between connected MPI processes must have different subnet ID
+values.
+
+Please see this FAQ entry for more details:
+
+  http://www.open-mpi.org/faq/?category=openfabrics#ofa-default-subnet-gid
+
+NOTE: You can turn off this warning by setting the MCA parameter
+      btl_openib_warn_default_gid_prefix to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: There are more than one active ports on host 'lnode14', but the
+default subnet GID prefix was detected on more than one of these
+ports.  If these ports are connected to different physical IB
+networks, this configuration will fail in Open MPI.  This version of
+Open MPI requires that every physically separate IB subnet that is
+used between connected MPI processes must have different subnet ID
+values.
+
+Please see this FAQ entry for more details:
+
+  http://www.open-mpi.org/faq/?category=openfabrics#ofa-default-subnet-gid
+
+NOTE: You can turn off this warning by setting the MCA parameter
+      btl_openib_warn_default_gid_prefix to 0.
+--------------------------------------------------------------------------
+0.000000	2.000000	1000.000000	384.000000	2.332151
+0.000000	2.000000	1000.000000	384.000000	2.368598
+0.000000	2.000000	1000.000000	384.000000	2.381732
+0.000000	2.000000	1000.000000	384.000000	2.376885
+0.000000	2.000000	1000.000000	384.000000	2.368275
+0.000000	2.000000	1000.000000	384.000000	2.400788
+0.000000	2.000000	1000.000000	384.000000	2.379197
+0.000000	2.000000	1000.000000	384.000000	2.394213
+0.000000	2.000000	1000.000000	384.000000	2.373294
+0.000000	2.000000	1000.000000	384.000000	2.373164
+1.000000	2.000000	1000.000000	384.000000	2.332154
+1.000000	2.000000	1000.000000	384.000000	2.368583
+1.000000	2.000000	1000.000000	384.000000	2.382298
+1.000000	2.000000	1000.000000	384.000000	2.376865
+1.000000	2.000000	1000.000000	384.000000	2.368269
+1.000000	2.000000	1000.000000	384.000000	2.400767
+1.000000	2.000000	1000.000000	384.000000	2.379187
+1.000000	2.000000	1000.000000	384.000000	2.394194
+1.000000	2.000000	1000.000000	384.000000	2.373266
+1.000000	2.000000	1000.000000	384.000000	2.373151
+/hiskp4/gross/bachelorarbeit
