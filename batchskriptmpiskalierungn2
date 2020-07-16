@@ -1,0 +1,24 @@
+#!/bin/bash -x
+#SBATCH --job-name=skalierungmpin2
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=s6chgros@uni-bonn.de
+#SBATCH --nodes=1
+#SBATCH --ntasks=2
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=500mb
+#SBATCH --time=00:10:00
+#SBATCH --output=outanderror/skalierungmpi-%j.out
+#SBATCH --error=outanderror/errorskalierungmpi-%j.out
+#SBATCH --nodelist=lnode11
+
+export KMP_AFFINITY=balanced,granularity=fine,verbose
+
+cd /hiskp4/gross/bachelorarbeit
+
+laenge=$1
+temperatur=$2
+merkmal=$3
+srun -n2 /hiskp4/gross/bachelorarbeit/mpiskalierung ${laenge} ${temperatur} ${merkmal}
+
+cd -
+#Skript, um das Programm, das Laufzeitskalierung der messenmpifunktion misst, auszufuehren
