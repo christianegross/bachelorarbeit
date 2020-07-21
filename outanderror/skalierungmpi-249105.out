@@ -1,0 +1,281 @@
+Tue Jul 21 12:49:44 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:50:14 CEST 2020 Waiting done, starting task!
+12 1
+Tue Jul 21 12:50:14 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:50:44 CEST 2020 Waiting done, starting task!
+12 2
+Tue Jul 21 12:50:46 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:50:46 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:51:16 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:51:16 CEST 2020 Waiting done, starting task!
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca mpi_cuda_support 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+12 3
+Tue Jul 21 12:51:17 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:51:17 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:51:17 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:51:47 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:51:47 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:51:47 CEST 2020 Waiting done, starting task!
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca mpi_cuda_support 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+12 4
+Tue Jul 21 12:51:48 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:51:48 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:51:48 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:51:48 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:18 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:52:18 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:52:18 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:52:18 CEST 2020 Waiting done, starting task!
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca mpi_cuda_support 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+12 6
+Tue Jul 21 12:52:20 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:20 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:20 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:20 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:20 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:20 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:50 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:52:50 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:52:50 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:52:50 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:52:50 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:52:50 CEST 2020 Waiting done, starting task!
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca mpi_cuda_support 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+12 12
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:52:52 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+Tue Jul 21 12:53:22 CEST 2020 Waiting done, starting task!
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca mpi_cuda_support 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca mpi_cuda_support 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca mpi_cuda_support 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+[lcpunode01:19119] *** Process received signal ***
+[lcpunode01:19119] Signal: Segmentation fault (11)
+[lcpunode01:19119] Signal code: Address not mapped (1)
+[lcpunode01:19119] Failing at address: 0x7fff34763ff0
+[lcpunode01:19119] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7ff1c6a480c0]
+[lcpunode01:19119] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x564339639b89]
+[lcpunode01:19119] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x56433963ac6b]
+[lcpunode01:19119] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x56433963b938]
+[lcpunode01:19119] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7ff1c66b82b1]
+[lcpunode01:19119] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x56433963915a]
+[lcpunode01:19119] *** End of error message ***
+[lcpunode01:19117] *** Process received signal ***
+[lcpunode01:19117] Signal: Segmentation fault (11)
+[lcpunode01:19117] Signal code: Address not mapped (1)
+[lcpunode01:19117] Failing at address: 0x7ffee0d1a7b0
+[lcpunode01:19117] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7fa3f1f620c0]
+[lcpunode01:19117] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x5630e51c4b89]
+[lcpunode01:19117] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x5630e51c5c6b]
+[lcpunode01:19117] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x5630e51c6938]
+[lcpunode01:19117] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7fa3f1bd22b1]
+[lcpunode01:19117] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x5630e51c415a]
+[lcpunode01:19117] *** End of error message ***
+[lcpunode01:19118] *** Process received signal ***
+[lcpunode01:19118] Signal: Segmentation fault (11)
+[lcpunode01:19118] Signal code: Address not mapped (1)
+[lcpunode01:19118] Failing at address: 0x7fff04742518
+[lcpunode01:19118] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f6f2b14c0c0]
+[lcpunode01:19118] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x561c61543b89]
+[lcpunode01:19118] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x561c61544c6b]
+[lcpunode01:19118] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x561c61545938]
+[lcpunode01:19118] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f6f2adbc2b1]
+[lcpunode01:19118] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x561c6154315a]
+[lcpunode01:19118] *** End of error message ***
+[lnode04:14230] *** Process received signal ***
+[lnode04:14230] Signal: Segmentation fault (11)
+[lnode04:14230] Signal code: Address not mapped (1)
+[lnode04:14230] Failing at address: 0x7fffd9950218
+[lcpunode02:16938] *** Process received signal ***
+[lcpunode02:16938] Signal: Segmentation fault (11)
+[lcpunode02:16938] Signal code: Address not mapped (1)
+[lcpunode02:16938] Failing at address: 0x7ffde27c9968
+[lnode02:29300] *** Process received signal ***
+[lnode02:29300] Signal: Segmentation fault (11)
+[lnode02:29300] Signal code: Address not mapped (1)
+[lnode02:29300] Failing at address: 0x7fff9cdf5770
+[lcpunode02:16937] *** Process received signal ***
+[lcpunode02:16937] Signal: Segmentation fault (11)
+[lcpunode02:16937] Signal code: Address not mapped (1)
+[lcpunode02:16937] Failing at address: 0x7ffdb5c69338
+[lnode02:29300] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f7d0c90e0c0]
+[lnode02:29300] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x55be60d46b89]
+[lnode02:29300] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x55be60d47c6b]
+[lnode02:29300] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x55be60d48938]
+[lnode02:29300] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f7d0c57e2b1]
+[lnode02:29300] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x55be60d4615a]
+[lnode02:29300] *** End of error message ***
+[lnode03:27568] *** Process received signal ***
+[lnode03:27568] Signal: Segmentation fault (11)
+[lnode03:27568] Signal code: Address not mapped (1)
+[lnode03:27568] Failing at address: 0x7ffeb1a74f58
+[lnode03:27569] *** Process received signal ***
+[lnode03:27569] Signal: Segmentation fault (11)
+[lnode03:27569] Signal code: Address not mapped (1)
+[lnode03:27569] Failing at address: 0x7ffdb0247258
+[lnode04:14230] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f9cb27100c0]
+[lnode04:14230] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x558032697b89]
+[lnode04:14230] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x558032698c6b]
+[lnode04:14230] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x558032699938]
+[lcpunode02:16937] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110e0)[0x7f9793fbd0e0]
+[lcpunode02:16937] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x5616ae837b89]
+[lcpunode02:16937] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x5616ae838c6b]
+[lcpunode02:16937] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x5616ae839938]
+[lnode04:14230] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f9cb23802b1]
+[lnode04:14230] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x55803269715a]
+[lnode04:14230] *** End of error message ***
+[lcpunode02:16938] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110e0)[0x7f24663230e0]
+[lcpunode02:16938] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x55ff01c03b89]
+[lcpunode02:16938] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x55ff01c04c6b]
+[lcpunode02:16938] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x55ff01c05938]
+[lcpunode02:16938] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f2465f932e1]
+[lcpunode02:16937] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f9793c2d2e1]
+[lcpunode02:16937] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x5616ae83715a]
+[lcpunode02:16937] *** End of error message ***
+[lcpunode02:16938] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x55ff01c0315a]
+[lcpunode02:16938] *** End of error message ***
+[lnode03:27569] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f5e3362f0c0]
+[lcpunode02:16936] *** Process received signal ***
+[lcpunode02:16936] Signal: Segmentation fault (11)
+[lcpunode02:16936] Signal code: Address not mapped (1)
+[lcpunode02:16936] Failing at address: 0x7ffd6fb9e038
+[lnode02:29301] *** Process received signal ***
+[lnode02:29301] Signal: Segmentation fault (11)
+[lnode02:29301] Signal code: Address not mapped (1)
+[lnode02:29301] Failing at address: 0x7ffcd52561b0
+[lnode03:27568] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f910c7560c0]
+[lnode03:27568] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x56326d79db89]
+[lnode03:27568] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x56326d79ec6b]
+[lnode03:27568] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x56326d79f938]
+[lnode03:27569] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x561e255deb89]
+[lnode03:27569] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x561e255dfc6b]
+[lnode03:27569] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x561e255e0938]
+[lnode03:27568] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f910c3c62b1]
+[lnode03:27568] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x56326d79d15a]
+[lnode03:27568] *** End of error message ***
+[lnode04:14231] *** Process received signal ***
+[lnode04:14231] Signal: Segmentation fault (11)
+[lnode04:14231] Signal code: Address not mapped (1)
+[lnode04:14231] Failing at address: 0x7ffc0a9800d0
+[lnode03:27569] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f5e3329f2b1]
+[lnode03:27569] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x561e255de15a]
+[lnode03:27569] *** End of error message ***
+[lcpunode02:16936] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110e0)[0x7fd888b9b0e0]
+[lcpunode02:16936] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x5635c7bcab89]
+[lcpunode02:16936] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x5635c7bcbc6b]
+[lcpunode02:16936] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x5635c7bcc938]
+[lnode02:29301] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f38a392b0c0]
+[lnode02:29301] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x5583976d1b89]
+[lcpunode02:16936] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7fd88880b2e1]
+[lcpunode02:16936] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x5635c7bca15a]
+[lcpunode02:16936] *** End of error message ***
+[lnode04:14231] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f646994d0c0]
+[lnode04:14231] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x562c3b942b89]
+[lnode04:14231] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x562c3b943c6b]
+[lnode04:14231] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x562c3b944938]
+[lnode02:29301] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x5583976d2c6b]
+[lnode02:29301] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x5583976d3938]
+[lnode02:29301] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f38a359b2b1]
+[lnode02:29301] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x5583976d115a]
+[lnode02:29301] *** End of error message ***
+[lnode04:14231] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f64695bd2b1]
+[lnode04:14231] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x562c3b94215a]
+[lnode04:14231] *** End of error message ***
+/hiskp4/gross/bachelorarbeit

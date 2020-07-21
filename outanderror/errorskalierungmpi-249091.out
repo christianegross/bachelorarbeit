@@ -1,0 +1,8 @@
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=768
++ temperatur=3
++ merkmal=mpiskalt3
++ srun -n4 /hiskp4/gross/bachelorarbeit/mpiskalierung 768 3 mpiskalt3
++ cd -

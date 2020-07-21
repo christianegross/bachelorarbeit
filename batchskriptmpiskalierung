@@ -9,8 +9,7 @@
 #SBATCH --time=00:20:00
 #SBATCH --output=outanderror/skalierungmpi-%j.out
 #SBATCH --error=outanderror/errorskalierungmpi-%j.out
-#SBATCH --nodelist=lnode02-12
-
+#SBATCH --nodelist=lnode[03-07]
 
 export OMP_NUM_THREAD=${SLURM_CPUS_PER_TASK}
 export KMP_AFFINITY=balanced,granularity=fine,verbose
@@ -22,10 +21,11 @@ temperatur=$2
 merkmal=$3
 for ((proz=1;proz<=20;proz+=1))
 do
-	if((${laenge}%${proz} -eq 0))
+	if((${laenge}%${proz} == 0))
 	then
 		echo ${laenge} ${proz}
 		srun -n${proz} --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung ${laenge} ${temperatur} ${merkmal}
+		echo ${laenge}
 	fi
 done
 
