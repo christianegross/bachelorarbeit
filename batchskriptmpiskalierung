@@ -6,10 +6,10 @@
 #SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=500mb
-#SBATCH --time=00:20:00
+#SBATCH --time=00:40:00
 #SBATCH --output=outanderror/skalierungmpi-%j.out
 #SBATCH --error=outanderror/errorskalierungmpi-%j.out
-#SBATCH --nodelist=lnode[03-07]
+#SBATCH --exclude=lcpunode01,lcpunode02,lnode[12-17]
 
 export OMP_NUM_THREAD=${SLURM_CPUS_PER_TASK}
 export KMP_AFFINITY=balanced,granularity=fine,verbose
@@ -21,7 +21,7 @@ temperatur=$2
 merkmal=$3
 for ((proz=1;proz<=20;proz+=1))
 do
-	if((${laenge}%${proz} == 0))
+	if(((${laenge}%${proz} == 0) && (${laenge}!=${proz})))
 	then
 		echo ${laenge} ${proz}
 		srun -n${proz} --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung ${laenge} ${temperatur} ${merkmal}

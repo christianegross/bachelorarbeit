@@ -1,0 +1,103 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=48
++ temperatur=0.5
++ merkmal=mpiskalt05mitchargittern
++ (( proz=1 ))
++ (( proz<=20 ))
++ (( (48%1 == 0) && (48!=1) ))
++ echo 48 1
++ srun -n1 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 48 0.5 mpiskalt05mitchargittern
+srun: Warning: can't run 1 processes on 5 nodes, setting nnodes to 1
++ echo 48
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%2 == 0) && (48!=2) ))
++ echo 48 2
++ srun -n2 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 48 0.5 mpiskalt05mitchargittern
+srun: Warning: can't run 2 processes on 5 nodes, setting nnodes to 2
++ echo 48
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%3 == 0) && (48!=3) ))
++ echo 48 3
++ srun -n3 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 48 0.5 mpiskalt05mitchargittern
+srun: Warning: can't run 3 processes on 5 nodes, setting nnodes to 3
++ echo 48
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%4 == 0) && (48!=4) ))
++ echo 48 4
++ srun -n4 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 48 0.5 mpiskalt05mitchargittern
+srun: Warning: can't run 4 processes on 5 nodes, setting nnodes to 4
++ echo 48
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%5 == 0) && (48!=5) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%6 == 0) && (48!=6) ))
++ echo 48 6
++ srun -n6 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 48 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 6 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 48
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%7 == 0) && (48!=7) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%8 == 0) && (48!=8) ))
++ echo 48 8
++ srun -n8 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 48 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 8 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 48
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%9 == 0) && (48!=9) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%10 == 0) && (48!=10) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%11 == 0) && (48!=11) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%12 == 0) && (48!=12) ))
++ echo 48 12
++ srun -n12 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 48 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 12 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 48
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%13 == 0) && (48!=13) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%14 == 0) && (48!=14) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%15 == 0) && (48!=15) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%16 == 0) && (48!=16) ))
++ echo 48 16
++ srun -n16 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 48 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 16 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 48
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%17 == 0) && (48!=17) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%18 == 0) && (48!=18) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%19 == 0) && (48!=19) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (48%20 == 0) && (48!=20) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ cd -
