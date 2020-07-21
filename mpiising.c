@@ -24,11 +24,11 @@ int main(int argc, char **argv){
 	FILE *gitterdatei, *messdatei, *mitteldatei, *thermdatei;
 	char dateinamemittel[100], dateinametherm[100], dateinamemessen[100];
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler
-	int messungen=10368;
+	int messungen=10000;
 	int N0;
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
-	int temperaturzahl=210;//Temperaturen, beid enen gemessen wird
+	int temperaturzahl=650;//Temperaturen, beid enen gemessen wird
 	int starttemp=0;
 	int endtemp=temperaturzahl;
 	double *temperaturarray;
@@ -37,12 +37,21 @@ int main(int argc, char **argv){
 		return (-1);
 	}
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
-		//genaue Messung der Magnetisierung:
-		if((i<20)){temperaturarray[i]=0.05+i*0.1;}
-		if((i>=20)&&(i<48)){temperaturarray[i]=2.0+0.008*(i-20);}
-		if((i>=48)&&(i<136)){temperaturarray[i]=2.224+0.002*(i-48);}
-		if((i>=136)&&(i<181)){temperaturarray[i]=2.4+0.008*(i-136);}
-		if((i>=181)){temperaturarray[i]=2.76+0.032*(i-181);}
+		//~ //genaue Messung der Magnetisierung:
+		//~ if((i<20)){temperaturarray[i]=0.05+i*0.1;}
+		//~ if((i>=20)&&(i<48)){temperaturarray[i]=2.0+0.008*(i-20);}
+		//~ if((i>=48)&&(i<136)){temperaturarray[i]=2.224+0.002*(i-48);}
+		//~ if((i>=136)&&(i<181)){temperaturarray[i]=2.4+0.008*(i-136);}
+		//~ if((i>=181)){temperaturarray[i]=2.76+0.032*(i-181);}
+		//Um Hamiltonian vergleichen zu koennen
+		if (i<50){temperaturarray[i]=i*0.02+0.02;}
+		if ((i>=50)&&(i<300)){temperaturarray[i]=(i-50)*0.01+1;}
+		if ((i>=300)&&(i<350)){temperaturarray[i]=(i-300)*0.02+3.5;}
+		if ((i>=350)&&(i<450)){temperaturarray[i]=(i-350)*0.06+4.5;}
+		if ((i>=450)&&(i<500)){temperaturarray[i]=(i-450)*0.2+10.01;}
+		if ((i>=500)&&(i<550)){temperaturarray[i]=exp(2.996+(i-500)*0.032);}
+		if ((i>=550)&&(i<600)){temperaturarray[i]=exp(4.605+(i-550)*0.046);}
+		if ((i>=600)&&(i<650)){temperaturarray[i]=exp(6.907+(i-600)*0.046);}
 	}
 	gsl_rng **generatoren;//mehrere generatoren fuer parallelisierung
 	if ((generatoren=(gsl_rng**)malloc(anzahlprozesse*sizeof(gsl_rng**)))==NULL){

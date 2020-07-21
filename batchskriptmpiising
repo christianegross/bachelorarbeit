@@ -1,0 +1,25 @@
+#!/bin/bash -x
+#SBATCH --job-name=isingmpi
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=s6chgros@uni-bonn.de
+#SBATCH --nodes=5
+#SBATCH --ntasks-per-node=4
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=500mb
+#SBATCH --time=00:40:00
+#SBATCH --output=outanderror/skalierungmpi-%j.out
+#SBATCH --error=outanderror/errorskalierungmpi-%j.out
+#SBATCH --exclude=lcpunode01,lcpunode02,lnode[12-17]
+
+export OMP_NUM_THREAD=${SLURM_CPUS_PER_TASK}
+export KMP_AFFINITY=balanced,granularity=fine,verbose
+
+cd /hiskp4/gross/bachelorarbeit
+
+laenge=$1
+schritt=$2
+
+srun -n10 --exclusive /hiskp4/gross/bachelorarbeit/mpiising ${laenge} ${schritt}
+
+cd -
+#Skript, um Mag, akz, ham bei evrschiedenen Temperaturen zu bestimmen, mit MPI parallelisiert
