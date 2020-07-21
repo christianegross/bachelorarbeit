@@ -203,7 +203,7 @@ double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzpr
 			
 }
 
-void messenmpi(int messungen, int laenge, int anzproz, int myrank, double T, double j, int *gitter, FILE *ausgabedatei, gsl_rng **generatoren){
+void messenmpi(int messungen, int laenge, double T, double j, int *gitter, FILE *ausgabedatei, gsl_rng **generatoren){
 	//Fuehrt messungen sweeps am Gitter durch, schreibt Ergebnisse in ausgabedatei
 	double H=hamiltonian(gitter, laenge, j);//Anfangswert berechnen
 	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};//Wahrscheinlichkeiten fuer Spinflip, muessen nur einmal berechnet werden
@@ -213,9 +213,9 @@ void messenmpi(int messungen, int laenge, int anzproz, int myrank, double T, dou
 		wahrscheinlichkeiten[3]=1;
 		wahrscheinlichkeiten[4]=1;
 		}
-	//int anzproz, myrank;//Anzahl Prozessoren, meine Nummer
-	//MPI_Comm_size(MPI_COMM_WORLD, &anzproz);
-	//MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+	int anzproz, myrank;//Anzahl Prozessoren, meine Nummer
+	MPI_Comm_size(MPI_COMM_WORLD, &anzproz);
+	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
 	int teillaenge=laenge/anzproz;
 	int nachbaroben[laenge];
 	int nachbarunten[laenge];
@@ -243,7 +243,7 @@ void messenmpi(int messungen, int laenge, int anzproz, int myrank, double T, dou
 		
 }
 
-void thermalisierenmpi(int messungen, int laenge, int anzproz, int myrank, double T, double j, int *gitter, FILE *dummymessung, FILE *ausgabedatei, gsl_rng **generatoren){
+void thermalisierenmpi(int messungen, int laenge, double T, double j, int *gitter, FILE *dummymessung, FILE *ausgabedatei, gsl_rng **generatoren){
 	//Fuehrt messungen sweeps am Gitter durch, schreibt Ergebnisse in dummymessung, und gibt am Ende Gitter in ausgabedatei
 	double H=hamiltonian(gitter, laenge, j);//Anfangswert berechnen
 	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};//Wahrscheinlichkeiten fuer Spinflip, muessen nur einmal berechnet werden
@@ -253,10 +253,10 @@ void thermalisierenmpi(int messungen, int laenge, int anzproz, int myrank, doubl
 		wahrscheinlichkeiten[3]=1;
 		wahrscheinlichkeiten[4]=1;
 		}
-	//int anzproz, myrank;//Anzahl Prozessoren, meine Nummer
-	//MPI_Comm_size(MPI_COMM_WORLD, &anzproz);
-	//MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
-	const int teillaenge=laenge/anzproz;
+	int anzproz, myrank;//Anzahl Prozessoren, meine Nummer
+	MPI_Comm_size(MPI_COMM_WORLD, &anzproz);
+	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+	int teillaenge=laenge/anzproz;
 	int nachbaroben[laenge];
 	int nachbarunten[laenge];
 	int untergitter[laenge*teillaenge];		
