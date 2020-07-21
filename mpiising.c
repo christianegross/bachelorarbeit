@@ -63,11 +63,11 @@ int main(int argc, char **argv){
 	mitteldatei=fopen(dateinamemittel, "r");
 	thermdatei=fopen("mpitestthermdummy.txt", "r");
 	}
-	int gitter[laenge*laenge];
+	char gitter[laenge*laenge];
 	if(myrank==0){
 		initialisierenhomogen(gitter, laenge);
 	}
-	MPI_Bcast(gitter, laenge*laenge, MPI_INT, 0, MPI_COMM_WORLD);
+	MPI_Bcast(gitter, laenge*laenge, MPI_CHAR, 0, MPI_COMM_WORLD);
 	for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
 		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=30000;}
 		if ((2.25<temperaturarray[n])&&(temperaturarray[n]<2.4)){N0=100000;}

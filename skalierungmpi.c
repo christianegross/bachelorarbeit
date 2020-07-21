@@ -73,13 +73,13 @@ int main(int argc, char **argv){
 		gsl_rng_set(generatoren[core], seed+core);
 	}
 	//printf("1 Laenge=%d\tTemperatur=%f\n", laenge, temperatur);
-	int gitter[laenge*laenge];//Gitter erstellen und von thermalisieren ausgeben lassen
+	char gitter[laenge*laenge];//Gitter erstellen und von thermalisieren ausgeben lassen
 	//printf("2 Laenge=%d\tTemperatur=%f\n", laenge, temperatur);	
 	if(myrank==0){
 		initialisierenhomogen(gitter, laenge);
 	}
-	MPI_Bcast(gitter, laenge*laenge, MPI_INT, 0, MPI_COMM_WORLD);
-	//printf("3 %d\n", myrank);
+	MPI_Bcast(gitter, laenge*laenge, MPI_CHAR, 0, MPI_COMM_WORLD);
+	printf("3 %d\n", myrank);
 	thermalisierenmpi(10, laenge, temperatur, j, gitter, messdatei, dummydatei, generatoren);//Erstes Thermalisieren, hier nur zur Ausgabe des Gitters
 	//printf("4 Laenge=%d\tTemperatur=%f\n", laenge, temperatur);
 	fclose(messdatei);
