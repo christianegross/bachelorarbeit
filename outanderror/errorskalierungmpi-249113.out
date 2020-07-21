@@ -1,0 +1,103 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=36
++ temperatur=0.5
++ merkmal=mpiskalt05mitschleife
++ (( proz=1 ))
++ (( proz<=20 ))
++ (( (36%1 == 0) && (36!=1) ))
++ echo 36 1
++ srun -n1 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 36 0.5 mpiskalt05mitschleife
+srun: Warning: can't run 1 processes on 5 nodes, setting nnodes to 1
++ echo 36
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%2 == 0) && (36!=2) ))
++ echo 36 2
++ srun -n2 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 36 0.5 mpiskalt05mitschleife
+srun: Warning: can't run 2 processes on 5 nodes, setting nnodes to 2
++ echo 36
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%3 == 0) && (36!=3) ))
++ echo 36 3
++ srun -n3 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 36 0.5 mpiskalt05mitschleife
+srun: Warning: can't run 3 processes on 5 nodes, setting nnodes to 3
++ echo 36
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%4 == 0) && (36!=4) ))
++ echo 36 4
++ srun -n4 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 36 0.5 mpiskalt05mitschleife
+srun: Warning: can't run 4 processes on 5 nodes, setting nnodes to 4
++ echo 36
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%5 == 0) && (36!=5) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%6 == 0) && (36!=6) ))
++ echo 36 6
++ srun -n6 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 36 0.5 mpiskalt05mitschleife
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 6 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 36
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%7 == 0) && (36!=7) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%8 == 0) && (36!=8) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%9 == 0) && (36!=9) ))
++ echo 36 9
++ srun -n9 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 36 0.5 mpiskalt05mitschleife
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 9 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 36
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%10 == 0) && (36!=10) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%11 == 0) && (36!=11) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%12 == 0) && (36!=12) ))
++ echo 36 12
++ srun -n12 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 36 0.5 mpiskalt05mitschleife
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 12 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 36
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%13 == 0) && (36!=13) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%14 == 0) && (36!=14) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%15 == 0) && (36!=15) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%16 == 0) && (36!=16) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%17 == 0) && (36!=17) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%18 == 0) && (36!=18) ))
++ echo 36 18
++ srun -n18 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 36 0.5 mpiskalt05mitschleife
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 18 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 36
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%19 == 0) && (36!=19) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (36%20 == 0) && (36!=20) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ cd -

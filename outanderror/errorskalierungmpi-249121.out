@@ -1,0 +1,118 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=240
++ temperatur=0.5
++ merkmal=mpiskalt05mitschleife
++ (( proz=1 ))
++ (( proz<=20 ))
++ (( (240%1 == 0) && (240!=1) ))
++ echo 240 1
++ srun -n1 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
+srun: Warning: can't run 1 processes on 5 nodes, setting nnodes to 1
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%2 == 0) && (240!=2) ))
++ echo 240 2
++ srun -n2 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
+srun: Warning: can't run 2 processes on 5 nodes, setting nnodes to 2
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%3 == 0) && (240!=3) ))
++ echo 240 3
++ srun -n3 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
+srun: Warning: can't run 3 processes on 5 nodes, setting nnodes to 3
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%4 == 0) && (240!=4) ))
++ echo 240 4
++ srun -n4 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
+srun: Warning: can't run 4 processes on 5 nodes, setting nnodes to 4
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%5 == 0) && (240!=5) ))
++ echo 240 5
++ srun -n5 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 5 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%6 == 0) && (240!=6) ))
++ echo 240 6
++ srun -n6 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 6 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%7 == 0) && (240!=7) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%8 == 0) && (240!=8) ))
++ echo 240 8
++ srun -n8 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 8 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%9 == 0) && (240!=9) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%10 == 0) && (240!=10) ))
++ echo 240 10
++ srun -n10 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 10 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%11 == 0) && (240!=11) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%12 == 0) && (240!=12) ))
++ echo 240 12
++ srun -n12 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 12 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%13 == 0) && (240!=13) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%14 == 0) && (240!=14) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%15 == 0) && (240!=15) ))
++ echo 240 15
++ srun -n15 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 15 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%16 == 0) && (240!=16) ))
++ echo 240 16
++ srun -n16 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 16 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%17 == 0) && (240!=17) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%18 == 0) && (240!=18) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%19 == 0) && (240!=19) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (240%20 == 0) && (240!=20) ))
++ echo 240 20
++ srun -n20 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 240 0.5 mpiskalt05mitschleife
++ echo 240
++ (( proz+=1 ))
++ (( proz<=20 ))
++ cd -
