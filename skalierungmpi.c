@@ -102,7 +102,7 @@ int main(int argc, char **argv){
 		zeitgesmessen=sec+1e-06*usec;
 		ergebnisselokal[durchlauf]=zeitgesmessen;
 		//printf("bei core %d von %d haben %d Messungen %f Sekunden gebraucht\n", myrank, anzproz, messungen, zeiteincore);
-		printf("%f\t%f\t%f\t%f\t%f\n", (double)myrank, (double)anzproz, (double)messungen, (double)laenge, zeitgesmessen);//cores messungen Zeit Speedup
+		//printf("%f\t%f\t%f\t%f\t%f\n", (double)myrank, (double)anzproz, (double)messungen, (double)laenge, zeitgesmessen);//cores messungen Zeit Speedup
 		fclose(messdatei);
 	}
 	//printf("vor gather2 in %d\n", myrank);

@@ -11,16 +11,16 @@
 
 int main(int argc, char **argv){
 	MPI_Init(&argc, &argv);
-	int anzahlprozesse=1;
+	int myrank, anzahlprozesse;//, opened=1, *isopened;
+	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+	MPI_Comm_size(MPI_COMM_WORLD, &anzahlprozesse);
 	int laenge=anzahlprozesse*10;
 	int schritt=10;
-	if (argc>=4){
-		anzahlprozesse=atoi(argv[1]);
-		laenge=atoi(argv[2]);
-		schritt=atoi(argv[3]);
+	if (argc>=3){
+		//anzahlprozesse=atoi(argv[1]);
+		laenge=atoi(argv[1]);
+		schritt=atoi(argv[2]);
 	}
-	int myrank;//, opened=1, *isopened;
-	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
 	FILE *gitterdatei, *messdatei, *mitteldatei, *thermdatei;
 	char dateinamemittel[100], dateinametherm[100], dateinamemessen[100];
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler

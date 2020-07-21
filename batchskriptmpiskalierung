@@ -2,14 +2,17 @@
 #SBATCH --job-name=skalierungmpi
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=s6chgros@uni-bonn.de
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=50mb
-#SBATCH --time=00:10:00
+#SBATCH --nodes=5
+#SBATCH --ntasks-per-node=4
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=500mb
+#SBATCH --time=00:20:00
 #SBATCH --output=outanderror/skalierungmpi-%j.out
 #SBATCH --error=outanderror/errorskalierungmpi-%j.out
+#SBATCH --nodelist=lnode02-12
 
+
+export OMP_NUM_THREAD=${SLURM_CPUS_PER_TASK}
 export KMP_AFFINITY=balanced,granularity=fine,verbose
 
 cd /hiskp4/gross/bachelorarbeit
@@ -17,8 +20,15 @@ cd /hiskp4/gross/bachelorarbeit
 laenge=$1
 temperatur=$2
 merkmal=$3
-nodes=$4
-srun -n1 /hiskp4/gross/bachelorarbeit/mpiskalierung ${laenge} ${temperatur} ${merkmal}
+for ((proz=1;proz<=20;proz+=1))
+do
+	if((${laenge}%${proz} -eq 0))
+	then
+		echo ${laenge} ${proz}
+		srun -n${proz} --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung ${laenge} ${temperatur} ${merkmal}
+	fi
+done
 
 cd -
 #Skript, um das Programm, das Laufzeitskalierung der messenmpifunktion misst, auszufuehren
+#Fuer jede gegebene Laenge mit allen moeglichen Prozessorzahlen
