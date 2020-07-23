@@ -19,8 +19,9 @@ set ylabel '$H/\text{laenge}^2$'
 
 set xrange [0:5]
 set key top left
-plot 'bootstrapalle-sweepaltohnepar-hamiltonian-l0120-m-010000-node00.txt' 			u (($2==128)?$6:1/0):($4/120**2):($5/120**2) w yerrorbars 	ls 4 title 'zeilenweise durchgehen',\
-	 'bootstrapalle-sweepmehreregeneratoren-hamiltonian-l0120-m-010000-node00.txt' 	u (($2==128)?$6:1/0):($4/120**2):($5/120**2) w yerrorbars 	ls 3 title 'Schachbrettmuster parallel'
+plot 'bootstrapalle-sweepaltohnepar-hamiltonian-l0120-m-010000-node00.txt' 			u (($2==128)?$6:1/0):($4/120**2):($5/120**2) w yerrorbars 	ls 4 title 'seriell',\
+	 'bootstrapalle-sweepmehreregeneratoren-hamiltonian-l0120-m-010000-node00.txt' 	u (($2==128)?$6:1/0):($4/120**2):($5/120**2) w yerrorbars 	ls 3 title 'OpenMP',\
+	 'bootstrapalle-hamiltonian-l0120-m-010000-proz10-sch-10.txt' 					u (($2==128)?$6:1/0):($4/120**2):($5/120**2) w yerrorbars 	ls 2 title 'MPI'
 unset xrange
 unset xlabel
 unset ylabel
@@ -82,6 +83,7 @@ plot 'zmittel-m001000-node02-l10.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yer
 	 'zmittel-m001000-node02-l40.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 2 title 'L=40',\
 	 'zmittel-m001000-node02-l110.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 3 title 'L=110',\
 	 'zmittel-m001000-node02-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 4 title 'L=500',\
+	 'zmittel-m001000-node00skalopenmp-l1260.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 5 title 'L=1260',\
 	 einslinie(x) lt 0 dt 5 title ''
 unset yrange
 
@@ -96,6 +98,35 @@ plot 'zmittel-m001000-node02-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w ye
 	 'zmittel-m001000-node02t22-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 3 title '$T=\num{2,2}$',\
 	 'zmittel-m001000-node02t23-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 2 title '$T=\num{2,3}$',\
 	 'zmittel-m001000-node02t100-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 1 title '$T=\num{100}$',\
+	 einslinie(x) lt 0 dt 5 title ''
+unset xrange
+
+set out 'speeduplaengempi.tex' 
+
+einslinie(x)=1
+set xlabel 'Anzahl MPI-Prozesse'
+set ylabel 'Speedup'
+set key top left
+set xrange[0:20.5]
+plot 'skalqbigmpiverschlaengen.txt' u (($5==12)?$3:1/0):10:11 w yerrorbars  ls 1 title 'L=12',\
+	 'skalqbigmpiverschlaengen.txt' u (($5==60)?$3:1/0):10:11 w yerrorbars  ls 2 title 'L=60',\
+	 'skalqbigmpiverschlaengen.txt' u (($5==240)?$3:1/0):10:11 w yerrorbars  ls 3 title 'L=240',\
+	 'skalqbigmpiverschlaengen.txt' u (($5==840)?$3:1/0):10:11 w yerrorbars  ls 4 title 'L=840',\
+	 'skalqbigmpiverschlaengen.txt' u (($5==1260)?$3:1/0):10:11 w yerrorbars  ls 5 title 'L=1260',\
+	 einslinie(x) lt 0 dt 5 title ''
+unset xrange
+
+set out 'speeduptemperaturmpi.tex' 
+
+einslinie(x)=1
+set xlabel 'Anzahl MPI-Prozesse'
+set ylabel 'Speedup'
+set key top left
+set xrange[0:20.5]
+plot 'skalqbigmpiverschtemp.txt' u (($4==0.5)?$3:1/0):10:11 w yerrorbars ls 1 title '$T=\num{0,5}$',\
+	 'skalqbigmpiverschtemp.txt' u (($4==2.2)?$3:1/0):10:11 w yerrorbars ls 2 title '$T=\num{2,2}$',\
+	 'skalqbigmpiverschtemp.txt' u (($4==2.3)?$3:1/0):10:11 w yerrorbars ls 3 title '$T=\num{2,3}$',\
+	 'skalqbigmpiverschtemp.txt' u (($4==100)?$3:1/0):10:11 w yerrorbars ls 4 title '$T=\num{100}$',\
 	 einslinie(x) lt 0 dt 5 title ''
 unset xrange
 

@@ -119,16 +119,61 @@ plot 'bootstrapalle-hamiltonian-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):
 
 unset multiplot
 
-set out 'magnetisierungfehler.tex'
+set out 'hamiltonianfehler.tex'
 set multiplot layout 1,2
-#set yrange [-0.01:1.01]
-set ylabel '$M$'
+#set yrange [-2.01:0.01]
+set ylabel '$H/\text{laenge}^2$'
 
 @LEFT
-plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):5 ls 1 title ''
+plot 'bootstrapalle-hamiltonian-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):($5/120**2) ls 1 title ''
 
 @RIGHT
-plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):5 ls 1 title ''
+plot 'bootstrapalle-hamiltonian-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):($5/120**2) ls 1 title ''
+
+unset multiplot
+
+set out 'speeduptemperaturmultiplot.tex'
+set multiplot layout 1,2
+#set yrange [-0.01:1.01]
+set ylabel 'Speedup'
+
+@LEFT
+einslinie(x)=1
+ideal(x)=x
+set xlabel 'OpenMP-Threads'
+set ylabel 'Speedup'
+set key top left
+set xtics 0,2,10
+set mxtics 2
+set xrange[0:12.5]
+set yrange[0:7]
+plot 'zmittel-m001000-node02-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 1 title '$T=\num{0,5}$',\
+	 'zmittel-m001000-node02t22-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 2 title '$T=\num{2,2}$',\
+	 'zmittel-m001000-node02t23-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 3 title '$T=\num{2,3}$',\
+	 'zmittel-m001000-node02t100-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 4 title '$T=\num{100}$',\
+	 ideal(x) lt 0 dt 5 title ''#	 einslinie(x) lt 0 dt 5 title '',\
+unset xrange
+unset yrange
+
+@RIGHT
+set xlabel 'MPI-Prozesse'
+set y2label 'Speedup'
+set format y2 "$%h$"
+set key top left
+set xtics 0,5,20
+set y2tics 0,5,20
+set mxtics 5
+set xrange[0:20.5]
+set y2range[0:20.5]
+set yrange[0:20.5]
+plot 'skalqbigmpiverschtemp.txt' u (($4==0.5)?$3:1/0):10:11 w yerrorbars ls 1 axes x1y2 title '$T=\num{0,5}$',\
+	 'skalqbigmpiverschtemp.txt' u (($4==2.2)?$3:1/0):10:11 w yerrorbars ls 2 axes x1y2 title '$T=\num{2,2}$',\
+	 'skalqbigmpiverschtemp.txt' u (($4==2.3)?$3:1/0):10:11 w yerrorbars ls 3 axes x1y2 title '$T=\num{2,3}$',\
+	 'skalqbigmpiverschtemp.txt' u (($4==100)?$3:1/0):10:11 w yerrorbars ls 4 axes x1y2 title '$T=\num{100}$',\
+	 ideal(x) lt 0 dt 5 axes x1y2 title ''#einslinie(x) lt 0 dt 5 axes x1y2 title '',\
+	 
+unset xrange
+unset y2range
 unset multiplot
 
 set output
