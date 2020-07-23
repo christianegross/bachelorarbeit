@@ -1,0 +1,9 @@
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=96
++ temperatur=0.5
++ merkmal=testmpiqbign2
++ srun -n2 /hiskp4/gross/bachelorarbeit/mpiskalierung 96 0.5 testmpiqbign2
+srun: error: Unable to create job step: More processors requested than permitted
++ cd -

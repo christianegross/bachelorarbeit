@@ -1,0 +1,10 @@
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=48
++ temperatur=0.5
++ merkmal=mpiskalt05n2
++ srun -n2 /hiskp4/gross/bachelorarbeit/mpiskalierung 48 0.5 mpiskalt05n2
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 248967.0 ON lcpunode01 CANCELLED AT 2020-07-15T14:55:54 ***
+slurmstepd: error: *** JOB 248967 ON lcpunode01 CANCELLED AT 2020-07-15T14:55:54 ***

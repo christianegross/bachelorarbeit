@@ -1,0 +1,51 @@
+Wed Jul 15 12:04:50 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 12:05:20 CEST 2020 Waiting done, starting task!
+Wed Jul 15 12:05:20 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 12:05:20 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 12:05:20 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Wed Jul 15 12:05:50 CEST 2020 Waiting done, starting task!
+Wed Jul 15 12:05:50 CEST 2020 Waiting done, starting task!
+Wed Jul 15 12:05:50 CEST 2020 Waiting done, starting task!
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca mpi_cuda_support 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+2.000000	3.000000	1000.000000	768.000000	9.511355
+2.000000	3.000000	1000.000000	768.000000	9.468033
+2.000000	3.000000	1000.000000	768.000000	9.650465
+2.000000	3.000000	1000.000000	768.000000	9.621522
+2.000000	3.000000	1000.000000	768.000000	9.425736
+2.000000	3.000000	1000.000000	768.000000	9.438355
+2.000000	3.000000	1000.000000	768.000000	9.436581
+2.000000	3.000000	1000.000000	768.000000	9.469271
+2.000000	3.000000	1000.000000	768.000000	9.466642
+2.000000	3.000000	1000.000000	768.000000	9.489198
+0.000000	3.000000	1000.000000	768.000000	9.511376
+0.000000	3.000000	1000.000000	768.000000	9.468045
+0.000000	3.000000	1000.000000	768.000000	9.650013
+0.000000	3.000000	1000.000000	768.000000	9.621645
+0.000000	3.000000	1000.000000	768.000000	9.425900
+0.000000	3.000000	1000.000000	768.000000	9.438511
+0.000000	3.000000	1000.000000	768.000000	9.436772
+0.000000	3.000000	1000.000000	768.000000	9.469480
+0.000000	3.000000	1000.000000	768.000000	9.466867
+0.000000	3.000000	1000.000000	768.000000	9.489503
+1.000000	3.000000	1000.000000	768.000000	9.511389
+1.000000	3.000000	1000.000000	768.000000	9.468052
+1.000000	3.000000	1000.000000	768.000000	9.650489
+1.000000	3.000000	1000.000000	768.000000	9.621451
+1.000000	3.000000	1000.000000	768.000000	9.425659
+1.000000	3.000000	1000.000000	768.000000	9.438271
+1.000000	3.000000	1000.000000	768.000000	9.436469
+1.000000	3.000000	1000.000000	768.000000	9.469216
+1.000000	3.000000	1000.000000	768.000000	9.466573
+1.000000	3.000000	1000.000000	768.000000	9.489217
+/hiskp4/gross/bachelorarbeit
