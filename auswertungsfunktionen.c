@@ -322,10 +322,11 @@ void sqrtspalte(FILE *einlesedatei, FILE *ausgabedatei, const int spalten, const
 	}
 }
 	
-void maxline(FILE *datei, const int spalten, const int maxwertspalte, const int zeilen){
+void maxline(FILE *datei, const int spalten, const int maxwertspalte, const int zeilen, double *ergebnisse, int ergebnisspalte1, int ergebnisspalte2){
 	//datei ist eine datei mit zeilen Zeilen und spalten Spalten
 	//Die Zeile, in der der Wert von maxwertspalte maximal ist, wird ausgegeben, mit der Angabe, die wievielte Zeile es ist
 	//Aehnlich zu minarray, minline
+	//Speichert Werte der Apleten ergebnisspalte1,2 in array ergebnisse, damit diese weiterverwendet werden koennen
 	double maxzeile[spalten];//speichert maximale Zeile
 	double aktuellezeile[spalten];//speichert aktuell eingelesene zeile
 	int maxzeilenzaehler=1;//gibt an, die wievielte Zeile die maximale ist
@@ -344,7 +345,7 @@ void maxline(FILE *datei, const int spalten, const int maxwertspalte, const int 
 			if (i==spalten-1){fscanf(datei, "\n");}
 		}
 		//gucken, ob Zeile maximalwert enthaelt, wenn ja, maxzeile und maxzeilenzaehler aktualisieren
-		if (aktuellezeile[maxwertspalte]>maxzeile[maxwertspalte]){
+		if (aktuellezeile[maxwertspalte]>=maxzeile[maxwertspalte]){
 			for (int i=0; i<spalten; i+=1){
 				maxzeile[i]=aktuellezeile[i];
 			}
@@ -357,5 +358,7 @@ void maxline(FILE *datei, const int spalten, const int maxwertspalte, const int 
 	for (int i=0; i<spalten; i+=1){
 		printf("%f\t", maxzeile[i]);
 	}
-	printf("\n");//damit es gut aussieht und keine Probleme bei mehrmaligem anwenden gibt
+	ergebnisse[0]=maxzeile[ergebnisspalte1];
+	ergebnisse[1]=maxzeile[ergebnisspalte2];
+	printf("\t");//damit es gut aussieht und keine Probleme bei mehrmaligem anwenden gibt, \n in anderem programm
 }
