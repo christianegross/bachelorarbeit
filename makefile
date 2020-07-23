@@ -25,6 +25,9 @@ ising: ising.o messfunktionen.o sweeps.o auswertungsfunktionen.o
 minline: minline.o auswertungsfunktionen.o 
 	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 	
+minlinempi: minlinempi.o auswertungsfunktionen.o 
+	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
+	
 maxlineskalierung: maxlineskalierung.o auswertungsfunktionen.o 
 	gcc -std=c99 -Wall -pedantic -o $@ $^ $(LIBS)
 

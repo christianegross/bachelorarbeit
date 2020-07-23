@@ -6,13 +6,12 @@
 	
 	Der Code, mit dem die Ergebnisse dieser Arbeit berechnet wurden, befindet sich im Github-repository https://github.com/christianegross/bachelorarbeit. %Noch erneuern, wenn public
 	
-	Bei der Implementierung des Ising-Modells auf einem Rechner müssen noch weitere Annahmen gemacht werden:
+	Bei der Implementierung des Ising-Modells auf einem Rechner müssen noch weitere Randbedingungen vorgegeben werden:
 	
 	Das Gitter ist nicht unendlich lang, sondern begrenzt. Je größer das Gitter ist, desto näher ist das Ergebnis am thermodynamischen Limes. 
+	Aufgrund der Begrenzung des Gitters müssen Annahmen für die Nachbarn der Teilchen am Rand des Gitters gemacht werden. Hier wurden periodische Randbedingungen gewählt, der Nachbar eines letzten Teilchen einer Zeile ist also das erste Teilchen der Spalte.
 	
-	Aufgrund der Begrenzung des Gitters ist die Frage, was die Nachbarn der Teilchen am Rand des Gitters sind. Hier wurden periodische Randbedingungen gewählt, der Nachbar eines letzten Teilchen einer Zeile ist also das erste Teilchen der Spalte.
-	
-	Um die Auswertung der Messungen zu vereinfachen, wurden in dieser Arbeit $H$, $k_B$ und $T$ dimensionslos gewählt, und $k_B=1$ angenommen. Zudem wurde $J=1$ gesetzt.
+	Um die Auswertung der Messungen zu vereinfachen, wurden in dieser Arbeit $H$, $k_B$ und $T$ einheitenlos gewählt, und $k_B=1$ angenommen. Zudem wurde $J=1$ gesetzt.
 	
 	%Bei der Umsetzung ist nur ein endliches Gitter vorhanden.
 	%Randbedingungen: Auch für die Spins am Rande des Gitters muss es Nachbarn geben. Hier wurden periodische Randbedingungen gewählt, d.h. der Nachbar von einem Punkt am Ende einer Zeile ist der Punkt am Anfang der Zeile.
@@ -28,7 +27,7 @@
 	%Akzeptanzrate: Wie viele Spins wurden bei einer Messung umgedreht? Wird bei jedem Punkt gezählt und in eine Variable geschrieben.
 	
 	%Magnetisierung: Betrag der Summe über alle Spins im Gitter, je mehr Spins gleich ausgerichtet sind, desto stärker der nach außen sichtbare Effekt als Magnet. Nach jeder Messung bestimmt.
-	Aufgrund der endlichen Gitterlänge kann es vorkommen, dass das Vorzeichen der Magnetisierung während der Beobachtung wechselt. Um diesen Effekt nicht fälschlicherweise zu berücksichtigen, wird der Betrag der Magnetisierung gemessen~\cite[vgl. ][S. 106 ff.]{binderheermann}.
+	Aufgrund der endlichen Gitterlänge kann es vorkommen, dass das Vorzeichen der Magnetisierung während der Beobachtung wechselt. Um dadurch keine unstetigen Messungen zu erhalten, wird der Betrag der Magnetisierung gemessen~\cite[vgl. ][S. 106 ff.]{binderheermann}.%Um diesen Effekt nicht fälschlicherweise zu berücksichtigen, wird der Betrag der Magnetisierung gemessen~\cite[vgl. ][S. 106 ff.]{binderheermann}.
 	
 	
 	Das Gitter wird als eindimensionales Array abgespeichert. Das Element an Position (x,y) ist dann der laenge$\cdot$x+y-te Eintrag des Arrays (alles in C-Zählweise, also bei 0 angefangen).
@@ -40,7 +39,7 @@
 	
 	Um zu erreichen, dass der \textit{Spinflip} mit der entsprechenden Wahrscheinlichkeit angenommen wird, wird die Wahrscheinlichkeit mit einer Zufallszahl zwischen null und eins verglichen\cite[nach][]{metropolisupdate}. Wenn die Wahrscheinlichkeit größer als die Zufallszahl ist, wird der \textit{Spinflip} ausgeführt, und die Energiedifferenz zum Hamiltonian dazu addiert. 
 	
-	Die Messung wird in der Funktion \texttt{sweep} durchgeführt, in der in \texttt{for}-Schleifen das ganze Gitter durchgegangen wird. Für jeden Punkt wird die Energiedifferenz bei Umdrehung ermittelt und damit ein Metropolis-Update durchgeführt. Nachdem bei jedem Punkt ein Update durchgeführt worden ist, werden die gemessenen Observablen in eine \texttt{.txt}-Datei ausgegeben, in der die Ergebnisse aller Messungen gespeichert werden.
+	Die Messung wird in der Funktion \texttt{sweepaltohnepar} durchgeführt, in der in \texttt{for}-Schleifen das ganze Gitter durchgegangen wird. Für jeden Punkt wird die Energiedifferenz bei Umdrehung ermittelt und damit ein Metropolis-Update durchgeführt. Nachdem bei jedem Punkt ein Update durchgeführt worden ist, werden die gemessenen Observablen in eine \texttt{.txt}-Datei ausgegeben, in der die Ergebnisse aller Messungen gespeichert werden.
 	%Hamiltonian: berechnen über zeilenweise Array durchgehen, von jedem Punkt rechten und unteren Nachbarn, periodische Randbedingungen durch modulo.
 	%Metropolis-Update: Nur vier Nachbarn zum Berechnen nötig, Hamiltonian wird als Parameter übergeben, daraus Änderung bei Flip, Akzeptanz wird durch 0/1 zurückgegeben. Wahrscheinlichkeit für Flip: Vergleich mit Zufallszahl zwischen null und eins.
 	%sweep Funktion: geht das ganze Gitter durch und führt bei jedem Punkt ein Metropolis-Update durch. Zählt wie viele Spins geflippt werden, schreibt am Ende Prozentuale Veränderungen (Akzeptanzrate) und Summe über alle Spins(Magnetisierung) in Ausgabedatei.
@@ -50,7 +49,9 @@
 	
 	Die Anfangskonfiguration wird in der Funktion \texttt{initialisierung} erzeugt. Dort gibt es die Möglichkeit, mittels mit dem \texttt{gsl\_rng}-Paket\cite{gsldoc} erzeugter Zufallszahlen $\pm 1$ auf das Gitter zu verteilen, im Verlauf der Messungen hat es sich allerdings herausgestellt, das es sinnvoll ist, mit einem Gitter anzufangen, bei dem alle Elemente gleich sind. 
 	
-	Um das Gitter zu thermalisieren, werden Messungen durchgeführt, deren Ergebnisse nicht verwendet werden. Wie viele solcher Messungen hängt von der Temperatur ab, da sich bei einigen Temperaturen die Observablen sehr schnell ändern und bei anderen weniger schnell. Als Basis für die erste betrachtete Temperatur wird ein vollkommen homogenes Gitter, an dem $\num{1000}$ Messungen durchgeführt wurden, angenommen. Für alle anderen Gitter wird das thermalisierte Gitter der davor behandelten Temperatur als Basis angenommen. An allen Basisgittern werden weitere Messungen zur Thermalisierung vorgenommen: Ein kritischer Punkt scheint zwischen $T=\num{2,25}$ und $T=\num{2,4}$ zu liegen, deshalb werden bei allen Gittern, die bei diesen Temperaturen betrachtet werden, $\num{100000}$ Thermalisierungsschritte durchgeführt. Für alle anderen Gitter zwischen $T=\num{2}$ und $T=\num{3}$ werden $\num{30000}$, für alle Gitter außerhalb dieser Temperaturen $\num{5000}$ Schritte durchgeführt.
+	%, deren Ergebnisse nicht verwendet werden. 
+	Um das Gitter zu thermalisieren, werden Messungen an Zuständen durchgeführt, die sich nicht im Gleichgewicht befinden und daher nicht in das Ergebnis mit einfließen. Wie viele solcher Messungen hängt von der Temperatur ab, da sich bei einigen Temperaturen die Observablen sehr schnell ändern und bei anderen weniger schnell. Als Basis für die erste betrachtete Temperatur wird ein vollkommen homogenes Gitter, an dem $\num{1000}$ Messungen durchgeführt wurden, angenommen. Für alle anderen Gitter wird das thermalisierte Gitter der davor behandelten Temperatur als Basis angenommen. An allen Basisgittern werden weitere Messungen zur Thermalisierung vorgenommen: Nach ersten Messungen liegt ein kritischer Punkt zwischen $T=\num{2,25}$ und $T=\num{2,4}$, deshalb werden bei allen Gittern, die bei diesen Temperaturen betrachtet werden, $\num{100000}$ Thermalisierungsschritte durchgeführt. Für alle anderen Gitter zwischen $T=\num{2}$ und $T=\num{3}$ werden $\num{30000}$, für alle Gitter außerhalb dieser Temperaturen $\num{5000}$ Schritte durchgeführt.
+	%Ein kritischer Punkt scheint zwischen $T=\num{2,25}$ und $T=\num{2,4}$ zu liegen
 	%Messungen zeigen: dauert vor allem bei kleinen Gittern sehr lange, bis bei kleiner Temperatur Gleichgewicht erreicht ist. Daher: Am Anfang komplett geordnet, alles $-1$. 
 	%Recht nah an Gleichgewichtszustand, daher für ersten Zustand 1000 Thermalisierungen vor Beginn der Schleife. In Schleife: Anzahl an Thermalisierungen abhängig von Temperatur, Messungen ergeben kritischen Bereich mit vielen Veränderungen zwischen $T=\num{2,25}$ und $T=\num{2,4}$, daher in diesem Bereich 100.000, zwischen $T=\num{2}$ und $T=\num{3}$ 30.000, sonst 5.000. Thermalisierung aufgrund des Gitters der Temperatur, die davor behandelt wurde.
 	%Diese zufällige Konfiguration ist weit vom interessanten Gleichgewicht entfernt, sodass die ersten Messungen nicht verwendet werden können. Daher ist am Anfang eine Thermalisierung nötig, nach der sich das System im Gleichgewicht befindet. Für die erste Temperatur werden (10.000) Messungen durchgeführt und verworfen, für alle Temperaturen danach wird das Gitter der vorherigen Temperatur übergeben und mit (5.000) Messungen thermalisiert. 
@@ -83,7 +84,7 @@
 	
 	%Bild Fehler in Abhängigkeit von l? %Erklärung Bootstrapping? Zitate?
 	
-	Zur Bestimmung des kritischen Punktes wird ausgenutzt, dass an diesem eine Unstetigkeit in der Magnetisierung bestehen sollte. Aufgrund der endlichen Länge des Gitters gibt es keine Unstetigkeit, sondern nur ein Extremum. Dieses wird bestimmt, indem das Minimum der mit der 2-Punkt-Formel gebildeten Ableitung bestimmt wird. Der Fehler der Ableitung wird mittels Gaußscher Fehlerfortpflanzung bestimmt.
+	Zur Bestimmung des kritischen Punktes wird ausgenutzt, dass an diesem eine Unstetigkeit in der Magnetisierung bestehen sollte. Aufgrund der endlichen Länge des Gitters gibt es keine Unstetigkeit in der Ableitung, sondern nur ein Extremum. Dieses wird bestimmt, indem das Minimum der mit der 2-Punkt-Formel gebildeten Ableitung bestimmt wird. Der Fehler der Ableitung wird mittels Gaußscher Fehlerfortpflanzung bestimmt.
 	%Kritischer Punkt: Unstetigkeit in Magnetisierung/Pol in Ableitung erwartet, bestimmen über größte Änderung/Extremum der Ableitung der Magnetisierung: Mit 2-Punkt-Formel berechnete Ableitung, Fehler der Ableitung mit Gaußscher Fehlerfortpflanzung ermittelt.
 		
 	Die Magnetisierung bei vielen Temperaturen wird im Programm \texttt{ising.c} gemessen. Dazu werden in der \texttt{main}-Funktion Variablen wie $J$ und ein Array für die Temperaturen initialisiert. Außerdem wird die Anzahl an Messungen, Thermalisierungsschritten vor der ersten Temperatur, Thermalisierungsschritten vor jeder Temperatur sowie die Blocklänge fürs \textit{Bootstrapping} festgelegt. 	
@@ -95,7 +96,7 @@
 	%Initialisierung mit (100.000) Messungen am ersten Gitter, danach Thermalisierung mit Gitter der vorherigen Temperatur.
 	%for-Schleife über alle Temperaturen im array: Datei für Gitter, Messergebnisse öffnen, thermalisieren, messen, naive Schätzer und Bootstrapschätzer für verschiedene l bestimmen.
 	
-	Die Ableitung sowie deren Minimum werden mit dem Programm \texttt{minline.c} bestimmt. Hierbei werden für verschiedene Gitterlängen jeweils die Bootstrapergebnisse der Magnetisierung eingelesen, deren Ableitung bestimmt sowie die Zeile, in der die Ableitung ein Minimum hat auf die Standardausgabe geschrieben.
+	Die Ableitung sowie deren Minimum werden mit dem Programm \texttt{minline.c} bestimmt. Hierbei werden für verschiedene Gitterlängen jeweils die Bootstrapergebnisse der Magnetisierung eingelesen, deren Ableitung bestimmt sowie die Zeile, in der die Ableitung ein Minimum hat, auf die Standardausgabe geschrieben.
 	%Am Ende des Programms wird aus den ermittelten Werten die Ableitung der Magnetisierung berechnet und ebenfalls in eine \texttt{.txt}-Datei geschrieben.
 	%Am Ende Ableitung in separate Datei schreiben.
 		
@@ -107,8 +108,8 @@
 	
 	Die zum Messen benötigte Zeit steigt mit dem Quadrat der Gitterlänge. Dies sorgt vor allem bei den interessanten langen Gitterlängen, die näher an den thermodynamischen Limes herankommen, für lange Messzeiten. Um diese Messungen zu beschleunigen, wurde das Programm parallelisiert.
 	
-	%\subsection{Parallelisierung mit OpenMP}
-	%\label{subsec:paropenmp}
+	\subsection{Parallelisierung mit OpenMP}
+	\label{subsec:paropenmp}
 	Bei der Parallelisierung mit OpenMP wurden rechenintensive \texttt{for}-Schleifen parallelisiert.
 	%Einzelne Messung dauert recht lange: Beschleunigen durch parallelisieren. 
 	%Strategie: Vor allem Rechenintensive Bereiche parallelisieren, z.B. sweep-funktion für Messvorgang und Replikas ziehen.
@@ -137,8 +138,7 @@
 	
 	In der seriellen Ausführung der \texttt{sweep}-Funktion gibt es zwei ineinander geschachtelte \texttt{for}-Schleifen, die dafür sorgen, dass das gesamte Gitter einmal zeilenweise durchgegangen wird.
 	
-	In der parallelen Funktion wurde dies durch zwei Schleifenpaare ersetzt, eins für die schwarzen Punkte und eins für die weißen Punkte.
-	
+	In der parallelen Funktion \texttt{sweepmehreregeneratoren} wurde dies durch zwei Schleifenpaare ersetzt, eins für die schwarzen Punkte und eins für die weißen Punkte.
 	Dafür wurden die Schleifenköpfe des seriellen Durchgangs so modifiziert, dass in jeder Zeile nur bei jedem zweiten Punkt ein Metropolis-Update durchgeführt wird. 
 	\begin{verbatim}
 	for (d1=0; d1<laenge;d1+=1){
@@ -150,15 +150,45 @@
 	
 	%Jede Parallelisierung führt zu mehr \textit{Overhead}, also zusätzlich benötigten Rechnungen. Falls es viel \textit{Overhead} gibt, wird zu dessen Ausführung genauso viel oder sogar mehr Zeit gebraucht, wie durch die Parallelisierung eingespart wurde.
 	
-	Da bei einem großen Anteil an \textit{Overhead} im Vergleich zu den eigentlichen Rechnungen eine Parallisierung keinen Vorteil bietet, wurden einige Funktionen, die zwar gut parallelisierbar wären, wie z.B die Berechnung des Hamiltonians oder die Berechnung der Summe über alle Gitterelemente, nicht parallelisiert.
+	Da bei einem großen Anteil an \textit{Overhead} im Vergleich zu den eigentlichen Rechnungen eine Parallisierung keinen Vorteil bietet, werden einige Funktionen, die zwar gut parallelisierbar wären, wie z.B die Berechnung des Hamiltonians oder die Berechnung der Summe über alle Gitterelemente, nicht parallelisiert. Im Programm \texttt{ising.c} werden die Funktionen \texttt{thermalisieren, messen} und \texttt{sweepaltohnpar} durch \texttt{thermalisierenmehreregeneratoren, messenmehreregeneratoren} und \texttt{sweepmehreregeneratoren} ersetzt.
 	
-	Die benötigte Rechenzeit in Abhängigkeit der verwendeten Kerne wurde im Programm \texttt{skalierung.c} gemessen. In diesem Programm werden erst Parameter wie Gitterlänge, untersuchte Temperatur und Anzahl an Durchläufen zur Zeitbestimmung, \textit{Arrays} und Variablen zur Speicherung der Ergebnisse sowie ein \textit{Array} an Generatoren initialisiert. Dann wird die Zeit, die für $\num{1000}$ Messungen mit einem Kern benötigt wird, gemessen und aus mehreren Messungen mittels Gl.~\ref{eq:standardmitteundfehler} Mittelwert und Varianz dieser Zeit bestimmt. Diese Messungen sowie Mittelwertbestimmungen werden für alle möglichen Werte der Kernanzahl wiederholt. Dabei wird aus den Mittelwerten und Fehlern auch nach Gl.~\ref{eq:speedup} und mit Gaußscher Fehlerfortpflanzung der Kehrwert des \textit{Speedup} bestimmt. Die maximale Anzahl an verfügbaren Kernen kann mit einer Funktion der OpenMP-library ermittelt werden. 
-	Zusätzlich wird auch die jeweils minimale benötigte Zeit je Kern bestimmt und auch hieraus der \textit{Speedup} ermittelt.
+	Die benötigte Rechenzeit in Abhängigkeit der verwendeten Kerne wird im Programm \texttt{skalierung.c} gemessen. In diesem Programm werden erst Parameter wie Gitterlänge, untersuchte Temperatur und Anzahl an Durchläufen zur Zeitbestimmung, \textit{Arrays} und Variablen zur Speicherung der Ergebnisse sowie ein \textit{Array} an Generatoren initialisiert. Dann wird die Zeit, die für $\num{1000}$ Messungen mit einem \textit{Thread} benötigt wird, gemessen und aus mehreren Messungen mittels Gl.~\ref{eq:standardmitteundfehler} Mittelwert und Varianz dieser Zeit bestimmt. Diese Messungen sowie Mittelwertbestimmungen werden für alle möglichen Werte der Kernanzahl wiederholt. Dabei wird aus den Mittelwerten und Fehlern auch nach Gl.~\ref{eq:speedup} und mit Gaußscher Fehlerfortpflanzung der Kehrwert des \textit{Speedup} bestimmt. Die maximale Anzahl an verfügbaren \textit{Threads} kann mit einer Funktion der OpenMP-library ermittelt werden. 
+	Zusätzlich wird auch die jeweils minimale benötigte Zeit je \textit{Thread} bestimmt und auch hieraus der \textit{Speedup} ermittelt.
 	
 	Außerdem wird eine minimale Zeit für den \textit{Overhead} abgeschätzt, indem gemessen wird, wie lange die Berechnung des Hamiltonian und die Ausgabe von Zahlen je Messung braucht. 
 	
 	Die Zeit wird mit der Funktion \texttt{gettimeofday} gemessen.
 	
+	\subsection{Parallelisierung mit MPI}
+	\label{subsec:parmpi}
+	
+	Beim Parallelisieren mit MPI wird das Gitter in mehrere Untergitterblöcke der Länge Gitterlänge/Prozesszahl aufgeteilt. Zudem wird beim Durchführen der Metropolis-Updates wieder zwischen \enquote{schwarzen} und \enquote{weißen} Punkten unterschieden, weshalb die Gitterlänge gerade und restlos durch die Anzahl an Kernen teilbar sein muss.
+	%Gitter wird in Untergitter aufgeteilt, daher muss Gitterlänge glatt durch Anzahl an Kernen teilbar sein.
+	In der Funktion \texttt{messenmpi} werden die Untergitter aus dem Gesamtgitter initialisiert. Zusätzlich werden für jeden Prozess zwei Arrays der Größe \texttt{laenge} initialisiert, in denen die Werte der Nachbarpunkte am Rand gespeichert werden. Nur das Untergitter und die Nachbargitter werden an die \texttt{sweepmpi}-Funktion übergeben, das Gesamtgitter nicht. 
+	%in Messfunktion: Gitter wird auf Untergitter aufgeteilt, nachher nur noch Untergitter und Arrays mit benachbarten Zeilen relevant.
+	
+	Die Funktion zur Berechnung der Energiedifferenz wird erweitert: Falls ein Punkt am Rande des Untergitters liegt, wird der Spinzustand des Nachbarn aus dem Nachbararray gelesen, alle anderen Spinzustände werden aus dem Untergitter gelesen.%, da geprüft werden muss, ob der entsprechende Punkt am Rande des Untergitters liegt. Ist dies der Fall, wird der entsprechende Gitterwert des Nachbars aus den Nachbararrays gelesen, alle anderen Nachbarwerte werden aus dem Untergitter gelesen. 
+	
+	In der \texttt{sweepmpi}-Funktion werden bei jedem Untergitter erst die schwarzen Punkte durchgegangen. Dabei werden bei jedem Punkt ein Metropolis-Update durchgeführt, und Veränderungen an Hamiltonian, Akzeptanzrate und Magnetisierung in einem Array gespeichert. Danach werden die linken und rechten Ränder des Gitters in arrays gespeichert, und mittels der \texttt{MPI\_Sendrecv}-Funktion werden erst alle oberen Ränder zu den oberen Nachbarn geschickt und das Array nachbarunten mit den Werten der Nachbarprozesse aktualisiert und danach die unteren Ränder verschickt und das array nachbaroben aktualisiert. Dasselbe wird analog mit den weißen Punkten in Untergitter wiederholt.
+	%In der \texttt{sweepmpi}-Funktion werden die Untergitter, analog zu Abschnitt \ref{subsec:paropenmp}
+	%delta: Überprüfung, ob Aus untergitter oder aus Nachbararray Wert benötigt wird
+	%In sweep: ERgebnisse ham, mag akz in Array lokal gespeichert. Auch hier: Schachbrettmuster.
+	%Erst scharze Punkte durchgehen, dann mit sendrecv Nachbargitter erneuern indem erst an alle oberen schicken, unten erneuern, dann an alle unteren schicken, oben erneuern zur Aktualisierung der Randgitter.
+	%Dann sweep weiß, Ränder erneuern.
+	
+	Mit \texttt{MPI\_Allreduce} werden die Ergebnisse der Untergitter zu Hamiltonian, Akzeptanzrate und Magnetisierung zum Gesamtergebnis aufaddiert. In Prozess null werden diese Ergebnisse noch entsprechend normiert und ausgegeben. Sämtliche I/O-Aufgaben des Programms werden also von Prozess null übernommen.
+	
+	%Mit allreduce: Werte aus jedem ergebnisselokal in jedem Prozess in ergebnisse aufaddiert. 
+	%In Prozess null: Berechnung mag, magsq, magvier, akz, ham, Ausgabe
+	Die Magnetisierung in Abhängigkeit von der Temperatur wird mit \texttt{mpiising.c} bestimmt, was sehr ähnlich zu \texttt{ising.c} ist. Allerdings werden hier die Funktionen \texttt{thermalisierenmpi, messenmpi} und \texttt{sweepmpi} verwendet. 
+	Die Initialisierung der MPI-Prozesse findet ganz am Anfang vom Programm statt, danach werden auch hier Variablen zugewiesen und Dateien geöffnet. Die Dateien werden geöffnet, indem Prozess null die Dateien mit der Option \enquote{w+} öffnet, und damit auch erstellt, alle Prozesse warten, bis dies geschehen ist, und dann öffnen alle anderen Prozesse die Dateien mit \enquote{r}. Dies verhindert Probleme mit I/O-Operationen. Daher wird auch das Bootstrapping nur von Prozess null ausgeführt.
+	%main-Funktion: Ähnlich zu vorher beschriebenem ising.c Initialisieren MPI\_Init nur einmal ganz am Anfang vom Programm, dann Festlegung Variablen. Öffnen von Dateien mit "w" mur in Prozess null, dadurch werden DAteien erstellt, dann mit barrier warten erzwingen und in anderen Prozessen zum lesen öffnen. Thermalisieren/messen in allen Prozessen, Bootstrapping diesmal in separater Schleife, nur von Prozess null, um keine Probleme mit I/O zu riskieren.
+	
+	Zur Messung der Laufzeit bei verschiedenen Prozessanzahlen wird das Programm \texttt{skalierungmpi.c} verwendet. Auch hier wurden erst Variablen initialisiert, und dann bei gegebenener Länge und Anzahl an Prozessen zehn mal die Zeit gemessen, die für eine Messung mit $1000$ \textit{sweeps} benötigt wurde. In jedem Prozess wird der Mittelwert, die Standardabweichung, der Minimal- und der Maximalwert aus den gemessenen Laufzeiten bestimmt und mit \texttt{MPI\_Gather} an Prozess null übertragen. Dort werden die einzelnen Werte sowie der globale Mittel-, Minimal- und Maximalwert und die globae Standardabweichung ausgegeben. Im Programm \texttt{maxlineskalierung.c} wird der größte Mittelwert aus der Laufzeit der einzelenen Prozessoren für verschiedene Längen und Prozessorzahlen bestimmt. Aus diesen Mittelwerten wird auch der \textit{Speedup} bestimmt.  
+%	Messung der Skalierung mit \texttt{skalierungmpi.c}:
+%	Für jeden Prozess mit gettimeofday Messung der Ausführungszeit, 10*1000 Messungen. Bestimmung von Minimum, Maximum, Mittelwert+Varianz. Mit MPI\_Gather an Prozess null übertragen, dort Ausgabe davon, außerdem Ausgabe von Mittelwert, var, min, max über alle Prozesse. In maxlineskalierung Bestimmung der größten durchschnittlichen Zeit, danach händisch mit Tabellenkalkulationsprogramm Bestimmung des Speedups von Knoten/Längen.
+%	
+
 
 	%Zeitersparnis Tabelle/Grafik Nummer an Kernen/Gebrauchte Zeit. Auch für einzelne Funktionen?
 	%Funktion parallelisiert, die Summe über das Gitter berechnet: Zeitersparnis nur 0,5\%, daher Hamiltonian, einmaliges Verteilen der Zufallszahlen auf Gitter nicht parallelisiert.

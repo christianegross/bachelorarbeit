@@ -15,4 +15,4 @@ double mittelwertarray(double *array, int messungen);
 double varianzarray(double *array, int messungen, double mittelwert);
 double minarray(double *array, int messungen);void minline(FILE *datei, const int spalten, const int minwertspalte, const int zeilen);
 void sqrtspalte(FILE *einlesedatei, FILE *ausgabedatei, const int spalten, const int spalte, const int zeilen);
-void maxline(FILE *datei, const int spalten, const int maxwertspalte, const int zeilen);
+void maxline(FILE *datei, const int spalten, const int maxwertspalte, const int zeilen, double *ergebnisse, int ergebnisspalte1, int ergebnisspalte2);

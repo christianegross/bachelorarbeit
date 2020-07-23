@@ -4,7 +4,7 @@
 	
 	\section{Laufzeitskalierung bei mehreren Kernen}
 	\label{sec:ergebnisparallel}
-	Zuerst wird sichergestellt, dass das Programm sowohl bei paralleler als auch bei serieller Ausführung das gleiche Verhalten aufweist. Wie man an Bild~\ref{fig:vergleichham} sieht, ist das der Fall, die Ergebnisse des Hamiltonians liegen aufeinander und sind insbesondere in ihren Fehlergrenzen gleich.
+	Zuerst wird sichergestellt, dass das Programm sowohl bei paralleler als auch bei serieller Ausführung das gleiche Verhalten aufweist. Wie man an Bild~\ref{fig:vergleichham} sieht, ist das der Fall, die Ergebnisse des Hamiltonians liegen aufeinander und sind insbesondere in ihren Fehlergrenzen gleich. Dies gilt sowohl für die Parallelisierung mit OpenMP als auch mit MPI.
 	
 	\begin{figure}[htbp]
 		\input{Bilder/vergleichham}
@@ -14,31 +14,59 @@
 	
 	Die Graphiken in dieser Arbeit wurden mittels \texttt{gnuplot}\cite{gnuplotdoc}, im speziellen den Programmen \texttt{plot.gp} und \texttt{multiplot.gp} erstellt.
 	
-	Um zu ermitteln, mit wie vielen Kernen idealerweise gemessen werden sollte, wurde die Skalierung der \texttt{messenmehreregeneratoren}-Funktion betrachtet. Die Messungen wurden wie in Abschnitt~\ref{sec:parallelimplementierung} durchgeführt, aufgetragen wurde der Kehrwert des gemessenen Mittelwertes. Die Fehler wurden wiederum mit Gaußscher Fehlerfortpflanzung bestimmt, aufgetragen ist somit der \textit{Speedup} nach der Definition aus Gl.~\ref{eq:speedup}.%Hierbei wurde für verschiedene Gitterlängen und Temperaturen die Zeit, die für 1.000 Ausführungen der sweep-Funktion benötigt wurde, gemessen. Von zehn solchen Messungen wurden mittels der Standardschätzer Mittelwert und Varianz gebildet. 
+	\subsection{Skalierung mit OpenMP}
+	
+	Um zu ermitteln, mit wie vielen \textit{Threads} idealerweise gemessen werden sollte, wurde die Skalierung der \texttt{messenmehreregeneratoren}-Funktion betrachtet. Die Messungen wurden wie in Abschnitt~\ref{sec:parallelimplementierung} durchgeführt, aufgetragen wurde der Kehrwert des gemessenen Mittelwertes. Die Fehler wurden wiederum mit Gaußscher Fehlerfortpflanzung bestimmt, aufgetragen ist somit der \textit{Speedup} nach der Definition aus Gl.~\ref{eq:speedup}.%Hierbei wurde für verschiedene Gitterlängen und Temperaturen die Zeit, die für 1.000 Ausführungen der sweep-Funktion benötigt wurde, gemessen. Von zehn solchen Messungen wurden mittels der Standardschätzer Mittelwert und Varianz gebildet. 
 	
 	\begin{figure}[htbp]
 		\input{Bilder/speeduplaenge}
-		\caption[\textit{Speedup} in Abhängigkeit von der Gitterlänge]{\textit{Speedup} in Abhängigkeit von der Gitterlänge, Mittelwert über $10 \cdot 1000$ Messungen, gemessen bei $T=\num{0,5}$}
+		\caption[\textit{Speedup} bei verschiedenen Gitterlängen bei Verwendung von OpenMP]{\textit{Speedup}  bei verschiedenen Gitterlängen bei Verwendung von OpenMP, Mittelwert über $10 \cdot 1000$ Messungen, gemessen bei $T=\num{0,5}$}
 		\label{fig:skalierunglaenge}
 	\end{figure}
 	
 	In Abbildung~\ref{fig:skalierunglaenge} ist die Skalierung bei verschiedenen Gitterlängen aufgetragen. Gemessen wurde auf der lcpunode02 des Clusterrechners QBiG. Hierbei handelt es sich um eine Intel(R) Xeon(R) CPU E5-2620 0 @2.00 GHz mit 12 Kernen.%(weitere Werte?).
 	
-	Bei kleinen Gitterlängen wie $10$ wird die Durchführung durch das Verwenden mehrerer Kerne nicht beschleunigt, der \textit{Overhead} der Parallelisierung verlangsamt die Durchführung sogar noch. Der minimale \textit{Speedup} ist hier $\num{0,56\pm0,01}$ bei 12 Kernen. Bei etwas größeren Gitterlängen wie z.{}B.{} 40, wird die Funktion mit steigender Anzahl an Kernen erst schneller durchgeführt, ab einer gewissen Zahl an Kernen, hier $8$, überwiegt allerdings der \textit{Overhead} gegenüber der Beschleunigung durch mehr Kerne und der \textit{Speedup} wird mit steigender Anzahl der Kerne wieder kleiner. Die Fehler sind hier recht groß, da das Programm nicht lange für die Ausführung benötigt, nur ca.{} $\num{0,03}\si{\second}$ bei 7 Kernen, sodass hier die natürlichen Variationen der Kerne aufgrund von Hitze o.{}Ä.{} zu einem großen relativen Fehler führen. Der maximale \textit{Speedup} ist $\num{3,57\pm0,45}$. Mit steigender Gitterlänge, hier im Beispiel 110, wird der \textit{Overhead} im Vergleich zur Rechenzeit geringer, sodass der \textit{Speedup} mit der Anzahl der Kerne annähernd monoton ansteigt, und bei 12 ein Maximum von $\num{5,26\pm0,14}$ hat.
-	Bei größeren Gitterlängen wird der Einfluss der \textit{Overheads} nochmal geringer, wodurch der Anstieg des \textit{Speedups} steiler wird und bei Gitterlänge 500 der maximale \textit{Speedup}, bei $12$ Kernen, $\num{5,99\pm0,12}$ beträgt.
+	Bei kleinen Gitterlängen wie $L=10$ wird die Durchführung durch das Verwenden mehrerer \textit{Threads} nicht beschleunigt, der \textit{Overhead} der Parallelisierung verlangsamt die Durchführung sogar noch. Der minimale \textit{Speedup} ist hier $\num{0,56\pm0,01}$ bei 12 \textit{Threads}. Bei etwas größeren Gitterlängen wie z.{}B.{} $L=40$, wird die Funktion mit steigender Anzahl an \textit{Threads} erst schneller durchgeführt, ab einer gewissen Zahl an \textit{Threads}, hier $8$, überwiegt allerdings der \textit{Overhead} gegenüber der Beschleunigung durch mehr \textit{Threads} und der \textit{Speedup} wird mit steigender Anzahl der \textit{Threads} wieder kleiner. Die Fehler sind hier recht groß, da das Programm nicht lange für die Ausführung benötigt, nur ca.{} $\num{0,03}\si{\second}$ bei $7$ \textit{Threads}, sodass hier die natürlichen Variationen der Prozessoren aufgrund von Hitze o.{}Ä.{} zu einem großen relativen Fehler führen. Der maximale \textit{Speedup} ist $\num{3,57\pm0,45}$. Mit steigender Gitterlänge, hier im Beispiel $L=110$, wird der \textit{Overhead} im Vergleich zur Rechenzeit geringer, sodass der \textit{Speedup} mit der Anzahl der \textit{Threads} annähernd monoton ansteigt, und bei $12$ ein Maximum von $\num{5,26\pm0,14}$ hat.
+	Bei größeren Gitterlängen wird der Einfluss der \textit{Overheads} nochmal geringer, wodurch der Anstieg des \textit{Speedups} steiler wird und bei Gitterlänge $L=500$ der maximale \textit{Speedup}, bei $12$ \textit{Threads}, $\num{5,99\pm0,12}$ beträgt. Jedoch ist dies auch das Maximum an Verbesserung, was mit OpenMP erreicht werden kann, die Werte der Gitterlänge $L=1260$ liegen in ihren Fehlergrenzen immer innerhalb der Fehler der Werte mit $L=500$.
  	
 	%Wie man an Bild sieht, ist die Parallelisierung für kleine Gitterlängen sinnlos, es wird nur mehr overhead eingeführt und die benötigte Zeit steigt mit Anzahl der Cores.
 	
 	%Ab einer gewissen Gitterlänge sinkt die benötigte Rechenzeit mit mehr Cores, sinkt allerdings für mehr Cores, wenn es mehr Overhead gibt. Bei steigender Gitterlänge wird allerdings auch die Laufzeitverbesserung für mehr Cores sichtbar, es bildet sich erst ein Plateau, was für lange Gitterlängen schließlich in eine monoton steigende Funktion übergeht.
+	
+	Bei Gitterlängen ab $L=110$ entspricht das Verhalten des \textit{Speedups} somit den Erwartungen aus Abschnitt~\ref{subsec:openmptheorie}. Daher werden ab einer Gitterlänge von $L=110$ die Messungen mit der maximalen Anzahl an \textit{Threads} durchgeführt, bei kleineren Gitterlängen wird auch eine entsprechend kleinere Anzahl an \textit{Threads} verwendet. 
+	
+	\subsection{Skalierung mit MPI}
+	\label{subsec:ergebnissempi}
+	
+	Zum Untersuchen des Verhaltens bei Parallelisierung mit MPI wird die Ausführungsdauer der Funktion \texttt{messenmpi} bei verschiedenen Prozesszahlen untersucht, die Ergebnisse für verschiedene Gitterlängen sind in Abb. \ref{fig:skalierunglaengempi} dargestellt.
+	
+		\begin{figure}[htbp]
+			\input{Bilder/speeduplaengempi}
+			\caption[\textit{Speedup} bei verschiedenen Gitterlängen bei Verwendung von MPI]{\textit{Speedup} bei verschiedenen Gitterlängen bei Verwendung von MPI, Mittelwert über $10 \cdot 1000$ Messungen, gemessen bei $T=\num{0,5}$}
+			\label{fig:skalierunglaengempi}
+		\end{figure}
+		
+	Prinzipiell ist das Verhalten ähnlich wie bei der Skalierung mit OpenMP: Bei niedrigen Gitterlängen wie $L=12$ dauert das Programm mit mehr Kernen länger, hier ist der minimale \textit{Speedup} $\num{0,66\pm0,11}$ bei sechs MPI-Prozessen. Bei etwas längeren Gittern wie bei $L=60$ kommt es bei mehr Prozessen erst zu einer Verkürzung der Laufzeit, ab einem gewissen Punkt, hier \textit{Speedup} $\num{4,16\pm0,67}$ bei zehn Prozessen, jedoch wieder zu einer Verlangsamung. Bei noch größeren Giiterlängen wie $L=240$ bildet sich ein Plateau bei großen Prozesszahlen, hier mit \textit{Speedup} $\num{9,98\pm 0,67}$ bei 16 Prozessen. Mit steigender Gitterlänge liegen die Messwerte immer näher an der Gerade \enquote{\textit{Speedup}=Prozesszahl}, bei $L=840$ ist der maximale \textit{Speedup} $\num{16,93\pm0,24}$ bei 20 Prozessen, bei $L=1260$ $\num{17,24\pm0,11}$. Auch hier wird der Zuwachs der Verbesserung bei steigender Gitterlänge immer kleiner, die Werte für $L=840$ und $L=1260$ liegen fast aufeinander. Es ist nicht bei jeder Prozessanzahl ein Messwert vorhanden, da die Gitterlänge ein Vielfaches der verwendeten Prozesse sein muss.
+	Auch hier entspricht das Verhalten den Erwartungen aus Absatz~\ref{sec:partheorie}, allerdings erst ab Gitterlänge $L=240$.
+
+\subsection{Vergleich der Parallelisierungsmethoden}
+%	
 	\begin{figure}[htbp]
-		\input{Bilder/speeduptemperatur}
-		\caption[\textit{Speedup} in Abhängigkeit von der Temperatur]{\textit{Speedup} in Abhängigkeit von der Temperatur, Mittelwert über $10 \cdot 1000$ Messungen, gemessen bei Gitterlänge 500}
+		\input{Bilder/speeduptemperaturmultiplot}
+		\caption[\textit{Speedup}  bei verschiedenen Temperaturen]{\textit{Speedup} bei verschiedenen Temperaturen, Mittelwert über $10 \cdot 1000$ Messungen, gemessen bei Gitterlänge 500 bei OpenMP und 840 bei MPI}
 		\label{fig:skalierungtemp}
 	\end{figure}
-		
-	Wenn man sich die Skalierung bei verschiedenen Temperaturen anguckt, siehe Abb.~\ref{fig:skalierungtemp}, gibt es auch hier Unterschiede bei konstanter Gitterlänge: für niedrigere Temperaturen ist die Laufzeit geringer, allerdings der maximale \textit{Speedup} kleiner. Vermutlich kommt dies daher, dass bei niedrigen Temperaturen die Akzeptanzrate geringer ist und somit seltener eine Addition beim Hamiltonian durchgeführt werden muss. Diese Unterschiede entsprechen ungefähr einer Standarabweichung, dies ist allerdings recht gering und selbst beim größten \textit{Speedup} beträgt der Unterschied wischen den Temperaturen nur $\num{0,17}$.
 	
-	Bei Gitterlängen ab $110$ entspricht das Verhalten des \textit{Speedups} somit den Erwartungen aus Abschnitt~\ref{subsec:openmptheorie}. Daher werden ab einer Gitterlänge von 110 die Messungen mit der maximalen Anzahl an Kernen durchgeführt, bei kleineren Gitterlängen wird auch eine entsprechend kleinere Anzahl an Kernen verwendet. 
+	In Abb.~\ref{fig:skalierungtemp} ist die Laufzeitskalierung der beiden Parallelisierungsmethoden gegenübergestellt. 
+	In beiden Fällen wurde eine Gitterlänge gewählt, bei der der \textit{Speedup} in der Nähe des Maximums ist, und bei verschiedenen Temperaturen vergleichen. Für niedrigere Temperaturen ist der \textit{Speedup} minimal kleiner, die Messwerte liegen um ca.{} eine Standarabweichung auseinander. Im Fall von OpenMP ist der Unterschied $\num{0,17}$, im Fall von MPI $\num{0,50}$. In beide Graphiken ist zusätzlich die Gerade \enquote{\textit{Speedup}=Prozesszahl} eingezeichnet.
+	Beim Vergleich der Graphiken wird deutlich, dass mit MPI ein größerer \textit{Speedup} pro zusätzlichem Kern erreicht werden kann, bei 12 Threads bzw. Prozessen ist der Speedup des MPI-Programms bei Temperatur $T=\num{0,5}$ $\num{1,85}$-mal so groß wie bei OpenMP. Zudem ist bei MPI der anstieg des Speedups gleichmäßiger als bei OpenMP. Bei Verwendung von MPI ist jedoch die mögliche Zahl an Prozessen eingeschränkt, was bei OpenMP nicht der Fall ist. Außerdem ist für die Benutzung von MPI eine Restrukturierung des gesamten Programms notwendig und es ist schwieriger, mit In/Output des Programms umzugehen. Beide Parallelisierungsmethoden führen jedoch zu den in Absatz~\ref{sec:partheorie} erwarteten Laufzeitverbesserungen.
+	%OpenMP: 8 zusätzlihe zeilen in sweepfunktion, MPI: eingezeichnet.%allerdings liegen alle Messwerte in den Fehlergrenzen der adneren Messwerte bei gleicher Thread- bzw.{} Prozessanzahl.
+	%gitterlänge an Maximum, temperatur? Unterschiede, aber innerhalb der fehlergrenzen
+%	Zusätzlich gerade in Diagramm, MPI näher an gerade dran, besserer Verlauf. aber: beide entsprechen erwartungen, OpenMP mit viel weniger Zeilen und auch auf privatem  Rechner umsetzbar.
+%		
+%	Wenn man die Skalierung bei verschiedenen Temperaturen betrachtet, siehe Abb.~\ref{fig:skalierungtemp}, gibt es auch hier Unterschiede bei konstanter Gitterlänge: für niedrigere Temperaturen ist die Laufzeit geringer, allerdings der maximale \textit{Speedup} kleiner. Vermutlich kommt dies daher, dass bei niedrigen Temperaturen die Akzeptanzrate geringer ist und somit seltener eine Addition beim Hamiltonian durchgeführt werden muss. Diese Unterschiede entsprechen ungefähr einer Standardabweichung, dies ist allerdings recht gering und selbst beim größten \textit{Speedup} beträgt der Unterschied wischen den Temperaturen nur $\num{0,17}$.
+	%Bild Werte übereinander->gleich Auch Hamiltonian als Vergleich? Magnetisierung passt, aber Werte von QBiG abwarten.
+	%Skalierung auf QBiG?
 	
 	%Da im Folgenden das Verhalten bei großen Gitterlängen betrachtet wird, wird nach Möglichkeit mit der maximalen Anzahl an Kernen gerechnet. 
 	%Insgesamt entspricht somit die Skalierung bei hohen Gitterlängen dem Ahmdahlschen Gesetz.
@@ -54,7 +82,7 @@
 	\section{Verhalten der beobachteten Observablen}
 	\label{sec:ergebnisobservablen}
 	
-	Einige Messungen wurden auch auf einem Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz mit zwei Kernen durchgeführt. 
+	Einige Messungen wurden auch auf einem Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz mit zwei Kernen durchgeführt. Die folgenden Ergebnisse wurden alle mit Verwendung von OpenMP bestimmt.
 	In Bild~\ref{fig:ergebnisakzeptanzrate} ist die Akzeptanzrate als Funktion von der Temperatur dargestellt. Bei kleinen Temperaturen ist sie null, steigt ab ca. $T=1$ an, hat bei ca. $T=\num{2,3}$ einen Wendepunkt mit Akzeptanzrate ca. $\num{0,2}$ und nähert sich danach asymptotisch dem Wert $1$. 
 	
 	%Die Varianz der Akzeptanzrate ist bei geringer Temperatur sehr klein, ca.{} $10^{-8}$ , wird im Bereich um $T=\num{2,2}$ groß, mit Maximalwert ca.{} $10^{-3}}$, und danach wieder kleiner, ca.{} $10^{-4}$.
@@ -82,7 +110,7 @@
 %	test
 %	\end{verbatim}
 
-	Die Magnetisierung verhält sich wie nach Gl.~\ref{eq:magnetisierungsgleichungliteratur} erwartet, siehe Abb. \ref{fig:ergebnismagnetisierung}: Bei geringen Temperaturen ist sie eins, danach wird sie kleiner. Bei ca. $T=\num{2,3}$ hat sie einen starken Abfall, und nähert sich danach einem konstanten Wert größer als null an. Nach Gl.~\ref{eq:magnetisierungsgleichungliteratur} wäre zu erwarten, dass der Abfall eine scharfe Kante bildet und danach die Magnetisierung null ist, dies ist allerdings aufgrund der endlichen Gittergröße nicht der Fall, wie in~\ref{sec:isingtheorie} erläutert wird.
+	Die Magnetisierung verhält sich wie nach Gl.~\ref{eq:magnetisierungsgleichungliteratur} erwartet, siehe Abb. \ref{fig:ergebnismagnetisierung}: Bei geringen Temperaturen ist sie eins, danach wird sie kleiner. Bei ca. $T=\num{2,3}$ hat sie einen starken Abfall, und nähert sich danach einem konstanten Wert größer als null an. Nach Gl.~\ref{eq:magnetisierungsgleichungliteratur} wäre zu erwarten, dass der Abfall eine scharfe Kante bildet und danach die Magnetisierung null ist, dies ist allerdings aufgrund der endlichen Gittergröße nicht der Fall, wie in abschnitt~\ref{sec:isingtheorie} erläutert wird.
 	
 	%Dia Varianz der Magnetisierung ist sowohl bei niedrigen als auch bei hohen Temperaturen niedrig, ca.{}
 
@@ -117,10 +145,10 @@
 		\label{fig:tkritlaenge}
 	\end{figure}
 	
-	Für verschiedene Gitterlängen wurde ein Schätzer für die kritische Temperatur bestimmt. Dieser ist die Stelle, wo die Ableitung am kleinsten ist, die Kurve der Magnetisierung also am steilsten verläuft. Die so bestimmten Werte der kritischen Temperatur sind in Abb. \ref{fig:tkritlaenge} zu sehen. Alle Schätzer sind größer als die theoretische erwartete Temperatur, jedoch beträgt die größte Abweichung nur ca 6\%. Die Schätzer variieren stark, jedoch sind sie bei kleineren Gitterlängen eher größer und scheinen sich asymptotisch dem theoretisch erwarteten Wert anzunähern.
+	Für verschiedene Gitterlängen wird die kritische Temperatur bestimmt. Diese ist die Stelle, wo die Ableitung am kleinsten ist, die Kurve der Magnetisierung also am steilsten verläuft. Die so bestimmten Werte der kritischen Temperatur sind in Abb. \ref{fig:tkritlaenge} zu sehen. Alle Schätzer sind größer als die theoretische erwartete Temperatur, jedoch beträgt die größte Abweichung nur ca 6\%. Die Schätzer variieren stark, jedoch sind sie bei kleineren Gitterlängen eher größer und scheinen sich asymptotisch dem theoretisch erwarteten Wert anzunähern.
 	%Schätzer für kritische Temperatur: Temperatur bei der die Ableitung Minimum hat. Für verschiedene Gitterlängen bestimmt, siehe Abb. \ref{fig:tkritlaenge}. Schon bei geringen Gitterlängen wie 12 Abweichungne nicht größer als 6\% vom erwarteten Wert. bestimmte tkrit variiert zwischen Gitterlängen, ist aber immer größer als erwarteter Wert. Variation scheint abzunehmen und Tkrit scheint sich asymptotisch dem erwarteten Wert anzunähern.
 	
-	Die Monte-Carlo-Simulationen reproduzieren also gut die Ergebnisse der analytischen Betrachtung aus Abschnitt~\ref{sec:isingtheorie}. Je größer die Gitterlänge ist, desto ähnlicher sind die Simulationsergebnisse zu der Theorie.
+	Die Monte-Carlo-Simulationen reproduzieren also gut die Ergebnisse der analytischen Betrachtung aus Abschnitt~\ref{sec:isingtheorie}. Je größer die Gitterlänge ist, desto ähnlicher sind die Simulationsergebnisse zu der Theorie. Aufgrund der Parallelisierung der Messungen konnte dies auch insbesondere für große Gitterlängen bestätigt werden.
 	%Zeigt, dass Simulation gut analytische Werte reproduziert.
 	
 	%Abschlusssatz?

@@ -1,0 +1,11 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=144
++ schritt=1
++ srun -n20 --exclusive /hiskp4/gross/bachelorarbeit/mpiising 144 1
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 249167.0 ON lnode02 CANCELLED AT 2020-07-22T17:15:30 ***
+slurmstepd: error: *** JOB 249167 ON lnode02 CANCELLED AT 2020-07-22T17:15:30 ***

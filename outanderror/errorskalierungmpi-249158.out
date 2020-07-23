@@ -1,0 +1,122 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=840
++ temperatur=2.3
++ merkmal=mpiskalt23mitcharsendbuf
++ (( proz=1 ))
++ (( proz<=20 ))
++ (( (840%1 == 0) && (840!=1) ))
++ echo 840 1
++ srun -n1 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't run 1 processes on 5 nodes, setting nnodes to 1
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%2 == 0) && (840!=2) ))
++ echo 840 2
++ srun -n2 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't run 2 processes on 5 nodes, setting nnodes to 2
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%3 == 0) && (840!=3) ))
++ echo 840 3
++ srun -n3 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't run 3 processes on 5 nodes, setting nnodes to 3
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%4 == 0) && (840!=4) ))
++ echo 840 4
++ srun -n4 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't run 4 processes on 5 nodes, setting nnodes to 4
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%5 == 0) && (840!=5) ))
++ echo 840 5
++ srun -n5 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 5 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%6 == 0) && (840!=6) ))
++ echo 840 6
++ srun -n6 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 6 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%7 == 0) && (840!=7) ))
++ echo 840 7
++ srun -n7 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 7 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%8 == 0) && (840!=8) ))
++ echo 840 8
++ srun -n8 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 8 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%9 == 0) && (840!=9) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%10 == 0) && (840!=10) ))
++ echo 840 10
++ srun -n10 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 10 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%11 == 0) && (840!=11) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%12 == 0) && (840!=12) ))
++ echo 840 12
++ srun -n12 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 12 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%13 == 0) && (840!=13) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%14 == 0) && (840!=14) ))
++ echo 840 14
++ srun -n14 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 14 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%15 == 0) && (840!=15) ))
++ echo 840 15
++ srun -n15 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 15 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%16 == 0) && (840!=16) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%17 == 0) && (840!=17) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%18 == 0) && (840!=18) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%19 == 0) && (840!=19) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (840%20 == 0) && (840!=20) ))
++ echo 840 20
++ srun -n20 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 840 2.3 mpiskalt23mitcharsendbuf
++ echo 840
++ (( proz+=1 ))
++ (( proz<=20 ))
++ cd -

@@ -131,7 +131,7 @@ double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzpr
 	int delta;//potentielle Energieaenderung
 	double ergebnisse[3]={0,0,0};//Nach sweep benutzen, um H, akz, mag aus reduzierung abzuspeichern
 	double ergebnisselokal[3]={0,0,0};//Lokale Ergebnisse fuer H, akz, mag speichern
-	int sendbufferoben[laenge], sendbufferunten[laenge];
+	char sendbufferoben[laenge], sendbufferunten[laenge];
 	//Untergitter durchgehen, an jedem Punkt Metropolis-Update
 	//erst schwarze Punkte:
 	
