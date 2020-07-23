@@ -1,0 +1,100 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=12
++ temperatur=1
++ merkmal=probierenschleifebatch
++ (( proz=1 ))
++ (( proz<=20 ))
++ (( 12%1 == 0 ))
++ echo 12 1
++ srun -n1 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 12 1 probierenschleifebatch
+srun: Warning: can't run 1 processes on 5 nodes, setting nnodes to 1
++ echo 12
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%2 == 0 ))
++ echo 12 2
++ srun -n2 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 12 1 probierenschleifebatch
+srun: Warning: can't run 2 processes on 5 nodes, setting nnodes to 2
++ echo 12
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%3 == 0 ))
++ echo 12 3
++ srun -n3 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 12 1 probierenschleifebatch
+srun: Warning: can't run 3 processes on 5 nodes, setting nnodes to 3
++ echo 12
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%4 == 0 ))
++ echo 12 4
++ srun -n4 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 12 1 probierenschleifebatch
+srun: Warning: can't run 4 processes on 5 nodes, setting nnodes to 4
++ echo 12
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%5 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%6 == 0 ))
++ echo 12 6
++ srun -n6 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 12 1 probierenschleifebatch
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 6 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 12
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%7 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%8 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%9 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%10 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%11 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%12 == 0 ))
++ echo 12 12
++ srun -n12 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 12 1 probierenschleifebatch
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 12 with the number of requested nodes 5. Ignoring --ntasks-per-node.
+srun: error: lnode07: tasks 10-11: Segmentation fault
+srun: error: lnode06: tasks 8-9: Segmentation fault
+srun: error: lnode04: tasks 3-5: Segmentation fault
+srun: error: lnode05: tasks 6-7: Segmentation fault
+srun: error: lnode03: tasks 0-2: Segmentation fault
++ echo 12
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%13 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%14 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%15 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%16 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%17 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%18 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%19 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( 12%20 == 0 ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ cd -

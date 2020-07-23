@@ -9,7 +9,7 @@
 #include <sys/time.h>//Zur Messung der Wallclocktime beim messen ->Vergleich der Sweep-Funktionen
 #include "mpifunktionen.h"
 
-int deltahmpi(int d1, int d2, int laenge, int teillaenge, int *untergitter, int *nachbarunten, int *nachbaroben){
+int deltahmpi(int d1, int d2, int laenge, int teillaenge, char *untergitter, char *nachbarunten, char *nachbaroben){
 	//berechnet Energieänderung bei Flip des Spins an position d1, d2
 	//Dafuer jeweils Nachbarn noetig, nachbarn rechts links immer in Untergitter, aber oben/unten kann Teil eines anderen Gitters sein, deshalb Abgleich mit Nachbargittern
 	int oben, unten, delta;
@@ -32,19 +32,19 @@ int deltahmpi(int d1, int d2, int laenge, int teillaenge, int *untergitter, int 
 	return delta;
 }
 
-void initialisierenhomogen(int *gitter, int laenge){
+void initialisierenhomogen(char *gitter, int laenge){
 	for (int i=0; i<laenge*laenge; i+=1){
 		gitter[i]=1;
 	}
 }
 	
 //tryflip, einlesen, ausgabe hamiltonian: kopieren aus schon bekannten Funktionen, keine Aenderung noetig
-void einlesen(int *gitter, int laenge, FILE *datei){
+void einlesen(char *gitter, int laenge, FILE *datei){
 	//liest gitter, das in datei geschrieben wurde, wieder in gitter ein
 	rewind(datei);
 	int d1, d2, error;
 	for (int n=0; n<laenge*laenge; n+=1){
-		error= fscanf(datei, "%d \t %d \t %d \n", &d1, &d2, &gitter[n]);//Einlesen von Zeile, Spalte und Wert
+		error= fscanf(datei, "%d \t %d \t %c \n", &d1, &d2, &gitter[n]);//Einlesen von Zeile, Spalte und Wert
 		//Zeile und Spalte nicht benötigt, da Zuordnung desselbe wie beim Einlesen
 		//Fehleranfällig? Doch über d1, d2 zuordnen?
 		if (error<0){
@@ -54,16 +54,16 @@ void einlesen(int *gitter, int laenge, FILE *datei){
 	}
 }
 
-void ausgabe(int *gitter, int laenge, FILE *datei){
+void ausgabe(char *gitter, int laenge, FILE *datei){
 	//gibt ein laenge *laenge quadratisches Gitter in datei aus
 	for (int d1=0; d1<laenge; d1++){//geht in erster dimension durch
 		for (int d2=0; d2<laenge; d2++){//geht in zweiter dimension durch
-			fprintf(datei, "%3d\t%3d\t%d\n",d1, d2, gitter[laenge*d1+d2]);//Gibt Zeile, Spalte und Wert an
+			fprintf(datei, "%3d\t%3d\t%c\n",d1, d2, gitter[laenge*d1+d2]);//Gibt Zeile, Spalte und Wert an
 		}
 	}
 }
 
-double hamiltonian(int *gitter, int laenge, double j){
+double hamiltonian(char *gitter, int laenge, double j){
 	//berechnet den hamiltonian eines laenge*laenge quadratischen Gitters eines Ising Modells mit periodischen Randbedingungen
 	double H=0;
 	for (int d1=0; d1<laenge; d1+=1){//geht in erster dimension durch (Zeile
@@ -124,7 +124,7 @@ double varianzberechnungnaiv(FILE *messdatei, int messungen, double mittelwert, 
 	return sqrt(summe/((double)messungen-1));
 }
 
-double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzproz, int myrank, int teillaenge, int *untergitter, int *nachbarunten, int *nachbaroben, double* wahrscheinlichkeiten, double j, double H){
+double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzproz, int myrank, int teillaenge, char *untergitter, char *nachbarunten, char *nachbaroben, double* wahrscheinlichkeiten, double j, double H){
 	//Fuehrt ein Metropolis-Update an jedem Punkt des gegeben Untergitters aus, durch Kombination aus mehreren Prozessen ein Metropolis-Update fuer jeden Punkt
 	
 	//printf("anfang sf in %d\n", myrank);
@@ -158,9 +158,9 @@ double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzpr
 		sendbufferoben[i]=untergitter[i];
 	}
 	//Erst Neue Raender nach oben senden/von unten empfangen
-	MPI_Sendrecv(sendbufferoben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 0, nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	MPI_Sendrecv(sendbufferoben, laenge, MPI_CHAR, (myrank-1+anzproz)%anzproz, 0, nachbarunten, laenge, MPI_CHAR, (myrank+1)%anzproz, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 	//Dann nach unten senden/von oben empfangen -> beide Male geschlossener Kreis
-	MPI_Sendrecv(sendbufferunten, laenge, MPI_INT, (myrank+1)%anzproz, 1, nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	MPI_Sendrecv(sendbufferunten, laenge, MPI_CHAR, (myrank+1)%anzproz, 1, nachbaroben, laenge, MPI_CHAR, (myrank-1+anzproz)%anzproz, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 	
 	MPI_Barrier(MPI_COMM_WORLD);	
 	
@@ -187,8 +187,8 @@ double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzpr
 		sendbufferunten[i]=untergitter[(laenge*(teillaenge-1))+i];
 		sendbufferoben[i]=untergitter[i];
 	}
-	MPI_Sendrecv(sendbufferoben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 0, nachbarunten, laenge, MPI_INT, (myrank+1)%anzproz, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-	MPI_Sendrecv(sendbufferunten, laenge, MPI_INT, (myrank+1)%anzproz, 1, nachbaroben, laenge, MPI_INT, (myrank-1+anzproz)%anzproz, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	MPI_Sendrecv(sendbufferoben, laenge, MPI_CHAR, (myrank-1+anzproz)%anzproz, 0, nachbarunten, laenge, MPI_CHAR, (myrank+1)%anzproz, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	MPI_Sendrecv(sendbufferunten, laenge, MPI_CHAR, (myrank+1)%anzproz, 1, nachbaroben, laenge, MPI_CHAR, (myrank-1+anzproz)%anzproz, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 	
 	//printf("kom weiss in %d\n", myrank);
 	MPI_Allreduce(ergebnisselokal, ergebnisse, 3, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);//H, akz, mag berechnen, indem Ergebnis aus jedem Teilgitter aufaddiert wird
@@ -203,7 +203,7 @@ double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzpr
 			
 }
 
-void messenmpi(int messungen, int laenge, double T, double j, int *gitter, FILE *ausgabedatei, gsl_rng **generatoren){
+void messenmpi(int messungen, int laenge, double T, double j, char *gitter, FILE *ausgabedatei, gsl_rng **generatoren){
 	//Fuehrt messungen sweeps am Gitter durch, schreibt Ergebnisse in ausgabedatei
 	double H=hamiltonian(gitter, laenge, j);//Anfangswert berechnen
 	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};//Wahrscheinlichkeiten fuer Spinflip, muessen nur einmal berechnet werden
@@ -217,9 +217,9 @@ void messenmpi(int messungen, int laenge, double T, double j, int *gitter, FILE 
 	MPI_Comm_size(MPI_COMM_WORLD, &anzproz);
 	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
 	int teillaenge=laenge/anzproz;
-	int nachbaroben[laenge];
-	int nachbarunten[laenge];
-	int untergitter[laenge*teillaenge];		
+	char nachbaroben[laenge];
+	char nachbarunten[laenge];
+	char untergitter[laenge*teillaenge];		
 	//eigenes Untergitter wird mit aktuellem Zustand des Gitters initialisiert. Nur einmal benoetigt, da danach Aenderungen von vorherigen sweep gespeichert sind.
 	for (int i=0; i<teillaenge*laenge; i+=1){
 		untergitter[i]=gitter[myrank*teillaenge*laenge+i];
@@ -239,11 +239,11 @@ void messenmpi(int messungen, int laenge, double T, double j, int *gitter, FILE 
 		H=sweepmpi(laenge,ausgabedatei, generatoren,  anzproz, myrank, teillaenge, untergitter, nachbarunten, nachbaroben,  wahrscheinlichkeiten,  j,  H);
 	}
 	//Gitter aktualisieren nach sweep: In jedem Prozess Inhalte der einzelnen Untergitter in Gitter aneinanderreihen
-	MPI_Allgather(untergitter, teillaenge, MPI_INT, gitter, teillaenge, MPI_INT, MPI_COMM_WORLD);
+	MPI_Allgather(untergitter, teillaenge, MPI_CHAR, gitter, teillaenge, MPI_CHAR, MPI_COMM_WORLD);
 		
 }
 
-void thermalisierenmpi(int messungen, int laenge, double T, double j, int *gitter, FILE *dummymessung, FILE *ausgabedatei, gsl_rng **generatoren){
+void thermalisierenmpi(int messungen, int laenge, double T, double j, char *gitter, FILE *dummymessung, FILE *ausgabedatei, gsl_rng **generatoren){
 	//Fuehrt messungen sweeps am Gitter durch, schreibt Ergebnisse in dummymessung, und gibt am Ende Gitter in ausgabedatei
 	double H=hamiltonian(gitter, laenge, j);//Anfangswert berechnen
 	double wahrscheinlichkeiten[5]={1,1,1,exp(-4*j/T), exp(-8*j/T)};//Wahrscheinlichkeiten fuer Spinflip, muessen nur einmal berechnet werden
@@ -256,14 +256,19 @@ void thermalisierenmpi(int messungen, int laenge, double T, double j, int *gitte
 	int anzproz, myrank;//Anzahl Prozessoren, meine Nummer
 	MPI_Comm_size(MPI_COMM_WORLD, &anzproz);
 	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+	//printf("a %d\n", myrank);
 	int teillaenge=laenge/anzproz;
-	int nachbaroben[laenge];
-	int nachbarunten[laenge];
-	int untergitter[laenge*teillaenge];		
+	char nachbaroben[laenge];
+	//printf("d %d\n", myrank);
+	char nachbarunten[laenge];
+	//printf("e %d\n", teillaenge);
+	char untergitter[laenge*teillaenge];	
+	//printf("b %d\n", myrank);	
 	//eigenes Untergitter wird mit aktuellem Zustand des Gitters initialisiert. Nur einmal benoetigt, da danach Aenderungen von vorherigen sweep gespeichert sind.
 	for (int i=0; i<teillaenge*laenge; i+=1){
 		untergitter[i]=gitter[myrank*teillaenge*laenge+i];
 	}
+	//printf("c %d\n", myrank);
 	//Raender der benachbarten Untergitter werden gespeichert
 	for (int i=0; i<laenge; i+=1){
 		nachbaroben[i]=gitter[((teillaenge*myrank-1+laenge)%laenge)*laenge+i];
@@ -278,7 +283,7 @@ void thermalisierenmpi(int messungen, int laenge, double T, double j, int *gitte
 		H=sweepmpi(laenge,dummymessung, generatoren,  anzproz, myrank, teillaenge, untergitter, nachbarunten, nachbaroben,  wahrscheinlichkeiten,  j,  H);
 		//Gitter aktualisieren nach sweep: In jedem Prozess Inhalte der einzelnen Untergitter in Gitter aneinanderreihen
 	}
-	MPI_Allgather(untergitter, teillaenge, MPI_INT, gitter, teillaenge, MPI_INT, MPI_COMM_WORLD);
+	MPI_Allgather(untergitter, teillaenge, MPI_CHAR, gitter, teillaenge, MPI_CHAR, MPI_COMM_WORLD);
 	if(myrank==0){
 		ausgabe(gitter, laenge, ausgabedatei);
 	}

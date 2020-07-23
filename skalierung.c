@@ -90,13 +90,13 @@ int main(int argc, char **argv){
 		einlesen(gitter, laenge, dummydatei);
 		messdatei=fopen(dateinamedummymessen,  "w+");
 		gettimeofday(&anfangmessen, NULL);
-		messenmehreregeneratoren(laenge, temperatur, j, messungen, gitter/*dummydatei*/, messdatei, generatoren);
+		messenmehreregeneratoren(laenge, temperatur, j, messungen, /*gitter*/dummydatei, messdatei, generatoren);
 		gettimeofday(&endemessen, NULL);
 		sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
 		usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
 		zeiteincore=sec+1e-06*usec;
 		ergebnisse[durchlauf]=zeiteincore;
-		//printf("bei %d cores haben %d Messungen %f Sekunden gebraucht\n", 1, messungen, zeiteincore);
+		printf("bei %d cores haben %d Messungen %f Sekunden gebraucht\n", 1, messungen, zeiteincore);
 		fprintf(zeitdatei, "%f\t%f\t%f\t%f\t%f\n", 1.0, (double)messungen, zeiteincore, 1.0, (double)laenge);//cores messungen Zeit Speedup
 		fclose(messdatei);
 	}
@@ -120,14 +120,14 @@ int main(int argc, char **argv){
 			einlesen(gitter, laenge, dummydatei);
 			messdatei=fopen(dateinamedummymessen, "w+");
 			gettimeofday(&anfangmessen, NULL);
-			messenmehreregeneratoren(laenge, temperatur, j, messungen, gitter/*dummydatei*/, messdatei, generatoren);
+			messenmehreregeneratoren(laenge, temperatur, j, messungen, /*gitter*/dummydatei, messdatei, generatoren);
 			gettimeofday(&endemessen, NULL);
 			sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
 			usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);
 			zeitgesmessen=sec+1e-06*usec;
 			ergebnisse[durchlauf]=zeitgesmessen;
 			speedup=zeitgesmessen/zeiteincore;
-			//printf("bei %d cores haben %d Messungen %f Sekunden gebraucht\n", cores, messungen, zeitgesmessen);
+			printf("bei %d cores haben %d Messungen %f Sekunden gebraucht\n", cores, messungen, zeitgesmessen);
 			fprintf(zeitdatei, "%f\t%f\t%f\t%f\t%f\n", (double)cores, (double)messungen, zeitgesmessen, speedup, (double)laenge);
 			fclose(messdatei);
 		}

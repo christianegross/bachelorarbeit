@@ -1,0 +1,203 @@
+Tue Jul 21 13:05:08 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:05:38 CEST 2020 Waiting done, starting task!
+12 1
+Tue Jul 21 13:05:38 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:06:08 CEST 2020 Waiting done, starting task!
+12
+12 2
+Tue Jul 21 13:06:10 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:06:10 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:06:40 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:06:40 CEST 2020 Waiting done, starting task!
+12
+12 3
+Tue Jul 21 13:06:41 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:06:41 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:06:41 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:07:11 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:07:11 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:07:11 CEST 2020 Waiting done, starting task!
+12
+12 4
+Tue Jul 21 13:07:12 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:07:12 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:07:12 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:07:13 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:07:42 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:07:42 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:07:42 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:07:43 CEST 2020 Waiting done, starting task!
+12
+12 6
+Tue Jul 21 13:07:44 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:07:44 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:07:44 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:07:44 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:07:44 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:07:44 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:14 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:14 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:14 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:14 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:14 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:14 CEST 2020 Waiting done, starting task!
+12
+12 12
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:16 CEST 2020 Waiting for 30 seconds before starting the job to allow the node to settle down
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+Tue Jul 21 13:08:46 CEST 2020 Waiting done, starting task!
+[lnode05:25964] *** Process received signal ***
+[lnode05:25964] Signal: Segmentation fault (11)
+[lnode05:25964] Signal code: Address not mapped (1)
+[lnode05:25964] Failing at address: 0x7fff0d892dd8
+[lnode03:28098] *** Process received signal ***
+[lnode03:28098] Signal: Segmentation fault (11)
+[lnode03:28098] Signal code: Address not mapped (1)
+[lnode03:28098] Failing at address: 0x7ffcee1a3900
+[lnode03:28099] *** Process received signal ***
+[lnode03:28099] Signal: Segmentation fault (11)
+[lnode03:28099] Signal code: Address not mapped (1)
+[lnode03:28099] Failing at address: 0x7ffc12014628
+[lnode06:07633] *** Process received signal ***
+[lnode06:07633] Signal: Segmentation fault (11)
+[lnode06:07633] Signal code: Address not mapped (1)
+[lnode06:07633] Failing at address: 0x7ffc81de6790
+[lnode03:28097] *** Process received signal ***
+[lnode03:28097] Signal: Segmentation fault (11)
+[lnode03:28097] Signal code: Address not mapped (1)
+[lnode03:28097] Failing at address: 0x7ffd9dd3cd00
+[lnode06:07634] *** Process received signal ***
+[lnode06:07634] Signal: Segmentation fault (11)
+[lnode06:07634] Signal code: Address not mapped (1)
+[lnode06:07634] Failing at address: 0x7fffbe1e13e0
+[lnode07:05884] *** Process received signal ***
+[lnode07:05884] Signal: Segmentation fault (11)
+[lnode07:05884] Signal code: Address not mapped (1)
+[lnode07:05884] Failing at address: 0x7ffd42e0ae78
+[lnode04:14579] *** Process received signal ***
+[lnode04:14579] Signal: Segmentation fault (11)
+[lnode04:14579] Signal code: Address not mapped (1)
+[lnode04:14579] Failing at address: 0x7ffda8cc4968
+[lnode07:05883] *** Process received signal ***
+[lnode07:05883] Signal: Segmentation fault (11)
+[lnode07:05883] Signal code: Address not mapped (1)
+[lnode07:05883] Failing at address: 0x7ffd5c84cb68
+[lnode04:14581] *** Process received signal ***
+[lnode04:14581] Signal: Segmentation fault (11)
+[lnode04:14581] Signal code: Address not mapped (1)
+[lnode04:14581] Failing at address: 0x7ffdf6e70e38
+[lnode03:28097] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f5adfbac0c0]
+[lnode03:28097] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x55dd99455b89]
+[lnode03:28097] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x55dd99456c6b]
+[lnode03:28097] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x55dd99457938]
+[lnode04:14580] *** Process received signal ***
+[lnode04:14580] Signal: Segmentation fault (11)
+[lnode04:14580] Signal code: Address not mapped (1)
+[lnode04:14580] Failing at address: 0x7ffcdf8e01a8
+[lnode03:28099] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7fcc673a00c0]
+[lnode03:28099] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x558cc3c5fb89]
+[lnode03:28099] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x558cc3c60c6b]
+[lnode03:28099] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x558cc3c61938]
+[lnode03:28099] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7fcc670102b1]
+[lnode03:28099] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x558cc3c5f15a]
+[lnode03:28099] *** End of error message ***
+[lnode03:28097] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f5adf81c2b1]
+[lnode03:28097] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x55dd9945515a]
+[lnode03:28097] *** End of error message ***
+[lnode06:07633] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f47fdb590c0]
+[lnode06:07633] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x561c0078db89]
+[lnode06:07633] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x561c0078ec6b]
+[lnode06:07633] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x561c0078f938]
+[lnode03:28098] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f37a364c0c0]
+[lnode03:28098] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x557af8760b89]
+[lnode03:28098] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x557af8761c6b]
+[lnode03:28098] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x557af8762938]
+[lnode03:28098] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f37a32bc2b1]
+[lnode03:28098] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x557af876015a]
+[lnode03:28098] *** End of error message ***
+[lnode06:07634] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7fc0f53700c0]
+[lnode06:07634] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x55c80f52db89]
+[lnode06:07634] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x55c80f52ec6b]
+[lnode06:07634] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x55c80f52f938]
+[lnode06:07634] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7fc0f4fe02b1]
+[lnode06:07634] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x55c80f52d15a]
+[lnode06:07634] *** End of error message ***
+[lnode04:14579] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7fda0abc70c0]
+[lnode04:14579] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x56085e8eeb89]
+[lnode04:14579] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x56085e8efc6b]
+[lnode04:14579] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x56085e8f0938]
+[lnode06:07633] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f47fd7c92b1]
+[lnode06:07633] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x561c0078d15a]
+[lnode06:07633] *** End of error message ***
+[lnode07:05883] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7fb18e24a0c0]
+[lnode07:05883] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x555695206b89]
+[lnode04:14581] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f05345070c0]
+[lnode04:14581] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x55c1aa9ddb89]
+[lnode04:14581] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x55c1aa9dec6b]
+[lnode04:14581] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x55c1aa9df938]
+[lnode04:14579] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7fda0a8372b1]
+[lnode04:14579] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x56085e8ee15a]
+[lnode04:14579] *** End of error message ***
+[lnode07:05884] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7fb88f0da0c0]
+[lnode07:05884] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x5574cf7f3b89]
+[lnode07:05884] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x5574cf7f4c6b]
+[lnode07:05884] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x5574cf7f5938]
+[lnode04:14581] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f05341772b1]
+[lnode04:14581] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x55c1aa9dd15a]
+[lnode04:14581] *** End of error message ***
+[lnode07:05883] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x555695207c6b]
+[lnode07:05883] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x555695208938]
+[lnode04:14580] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7fdaad5430c0]
+[lnode04:14580] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x559fa6e59b89]
+[lnode04:14580] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x559fa6e5ac6b]
+[lnode04:14580] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x559fa6e5b938]
+[lnode07:05883] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7fb18deba2b1]
+[lnode07:05883] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x55569520615a]
+[lnode07:05883] *** End of error message ***
+[lnode04:14580] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7fdaad1b32b1]
+[lnode04:14580] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x559fa6e5915a]
+[lnode04:14580] *** End of error message ***
+[lnode07:05884] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7fb88ed4a2b1]
+[lnode07:05884] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x5574cf7f315a]
+[lnode07:05884] *** End of error message ***
+[lnode05:25964] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f3bca5e40c0]
+[lnode05:25964] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x55573807fb89]
+[lnode05:25964] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x555738080c6b]
+[lnode05:25964] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x555738081938]
+[lnode05:25964] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f3bca2542b1]
+[lnode05:25964] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x55573807f15a]
+[lnode05:25964] *** End of error message ***
+[lnode05:25965] *** Process received signal ***
+[lnode05:25965] Signal: Segmentation fault (11)
+[lnode05:25965] Signal code: Address not mapped (1)
+[lnode05:25965] Failing at address: 0x7ffdc0d199f0
+[lnode05:25965] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x110c0)[0x7f832390b0c0]
+[lnode05:25965] [ 1] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x1b89)[0x557e8804db89]
+[lnode05:25965] [ 2] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x2c6b)[0x557e8804ec6b]
+[lnode05:25965] [ 3] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x3938)[0x557e8804f938]
+[lnode05:25965] [ 4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1)[0x7f832357b2b1]
+[lnode05:25965] [ 5] /hiskp4/gross/bachelorarbeit/mpiskalierung(+0x115a)[0x557e8804d15a]
+[lnode05:25965] *** End of error message ***
+12
+/hiskp4/gross/bachelorarbeit

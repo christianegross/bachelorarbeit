@@ -1,0 +1,122 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=360
++ temperatur=0.5
++ merkmal=mpiskalt05mitchargittern
++ (( proz=1 ))
++ (( proz<=20 ))
++ (( (360%1 == 0) && (360!=1) ))
++ echo 360 1
++ srun -n1 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't run 1 processes on 5 nodes, setting nnodes to 1
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%2 == 0) && (360!=2) ))
++ echo 360 2
++ srun -n2 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't run 2 processes on 5 nodes, setting nnodes to 2
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%3 == 0) && (360!=3) ))
++ echo 360 3
++ srun -n3 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't run 3 processes on 5 nodes, setting nnodes to 3
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%4 == 0) && (360!=4) ))
++ echo 360 4
++ srun -n4 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't run 4 processes on 5 nodes, setting nnodes to 4
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%5 == 0) && (360!=5) ))
++ echo 360 5
++ srun -n5 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 5 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%6 == 0) && (360!=6) ))
++ echo 360 6
++ srun -n6 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 6 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%7 == 0) && (360!=7) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%8 == 0) && (360!=8) ))
++ echo 360 8
++ srun -n8 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 8 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%9 == 0) && (360!=9) ))
++ echo 360 9
++ srun -n9 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 9 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%10 == 0) && (360!=10) ))
++ echo 360 10
++ srun -n10 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 10 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%11 == 0) && (360!=11) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%12 == 0) && (360!=12) ))
++ echo 360 12
++ srun -n12 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 12 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%13 == 0) && (360!=13) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%14 == 0) && (360!=14) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%15 == 0) && (360!=15) ))
++ echo 360 15
++ srun -n15 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 15 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%16 == 0) && (360!=16) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%17 == 0) && (360!=17) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%18 == 0) && (360!=18) ))
++ echo 360 18
++ srun -n18 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 18 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%19 == 0) && (360!=19) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (360%20 == 0) && (360!=20) ))
++ echo 360 20
++ srun -n20 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 360 0.5 mpiskalt05mitchargittern
++ echo 360
++ (( proz+=1 ))
++ (( proz<=20 ))
++ cd -
