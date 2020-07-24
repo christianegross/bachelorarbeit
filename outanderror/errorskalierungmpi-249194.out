@@ -1,0 +1,118 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=480
++ temperatur=2.2
++ merkmal=mpivielthermt22
++ (( proz=1 ))
++ (( proz<=20 ))
++ (( (480%1 == 0) && (480!=1) ))
++ echo 480 1
++ srun -n1 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
+srun: Warning: can't run 1 processes on 5 nodes, setting nnodes to 1
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%2 == 0) && (480!=2) ))
++ echo 480 2
++ srun -n2 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
+srun: Warning: can't run 2 processes on 5 nodes, setting nnodes to 2
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%3 == 0) && (480!=3) ))
++ echo 480 3
++ srun -n3 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
+srun: Warning: can't run 3 processes on 5 nodes, setting nnodes to 3
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%4 == 0) && (480!=4) ))
++ echo 480 4
++ srun -n4 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
+srun: Warning: can't run 4 processes on 5 nodes, setting nnodes to 4
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%5 == 0) && (480!=5) ))
++ echo 480 5
++ srun -n5 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 5 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%6 == 0) && (480!=6) ))
++ echo 480 6
++ srun -n6 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 6 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%7 == 0) && (480!=7) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%8 == 0) && (480!=8) ))
++ echo 480 8
++ srun -n8 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 8 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%9 == 0) && (480!=9) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%10 == 0) && (480!=10) ))
++ echo 480 10
++ srun -n10 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 10 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%11 == 0) && (480!=11) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%12 == 0) && (480!=12) ))
++ echo 480 12
++ srun -n12 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 12 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%13 == 0) && (480!=13) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%14 == 0) && (480!=14) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%15 == 0) && (480!=15) ))
++ echo 480 15
++ srun -n15 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 15 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%16 == 0) && (480!=16) ))
++ echo 480 16
++ srun -n16 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 16 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%17 == 0) && (480!=17) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%18 == 0) && (480!=18) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%19 == 0) && (480!=19) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%20 == 0) && (480!=20) ))
++ echo 480 20
++ srun -n20 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 mpivielthermt22
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ cd -
