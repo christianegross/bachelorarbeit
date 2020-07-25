@@ -32,8 +32,8 @@ int main(int argc, char **argv){
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
 	int N01=1000;//sweeps beim ersten Thermalisieren
-	int N0=10000;//benoetigte sweeps zum Thermalisieren, wird fuer verschiedene Temperaturen noch veraendert
-	int messungen=10368;//pro temperatur, zweierpotenz um blocken einfacher zu machen
+	int N0;//benoetigte sweeps zum Thermalisieren, wird fuer verschiedene Temperaturen noch veraendert
+	int messungen=10240;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateimqu, *bootstrapalledateiham/*, *ableitungdatei*/, *zeitdatei;//benoetigte Dateien zur Ausgabe
 	int temperaturzahl=210;//Temperaturen, bei denen gemessen wird
@@ -103,9 +103,9 @@ int main(int argc, char **argv){
 	thermalisierenmehreregeneratoren(laenge, temperaturarray[0], j, seed, N01, gitter, dummydatei, generatoren);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	fclose(dummydatei);
 	for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
-		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=30000;}//In der Naehe des kritischen Punktes mehr Thermalisierungsschritte notwendig
-		if ((2.25<temperaturarray[n])&&(temperaturarray[n]<2.4)){N0=100000;}
-		if((2>=temperaturarray[n])||(temperaturarray[n]<=3)) {N0=5000;}
+		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=10000;}//In der Naehe des kritischen Punktes mehr Thermalisierungsschritte notwendig
+		if ((2.25<temperaturarray[n])&&(temperaturarray[n]<2.4)){N0=20000;}
+		if((2>=temperaturarray[n])||(3<=temperaturarray[n])) {N0=5000;}
 		//printf("%d\t", n);//Ueberpruefung, wie weit das Programm ist
 		sprintf(dateinametherm,"Messungen/ThermalisierteGitter/thermalisierung-laenge%.4d-m%.6d-t%.3d-node%.2d.txt",laenge,messungen,n, node);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/Messwerte/messung-laenge%.4d-m%.6d-t%.3d-node%.2d.txt",laenge,messungen,n, node);//.2, damit alle dateinamengleich lang sind
@@ -136,6 +136,7 @@ int main(int argc, char **argv){
 		magvier=mittelwertberechnungnaiv(messdatei, messungen, 4, 6);
 		U=1-(magvier/3/magquad/magquad);
 		fprintf(mittelwertdatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", (double)laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag, temperaturarray[n]/j, U);
+		//printf("%f\t%f\n", mittelwertmag, varianzmag);
 		gettimeofday(&anfangbootstrap, NULL);
 		for(int len=0;len<10;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren und ausgeben
 			l=blocklenarray[len];
@@ -152,8 +153,8 @@ int main(int argc, char **argv){
 			blocks_generieren(l, messungen, 2, 6, blockarray, messdatei);//blocking
 			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateimag);//bootstrapping
 			//magnetisierungquadrat
-			blocks_generieren(l, messungen, 3, 6, blockarray, messdatei);//blocking
-			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateimqu);//bootstrapping
+			//blocks_generieren(l, messungen, 3, 6, blockarray, messdatei);//blocking
+			//bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateimqu);//bootstrapping
 			//hamiltonian
 			blocks_generieren(l, messungen, 5, 6, blockarray, messdatei);//blocking
 			bootstrap(l, r, messungen, temperaturarray[n], blockarray, generatoren,bootstrapalledateiham);//bootstrapping
