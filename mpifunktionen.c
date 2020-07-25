@@ -137,7 +137,7 @@ double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzpr
 	//Untergitter durchgehen, an jedem Punkt Metropolis-Update
 	//erst schwarze Punkte:
 	
-	//printf("anfang sweep schwarz in %d\n", myrank);
+	//~ printf("anfang sweep schwarz in %d\n", myrank);
 	for(int d1=0;d1<teillaenge;d1+=1){
 		for(int d2=(teillaenge*anzproz+d1)%2;d2<laenge;d2+=2){
 			delta=deltahmpi(d1, d2, laenge, teillaenge, untergitter, nachbarunten, nachbaroben);
@@ -235,13 +235,14 @@ void messenmpi(int messungen, int laenge, double T, double j, char *gitter, FILE
 	for (int messung=0; messung<messungen; messung+=1){
 		if(myrank==0){
 			fprintf(ausgabedatei,"%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
+			//printf("%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		}
 		
 		//printf("vor sweep in  %d\n", myrank);
 		H=sweepmpi(laenge,ausgabedatei, generatoren,  anzproz, myrank, teillaenge, untergitter, nachbarunten, nachbaroben,  wahrscheinlichkeiten,  j,  H);
 	}
 	//Gitter aktualisieren nach sweep: In jedem Prozess Inhalte der einzelnen Untergitter in Gitter aneinanderreihen
-	MPI_Allgather(untergitter, teillaenge, MPI_CHAR, gitter, teillaenge, MPI_CHAR, MPI_COMM_WORLD);
+	MPI_Allgather(untergitter, teillaenge*laenge, MPI_CHAR, gitter, teillaenge*laenge, MPI_CHAR, MPI_COMM_WORLD);
 		
 }
 
@@ -280,15 +281,17 @@ void thermalisierenmpi(int messungen, int laenge, double T, double j, char *gitt
 	for (int messung=0; messung<messungen; messung+=1){
 		if(myrank==0){
 			fprintf(dummymessung,"%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
+		//printf("%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		}		
 		//printf("vor funktion in %d\n", myrank);
 		H=sweepmpi(laenge,dummymessung, generatoren,  anzproz, myrank, teillaenge, untergitter, nachbarunten, nachbaroben,  wahrscheinlichkeiten,  j,  H);
 		//Gitter aktualisieren nach sweep: In jedem Prozess Inhalte der einzelnen Untergitter in Gitter aneinanderreihen
 	}
-	MPI_Allgather(untergitter, teillaenge, MPI_CHAR, gitter, teillaenge, MPI_CHAR, MPI_COMM_WORLD);
+	MPI_Allgather(untergitter, teillaenge*laenge, MPI_CHAR, gitter, teillaenge*laenge, MPI_CHAR, MPI_COMM_WORLD);
 	if(myrank==0){
 		ausgabe(gitter, laenge, ausgabedatei);
 	}
+	//for (int pos=0;pos<teillaenge*laenge;pos+=1){printf("%d\t%d\t%d\n", (int)untergitter[pos], (int)gitter[myrank*laenge*teillaenge+pos], myrank);}
 		
 }
 

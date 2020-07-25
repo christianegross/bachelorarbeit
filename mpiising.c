@@ -83,7 +83,7 @@ int main(int argc, char **argv){
 	for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
 		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=30000;}//Thermalisierungsschritte je nach Temperatur
 		if ((2.25<temperaturarray[n])&&(temperaturarray[n]<2.4)){N0=100000;}
-		if((2>=temperaturarray[n])||(temperaturarray[n]<=3)) {N0=5000;}
+		if((2>=temperaturarray[n])||(3<=temperaturarray[n])) {N0=5000;}
 		sprintf(dateinametherm,"Messungen/MPIMessungen/thermalisierung-laenge%.4d-m%.6d-t%.3d-proz%.2d.txt",laenge,messungen,n, anzahlprozesse);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/MPIMessungen/messung-laenge%.4d-m%.6d-t%.3d-proz%.2d.txt",laenge,messungen,n, anzahlprozesse);//.2, damit alle dateinamengleich lang sind
 		//In Dateien wird nur von einem Prozess geschrieben, daher nur ein Prozessmit "w" oeffnen, "w" kreiert Datei, deshalb warten, dass Datei sicher existiert, bis andere Prozesse Datei oeffnen
@@ -96,7 +96,7 @@ int main(int argc, char **argv){
 			gitterdatei = fopen(dateinametherm, "r");
 			messdatei = fopen(dateinamemessen, "r");
 		}
-		printf("%d\t", n);
+		printf("%d\t%d\t", n, N0);
 		//Erst Gitter thermalisieren, Messwerte davon nicht benoetigt
 		thermalisierenmpi(N0, laenge, temperaturarray[n], j , gitter, thermdatei, gitterdatei, generatoren);
 		//Danach Messungen, Ergebnisse davon verwenden
@@ -107,6 +107,7 @@ int main(int argc, char **argv){
 			mittelwertmag=mittelwertberechnungnaiv(messdatei, messungen, 2, 6);
 			varianzmag=varianzberechnungnaiv(messdatei, messungen, mittelwertmag, 2, 6);
 			fprintf(mitteldatei, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", (double)laenge, temperaturarray[n],j/temperaturarray[n], mittelwertakz, varianzakz, mittelwertmag, varianzmag, temperaturarray[n]/j);
+			printf("%f\t%f\n", mittelwertmag, varianzmag);
 		}
 		fclose(gitterdatei);
 		fclose(messdatei);
