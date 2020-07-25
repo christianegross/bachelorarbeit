@@ -44,7 +44,7 @@ int main(int argc, char **argv){
 	const int durchlaeufe=10;//Anzahl an Zeitmessungen
 	double ergebnisselokal[durchlaeufe], ergebnisseglobal[durchlaeufe*anzproz], mittelglobal[5*anzproz];//arrays zum speichern der Zeiten, pro Prozess und fuer alle, mittellokal erst bei erstmaliger Verwendung definiert
 	FILE *messdatei, *dummydatei, *mitteldatei;//speichern der Messergenbnisse der einzelnen Messungen, der Zeiten und ein nicht benoetigtes nicht thermalisiertes Gitter
-	char dateinamemittel[200], dateinamedummytherm[50], dateinamedummythermplot[50], dateinamedummymessen[50];//dateinamen
+	char dateinamemittel[200], dateinamedummytherm[50], dateinamedummymessen[50];//dateinamen
 	sprintf(dateinamedummytherm, "dummytherm%.2d.txt", rechner);
 	sprintf(dateinamedummymessen, "dummymessen%.2d.txt", rechner);
 	sprintf(dateinamemittel,"Messungen/Zeiten/zmittel-m%.6d-proz%.2d-%.2d%s.txt",messungen, rechner, anzproz, merkmal);

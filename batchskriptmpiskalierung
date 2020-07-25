@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=500mb
-#SBATCH --time=00:40:00
+#SBATCH --time=01:40:00
 #SBATCH --output=outanderror/skalierungmpi-%j.out
 #SBATCH --error=outanderror/errorskalierungmpi-%j.out
 #SBATCH --exclude=lcpunode01,lcpunode02,lnode[12-17]

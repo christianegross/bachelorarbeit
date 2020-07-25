@@ -1,0 +1,94 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=500
++ temperatur=1
++ merkmal=kommentaregeandert
++ (( proz=1 ))
++ (( proz<=20 ))
++ (( (500%1 == 0) && (500!=1) ))
++ echo 500 1
++ srun -n1 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 500 1 kommentaregeandert
+srun: Warning: can't run 1 processes on 5 nodes, setting nnodes to 1
++ echo 500
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%2 == 0) && (500!=2) ))
++ echo 500 2
++ srun -n2 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 500 1 kommentaregeandert
+srun: Warning: can't run 2 processes on 5 nodes, setting nnodes to 2
++ echo 500
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%3 == 0) && (500!=3) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%4 == 0) && (500!=4) ))
++ echo 500 4
++ srun -n4 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 500 1 kommentaregeandert
+srun: Warning: can't run 4 processes on 5 nodes, setting nnodes to 4
++ echo 500
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%5 == 0) && (500!=5) ))
++ echo 500 5
++ srun -n5 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 500 1 kommentaregeandert
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 5 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 500
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%6 == 0) && (500!=6) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%7 == 0) && (500!=7) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%8 == 0) && (500!=8) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%9 == 0) && (500!=9) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%10 == 0) && (500!=10) ))
++ echo 500 10
++ srun -n10 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 500 1 kommentaregeandert
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 10 with the number of requested nodes 5. Ignoring --ntasks-per-node.
++ echo 500
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%11 == 0) && (500!=11) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%12 == 0) && (500!=12) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%13 == 0) && (500!=13) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%14 == 0) && (500!=14) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%15 == 0) && (500!=15) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%16 == 0) && (500!=16) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%17 == 0) && (500!=17) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%18 == 0) && (500!=18) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%19 == 0) && (500!=19) ))
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (500%20 == 0) && (500!=20) ))
++ echo 500 20
++ srun -n20 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 500 1 kommentaregeandert
++ echo 500
++ (( proz+=1 ))
++ (( proz<=20 ))
++ cd -
