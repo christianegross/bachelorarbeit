@@ -1,5 +1,6 @@
 //Christiane, 25.05.20
 //Header-Datei mit den Funktionen, die zum Messen in der Bachelorarbeit benoetigt werden
+//Erklaerungen zu funktionen in messfunktionen.c
 #pragma once
 void initialisierung(char *gitter, int laenge, int seed);
 void ausgabemitplot(char *gitter, int laenge, FILE *datei, FILE *plotdatei);

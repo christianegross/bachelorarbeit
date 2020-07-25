@@ -1,5 +1,8 @@
 //Christiane, start 10.07.20
-//Messungen mit MPI-Parallelisierung
+//Misst Observablen Hamiltonian, Akzeptanz, Magnetisierung, und zweite und vierte Potenz der Magnetisierung bei verschiedenen Temperaturen
+//Dazu erst thermalisierung des Gitters und dann Messungen
+//Ueber Messergebnisse werden sowohl Standardschaetzer als auch Schaetzer mit Bootstrapping und Blocking von Mittelwert und Standardabweichung gebildet
+//mit MPI parallelisiert
 
 
 #include <stdio.h>
@@ -10,28 +13,28 @@
 #include "mpifunktionen.h"
 
 int main(int argc, char **argv){
-	MPI_Init(&argc, &argv);
-	int myrank, anzahlprozesse;//, opened=1, *isopened;
+	MPI_Init(&argc, &argv);//Nur einmal im Pogramm moeglich, ganz am Anfang, damit alle Prozesse alle Variablen haben
+	int myrank, anzahlprozesse;//fuer Aufteilungen benoetigt
 	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
 	MPI_Comm_size(MPI_COMM_WORLD, &anzahlprozesse);
 	int laenge=anzahlprozesse*10;
 	int schritt=10;
-	if (argc>=3){
+	if (argc>=3){//Auch Zuweisung ueber Kommandozeile moeglich
 		//anzahlprozesse=atoi(argv[1]);
 		laenge=atoi(argv[1]);
 		schritt=atoi(argv[2]);
 	}
-	FILE *gitterdatei, *messdatei, *mitteldatei, *thermdatei;
-	char dateinamemittel[100], dateinametherm[100], dateinamemessen[100];
+	FILE *gitterdatei, *messdatei, *mitteldatei, *thermdatei;//Zum Speichern der Gitter, Messungen, naiven Mittelwerte, Messungen waehrend des thermalisierens
+	char dateinamemittel[100], dateinametherm[100], dateinamemessen[100];//Dateinamen fuer Mittelwert, Gitter, Messungen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler
 	int messungen=10000;
-	int N0;
+	int N0;//Thermalisierungsschritte, je nach Temperatur unterschiedlich
 	double j=1.0;
 	int seed=5;//fuer den zufallsgenerator
-	int temperaturzahl=650;//Temperaturen, beid enen gemessen wird
+	int temperaturzahl=650;//Temperaturen, bei denen gemessen wird
 	int starttemp=0;
 	int endtemp=temperaturzahl;
-	double *temperaturarray;
+	double *temperaturarray;//Speichert verwendete Temperaturen
 	if((temperaturarray=(double*)malloc(sizeof(double)*temperaturzahl))==NULL){//speichert verwendete Temperaturen, prüft, ob Speicherplatz richitg bereitgestellt wurde
 		printf("Fehler beim Allokieren der Temperaturen!\n");
 		return (-1);
@@ -57,7 +60,7 @@ int main(int argc, char **argv){
 	if ((generatoren=(gsl_rng**)malloc(anzahlprozesse*sizeof(gsl_rng**)))==NULL){
 		printf("Fehler beim Allokieren der Generatoren\n");
 	}
-	for(int core=0;core<anzahlprozesse;core+=1){
+	for(int core=0;core<anzahlprozesse;core+=1){//generatoren zuweisen und initialisieren
 		generatoren[core]=gsl_rng_alloc(gsl_rng_mt19937);
 		gsl_rng_set(generatoren[core], seed+core);
 	}
@@ -72,13 +75,13 @@ int main(int argc, char **argv){
 	mitteldatei=fopen(dateinamemittel, "r");
 	thermdatei=fopen("mpitestthermdummy.txt", "r");
 	}
-	char gitter[laenge*laenge];
+	char gitter[laenge*laenge];//Initialisieren nur in einem Prozess, danach auf alle verteilen
 	if(myrank==0){
 		initialisierenhomogen(gitter, laenge);
 	}
 	MPI_Bcast(gitter, laenge*laenge, MPI_CHAR, 0, MPI_COMM_WORLD);
 	for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
-		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=30000;}
+		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=30000;}//Thermalisierungsschritte je nach Temperatur
 		if ((2.25<temperaturarray[n])&&(temperaturarray[n]<2.4)){N0=100000;}
 		if((2>=temperaturarray[n])||(temperaturarray[n]<=3)) {N0=5000;}
 		sprintf(dateinametherm,"Messungen/MPIMessungen/thermalisierung-laenge%.4d-m%.6d-t%.3d-proz%.2d.txt",laenge,messungen,n, anzahlprozesse);//.2, damit alle dateinamengleich lang sind
@@ -94,9 +97,11 @@ int main(int argc, char **argv){
 			messdatei = fopen(dateinamemessen, "r");
 		}
 		printf("%d\t", n);
+		//Erst Gitter thermalisieren, Messwerte davon nicht benoetigt
 		thermalisierenmpi(N0, laenge, temperaturarray[n], j , gitter, thermdatei, gitterdatei, generatoren);
+		//Danach Messungen, Ergebnisse davon verwenden
 		messenmpi(messungen, laenge, temperaturarray[n], j, gitter, messdatei, generatoren);
-		if(myrank==0){//Naive Auswertung
+		if(myrank==0){//Naive Auswertung, I/O benoetigt, daher nur ein Prozess
 			mittelwertakz=mittelwertberechnungnaiv(messdatei, messungen, 1, 6);
 			varianzakz=varianzberechnungnaiv(messdatei, messungen, mittelwertakz, 1, 6);
 			mittelwertmag=mittelwertberechnungnaiv(messdatei, messungen, 2, 6);
@@ -107,11 +112,11 @@ int main(int argc, char **argv){
 		fclose(messdatei);
 	}
 	
-	//Bootstrapping der Ergebnisse
+	//Bootstrapping der Ergebnisse, I/O benoetigt, daher nur ein Prozess
 	if (myrank==0){
-		int r;
-		FILE *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateimqu, *bootstrapalledateiham, *zeitdatei;//benoetigte Dateien zur Ausgabe
-		char dateinamebootstrapalleakz[150], dateinamebootstrapallemag[150], dateinamebootstrapallemqu[150], dateinamebootstrapalleham[150], dateinamezeit[150];//Um Dateien mit Variablen benennen zu koennen
+		int r;//replicas, die gezogen werden
+		FILE *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateimqu, *bootstrapalledateiham/*, *zeitdatei*/;//benoetigte Dateien zur Ausgabe
+		char dateinamebootstrapalleakz[150], dateinamebootstrapallemag[150], dateinamebootstrapallemqu[150], dateinamebootstrapalleham[150]/*, dateinamezeit[150]*/;//Um Dateien mit Variablen benennen zu koennen
 		int l;//Laenge der Blocks
 		double *blockarray;//Zum Speichern der geblockten Messwerte
 		double blocklenarray[10]={/*1,2,4,8,16,32, 64,*/128, 256, 384, 512, 640, 758, 876, 1024, 1280, 1536};//Blocklaengen, bei denen gemessen wird
@@ -124,9 +129,9 @@ int main(int argc, char **argv){
 		bootstrapalledateimqu=fopen(dateinamebootstrapallemqu, "w+");
 		bootstrapalledateiham=fopen(dateinamebootstrapalleham, "w+");
 		
-		for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
+		for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen Mittelwerte bilden
 			sprintf(dateinamemessen,"Messungen/MPIMessungen/messung-laenge%.4d-m%.6d-t%.3d-proz%.2d.txt",laenge,messungen,n, anzahlprozesse);//.2, damit alle dateinamengleich lang sind
-			messdatei = fopen(dateinamemessen, "r");//Zum Speichern der Messdaten
+			messdatei = fopen(dateinamemessen, "r");//Zum Einlesen der Messdaten
 			for(int len=0;len<10;len+=1){//Fuer verschiedene l blocking und bootstrapping durchfuehren
 				l=blocklenarray[len];
 				//printf("%d\t%d\n", n, l);
@@ -135,7 +140,7 @@ int main(int argc, char **argv){
 					return (-1);
 				};
 				r=4*messungen;//Anzahl an Replikas, die beim Bootstrappen erzeugt werden
-				//akzaptanzrate
+				//akzeptanzrate
 				blocks_generieren(l, messungen, 1, 6, blockarray, messdatei);//blocking
 				bootstrapohnepar(l, r, messungen, temperaturarray[n], blockarray, generatoren[0],bootstrapalledateiakz);//bootstrapping
 				//magnetisierung
@@ -159,6 +164,6 @@ int main(int argc, char **argv){
 	fclose(mitteldatei);
 	printf("\n");
 	
-	MPI_Finalize();
+	MPI_Finalize();//benoetigt, damit Programm beendet werden kann
 }
 
