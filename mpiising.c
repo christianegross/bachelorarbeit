@@ -81,8 +81,8 @@ int main(int argc, char **argv){
 	}
 	MPI_Bcast(gitter, laenge*laenge, MPI_CHAR, 0, MPI_COMM_WORLD);
 	for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
-		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=30000;}//Thermalisierungsschritte je nach Temperatur
-		if ((2.25<temperaturarray[n])&&(temperaturarray[n]<2.4)){N0=100000;}
+		if ((2<temperaturarray[n])&&(temperaturarray[n]<3)){N0=10000;}//In der Naehe des kritischen Punktes mehr Thermalisierungsschritte notwendig
+		if ((2.25<temperaturarray[n])&&(temperaturarray[n]<2.4)){N0=20000;}
 		if((2>=temperaturarray[n])||(3<=temperaturarray[n])) {N0=5000;}
 		sprintf(dateinametherm,"Messungen/MPIMessungen/thermalisierung-laenge%.4d-m%.6d-t%.3d-proz%.2d.txt",laenge,messungen,n, anzahlprozesse);//.2, damit alle dateinamengleich lang sind
 		sprintf(dateinamemessen,"Messungen/MPIMessungen/messung-laenge%.4d-m%.6d-t%.3d-proz%.2d.txt",laenge,messungen,n, anzahlprozesse);//.2, damit alle dateinamengleich lang sind

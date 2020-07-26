@@ -36,7 +36,7 @@ int main(int argc, char **argv){
 	int messungen=10240;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
 	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateimqu, *bootstrapalledateiham/*, *ableitungdatei*/, *zeitdatei;//benoetigte Dateien zur Ausgabe
-	int temperaturzahl=210;//Temperaturen, bei denen gemessen wird
+	int temperaturzahl=650;//Temperaturen, bei denen gemessen wird
 	int starttemp=0;
 	int endtemp=temperaturzahl;
 	int node=0;//nodes auf vm, qbig
@@ -49,21 +49,21 @@ int main(int argc, char **argv){
 		return (-1);
 	}
 	for (int i=0; i<temperaturzahl;i++){//Temperaturarray intalisieren
-		//genaue Messung der Magnetisierung:
-		if((i<20)){temperaturarray[i]=0.05+i*0.1;}
-		if((i>=20)&&(i<48)){temperaturarray[i]=2.0+0.008*(i-20);}
-		if((i>=48)&&(i<136)){temperaturarray[i]=2.224+0.002*(i-48);}
-		if((i>=136)&&(i<181)){temperaturarray[i]=2.4+0.008*(i-136);}
-		if((i>=181)){temperaturarray[i]=2.76+0.032*(i-181);}
-		//Für Akzeptanzrate, um bis 10.000 zu kommen, gemessen mit Schritt
-		//~ if (i<50){temperaturarray[i]=i*0.02+0.02;}
-		//~ if ((i>=50)&&(i<300)){temperaturarray[i]=(i-50)*0.01+1;}
-		//~ if ((i>=300)&&(i<350)){temperaturarray[i]=(i-300)*0.02+3.5;}
-		//~ if ((i>=350)&&(i<450)){temperaturarray[i]=(i-350)*0.06+4.5;}
-		//~ if ((i>=450)&&(i<500)){temperaturarray[i]=(i-450)*0.2+10.01;}
-		//~ if ((i>=500)&&(i<550)){temperaturarray[i]=exp(2.996+(i-500)*0.032);}
-		//~ if ((i>=550)&&(i<600)){temperaturarray[i]=exp(4.605+(i-550)*0.046);}
-		//~ if ((i>=600)&&(i<650)){temperaturarray[i]=exp(6.907+(i-600)*0.046);}
+		//~ //genaue Messung der Magnetisierung:
+		//~ if((i<20)){temperaturarray[i]=0.05+i*0.1;}
+		//~ if((i>=20)&&(i<48)){temperaturarray[i]=2.0+0.008*(i-20);}
+		//~ if((i>=48)&&(i<136)){temperaturarray[i]=2.224+0.002*(i-48);}
+		//~ if((i>=136)&&(i<181)){temperaturarray[i]=2.4+0.008*(i-136);}
+		//~ if((i>=181)){temperaturarray[i]=2.76+0.032*(i-181);}
+		//~ //Für Akzeptanzrate, um bis 10.000 zu kommen, gemessen mit Schritt
+		if (i<50){temperaturarray[i]=i*0.02+0.02;}
+		if ((i>=50)&&(i<300)){temperaturarray[i]=(i-50)*0.01+1;}
+		if ((i>=300)&&(i<350)){temperaturarray[i]=(i-300)*0.02+3.5;}
+		if ((i>=350)&&(i<450)){temperaturarray[i]=(i-350)*0.06+4.5;}
+		if ((i>=450)&&(i<500)){temperaturarray[i]=(i-450)*0.2+10.01;}
+		if ((i>=500)&&(i<550)){temperaturarray[i]=exp(2.996+(i-500)*0.032);}
+		if ((i>=550)&&(i<600)){temperaturarray[i]=exp(4.605+(i-550)*0.046);}
+		if ((i>=600)&&(i<650)){temperaturarray[i]=exp(6.907+(i-600)*0.046);}
 		//printf("%d\t%e\n", i, temperaturarray[i]);
 	}
 	int l;//Laenge der Blocks
@@ -100,6 +100,7 @@ int main(int argc, char **argv){
 	char gitter[laenge*laenge];
 	initialisierung(gitter, laenge, seed);
 	dummydatei=fopen("dummytherm.txt", "w");//speichert Gitter nach dem ersten Thermalisieren, das nicht benutzt wird
+	//~ thermalisieren(laenge, temperaturarray[0], j, seed, N01, gitter, dummydatei, generatoren[0]);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	thermalisierenmehreregeneratoren(laenge, temperaturarray[0], j, seed, N01, gitter, dummydatei, generatoren);//Erstes Thermalisierens, Anzahl je nach Länge groesser machen
 	fclose(dummydatei);
 	for (int n=starttemp; n<endtemp; n+=schritt){    //ueber alle gegebenen Temperaturen messen
@@ -117,9 +118,11 @@ int main(int argc, char **argv){
 	//		gsl_rng_set(generatoren[core], seed+core);
 	//	}
 		
+		//~ thermalisieren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generatoren[0]);
 		thermalisierenmehreregeneratoren(laenge, temperaturarray[n], j, seed, N0, gitter, gitterthermdatei, generatoren);
 		gettimeofday(&anfangmessen, NULL);
 		messenmehreregeneratoren(laenge, temperaturarray[n], j, messungen, gitterthermdatei, messdatei, generatoren);
+		//~ messen(laenge, temperaturarray[n], j, messungen, gitter/*thermdatei*/, messdatei, generatoren[0]);
 		gettimeofday(&endemessen, NULL);
 		sec= (double)(endemessen.tv_sec-anfangmessen.tv_sec);
 		usec= (double)(endemessen.tv_usec-anfangmessen.tv_usec);

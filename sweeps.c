@@ -66,7 +66,7 @@ double sweepalt(char *gitter, int laenge, double j, double T, gsl_rng *generator
 	}
 	double akzeptanzrate=(double)changes/(double)laenge/(double)laenge;
 	double magnetisierung=(double)gittersumme(gitter, laenge)/(double)laenge/(double)laenge;
-	fprintf(dateimessungen, "%e\t%e\t",akzeptanzrate, magnetisierung );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
+	fprintf(dateimessungen, "%e\t%e\t%e\t%e\t%e\n",akzeptanzrate, magnetisierung, magnetisierung*magnetisierung, magnetisierung*magnetisierung*magnetisierung*magnetisierung, H  );//benoetigte messungen: Anzahl Veränderungen+Akzeptanzrate=Veränderungen/Möglichkeiten+Magnetisierung
 	return H;
 }
 
