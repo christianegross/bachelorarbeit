@@ -1,0 +1,31 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=480
++ temperatur=2.2
++ merkmal=skalmpithermrichtigt22
++ (( proz=1 ))
++ (( proz<=20 ))
++ (( (480%1 == 0) && (480!=1) ))
++ echo 480 1
++ srun -n1 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 skalmpithermrichtigt22
+srun: Warning: can't run 1 processes on 5 nodes, setting nnodes to 1
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%2 == 0) && (480!=2) ))
++ echo 480 2
++ srun -n2 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 skalmpithermrichtigt22
+srun: Warning: can't run 2 processes on 5 nodes, setting nnodes to 2
++ echo 480
++ (( proz+=1 ))
++ (( proz<=20 ))
++ (( (480%3 == 0) && (480!=3) ))
++ echo 480 3
++ srun -n3 --exclusive /hiskp4/gross/bachelorarbeit/mpiskalierung 480 2.2 skalmpithermrichtigt22
+srun: Warning: can't run 3 processes on 5 nodes, setting nnodes to 3
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** JOB 249233 ON lnode07 CANCELLED AT 2020-07-26T12:45:30 ***
+slurmstepd: error: *** STEP 249233.2 ON lnode07 CANCELLED AT 2020-07-26T12:45:30 ***
