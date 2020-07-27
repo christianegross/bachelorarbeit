@@ -30,7 +30,7 @@ for (int l=0;l<4;l+=1){
 		//proz=prozessorenzahl[p];
 		//dateinamen festlegen
 		//sprintf(dateinameskalierung, "Messungen/Zeiten/zmittel-m001000-proz00-0%dmpiskalt05n%d-l%d.txt", proz, proz, laenge);//verschiedene Laengen bei gleicher Temperatur
-			sprintf(dateinameskalierung, "Messungen/Zeiten/zmittel-m001000-proz00-%.2dmpivielthermt%.2d-l%d.txt", p, (int)(10*temperatur), laenge);//verschiedene Temperaturen bei gleicher Laenge
+			sprintf(dateinameskalierung, "Messungen/Zeiten/zmittel-m001000-proz00-%.2dskalmpithermrichtigt%.2d-l%d.txt", p, (int)(10*temperatur), laenge);//verschiedene Temperaturen bei gleicher Laenge
 		
 			//dateien oeffnen
 			dateiskalierung=fopen(dateinameskalierung, "r+");
