@@ -12,7 +12,7 @@ set style line 6 lc 5 lt 7 pt 4#4 gut
 #Literaturergbnis Magnetisierung
 litresult(x)=(1-(1/(sinh(2/x)*sinh(2/x)))**2)**(1.0/8)*(x<=2.269)+0*(x>2.269)
 
-#Vergleich Hamiltonian
+#Vergleich Observablen
 set out 'vergleichham.tex'
 set xlabel 'Temperatur'
 set ylabel '$H/\text{laenge}^2$'
@@ -22,6 +22,32 @@ set key top left
 plot 'keinpar-bootstrapalle-hamiltonian-l0100-m-010240-node00-sch-10.txt' every 10 			u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 4 title 'seriell',\
 	 'bootstrapalle-hamiltonian-l0100-m-010240-node02-sch-01.txt' 			every 100		u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 3 title 'OpenMP',\
 	 'bootstrapalle-hamiltonian-l0100-m-010000-proz10-sch-01.txt' 			every 100		u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 2 title 'MPI'
+unset xrange
+unset xlabel
+unset ylabel
+
+set out 'vergleichmag.tex'
+set xlabel 'Temperatur'
+set ylabel '$M$'
+
+set xrange [0:5]
+set key top left
+plot 'keinpar-bootstrapalle-magnetisierung-l0100-m-010240-node00-sch-10.txt' every 10 			u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 4 title 'seriell',\
+	 'bootstrapalle-magnetisierung-l0100-m-010240-node02-sch-01.txt' 			every 100		u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 3 title 'OpenMP',\
+	 'bootstrapalle-magnetisierung-l0100-m-010000-proz10-sch-01.txt' 			every 100		u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 2 title 'MPI'
+unset xrange
+unset xlabel
+unset ylabel
+
+set out 'vergleichakz.tex'
+set xlabel 'Temperatur'
+set ylabel 'Akzeptanzrate'
+
+set xrange [0:5]
+set key top left
+plot 'keinpar-bootstrapalle-akzeptanz-l0100-m-010240-node00-sch-10.txt' every 10 			u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 4 title 'seriell',\
+	 'bootstrapalle-akzeptanz-l0100-m-010240-node02-sch-01.txt' 			every 100		u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 3 title 'OpenMP',\
+	 'bootstrapalle-akzeptanz-l0100-m-010000-proz10-sch-01.txt' 			every 100		u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 2 title 'MPI'
 unset xrange
 unset xlabel
 unset ylabel
@@ -64,6 +90,7 @@ einslinie(x)=1
 set xlabel 'Verwendete Kerne'
 set ylabel 'Speedup'
 set key top left
+set mxtics 2
 set xrange[0:12.5]
 plot 'zmittel-m001000-node02-l10.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 1 title 'L=10',\
 	 'zmittel-m001000-node02-l40.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 2 title 'L=40',\
@@ -72,6 +99,7 @@ plot 'zmittel-m001000-node02-l10.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yer
 	 'zmittel-m001000-node00skalopenmp-l1260.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 5 title 'L=1260',\
 	 einslinie(x) lt 0 dt 5 title ''
 unset yrange
+unset mxtics
 
 
 set out 'speeduplaengempi.tex' 
@@ -81,6 +109,7 @@ set xlabel 'Anzahl MPI-Prozesse'
 set ylabel 'Speedup'
 set key top left
 set xrange[0:20.5]
+set mxtics 5
 plot 'skalqbigmpiverschlaengen.txt' u (($5==12)?$3:1/0):10:11 w yerrorbars  ls 1 title 'L=12',\
 	 'skalqbigmpiverschlaengen.txt' u (($5==60)?$3:1/0):10:11 w yerrorbars  ls 2 title 'L=60',\
 	 'skalqbigmpiverschlaengen.txt' u (($5==240)?$3:1/0):10:11 w yerrorbars  ls 3 title 'L=240',\
@@ -88,6 +117,7 @@ plot 'skalqbigmpiverschlaengen.txt' u (($5==12)?$3:1/0):10:11 w yerrorbars  ls 1
 	 'skalqbigmpiverschlaengen.txt' u (($5==1260)?$3:1/0):10:11 w yerrorbars  ls 5 title 'L=1260',\
 	 einslinie(x) lt 0 dt 5 title ''
 unset xrange
+unset mxtics
 
 
 set out 'tkritvonl.tex'
@@ -97,6 +127,7 @@ set logscale x
 set key top right
 set xrange [10:1000]
 set xtics 12, 2, 1000
+set mxtics 10
 set xlabel 'Gitterlänge'
 set ylabel '$T_c$'
 plot tkrit(x) lt 0 dt 5 title 'theoretischer Wert',\
@@ -104,6 +135,7 @@ plot tkrit(x) lt 0 dt 5 title 'theoretischer Wert',\
 	 'tkritmpi15l128.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:(0.002) w yerrorbars ls 2 title 'bestimmte Werte MPI'
 unset logscale x
 unset xrange
+unset mxtics
 
 set ter epslatex size 3in, 3in color colortext
 #Schachbrett 
