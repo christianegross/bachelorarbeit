@@ -19,25 +19,10 @@ set ylabel '$H/\text{laenge}^2$'
 
 set xrange [0:5]
 set key top left
-plot 'bootstrapalle-sweepaltohnepar-hamiltonian-l0120-m-010000-node00.txt' 			u (($2==128)?$6:1/0):($4/120**2):($5/120**2) w yerrorbars 	ls 4 title 'seriell',\
-	 'bootstrapalle-sweepmehreregeneratoren-hamiltonian-l0120-m-010000-node00.txt' 	u (($2==128)?$6:1/0):($4/120**2):($5/120**2) w yerrorbars 	ls 3 title 'OpenMP',\
-	 'bootstrapalle-hamiltonian-l0120-m-010000-proz10-sch-10.txt' 					u (($2==128)?$6:1/0):($4/120**2):($5/120**2) w yerrorbars 	ls 2 title 'MPI'
+plot 'keinpar-bootstrapalle-hamiltonian-l0100-m-010240-node00-sch-10.txt' every 10 			u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 4 title 'seriell',\
+	 'bootstrapalle-hamiltonian-l0100-m-010240-node02-sch-01.txt' 			every 100		u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 3 title 'OpenMP',\
+	 'bootstrapalle-hamiltonian-l0100-m-010000-proz10-sch-01.txt' 			every 100		u (($2==128)?$6:1/0):($4/100**2):($5/100**2) w yerrorbars 	ls 2 title 'MPI'
 unset xrange
-unset xlabel
-unset ylabel
-
-#Fehler beim bootstrapping, Temperatur=3
-set out 'fehlerbootstrapping.tex'
-set xlabel 'Blocklänge'
-set ylabel 'Fehler'
-set xrange[0.5:1540]
-set logscale x
-
-plot 'bootstrapfehler-magnetisierung-l0384-m-010000-node00.txt' u 2:5 ls 1 title '$\Delta M$',\
-	 'bootstrapfehler-hamiltonian-l0384-m-010000-node00.txt' 	u 2:($5/384**2) ls 2 title '$\Delta H/\text{laenge^2}$',\
-	 'bootstrapfehler-akzeptanz-l0384-m-010000-node00.txt' 		u 2:5 ls 3 title '$\Delta$ Akzeptanzrate',\
-
-unset logscale x	 
 unset xlabel
 unset ylabel
 
@@ -52,24 +37,25 @@ set key top right
 set xrange [1:3.6]
 set yrange[0:1]
 plot litresult(x) ls 1 title 'Theorie',\
-	 'bootstrapalle-magnetisierung-l0012-m-010368-node02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 2 title '$\text{laenge}=12$',\
-	 'bootstrapalle-magnetisierung-l0024-m-010368-node02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 3 title '$\text{laenge}=24$',\
-	 'bootstrapalle-magnetisierung-l0048-m-010368-node02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 4 title '$\text{laenge}=48$',\
-	 'bootstrapalle-magnetisierung-l0768-m-010368-node02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 5 title '$\text{laenge}=768$'
-#'bootstrapalle-magnetisierung-l0192-m-010368-node02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 5 title '$\text{laenge}=192$',\
-#plot 'bootstrapalle-magnetisierung-l0120-m-010000-node02.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 2 title '$\text{laenge}=120$',\
-#	 'bootstrapalle-magnetisierung-l0036-m-010000-node00.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 3 title '$\text{laenge}=36$',\
-#	 litresult(x) ls 1 title 'Theorie'
+	 'bootstrapalle-magnetisierung-l0012-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 2 title '$\text{laenge}=12$',\
+	 'bootstrapalle-magnetisierung-l0024-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 3 title '$\text{laenge}=24$',\
+	 'bootstrapalle-magnetisierung-l0048-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 4 title '$\text{laenge}=48$',\
+	 'bootstrapalle-magnetisierung-l0768-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 5 title '$\text{laenge}=768$'
 unset xrange
 unset yrange
 
-#ableitung
-set out 'ableitung120128.tex'
-set xlabel 'Temperatur'
-set ylabel 'dM/dT'
-set xrange[1:4]
-plot 'ableitung-magnetisierung-laenge-0120-m-010000-node02.txt' u 1:2:3 w yerrorbars ls 1 title ''
+set out 'magnetisierunglaengempi.tex'
+set key top right
+set xrange [1:3.6]
+set yrange[0:1]
+plot litresult(x) ls 1 title 'Theorie',\
+	 'bootstrapalle-magnetisierung-l0012-m-010000-proz02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 2 title '$\text{laenge}=12$',\
+	 'bootstrapalle-magnetisierung-l0024-m-010000-proz02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 3 title '$\text{laenge}=24$',\
+	 'bootstrapalle-magnetisierung-l0048-m-010000-proz06-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 4 title '$\text{laenge}=48$',\
+	 'bootstrapalle-magnetisierung-l0480-m-010000-proz20-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 5 title '$\text{laenge}=480$'
 unset xrange
+unset yrange
+
 
 #speedup
 set out 'speeduplaenge.tex' 
@@ -87,19 +73,6 @@ plot 'zmittel-m001000-node02-l10.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yer
 	 einslinie(x) lt 0 dt 5 title ''
 unset yrange
 
-set out 'speeduptemperatur.tex' 
-
-einslinie(x)=1
-set xlabel 'Verwendete Kerne'
-set ylabel 'Speedup'
-set key top left
-set xrange[0:12.5]
-plot 'zmittel-m001000-node02-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 4 title '$T=\num{0,5}$',\
-	 'zmittel-m001000-node02t22-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 3 title '$T=\num{2,2}$',\
-	 'zmittel-m001000-node02t23-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 2 title '$T=\num{2,3}$',\
-	 'zmittel-m001000-node02t100-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 1 title '$T=\num{100}$',\
-	 einslinie(x) lt 0 dt 5 title ''
-unset xrange
 
 set out 'speeduplaengempi.tex' 
 
@@ -116,19 +89,6 @@ plot 'skalqbigmpiverschlaengen.txt' u (($5==12)?$3:1/0):10:11 w yerrorbars  ls 1
 	 einslinie(x) lt 0 dt 5 title ''
 unset xrange
 
-set out 'speeduptemperaturmpi.tex' 
-
-einslinie(x)=1
-set xlabel 'Anzahl MPI-Prozesse'
-set ylabel 'Speedup'
-set key top left
-set xrange[0:20.5]
-plot 'skalqbigmpiverschtemp.txt' u (($4==0.5)?$3:1/0):10:11 w yerrorbars ls 1 title '$T=\num{0,5}$',\
-	 'skalqbigmpiverschtemp.txt' u (($4==2.2)?$3:1/0):10:11 w yerrorbars ls 2 title '$T=\num{2,2}$',\
-	 'skalqbigmpiverschtemp.txt' u (($4==2.3)?$3:1/0):10:11 w yerrorbars ls 3 title '$T=\num{2,3}$',\
-	 'skalqbigmpiverschtemp.txt' u (($4==100)?$3:1/0):10:11 w yerrorbars ls 4 title '$T=\num{100}$',\
-	 einslinie(x) lt 0 dt 5 title ''
-unset xrange
 
 set out 'tkritvonl.tex'
 tkrit(x)=2.269
@@ -140,12 +100,8 @@ set xtics 12, 2, 1000
 set xlabel 'Gitterlänge'
 set ylabel '$T_c$'
 plot tkrit(x) lt 0 dt 5 title 'theoretischer Wert',\
-	 '25laengenl128.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:(0.002) w yerrorbars lt 7 title 'bestimmte Werte'
-#plot 'allesm10368mit768mitnormundsqrt.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:yfehler ls 1 title 'bestimmte Werte',\
-#	 'allesm10368mit768mitnormundsqrtl256.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:yfehler ls 2 title 'bestimmte Werte',\
-#	 'allesm10368mit768mitnormundsqrtl1536.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:yfehler ls 3 title 'bestimmte Werte',\
-#	 'allesm10368mit768mitnormundsqrtl1024.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:yfehler ls 4 title 'bestimmte Werte',\
-#	 tkrit(x) lt 0 dt 5 title 'theoretischer Wert'
+	 'tkritopenmp25l128.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:(0.002) w yerrorbars ls 1 title 'bestimmte Werte OpenMP',\
+	 'tkritmpi15l128.txt' u ((($1==1)&&($3==2.0)&&($4==0))?$2:1/0):6:(0.002) w yerrorbars ls 2 title 'bestimmte Werte MPI'
 unset logscale x
 unset xrange
 
