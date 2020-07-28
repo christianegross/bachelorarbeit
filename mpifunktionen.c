@@ -1,6 +1,6 @@
 //Christiane, start 07.07.20
 //Funktionen, die fuer die Parallelisierung mit MPI benoetigt werden.
-//Viele einfach aus anderen Codes kopiert, damit es beim Kompilieren kein OpenMP eingebunden werden muss
+//Viele einfach aus anderen Codes kopiert, damit beim Kompilieren kein Code mit OpenMP eingebunden werden muss
 
 
 #include <stdio.h>
