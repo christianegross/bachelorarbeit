@@ -34,4 +34,5 @@ Folgende Parameter sollten bei der Ausführung übergeben werden, in dieser Reih
 * mpiising: Gitterlänge, Schrittweite der Temperaturen
 * mpiskalierung: Gitterlänge, Temperatur, ein Merkmal, das in den Dateinamen der Messungen geschrieben wird
 * minline und maxlineskalierung benoetigen keine zusaetzlichen Parameter.
+
 Zum Erstellen der Bachelorarbeit müssen die Programme plot.gp und multiplot.gp ausgeführt werden und die Datei Bachelorarbeit.tex kompiliert werden.
