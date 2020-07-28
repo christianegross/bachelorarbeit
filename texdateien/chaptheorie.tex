@@ -45,7 +45,7 @@
 	Es kommt hier also zu einer Unstetigkeit in der Magnetisierung.
 	
 	Die analytischen Herleitungen ~\cite{OnsagerCrystal1,YangMagnetization,MontrollMagnetization} sind alle für ein unendlich langes Gitter. Dies kann nicht simuliert werden, jedoch kann verglichen werden, wie gut die Simulation beim Annähern an den sogenannten thermodynamischen Limes $L^2\to\infty$ die analytischen Ergebnisse reproduziert.
-	Dabei ist statt einer Unstetigkeit in der Magnetisierun also ein Wendepunkt zu erwarten, nach~\cite[S. 45ff., S.101f.]{binderheermann} ist auch zu erwarten, dass die Magnetisierung oberhalb der kritischen Temperatur von null verschieden ist.%, sowie, dass die kritische Temperatur verschmiert.
+	Dabei ist statt einer Unstetigkeit in der Magnetisierung also ein Wendepunkt zu erwarten, nach~\cite[S. 45ff., S.101f.]{binderheermann} ist auch zu erwarten, dass die Magnetisierung oberhalb der kritischen Temperatur von null verschieden ist.%, sowie, dass die kritische Temperatur verschmiert.
 	%Anderes Verhalten im Modell: nur endliche Gitterlänge, in analytischen Betrachtungen (cite ising, montroll?) immer thermodynamischer limes laenge -> unendlich.
 	
 	%Daher Abweichungen: kritischer Punkt verschmiert, Unstetigkeit wird zu Wendepunkt, Magnetisierung überhalb T_c >0
@@ -147,11 +147,11 @@
 	%Parallelrechner: Durch Benutzung mehrerer Prozessorkerne oder mehrerer Computer benötigte Rechenzeit aufteilen und schneller Ergebnisse haben. Zwei Konzepte:
 	\subsection{Shared Memory, hier mit OpenMP}
 	\label{subsec:openmptheorie}
-	Eine Möglichkeit ist, dass mehrere Prozessoren auf einen gemeinsamen Speicher zugreifen\cite[vgl. ][S. 209]{pachecoparallel}. Dies wurde in dieser Arbeit mit OpenMP umgesetzt, ein von einer nonprofit Organisation entwickelter Satz an Compilerdirektiven\cite{specificationsopenmp}.
+	Eine Möglichkeit ist, dass mehrere Prozessoren auf einen gemeinsamen Speicher zugreifen\cite[vgl. ][S. 209]{pachecoparallel}. Dies wurde in dieser Arbeit mit OpenMP umgesetzt, ein von einer nonprofit Organisation entwickelter Satz an Compilerdirektiven und Funktionen~\cite{specificationsopenmp}.
 	
 	Dadurch, dass die Parallelisierung mit Compilerdirektiven umgesetzt wird, ist die Kompilierung nicht mit allen Compilern möglich. Dafür ist es aber möglich, auf einem recht hohen Abstraktionsniveau zu programmieren, ohne sich um Details beim Parallelisieren explizit zu kümmern\cite[vgl. ][S. 209]{pachecoparallel}.	
 	
-	In einer parallelen Region arbeiten mehrere \textit{Threads} gleichzeitig an einem Teil des Programms, oder teilen sich Schleifendurchläufe auf. Hierbei kann entweder jeder \textit{Thread} auf die gleichen Variablen zugreifen (\textit{shared variables}) oder eine eigene Version der Variable zur Verfügung haben, die von anderen \textit{Threads} nicht verändert werden kann(\textit{private variables})\cite[vgl. ][S. 231 f.]{pachecoparallel}. 
+	In einer parallelen Region arbeiten mehrere \textit{Threads} gleichzeitig an einem Teil des Programms, sie teilen sich z.{}B.{} Schleifendurchläufe auf. Hierbei kann entweder jeder \textit{Thread} auf die gleichen Variablen zugreifen (\textit{shared variables}) oder eine eigene Version der Variable zur Verfügung haben, die von anderen \textit{Threads} nicht verändert werden kann(\textit{private variables})\cite[vgl. ][S. 231 f.]{pachecoparallel}. 
 	
 	Um das Verhalten der Laufzeit bei mehreren \textit{Threads} zu vergleichen, wird der \textit{Speedup} gemessen:
 	%Erwartetes Laufzeitverhalten bei mehr Kernen: gemessen als 
@@ -172,7 +172,7 @@
 	\label{subsecmpitheorie}
 	Eine andere Möglichkeit ist, dass mehrere Prozesse von einem Programm gesteuert auf separate Speicher zugreifen, die je einem Prozess zugeordnet sind~\cite[vgl. ][S. 83]{pachecoparallel}. In dieser Arbeit wurde dafür MPI benutzt, hierbei werden von einem Forum Spezifikationen entwickelt~\cite{mpiforum}, die dann als spezifische Bibliothek in den Code eingebunden werden.
 	
-	Die einzelnen Prozesse kommunizeren durch das sogenannte \textit{message passing}, wodurch Informationen vom Speicher eines Prozesses zum Speicher eines anderen Prozesses gelangen. Diese Kommunikationen können entweder zwischen zwei Prozessen als \textit{point-to-point}-Kommunikation stattfinden, oder zwischen allen Prozessen als \textit{collective}-Kommunikation~\cite[vgl. ][S. 83, S. 103f.]{pachecoparallel}. Hierbei muss, im Gegensatz zu OpenMP, jede Kommunikation im Code mit Details wie Größe der verwendeten Nachricht oder beteiligten Prozessoren initialisiert werden~\cite[vgl. ][S. 88ff.]{pachecoparallel}. Zur Evaluation der Laufzeit wird auch hier der \textit{Speedup} nach Gl. \ref{eq:speedup} verwendet.
+	Die einzelnen Prozesse kommunizieren durch das sogenannte \textit{message passing}, wodurch Informationen vom Speicher eines Prozesses zum Speicher eines anderen Prozesses gelangen. Diese Kommunikationen können entweder zwischen zwei Prozessen als \textit{point-to-point}-Kommunikation stattfinden, oder zwischen allen Prozessen als \textit{collective}-Kommunikation~\cite[vgl. ][S. 83, S. 103f.]{pachecoparallel}. Hierbei muss, im Gegensatz zu OpenMP, jede Kommunikation im Code mit Details wie Größe der verwendeten Nachricht oder beteiligten Prozessoren initialisiert werden~\cite[vgl. ][S. 88ff.]{pachecoparallel}. Zur Evaluation der Laufzeit wird auch hier der \textit{Speedup} nach Gl. \ref{eq:speedup} verwendet.
 
 	%Message Passing Interface
 	%Mehrere Rechner mit separatem Speicher arbeiten an einem Problem, Rechner kommunizieren untereinander.

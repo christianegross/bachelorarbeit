@@ -15,7 +15,7 @@ litresult(x)=(1-(1/(sinh(2/x)*sinh(2/x)))**2)**(1.0/8)*(x<=2.269)+0*(x>2.269)
 #Vergleich Observablen
 set out 'vergleichham.tex'
 set xlabel 'Temperatur'
-set ylabel '$H/\text{laenge}^2$'
+set ylabel '$H/L^2$'
 
 set xrange [0:5]
 set key top left
@@ -62,11 +62,11 @@ set out 'magnetisierunglaenge.tex'
 set key top right
 set xrange [1:3.6]
 set yrange[0:1]
-plot litresult(x) ls 1 title 'Theorie',\
-	 'bootstrapalle-magnetisierung-l0012-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 2 title '$\text{laenge}=12$',\
-	 'bootstrapalle-magnetisierung-l0024-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 3 title '$\text{laenge}=24$',\
-	 'bootstrapalle-magnetisierung-l0048-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 4 title '$\text{laenge}=48$',\
-	 'bootstrapalle-magnetisierung-l0768-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 5 title '$\text{laenge}=768$'
+plot litresult(x) ls 1 lw 2 title 'Theorie',\
+	 'bootstrapalle-magnetisierung-l0012-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 2 title '$L=12$',\
+	 'bootstrapalle-magnetisierung-l0024-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 3 title '$L=24$',\
+	 'bootstrapalle-magnetisierung-l0048-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 4 title '$L=48$',\
+	 'bootstrapalle-magnetisierung-l0768-m-010240-node00-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 5 title '$L=768$'
 unset xrange
 unset yrange
 
@@ -74,11 +74,11 @@ set out 'magnetisierunglaengempi.tex'
 set key top right
 set xrange [1:3.6]
 set yrange[0:1]
-plot litresult(x) ls 1 title 'Theorie',\
-	 'bootstrapalle-magnetisierung-l0012-m-010000-proz02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 2 title '$\text{laenge}=12$',\
-	 'bootstrapalle-magnetisierung-l0024-m-010000-proz02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 3 title '$\text{laenge}=24$',\
-	 'bootstrapalle-magnetisierung-l0048-m-010000-proz06-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 4 title '$\text{laenge}=48$',\
-	 'bootstrapalle-magnetisierung-l0480-m-010000-proz20-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 5 title '$\text{laenge}=480$'
+plot litresult(x) ls 1 lw 2 title 'Theorie',\
+	 'bootstrapalle-magnetisierung-l0012-m-010000-proz02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 2 title '$L=12$',\
+	 'bootstrapalle-magnetisierung-l0024-m-010000-proz02-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 3 title '$L=24$',\
+	 'bootstrapalle-magnetisierung-l0048-m-010000-proz06-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 4 title '$L=48$',\
+	 'bootstrapalle-magnetisierung-l0480-m-010000-proz20-sch-01.txt' u (($2==128)?$6:1/0):4:5  w yerrorbars ls 5 title '$L=480$'
 unset xrange
 unset yrange
 
@@ -97,7 +97,7 @@ plot 'zmittel-m001000-node02-l10.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yer
 	 'zmittel-m001000-node02-l110.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 3 title 'L=110',\
 	 'zmittel-m001000-node02-l500.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 4 title 'L=500',\
 	 'zmittel-m001000-node00skalopenmp-l1260.txt' u (($1!=0)?$1:1/0):(1/$5):($6/$5/$5) w yerrorbars ls 5 title 'L=1260',\
-	 einslinie(x) lt 0 dt 5 title ''
+	 einslinie(x) lt 0 dt 1 title ''
 unset yrange
 unset mxtics
 
@@ -127,7 +127,6 @@ set logscale x
 set key top right
 set xrange [10:1000]
 set xtics 12, 2, 1000
-set mxtics 10
 set xlabel 'Gitterlänge'
 set ylabel '$T_c$'
 plot tkrit(x) lt 0 dt 5 title 'theoretischer Wert',\
@@ -145,6 +144,8 @@ set view map
 unset colorbox
 unset xlabel
 unset ylabel
+set ytics out nomirror
+set xtics out nomirror 0,1,8
 set rmargin 0
 set lmargin 0
 set bmargin 0
