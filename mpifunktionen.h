@@ -1,5 +1,7 @@
 //Christiane, 10.07.20
 //Header-Datei mit Funktionen, die fuer Programm mit MPI benoetigt werden
+//Viele Funktionen aus entsprechenden OpenMP-Codes kopiert
+//Erklaerungen zu Funktionen in mpifunktionen.c
 #pragma once
 int deltahmpi(int d1, int d2, int laenge, int teillaenge, char *untergitter, char *nachbarunten, char *nachbaroben);
 void initialisierenhomogen(char *gitter, int laenge);

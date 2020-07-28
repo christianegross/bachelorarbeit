@@ -1,0 +1,11 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=12
++ schritt=1
++ tasks=2
++ srun -n2 --exclusive /hiskp4/gross/bachelorarbeit/mpiising 12 1
+srun: Warning: can't run 2 processes on 5 nodes, setting nnodes to 2
++ cd -

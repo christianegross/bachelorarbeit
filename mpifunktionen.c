@@ -1,5 +1,6 @@
 //Christiane, start 07.07.20
 //Funktionen, die fuer die Parallelisierung mit MPI benoetigt werden.
+//Viele einfach aus anderen Codes kopiert, damit beim Kompilieren kein Code mit OpenMP eingebunden werden muss
 
 
 #include <stdio.h>
@@ -33,15 +34,16 @@ int deltahmpi(int d1, int d2, int laenge, int teillaenge, char *untergitter, cha
 }
 
 void initialisierenhomogen(char *gitter, int laenge){
+	//Weist allen Punkten eines laenge*laenge gitter einen konstanten Wert zu
 	for (int i=0; i<laenge*laenge; i+=1){
 		gitter[i]=1;
 	}
 }
 	
-//tryflip, einlesen, ausgabe hamiltonian: kopieren aus schon bekannten Funktionen, keine Aenderung noetig
+//tryflip, einlesen, ausgabe, hamiltonian, mittelwertberechnungnaiv, varianzberechnungnaiv, blocks_generieren, bootstrap_replication, bootstrapohnepar, mittelwertarray, varianzarray, minarray, maxarray: kopieren aus schon bekannten Funktionen, keine Aenderung noetig
 void einlesen(char *gitter, int laenge, FILE *datei){
 	//liest gitter, das in datei geschrieben wurde, wieder in gitter ein
-	rewind(datei);
+	rewind(datei);//Vorne anfangen, damit immer dasselbe Ergebnis kommt
 	int d1, d2, error;
 	for (int n=0; n<laenge*laenge; n+=1){
 		error= fscanf(datei, "%d \t %d \t %c \n", &d1, &d2, &gitter[n]);//Einlesen von Zeile, Spalte und Wert
@@ -94,8 +96,8 @@ double mittelwertberechnungnaiv(FILE *messdatei, int messungen, const int spalte
 	//berechnet den Mittelwert aus spalte aus den messungen in messdatei, messdatei muss nur aus doubles in spalten bestehen
 	double summe=0;//Speichert Summe über Messungen
 	double einwert=0;//Speichert einen ausgelesenen Wert
-	double ergebnisarray[spalten];//speichert alle messungen
-	rewind(messdatei);//sichergehen, dass alle Messdaten verwendet werden
+	double ergebnisarray[spalten];//speichert eingelesene zeile
+	rewind(messdatei);//sichergehen, dass am Anfang angefangen wird, immer diesselben Daten eigelesen werden
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
 		for (int i=0; i<spalten; i+=1){
 			fscanf(messdatei, "%le", &ergebnisarray[i]);//scannt einzelne doubles
@@ -111,8 +113,8 @@ double varianzberechnungnaiv(FILE *messdatei, int messungen, double mittelwert, 
 	//berechnet die varianz über die gegebenen Messungen in messdatei mit mittelwert mittels Standardschaetzer, messdatei muss nur aus doubles in spalten bestehen
 	double summe=0;//Speichert Summe über Messungen
 	double einwert=0;//Speichert einen ausgelesenen Wert
-	double ergebnisarray[spalten];//speichert alle messungen
-	rewind(messdatei);//sichergehen, dass alle Messdaten verwendet werden
+	double ergebnisarray[spalten];//speichert eingelesene zeile
+	rewind(messdatei);//sichergehen, dass am Anfang angefangen wird, immer diesselben Daten eigelesen werden
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
 		for (int i=0; i<spalten; i+=1){
 			fscanf(messdatei, "%le", &ergebnisarray[i]);
@@ -135,7 +137,7 @@ double sweepmpi(int laenge, FILE *ausgabedatei, gsl_rng **generatoren, int anzpr
 	//Untergitter durchgehen, an jedem Punkt Metropolis-Update
 	//erst schwarze Punkte:
 	
-	//printf("anfang sweep schwarz in %d\n", myrank);
+	//~ printf("anfang sweep schwarz in %d\n", myrank);
 	for(int d1=0;d1<teillaenge;d1+=1){
 		for(int d2=(teillaenge*anzproz+d1)%2;d2<laenge;d2+=2){
 			delta=deltahmpi(d1, d2, laenge, teillaenge, untergitter, nachbarunten, nachbaroben);
@@ -233,13 +235,14 @@ void messenmpi(int messungen, int laenge, double T, double j, char *gitter, FILE
 	for (int messung=0; messung<messungen; messung+=1){
 		if(myrank==0){
 			fprintf(ausgabedatei,"%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
+			//printf("%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		}
 		
 		//printf("vor sweep in  %d\n", myrank);
 		H=sweepmpi(laenge,ausgabedatei, generatoren,  anzproz, myrank, teillaenge, untergitter, nachbarunten, nachbaroben,  wahrscheinlichkeiten,  j,  H);
 	}
 	//Gitter aktualisieren nach sweep: In jedem Prozess Inhalte der einzelnen Untergitter in Gitter aneinanderreihen
-	MPI_Allgather(untergitter, teillaenge, MPI_CHAR, gitter, teillaenge, MPI_CHAR, MPI_COMM_WORLD);
+	MPI_Allgather(untergitter, teillaenge*laenge, MPI_CHAR, gitter, teillaenge*laenge, MPI_CHAR, MPI_COMM_WORLD);
 		
 }
 
@@ -278,24 +281,26 @@ void thermalisierenmpi(int messungen, int laenge, double T, double j, char *gitt
 	for (int messung=0; messung<messungen; messung+=1){
 		if(myrank==0){
 			fprintf(dummymessung,"%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
+		//printf("%e\t", (double)messung);//Schreibt in Datei, um die wievielte Messung es sich handelt, double, damit Mittelwertbestimmung einfacher wird
 		}		
 		//printf("vor funktion in %d\n", myrank);
 		H=sweepmpi(laenge,dummymessung, generatoren,  anzproz, myrank, teillaenge, untergitter, nachbarunten, nachbaroben,  wahrscheinlichkeiten,  j,  H);
 		//Gitter aktualisieren nach sweep: In jedem Prozess Inhalte der einzelnen Untergitter in Gitter aneinanderreihen
 	}
-	MPI_Allgather(untergitter, teillaenge, MPI_CHAR, gitter, teillaenge, MPI_CHAR, MPI_COMM_WORLD);
+	MPI_Allgather(untergitter, teillaenge*laenge, MPI_CHAR, gitter, teillaenge*laenge, MPI_CHAR, MPI_COMM_WORLD);
 	if(myrank==0){
 		ausgabe(gitter, laenge, ausgabedatei);
 	}
+	//for (int pos=0;pos<teillaenge*laenge;pos+=1){printf("%d\t%d\t%d\n", (int)untergitter[pos], (int)gitter[myrank*laenge*teillaenge+pos], myrank);}
 		
 }
 
 void blocks_generieren(int l, int messungen, const int spalte, const int spalten, double *blockarray,  FILE *messdatei){
-	//Blockt die Daten aus spalte in Messdatei in Blöcke der Laenge l, Ergebnis in blockarray und ausgabedatei, messdatei muss spalten mit nur doubles enthalten
+	//Blockt die Daten aus spalte in Messdatei in Blöcke der Laenge l, Ergebnis in blockarray, messdatei muss spalten mit nur doubles enthalten, nur die ersten messungen Zeilen werden beruecksichtigt
 	double zwischensumme, einwert;//speichern der Summe über die Messwerte und der einzelnen Werte
 	double ergebnisarray[spalten];//speichern der ganzen Zeile aus der Messdatei
-	rewind(messdatei);
-	for (int block=0; block<messungen/l; block+=1){//jedes einzelne Element in Blockarray durchgehen
+	rewind(messdatei);//Vorne anfangen, damit immer dasselbe ERgebnis rauskommt
+	for (int block=0; block<messungen/l; block+=1){//jedes einzelne Element in Blockarray durchgehen und befuellen
 		zwischensumme=0;
 		for (int wert=0; wert<l; wert+=1){//generiert einzelnes Element des blocks
 			for (int i=0; i<spalten; i+=1){
@@ -312,11 +317,12 @@ void blocks_generieren(int l, int messungen, const int spalte, const int spalten
 
 double bootstrap_replication(int l, int messungen, double *blockarray, gsl_rng *generator){
 	//zieht messungen/l zufaellige Elemente aus blockarray und berechnet den Mittelwert darüber, gibt Mittelwert zurueck
+	//Genausoviele Zufallszahlen ziehen, wie es Elemente in blockarrqay gibt
 	double summe=0;//Speichert Zwischenergebnis
 	int element;////Zufaelliger Integer, der element aus blockarray auswaehlt
 	int elementanzahl=(int)messungen/l;//Anzahl der Elemente in blockarray
 	for (int durchgang=0; durchgang<elementanzahl; durchgang+=1){
-		element=gsl_rng_uniform_int(generator, elementanzahl);//Zufallszahl generieren
+		element=gsl_rng_uniform_int(generator, elementanzahl);//Zufallszahl generieren, zwischen null und elementanzahl-1->alle Elemente von blockarray moeglich
 		summe+=blockarray[element];//Dazu passenden Messwert auswaehlen
 	}
 	summe/=(int)(elementanzahl);
@@ -324,11 +330,12 @@ double bootstrap_replication(int l, int messungen, double *blockarray, gsl_rng *
 }
 
 void bootstrapohnepar(int l, int r, int messungen, double temperatur, double *blockarray, gsl_rng *generator, FILE *ausgabedatei){
-//berechnet Mittelwert und Varianz aus r gebootstrappten replikas, schreibt es in ausgabedatei
+//erzeugt r replikas von blockarray
+//berechnet Mittelwert und Varianz daraus, schreibt es in ausgabedatei
 	double mittelwert=0;//speichern zwischenwerte
 	double replica;
 	double varianz=0;
-	double *bootstraparray;
+	double *bootstraparray;//speichert einzelne replicas
 	if((bootstraparray=(double*)malloc(sizeof(double)*r))==NULL){//speichert ausgewählten Daten, prüft, ob Speicherplatz richitg bereitgestellt wurde
 		printf("Fehler beim Allokieren des arrays fuer die Replika!\n");
 		//return (-1);
@@ -343,32 +350,32 @@ void bootstrapohnepar(int l, int r, int messungen, double temperatur, double *bl
 		varianz+=(bootstraparray[durchgang]-mittelwert)*(bootstraparray[durchgang]-mittelwert);
 	}
 	varianz=sqrt(varianz/((double)r-1));//Standardschaetzer
-	fprintf(ausgabedatei, "2\t%4d\t%d\t%e\t%e\t%e\n", l,r, mittelwert, varianz, temperatur);//Ausgabe
+	fprintf(ausgabedatei, "2\t%4d\t%d\t%e\t%e\t%e\n", l,r, mittelwert, varianz, temperatur);//Ausgabe, 2, um zu zeigen, dass seriell gerechnet wurde
 	free(bootstraparray);
 }
 
 extern inline double mittelwertarray(double *array, int messungen){
-	//Bestimmt Mittelwert eines arrays, das mit doubles gefüllt ist
-	double summe=0;//Speichert Summe über 
+	//Bestimmt Mittelwert eines arrays, das mit messungen doubles gefüllt ist
+	double summe=0;//Speichert Summe über messungen
 	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
 		summe+=array[messung];
 	}
-	return summe/(double)messungen;
+	return summe/(double)messungen;//Standardschaetzer
 }
 
 extern inline double varianzarray(double *array, int messungen, double mittelwert){
-	//Bestimmt die Varianz über alle Elemente in einem array, das mit doubles gefuellt ist, um den Mittelwert
+	//Bestimmt die Varianz über alle Elemente in einem array, das mit mesusngen doubles gefuellt ist, um den Mittelwert
 	double summe=0;//Speichert Summe über Messungen
 	double einwert=0;//Speichert einen ausgelesenen Wert
-	for (int messung=0; messung<messungen; messung+=1){//Mittelwert über Messung bilden
+	for (int messung=0; messung<messungen; messung+=1){//Summe über Messung bilden
 		einwert=array[messung];
 		summe+=(einwert-mittelwert)*(einwert-mittelwert);
 	}
-	return sqrt(summe/((double)messungen-1));
+	return sqrt(summe/((double)messungen-1));//Standardschaetzer
 }
 
 extern inline double minarray(double *array, int messungen){
-	//Bestimmt Minimum aus array mit gegebener Laenge
+	//Bestimmt Minimum aus array mit gegebener Anzahl an Inhalten
 	double minwert= array[0];//Fange mit nulltem Wert an
 	for (int messung=1; messung<messungen; messung+=1){// gehe alle Elemente durch, fange bei erstem Element an, da nulltes der Startwert ist
 		if (array[messung]<minwert){//Vergleich
@@ -380,6 +387,7 @@ extern inline double minarray(double *array, int messungen){
 
 extern inline double maxarray(double *array, int messungen){
 	//Bestimmt maximum aus array mit gegebener Laenge
+	//Genau wie Minarray, nur mit > statt <
 	double maxwert= array[0];//Fange mit nulltem Wert an
 	for (int messung=1; messung<messungen; messung+=1){// gehe alle Elemente durch, fange bei erstem Element an, da nulltes der Startwert ist
 		if (array[messung]>maxwert){//Vergleich
@@ -389,6 +397,6 @@ extern inline double maxarray(double *array, int messungen){
 	return maxwert;
 }
 
-
+//Kompilieren und ausfuehren auf virtueller maschine
 //christiane@christiane-VirtualBox2:17:07:41:~/Bachelorarbeit/bachelorarbeit$ mpicc -g -Wall -o mpifunktionen mpifunktionen.c -lgsl -lm -lgslcblas
 //christiane@christiane-VirtualBox2:17:08:52:~/Bachelorarbeit/bachelorarbeit$ mpirun -n 10 ./mpifunktionen

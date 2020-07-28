@@ -18,8 +18,9 @@ cd /hiskp4/gross/bachelorarbeit
 
 laenge=$1
 schritt=$2
+tasks=$3
 
-srun -n10 --exclusive /hiskp4/gross/bachelorarbeit/mpiising ${laenge} ${schritt}
+srun -n${tasks} --exclusive /hiskp4/gross/bachelorarbeit/mpiising ${laenge} ${schritt}
 
 cd -
 #Skript, um Mag, akz, ham bei evrschiedenen Temperaturen zu bestimmen, mit MPI parallelisiert

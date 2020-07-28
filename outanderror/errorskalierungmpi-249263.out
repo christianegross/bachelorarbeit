@@ -1,0 +1,10 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=40
++ schritt=1
++ tasks=4
++ srun -n4 --exclusive /hiskp4/gross/bachelorarbeit/mpiising 40 1
++ cd -

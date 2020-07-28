@@ -2,8 +2,9 @@
 Repository für alle Programme und Dateien für die Bachelorarbeit
 
 Infos zu den inhalten des repo:
-Messungen wurden mit ising.c, skalierung.c, minline.c, messfunktionen.c/h, sweeps.c/h, auswertungsfunktionen.c/h in serieller Ausführung und mit OpenMP gemacht.
+Messungen wurden mit ising.c, skalierung.c, messfunktionen.c/h, sweeps.c/h, auswertungsfunktionen.c/h in serieller Ausführung und mit OpenMP gemacht.
 Messungen mit MPI mit mpiising.c, skalierungmpi.c, mpifunktionen.c/h gemacht. 
+Zusaetzliche Auswertung mit minline.c, maxlineskalierung.c.
 Andere .c/h Dateien sind ältere Versionen, die zur Fehlersuche benoetigt wurde, oder Ausprobieren von Konzepten.
 Programme wurden mit makefile erstellt. 
 Alle Dateien mit "batch" im Titel sowie skalmpischleife.sh dienen dem Starten von Jobs auf QBiG.

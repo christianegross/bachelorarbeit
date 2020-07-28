@@ -1,0 +1,13 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=36
++ schritt=1
++ tasks=6
++ srun -n6 --exclusive /hiskp4/gross/bachelorarbeit/mpiising 36 1
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 6 with the number of requested nodes 5. Ignoring --ntasks-per-node.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 249244.0 ON lnode02 CANCELLED AT 2020-07-26T17:40:53 ***
+slurmstepd: error: *** JOB 249244 ON lnode02 CANCELLED AT 2020-07-26T17:40:53 ***

@@ -1,5 +1,5 @@
 //Christiane, 03.07.20
-//Bestimmung einer Zeile mit minimalen Wert fuer Ableitungsminimu/kritischer Punkt
+//Bestimmung einer Zeile mit minimalen Wert fuer Ableitungsminimum/kritischer Punkt
 
 
 #include <stdio.h>
@@ -41,10 +41,11 @@ for (int s=0;s<1;s+=1){
 		ableitungdreipunkt(256, temperaturzahl/schritt*12, 6, 3,4,5,1, dateibootstrap, dateidreipunkt);
 		//schreibt ob zwei oder dreipunkt, schritt, laenge in Ausgabe, Inhalt der minimalen zeile aus minline, 2, 3 fuer Ableitung, 0,1 fuer norm/sqrt
 		printf("%f\t%f\t2.0\t0.0\t", (double)schritt, (double)laenge);
-		minline(dateiableitung, 3, 1, 209); //bestimmt minimale Zeile und gibt sie aus
+		minline(dateiableitung, 3, 1, 209); //bestimmt minimale Zeile aus zweipunktableitung und gibt sie aus
 		printf("%f\t%f\t3.0\t0.0\t", (double)schritt, (double)laenge);
-		minline(dateidreipunkt, 3, 1, 208);
+		minline(dateidreipunkt, 3, 1, 208);//bestimmt minimale Zeile aus dreipunktableitung und gibt sie aus
 		//Schliesst und oeffnet->ueberschreibt Ableitungsdateien, damit minline korrekt die zweiten bestimmten Ableitungen betrachtet
+		//Ableitungen nicht wichtig, nur minimum
 		fclose(dateiableitung);
 		fclose(dateidreipunkt);
 		dateiableitung=fopen(dateinameableitung, "w+");//zweipunktmethode
@@ -52,11 +53,11 @@ for (int s=0;s<1;s+=1){
 		//bestimmt Ableitungen nach zwei und dreipunktmethode der Wurzel aus dem Quadrat der Magnetisierung
 		ableitung(256, temperaturzahl/schritt*12, 6, 3,4,5,1, dateimagquadsqrt, dateiableitung);
 		ableitungdreipunkt(256, temperaturzahl/schritt*12, 6, 3,4,5,1, dateimagquadsqrt, dateidreipunkt);
-		//schreibt ob zwei oder dreipunkt, cshritt, laenge in Ausgabe, Inhalt der minimalen zeile aus minline
+		//schreibt ob zwei oder dreipunkt, schritt, laenge in Ausgabe, Inhalt der minimalen zeile aus minline
 		printf("%f\t%f\t2.0\t1.0\t", (double)schritt, (double)laenge);
-		minline(dateiableitung, 3, 1, 209); //bestimmt minimale Zeile und gibt sie aus
+		minline(dateiableitung, 3, 1, 209); //bestimmt minimale Zeile aus zweipunktableitung und gibt sie aus
 		printf("%f\t%f\t3.0\t1.0\t", (double)schritt, (double)laenge);
-		minline(dateidreipunkt, 3, 1, 208);
+		minline(dateidreipunkt, 3, 1, 208);//bestimmt minimale Zeile aus dreipunktableitung und gibt sie aus
 		//close, damit keine Speicherprobleme entstehen
 		fclose(dateiableitung);
 		fclose(dateidreipunkt);

@@ -1,0 +1,14 @@
++ export OMP_NUM_THREAD=2
++ OMP_NUM_THREAD=2
++ export KMP_AFFINITY=balanced,granularity=fine,verbose
++ KMP_AFFINITY=balanced,granularity=fine,verbose
++ cd /hiskp4/gross/bachelorarbeit
++ laenge=100
++ schritt=1
++ tasks=10
++ srun -n10 --exclusive /hiskp4/gross/bachelorarbeit/mpiising 100 1
+srun: Warning: can't honor --ntasks-per-node set to 4 which doesn't match the requested tasks 10 with the number of requested nodes 5. Ignoring --ntasks-per-node.
+slurmstepd: error: Exceeded job memory limit at some point.
+srun: error: lnode07: tasks 0-1: Out Of Memory
++ cd -
+slurmstepd: error: Exceeded job memory limit at some point.
