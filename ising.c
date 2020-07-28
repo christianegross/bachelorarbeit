@@ -35,12 +35,12 @@ int main(int argc, char **argv){
 	int N0;//benoetigte sweeps zum Thermalisieren, wird fuer verschiedene Temperaturen noch veraendert
 	int messungen=10240;//pro temperatur, zweierpotenz um blocken einfacher zu machen
 	int r;//Anzahl an samples für den Bootstrap
-	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag, *bootstrapalledateimqu, *bootstrapalledateiham/*, *ableitungdatei*/, *zeitdatei;//benoetigte Dateien zur Ausgabe
+	FILE *gitterthermdatei, *messdatei, *mittelwertdatei, *dummydatei, *bootstrapalledateiakz, *bootstrapalledateimag/*, *bootstrapalledateimqu*/, *bootstrapalledateiham/*, *ableitungdatei*/, *zeitdatei;//benoetigte Dateien zur Ausgabe
 	int temperaturzahl=650;//Temperaturen, bei denen gemessen wird
 	int starttemp=0;
 	int endtemp=temperaturzahl;
 	int node=0;//nodes auf vm, qbig
-	char dateinametherm[150], dateinamemessen[150], dateinamemittel[150], dateinamebootstrapalleakz[150], dateinamebootstrapallemag[150], dateinamebootstrapallemqu[150], dateinamebootstrapalleham[150]/*, dateinameableitung[150]*/, dateinamezeit[150];//Um Dateien mit Variablen benennen zu koennen
+	char dateinametherm[150], dateinamemessen[150], dateinamemittel[150], dateinamebootstrapalleakz[150], dateinamebootstrapallemag[150]/*, dateinamebootstrapallemqu[150]*/, dateinamebootstrapalleham[150]/*, dateinameableitung[150]*/, dateinamezeit[150];//Um Dateien mit Variablen benennen zu koennen
 	double mittelwertmag, varianzmag, mittelwertakz, varianzakz;//fuer naive Fehler
 	double U, magquad, magvier;//, varmagquad, varmagvier;//Koennte zur Bestimmung der Cumulante nach Binder-Heermann verwendet werden
 	double *temperaturarray;
@@ -81,13 +81,13 @@ int main(int argc, char **argv){
 	sprintf(dateinamemittel,"Messungen/Mittelwerte/messenmittel-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert naive Mittelwerte
 	sprintf(dateinamebootstrapalleakz,"Messungen/Bootstrapges/bootstrapalle-akzeptanz-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
 	sprintf(dateinamebootstrapallemag,"Messungen/Bootstrapges/bootstrapalle-magnetisierung-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
-	sprintf(dateinamebootstrapallemqu,"Messungen/Bootstrapges/bootstrapalle-magquad-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
+	//sprintf(dateinamebootstrapallemqu,"Messungen/Bootstrapges/bootstrapalle-magquad-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
 	sprintf(dateinamebootstrapalleham,"Messungen/Bootstrapges/bootstrapalle-hamiltonian-l%.4d-m-%.6d-node%.2d-sch-%.2d.txt",laenge, messungen, node, schritt);//speichert Mitteelwerte aus Bootstrap
 	sprintf(dateinamezeit,"Messungen/Zeiten/zeiten-laenge-%.4d-m-%.6d-cores-%.2d-node%.2d-sch-%.2d.txt",laenge, messungen, anzahlcores, node, schritt);//speichert Zeiten
 	mittelwertdatei=fopen(dateinamemittel, "w+");
 	bootstrapalledateiakz=fopen(dateinamebootstrapalleakz, "w+");
 	bootstrapalledateimag=fopen(dateinamebootstrapallemag, "w+");
-	bootstrapalledateimqu=fopen(dateinamebootstrapallemqu, "w+");
+	//bootstrapalledateimqu=fopen(dateinamebootstrapallemqu, "w+");
 	bootstrapalledateiham=fopen(dateinamebootstrapalleham, "w+");
 	zeitdatei=fopen(dateinamezeit, "w");
 	//Messen der zeit, die während des Programms vergeht, aus C-Kurs kopiert:
