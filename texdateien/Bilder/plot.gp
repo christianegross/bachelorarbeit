@@ -2,7 +2,7 @@
 set ter epslatex size 15 cm, 10.6cm color colortext
 
 set style line 1 lc 7 lt 7 pt 7 #ps 0.2
-set style line 2 lc 1 lt 7 pt 9
+set style line 2 lc 1 lt 7 pt 8
 set style line 3 lc 2 lt 7 pt 11
 set style line 4 lc 3 lt 7 pt 3
 set style line 5 lc 4 lt 7 pt 5#4 gut
@@ -15,7 +15,7 @@ litresult(x)=(1-(1/(sinh(2/x)*sinh(2/x)))**2)**(1.0/8)*(x<=2.269)+0*(x>2.269)
 #Vergleich Observablen
 set out 'vergleichham.tex'
 set xlabel 'Temperatur'
-set ylabel '$H/L^2$'
+set ylabel '$H/\text{laenge}^2$'
 
 set xrange [0:5]
 set key top left
@@ -87,7 +87,7 @@ unset yrange
 set out 'speeduplaenge.tex' 
 
 einslinie(x)=1
-set xlabel 'Verwendete Kerne'
+set xlabel 'Verwendete Threads'
 set ylabel 'Speedup'
 set key top left
 set mxtics 2
