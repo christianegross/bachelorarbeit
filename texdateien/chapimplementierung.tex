@@ -4,11 +4,11 @@
 	\section{Serielle Ausführung}
 	\label{sec:seriellimplementierung}
 	
-	Der Code, mit dem die Ergebnisse dieser Arbeit berechnet wurden, befindet sich im Github-repository https://github.com/christianegross/bachelorarbeit. %Noch erneuern, wenn public
+	Der Code, mit dem die Ergebnisse dieser Arbeit berechnet wurden, befindet sich im Github-repository https://github.com/christianegross/bachelorarbeit. In dieser Arbeit wird das Verhalten verschiedener Observablen, insbesondere der Magnetisierung, bei verschiedenen Temperaturen beobachtet und daraus der kritische Punkt bestimmt. Außerdem wird untersucht, wie sich die Laufzeit durch Parallelisierung der Berechnungen verbessern lässt.%Noch erneuern, wenn public
 	
 	Bei der Implementierung des Ising-Modells auf einem Rechner müssen noch weitere Randbedingungen vorgegeben werden:
 	Das Gitter ist nicht unendlich lang, sondern begrenzt. Je größer das Gitter ist, desto näher ist das Ergebnis am thermodynamischen Limes. 
-	Aufgrund der Begrenzung des Gitters müssen Annahmen für die Nachbarn der Teilchen am Rand des Gitters gemacht werden. Hier wurden periodische Randbedingungen gewählt, der Nachbar eines letzten Teilchen einer Zeile ist also das erste Teilchen der Spalte.
+	Aufgrund der Begrenzung des Gitters müssen Annahmen für die Nachbarn der Teilchen am Rand des Gitters gemacht werden. Hier wurden periodische Randbedingungen gewählt, der Nachbar eines letzten Teilchen einer Zeile ist also das erste Teilchen der Zeile.
 	
 	Um die Auswertung der Messungen zu vereinfachen, wurden in dieser Arbeit $H$, $k_B$ und $T$ einheitenlos gewählt, und $k_B=1$ angenommen. Zudem wurde $J=1$ gesetzt.
 	
@@ -46,7 +46,7 @@
 	%Um eine zufällige Anfangskonfiguration zu erzeugen, wird ein eindimensionales \textit{Array} mit laenge$\cdot$laenge Einträgen erstellt. Mithilfe von Zufallszahlen wird jedem Element des \textit{Arrays} zufällig $1$ oder $-1$ zugeteilt.	
 	%Initialisierung des Gitters: Als 1D \textit{Array} abspeichern, mit Mersenne Twister $\pm1$ auf das Gitter verteilen.
 	
-	Die Anfangskonfiguration wird in der Funktion \texttt{initialisierung} erzeugt. Dort gibt es die Möglichkeit, mit Zufallszahlen aus dem \texttt{gsl\_rng}-Paket~\cite{gsldoc} $\pm 1$ auf das Gitter zu verteilen. Im Verlauf der Messungen hat es sich allerdings herausgestellt, das es sinnvoll ist, mit einem Gitter anzufangen, bei dem alle Elemente gleich sind. 
+	Die Anfangskonfiguration wird in der Funktion \texttt{initialisierung} erzeugt. Dort gibt es die Möglichkeit, mit Zufallszahlen aus dem \texttt{gsl\_rng}-Paket~\cite{gsldoc} $\pm 1$ auf das Gitter zu verteilen. Im Verlauf der Messungen hat sich allerdings herausgestellt, das es sinnvoll ist, mit einem Gitter anzufangen, bei dem alle Elemente gleich sind. 
 	
 	%, deren Ergebnisse nicht verwendet werden. 
 	Um das Gitter zu thermalisieren, werden Messungen an Zuständen durchgeführt, die sich nicht im Gleichgewicht befinden und daher nicht in das Ergebnis mit einfließen. Wie viele solcher Messungen hängt von der Temperatur ab, da sich bei einigen Temperaturen die Observablen sehr schnell ändern und bei anderen weniger schnell. Als Basis für die erste betrachtete Temperatur wird ein vollkommen homogenes Gitter, an dem $\num{1000}$ Messungen durchgeführt wurden, angenommen. Für alle anderen Gitter wird das thermalisierte Gitter der davor behandelten Temperatur als Basis angenommen. An allen Basisgittern werden weitere Messungen zur Thermalisierung vorgenommen: Nach ersten Messungen liegt ein kritischer Punkt zwischen $T=\num{2,25}$ und $T=\num{2,4}$, deshalb werden bei allen Gittern, die bei diesen Temperaturen betrachtet werden, $\num{20000}$ Thermalisierungsschritte durchgeführt. Für alle anderen Gitter zwischen $T=\num{2}$ und $T=\num{3}$ werden $\num{10000}$, für alle Gitter außerhalb dieser Temperaturen $\num{5000}$ Schritte durchgeführt.

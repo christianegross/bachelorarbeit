@@ -1,4 +1,4 @@
-# Bachelorarbeit
+# Bachelorarbeit - Monte-Carlo Simulation des Ising-Modells in zwei Dimensionen auf einem Parallelrechner
 ## Repository für alle Programme und Dateien für die Bachelorarbeit
 
 

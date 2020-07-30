@@ -1,17 +1,19 @@
 \chapter{Theoretischer Hintergrund}
 	\label{chap:theorie}
 	
+	%In der vorliegenden Arbeit wird das Ising-Modell in zwei Dimensionen untersucht. Dafür wird die Magnetisierug in abhängigkeit der Temperatur gemessen und die Laufzeitskalierung bei Parallelisierung des Programms betrachtet.
+	
 	\section{Ising-Modell}
 	\label{sec:isingtheorie}
 	Beim Ising-Modell handelt es sich um ein Modell für einen Ferromagneten mit starker uniaxialer Anisotropie. %Hierbei werden Teilchen, die Spin $\pm 1$ haben können, auf ein quadratisches Gitter mit konstantem Abstand zwischen den Teilchen verteilt. % Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang. Hier: zweidimensionales Gitter.
-	Das Modell beschreibt Teilchen, die auf den Knotenpunkten eines Gitter sitzen, und den Spin $s_i$ haben~\cite[S. 7]{binderheermann}. In dieser Arbeit wurde das Ising-Modell in zwei Dimensionen betrachtet. 
+	In dieser Arbeit wird das Ising-Modell in zwei Dimensionen betrachtet. Das Modell beschreibt Teilchen, die auf den Knotenpunkten eines Gitter sitzen, und den Spin $s_i$ haben~\cite[S. 7]{binderheermann}. 
 	
 	Der Hamiltonian des Systems ist dann nach~\cite[S. 7]{binderheermann}:
 	\begin{equation}
 	H=-J\sum_{\langle i,j\rangle }s_is_j
 	\label{eq:hamiltonianising}
 	\end{equation}
-	Wobei $\langle i,j\rangle$ alle benachbarten Paare sind, die Austauschenergie $J$ in beide Richtungen gleich und konstant ist und die Spins $s_i$ die  Werte $\pm 1$ annehmen können. Das Vorzeichen von $J$ bestimmt, ob der Magnet ferro- oder antiferromagnetisch ist. Es ist möglich, durch einen zusätzlichen Term ein äußeres Magnetfeld zu simulieren, dies wurde in dieser Arbeit jedoch nicht modelliert.%Äußeres Magnetfeld möglich, aber hier vernachlässigt.
+	Wobei $\langle i,j\rangle$ alle benachbarten Paare sind, die Austauschenergie $J$ in alle Richtungen gleich und konstant ist und die Spins $s_i$ die  Werte $\pm 1$ annehmen können. Das Vorzeichen von $J$ bestimmt, ob der Magnet ferro- oder antiferromagnetisch ist. Es ist möglich, durch einen zusätzlichen Term ein äußeres Magnetfeld zu simulieren, dies wurde in dieser Arbeit jedoch nicht modelliert.%Äußeres Magnetfeld möglich, aber hier vernachlässigt.
 
 	
 	%Erwarte einen kritischen Punkt mit Phasenübergang zweiter Ordnung.~\cite{OnsagerCrystal1}
