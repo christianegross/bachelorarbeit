@@ -15,7 +15,7 @@ int laengen[15]={12, 14, 16, 18, 20, 22, 24, 28, 32, 40, 48, 72, 96, 240, 480};/
 int schritte[1]={1/*, 2, 5, 10*/};//SChritte, mit denen gemessen wurde
 //benoetigte Variablen
 char dateinameableitung[200], dateinamedreipunkt[200], dateinamebootstrap[200];//, dateinamemagquad[100], dateinamemagquadsqrt[100];
-FILE *dateiableitung, *dateidreipunkt, *dateibootstrap, *dateimagquad, *dateimagquadsqrt;
+FILE *dateiableitung, *dateidreipunkt, *dateibootstrap;//, *dateimagquad, *dateimagquadsqrt;
 int laenge, schritt, p=2;//p=Zahl benutzter Prozesse
 int temperaturzahl=210;
 //alle schritte und laengen werden durchgegangen

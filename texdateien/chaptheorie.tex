@@ -1,17 +1,19 @@
 \chapter{Theoretischer Hintergrund}
 	\label{chap:theorie}
 	
-	\section{Das Ising-Modell}
+	%In der vorliegenden Arbeit wird das Ising-Modell in zwei Dimensionen untersucht. Dafür wird die Magnetisierug in abhängigkeit der Temperatur gemessen und die Laufzeitskalierung bei Parallelisierung des Programms betrachtet.
+	
+	\section{Ising-Modell}
 	\label{sec:isingtheorie}
 	Beim Ising-Modell handelt es sich um ein Modell für einen Ferromagneten mit starker uniaxialer Anisotropie. %Hierbei werden Teilchen, die Spin $\pm 1$ haben können, auf ein quadratisches Gitter mit konstantem Abstand zwischen den Teilchen verteilt. % Gitterförmige Anordnung von Spins, die Werte $\pm1$ annehmen können, in realen Applikationen endliche Länge, in Natur thermodynamischer Limes/unendlich lang. Hier: zweidimensionales Gitter.
-	Das Modell beschreibt Teilchen, die auf den Knotenpunkten eines Gitter sitzen, und den Spin $s_i$ haben~\cite[S. 7]{binderheermann}. In dieser Arbeit wurde das Ising-Modell in zwei Dimensionen betrachtet. 
+	In dieser Arbeit wird das Ising-Modell in zwei Dimensionen betrachtet. Das Modell beschreibt Teilchen, die auf den Knotenpunkten eines Gitter sitzen, und den Spin $s_i$ haben~\cite[S. 7]{binderheermann}. 
 	
 	Der Hamiltonian des Systems ist dann nach~\cite[S. 7]{binderheermann}:
 	\begin{equation}
 	H=-J\sum_{\langle i,j\rangle }s_is_j
 	\label{eq:hamiltonianising}
 	\end{equation}
-	Wobei $\langle i,j\rangle$ alle benachbarten Paare sind, die Austauschenergie $J$ in beide Richtungen gleich und konstant ist und die Spins $s_i$ die  Werte $\pm 1$ annehmen können. Das Vorzeichen von $J$ bestimmt, ob der Magnet ferro- oder antiferromagnetisch ist. Es ist möglich, durch einen zusätzlichen Term ein äußeres Magnetfeld zu simulieren, dies wurde in dieser Arbeit jedoch nicht modelliert.%Äußeres Magnetfeld möglich, aber hier vernachlässigt.
+	Wobei $\langle i,j\rangle$ alle benachbarten Paare sind, die Austauschenergie $J$ in alle Richtungen gleich und konstant ist und die Spins $s_i$ die  Werte $\pm 1$ annehmen können. Das Vorzeichen von $J$ bestimmt, ob der Magnet ferro- oder antiferromagnetisch ist. Es ist möglich, durch einen zusätzlichen Term ein äußeres Magnetfeld zu simulieren, dies wurde in dieser Arbeit jedoch nicht modelliert.%Äußeres Magnetfeld möglich, aber hier vernachlässigt.
 
 	
 	%Erwarte einen kritischen Punkt mit Phasenübergang zweiter Ordnung.~\cite{OnsagerCrystal1}
@@ -35,14 +37,12 @@
 	\end{equation}
 
 	
-	Sie ist ein Maß dafür, wie stark das Gitter nach außen als Magnet wirkt. Die erwartete Magnetisierung unterhalb des kritischen Punkt ist nach~\cite{YangMagnetization},~\cite{MontrollMagnetization}:
+	Sie ist ein Maß dafür, wie stark das Gitter nach außen als Magnet wirkt. Die erwartete Magnetisierung unterhalb des kritischen Punktes ist nach~\cite{YangMagnetization},~\cite{MontrollMagnetization}:
 	\begin{equation} M=\left[1-\left(\sinh\left(\frac{2J}{k_BT}\right)\right)^{-4}\right]^{\frac{1}{8}}
 	\label{eq:magnetisierungsgleichungliteratur}
 	\end{equation}
 	
-	Oberhalb der kritischen Temperatur ist die Magnetisierung null~\cite[Gl. 81]{MontrollMagnetization}.
-	
-	Es kommt hier also zu einer Unstetigkeit in der Magnetisierung.
+	Oberhalb der kritischen Temperatur ist die Magnetisierung null~\cite[Gl. 81]{MontrollMagnetization}, es kommt hier also zu einer Unstetigkeit in der Magnetisierung.
 	
 	Die analytischen Herleitungen ~\cite{OnsagerCrystal1,YangMagnetization,MontrollMagnetization} sind alle für ein unendlich langes Gitter. Dies kann nicht simuliert werden, jedoch kann verglichen werden, wie gut die Simulation beim Annähern an den sogenannten thermodynamischen Limes $L^2\to\infty$ die analytischen Ergebnisse reproduziert.
 	Dabei ist statt einer Unstetigkeit in der Magnetisierung also ein Wendepunkt zu erwarten, nach~\cite[S. 45ff., S.101f.]{binderheermann} ist auch zu erwarten, dass die Magnetisierung oberhalb der kritischen Temperatur von null verschieden ist.%, sowie, dass die kritische Temperatur verschmiert.
@@ -87,7 +87,7 @@
 	%Dies führt dazu, dass alle zu berechnenden Zustände aus den vorher berechneten generiert werden. Die Zustände bilden also eine Markovkette, es handelt sich um Markov Chain Monte Carlo (deutsche Bezeichnung?, Zitat)
 	
 	Der erste Zustand wird zufällig generiert, befindet sich also nicht im Gleichgewicht und hat vermutlich ein sehr geringes Gewicht. Um in eine Region mit lokalen Energieminima und somit hohen Gewichten zu kommen, ist erst eine Thermalisierung notwendig, das heißt, es werden einige Observablen berechnet, deren Ergebnisse nicht verwendet werden können, um einen Mittelwert zu bilden. %(Zitate?)
-	Es stellt sich heraus, dass ein Gleichgewichtszustand recht schnell erreicht wird, wenn am Anfang mit einem komplett homogen ausgerichtetem Gitter gestartet wird~\cite[vgl. ][S. 100 f.]{binderheermann}.
+	Es stellt sich heraus, dass ein Gleichgewichtszustand recht schnell erreicht wird, wenn am Anfang mit einem komplett homogen ausgerichteten Gitter gestartet wird~\cite[vgl. ][S. 100 f.]{binderheermann}.
 	%Bessere Ergebnisse für kleinere Gitterlängen, wenn mit komplett ausgerichtetem Gitter gestartet wird.
 	
 	%Thermodynamisches Mittel=Mittel über Messungen?(Zitat)
@@ -122,7 +122,7 @@
 	%naiver Schätzer von Mittelwert und standardabweichung: 
 	
 	%Dabei wird allerdings nicht berücksichtigt, dass die einzelnen Zustände, an denen die Messungen durchgeführt werden, jeweils aus den vorherigen Zuständen entstehen, und die Messwerte somit autokorreliert sind. 
-	Dies vernachlässigt allerdings die Autokorrelation der Daten, die dazu führt, dass der naive Schätzer der Standardabweichung kein richtiges Ergebnis mehr liefert~\cite[vgl. ][S. 72 ff.]{skriptcompphys}. Daher werden zur Analyse nicht die einzelnen Messwerte verwendet, sondern Blöcke der Länge $l$ aus den Messwerten gebildet, in denen jeweils der Mittelwert über $l$ konsekutive Messwerte enthalten ist. Aus $N$ Messwerten werden so $\lfloor N/l \rfloor$ Blöcke gebildet. Die Fehler, die mittels dieser Blöcke ermittelt werden, hängen von $l$ ab, und zwar steigen sie erst, bis sie dann ab einem gewissen $l$ ein Plateau erreichen, also ab einem gewissen $l$ die Blöcke nicht mehr messbar autokorreliert sind~\cite[vgl. ][S. 75 ff.]{skriptcompphys}.
+	Dies vernachlässigt allerdings die Autokorrelation der Daten, die dazu führt, dass der naive Schätzer der Standardabweichung kein richtiges Ergebnis mehr liefert~\cite[vgl. ][S. 72 ff.]{skriptcompphys}. Daher werden zur Analyse nicht die einzelnen Messwerte verwendet, sondern Blöcke der Länge $l$ aus den Messwerten gebildet, in denen jeweils der Mittelwert über $l$ konsekutive Messwerte enthalten ist. Aus $N$ Messwerten werden so $\lfloor N/l \rfloor$ Blöcke gebildet. Die Fehler, die mittels dieser Blöcke ermittelt werden, hängen von $l$ ab, und zwar steigen sie erst mit steigendem l, bis sie dann ab einem gewissen $l$ ein Plateau erreichen, also ab einem gewissen $l$ die Blöcke nicht mehr messbar autokorreliert sind~\cite[vgl. ][S. 75 ff.]{skriptcompphys}.
 	
 	%Autokorrelation der Daten, da aus vorherigem Zustand generiert.
 	
@@ -143,7 +143,8 @@
 
 	\section{Parallelrechner}
 	\label{sec:partheorie}
-	Um die Berechnungen eines Standardrechner, der seriell arbeitet, zu beschleunigen, können mehrere Prozessoren oder mehrere Computer gleichzeitig an einem Programm arbeiten. Dazu gibt es zwei weit verbreitete Konzepte:
+	Ein normaler Rechner führt immer nur ein Kommando zu einer Zeit aus, arbeitet also seriell. Die Laufzeit lässt sich verringern, indem mehrere Kommandos parallel, also gleichzeitig, ausgeführt werden. Dazu gibt es zwei weit verbreitete Konzepte:
+	%Um die Berechnungen eines Standardrechner, der seriell arbeitet, zu beschleunigen, können mehrere Prozessoren oder mehrere Computer gleichzeitig an einem Programm arbeiten. Dazu gibt es zwei weit verbreitete Konzepte:
 	%Parallelrechner: Durch Benutzung mehrerer Prozessorkerne oder mehrerer Computer benötigte Rechenzeit aufteilen und schneller Ergebnisse haben. Zwei Konzepte:
 	\subsection{Shared Memory, hier mit OpenMP}
 	\label{subsec:openmptheorie}
@@ -151,7 +152,7 @@
 	
 	Dadurch, dass die Parallelisierung mit Compilerdirektiven umgesetzt wird, ist die Kompilierung nicht mit allen Compilern möglich. Dafür ist es aber möglich, auf einem recht hohen Abstraktionsniveau zu programmieren, ohne sich um Details beim Parallelisieren explizit zu kümmern\cite[vgl. ][S. 209]{pachecoparallel}.	
 	
-	In einer parallelen Region arbeiten mehrere \textit{Threads} gleichzeitig an einem Teil des Programms, sie teilen sich z.{}B.{} Schleifendurchläufe auf. Hierbei kann entweder jeder \textit{Thread} auf die gleichen Variablen zugreifen (\textit{shared variables}) oder eine eigene Version der Variable zur Verfügung haben, die von anderen \textit{Threads} nicht verändert werden kann(\textit{private variables})\cite[vgl. ][S. 231 f.]{pachecoparallel}. 
+	In einer parallelen Region arbeiten mehrere \textit{Threads} gleichzeitig an einem Teil des Programms, sie teilen sich z.{}B.{} Schleifendurchläufe auf. Hierbei kann entweder jeder \textit{Thread} auf die gleichen Variablen zugreifen (\textit{shared variables}) oder eine eigene Version der Variable zur Verfügung haben, die von anderen \textit{Threads} nicht verändert werden kann (\textit{private variables})\cite[vgl. ][S. 231 f.]{pachecoparallel}. 
 	
 	Um das Verhalten der Laufzeit bei mehreren \textit{Threads} zu vergleichen, wird der \textit{Speedup} gemessen:
 	%Erwartetes Laufzeitverhalten bei mehr Kernen: gemessen als 

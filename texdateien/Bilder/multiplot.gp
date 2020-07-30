@@ -11,7 +11,7 @@ LEFT='set lmargin at screen 0.15; set rmargin at screen 0.545; set xtics 0,1,4; 
 RIGHT='set lmargin at screen 0.555; set rmargin at screen 0.95; set xtics 0, 400, 2000; set xrange [-10:2000]; unset ylabel; set format y '''
 
 set style line 1 lc 7 lt 7 pt 7 #ps 0.2
-set style line 2 lc 1 lt 7 pt 9
+set style line 2 lc 1 lt 7 pt 8
 set style line 3 lc 2 lt 7 pt 11
 set style line 4 lc 3 lt 7 pt 3
 set style line 5 lc 4 lt 7 pt 5#4 gut
